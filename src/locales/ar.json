@@ -1,11 +1,13 @@
 {
-  "HomePage": {
-    "title": "Hello world!Ar",
-    "about": "Go to the about pageAr"
-  },
   "components": {
+    "TopBar": {
+      "deliver": "نصل إليك كل يوم",
+      "fromTime": "7:00",
+      "to": "لـ",
+      "toTime": "23:00"
+    },
     "login": {
-      "header": "LoginAr"
+      "header": "LoginEn"
     }
   }
 }

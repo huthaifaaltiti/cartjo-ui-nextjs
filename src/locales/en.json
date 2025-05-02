@@ -1,9 +1,11 @@
 {
-  "HomePage": {
-    "title": "Hello world!",
-    "about": "Go to the about page"
-  },
   "components": {
+    "TopBar": {
+      "deliver": "We deliver to you every day from",
+      "fromTime": "7:00",
+      "to": "to",
+      "toTime": "23:00"
+    },
     "login": {
       "header": "LoginEn"
     }
