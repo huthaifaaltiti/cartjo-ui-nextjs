@@ -1,6 +1,7 @@
 "use client";
 
 import { memo } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -9,7 +10,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useLocale } from "@/contexts/LocaleContext";
-import { usePathname, useRouter } from "next/navigation";
 
 const LanguageSelector: React.FC = () => {
   const { locale } = useLocale();
