@@ -1,0 +1,11 @@
+{
+  "HomePage": {
+    "title": "Hello world!Ar",
+    "about": "Go to the about pageAr"
+  },
+  "components": {
+    "login": {
+      "header": "LoginAr"
+    }
+  }
+}
