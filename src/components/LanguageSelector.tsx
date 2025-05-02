@@ -10,26 +10,31 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useLocale } from "@/contexts/LocaleContext";
+import { useTranslations } from "next-intl";
 
 const LanguageSelector: React.FC = () => {
   const { locale } = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const t = useTranslations("components.LanguageSelector");
 
   const handleLangChange = (value: string) => {
     const newLocale = value;
-    const path = pathname.split("/").slice(2).join("/");
+    const path = pathname?.split("/")?.slice(2)?.join("/");
+
     router.push(`/${newLocale}/${path}`);
   };
 
   return (
     <Select onValueChange={handleLangChange}>
-      <SelectTrigger className="w-[100px]">
-        <SelectValue placeholder={locale === "ar" ? "العربية" : "English"} />
+      <SelectTrigger className="w-[100px] text-text-primary-100 text-sm">
+        <SelectValue
+          placeholder={locale === "ar" ? t("arabic") : t("english")}
+        />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="en">English</SelectItem>
-        <SelectItem value="ar">العربية</SelectItem>
+        <SelectItem value="en">{t("english")}</SelectItem>
+        <SelectItem value="ar">{t("arabic")}</SelectItem>
       </SelectContent>
     </Select>
   );

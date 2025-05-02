@@ -3,7 +3,7 @@ import { memo } from "react";
 import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
 import Login from "@/components/Login";
 
-const LoginPage: React.FC = () => {
+const Auth: React.FC = () => {
   return (
     <MaxWidthWrapper>
       <Login />
@@ -11,4 +11,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default memo(LoginPage);
+export default memo(Auth);

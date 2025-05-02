@@ -6,8 +6,9 @@
       "to": "لـ",
       "toTime": "23:00"
     },
-    "login": {
-      "header": "LoginEn"
+    "LanguageSelector": {
+      "english": "English",
+      "arabic": "العربية"
     }
   }
 }
