@@ -6,8 +6,12 @@ import { Inter, Noto_Kufi_Arabic } from "next/font/google";
 import { routing } from "@/i18n/routing";
 
 import "../globals.css";
-import TopBar from "@/components/TopBar";
+
 import { LocaleProvider } from "@/contexts/LocaleContext";
+
+import TopBar from "@/components/TopBar";
+import ReactQueryProvider from "@/components/ReactQueryProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,24 +35,28 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   const isArabic = locale === "ar";
+  const dir = locale === "ar" ? "rtl" : "ltr";
 
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
 
   return (
-    <html lang={locale}>
+    <html dir={dir} lang={locale}>
       <body
         className={`${
           isArabic ? notoKufiArabic.className : inter.className
         } antialiased`}
       >
-        <NextIntlClientProvider>
-          <LocaleProvider locale={locale}>
-            <TopBar />
-            {children}
-          </LocaleProvider>
-        </NextIntlClientProvider>
+        <ReactQueryProvider>
+          <NextIntlClientProvider>
+            <LocaleProvider locale={locale}>
+              <Toaster />
+              <TopBar />
+              {children}
+            </LocaleProvider>
+          </NextIntlClientProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

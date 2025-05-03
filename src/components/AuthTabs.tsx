@@ -9,7 +9,7 @@ const AuthTabs: React.FC = () => {
   const t = useTranslations("routes.auth.components.AuthTabs");
 
   const triggerClasses =
-    "w-1/2 min-h-10 bg-transparent border-none shadow-none font-bold text-lg text-text-primary-100 data-[state=active]:text-text-primary-400 data-[state=active]:text-[30px] data-[state=active]:shadow-none";
+    "w-1/2 min-h-10 bg-transparent border-none shadow-none font-bold text-lg text-text-primary-100 data-[state=active]:text-text-primary-400 sm:data-[state=active]:text-[30px] data-[state=active]:text-[23px] data-[state=active]:shadow-none";
 
   return (
     <Tabs defaultValue="login" className="w-full bg-transparent">

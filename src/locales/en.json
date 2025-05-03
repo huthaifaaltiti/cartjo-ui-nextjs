@@ -22,12 +22,14 @@
               "hint": "If you have an account, sign in with your username or email address.",
               "dataSet": {
                 "username": {
-                  "label": "Username or phone number or email address",
-                  "placeholder": "Username or phone number or email address"
+                  "label": "Identifier",
+                  "placeholder": "Identifier",
+                  "desc": "Username or phone number or email address"
                 },
                 "password": {
                   "label": "Password",
-                  "placeholder": "Password"
+                  "placeholder": "Password",
+                  "desc": "Password"
                 },
                 "rememberMe": {
                   "label": "Remember me"
@@ -43,6 +45,16 @@
           }
         }
       }
+    }
+  },
+  "validations": {
+    "identifier": {
+      "min": "Identifier must be at least 3 characters",
+      "max": "Identifier must be at most 50 characters",
+      "pattern": "Must be a valid username, Jordanian phone number, or email"
+    },
+    "password": {
+      "min": "Password must be at least 6 characters"
     }
   }
 }
