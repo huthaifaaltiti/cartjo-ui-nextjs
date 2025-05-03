@@ -1,9 +1,19 @@
+"use client";
+
 import { memo } from "react";
+import { useTranslations } from "next-intl";
+import LoginForm from "./LoginForm";
 
 const Login: React.FC = () => {
+  const t = useTranslations("routes.auth.components.AuthTabs.components.login");
+
   return (
-    <div className="w-full text-text-primary-400 h-[500px] bg-red-500">
-      Login comp
+    <div className="w-full min-h-[70vh] text-text-primary-400 pt-8">
+      <p className="text-center text-text-primary-400 text-sm">{t("hint")}</p>
+
+      <div className="w-full px-0 md:px-24 lg:px-56 mt-5">
+        <LoginForm />
+      </div>
     </div>
   );
 };

@@ -1,13 +1,13 @@
 {
   "components": {
     "TopBar": {
-      "deliver": "نصل إليك كل يوم من",
-      "fromTime": "٧:٠٠",
-      "to": "حتّى",
-      "toTime": "٢٣:٠٠"
+      "deliver": "نقوم بالتوصيل إليك يومياً من",
+      "fromTime": "7:00",
+      "to": "إلى",
+      "toTime": "23:00"
     },
     "LanguageSelector": {
-      "english": "English",
+      "english": "الإنجليزية",
       "arabic": "العربية"
     }
   },
@@ -16,7 +16,31 @@
       "components": {
         "AuthTabs": {
           "login": "تسجيل الدخول",
-          "register": "التسجيل"
+          "register": "إنشاء حساب",
+          "components": {
+            "login": {
+              "hint": "إذا كان لديك حساب، قم بتسجيل الدخول باستخدام اسم المستخدم أو البريد الإلكتروني.",
+              "dataSet": {
+                "username": {
+                  "label": "اسم المستخدم أو رقم الهاتف أو البريد الإلكتروني",
+                  "placeholder": "اسم المستخدم أو رقم الهاتف أو البريد الإلكتروني"
+                },
+                "password": {
+                  "label": "كلمة المرور",
+                  "placeholder": "كلمة المرور"
+                },
+                "rememberMe": {
+                  "label": "تذكرني"
+                },
+                "lostPassword": {
+                  "label": "هل نسيت كلمة المرور؟"
+                }
+              },
+              "actions": {
+                "proceed": "تسجيل الدخول"
+              }
+            }
+          }
         }
       }
     }
