@@ -27,7 +27,7 @@ const LanguageSelector: React.FC = () => {
 
   return (
     <Select onValueChange={handleLangChange}>
-      <SelectTrigger className="w-[100px] text-text-primary-100 text-sm">
+      <SelectTrigger className="w-[100px] text-text-primary-100 text-sm border-none shadow-none">
         <SelectValue
           placeholder={locale === "ar" ? t("arabic") : t("english")}
         />
