@@ -10,5 +10,15 @@
       "english": "English",
       "arabic": "العربية"
     }
+  },
+  "routes": {
+    "auth": {
+      "components": {
+        "AuthTabs": {
+          "login": "Login",
+          "register": "Register"
+        }
+      }
+    }
   }
 }
