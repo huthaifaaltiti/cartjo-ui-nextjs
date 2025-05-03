@@ -11,11 +11,11 @@ const TopBar: React.FC = () => {
     <div className="w-full py-2 border-b border-[#E5E7EB]">
       <MaxWidthWrapper>
         <div className="w-full flex items-center justify-between">
-          <p className="text-sm text-text-primary-100 flex items-center gap-1">
+          <p className="text-sm text-text-primary-100">
             {t("deliver")}
-            <span className="flex items-center gap-1 text-text-tertiary-400 font-bold">
+            <span className="mx-1 text-text-tertiary-400 font-bold">
               <span>{t("fromTime")}</span>
-              <span>{t("to")}</span>
+              <span className="mx-1">{t("to")}</span>
               <span>{t("toTime")}</span>
             </span>
           </p>

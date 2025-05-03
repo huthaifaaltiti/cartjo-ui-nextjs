@@ -1,10 +1,10 @@
 {
   "components": {
     "TopBar": {
-      "deliver": "نصل إليك كل يوم",
-      "fromTime": "7:00",
-      "to": "لـ",
-      "toTime": "23:00"
+      "deliver": "نصل إليك كل يوم من",
+      "fromTime": "٧:٠٠",
+      "to": "حتّى",
+      "toTime": "٢٣:٠٠"
     },
     "LanguageSelector": {
       "english": "English",
