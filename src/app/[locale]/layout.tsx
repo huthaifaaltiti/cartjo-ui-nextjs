@@ -1,7 +1,7 @@
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Kufi_Arabic } from "next/font/google";
 
 import { routing } from "@/i18n/routing";
 
@@ -10,6 +10,12 @@ import TopBar from "@/components/TopBar";
 import { LocaleProvider } from "@/contexts/LocaleContext";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const notoKufiArabic = Noto_Kufi_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "700"],
+  variable: "--font-noto-kufi",
+});
 
 export const metadata: Metadata = {
   title: "Digital Library JO",
@@ -24,6 +30,7 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const isArabic = locale === "ar";
 
   if (!hasLocale(routing.locales, locale)) {
     notFound();
@@ -31,7 +38,11 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${inter.className} antialiased`}>
+      <body
+        className={`${
+          isArabic ? notoKufiArabic.className : inter.className
+        } antialiased`}
+      >
         <NextIntlClientProvider>
           <LocaleProvider locale={locale}>
             <TopBar />
