@@ -2,6 +2,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Inter, Noto_Kufi_Arabic } from "next/font/google";
+import { Toaster } from "sonner";
 
 import { routing } from "@/i18n/routing";
 
@@ -11,7 +12,6 @@ import { LocaleProvider } from "@/contexts/LocaleContext";
 
 import TopBar from "@/components/TopBar";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
-import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,7 +51,11 @@ export default async function LocaleLayout({
         <ReactQueryProvider>
           <NextIntlClientProvider>
             <LocaleProvider locale={locale}>
-              <Toaster />
+              <Toaster
+                position={isArabic ? "top-right" : "top-left"}
+                expand={true}
+                closeButton={false}
+              />
               <TopBar />
               {children}
             </LocaleProvider>

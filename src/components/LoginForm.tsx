@@ -15,14 +15,20 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import {
+  showCustomToast,
+  showErrorToast,
+  showSuccessToast,
+  showWarningToast,
+} from "./shared/CustomToast";
+import { Smile } from "lucide-react";
 
 const LoginForm: React.FC = () => {
   const locale = useLocale();
   const isArabic = locale === "ar";
   const t = useTranslations("routes.auth.components.AuthTabs.components.login");
   const v = useTranslations("validations");
-  const { toast } = useToast();
 
   const apiLink = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -56,7 +62,8 @@ const LoginForm: React.FC = () => {
       const response = await fetch(`${apiLink}/api/v1/authorization/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, lang: locale }),
+        // body: JSON.stringify({ ...data, lang: locale }),
+        body: JSON.stringify({ ...data }),
       });
 
       if (!response.ok) {
@@ -67,10 +74,11 @@ const LoginForm: React.FC = () => {
 
           messages?.forEach(
             (message: { property: string; message: string }) => {
-              toast({
-                title: message?.property,
-                description: message?.message,
-              });
+              // toast({
+              //   title: message?.property,
+              //   description: message?.message,
+              //   duration: 4000,
+              // });
             }
           );
         }
@@ -155,6 +163,41 @@ const LoginForm: React.FC = () => {
         >
           {t("actions.proceed")}
         </Button>
+        <button
+          type="button"
+          onClick={
+            () =>
+              // showCustomToast({
+              //   title: "🎉 Welcome Back!",
+              //   description: "You’ve successfully logged in.",
+              //   icon: <Smile />,
+              //   dismissText: "x",
+              //   content: (
+              //     <div className="mt-2 text-xs text-white-300">
+              //       You can now continue exploring the app.
+              //     </div>
+              //   ),
+              // })
+
+              showSuccessToast({
+                title: "Success!",
+                description: "Your operation completed successfully.",
+              })
+
+              // showWarningToast({
+              //   title: "Warning!",
+              //   description: "This action might have side effects.",
+              // })
+
+            // Error
+            // showErrorToast({
+            //   title: "Error!",
+            //   description: "Something went wrong. Please try again.",
+            // })
+          }
+        >
+          Show Fancy Toast
+        </button>
       </form>
     </Form>
   );
