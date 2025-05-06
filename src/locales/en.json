@@ -40,21 +40,86 @@
               },
               "actions": {
                 "proceed": "Log in"
+              },
+              "validations": {
+                "identifier": {
+                  "min": "Identifier must be at least 3 characters",
+                  "max": "Identifier must be at most 50 characters",
+                  "pattern": "Must be a valid username, Jordanian phone number, or email"
+                },
+                "password": {
+                  "min": "Password must be at least 6 characters"
+                }
+              }
+            },
+            "register": {
+              "hint": "There are many advantages to creating an account: the payment process is faster, shipment tracking is possible and much more.",
+              "note": "Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our",
+              "privacyPolicy": "privacy policy.",
+              "dataSet": {
+                "firstName": {
+                  "label": "First name",
+                  "placeholder": "First name",
+                  "desc": "First name"
+                },
+                "lastName": {
+                  "label": "Last name",
+                  "placeholder": "Last name",
+                  "desc": "Last name"
+                },
+                "phoneNumber": {
+                  "label": "Phone number",
+                  "placeholder": "Phone number",
+                  "desc": "Phone number"
+                },
+                "email": {
+                  "label": "Email",
+                  "placeholder": "Email",
+                  "desc": "Email"
+                },
+                "Password": {
+                  "label": "Password",
+                  "placeholder": "Password",
+                  "desc": "Password"
+                },
+                "termsAccepted": {
+                  "label": "Terms accepted",
+                  "placeholder": "Terms accepted",
+                  "desc": "Terms accepted"
+                },
+                "marketingEmails": {
+                  "label": "Marketing emails",
+                  "placeholder": "Marketing emails",
+                  "desc": "Marketing emails"
+                }
+              },
+              "actions": {
+                "proceed": "Register"
+              },
+              "validations": {
+                "firstName": {
+                  "min": "First name must be at least 2 characters long"
+                },
+                "lastName": {
+                  "min": "Last name must be at least 2 characters long"
+                },
+                "phoneNumber": {
+                  "pattern": "Phone number must start with 77, 78, or 79 and be 9 digits long"
+                },
+                "email": {
+                  "invalid": "Please enter a valid email address"
+                },
+                "password": {
+                  "min": "Password must be at least 6 characters long"
+                },
+                "termsAccepted": {
+                  "required": "You must accept the terms and conditions"
+                }
               }
             }
           }
         }
       }
-    }
-  },
-  "validations": {
-    "identifier": {
-      "min": "Identifier must be at least 3 characters",
-      "max": "Identifier must be at most 50 characters",
-      "pattern": "Must be a valid username, Jordanian phone number, or email"
-    },
-    "password": {
-      "min": "Password must be at least 6 characters"
     }
   }
 }

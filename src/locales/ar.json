@@ -41,6 +41,51 @@
               "actions": {
                 "proceed": "تسجيل الدخول"
               }
+            },
+            "register": {
+              "hint": "There are many advantages to creating an account: the payment process is faster, shipment tracking is possible and much more.",
+              "note": "Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our",
+              "privacyPolicy": "privacy policy.",
+              "dataSet": {
+                "firstName": {
+                  "label": "First name",
+                  "placeholder": "First name",
+                  "desc": "First name"
+                },
+                "lastName": {
+                  "label": "Last name",
+                  "placeholder": "Last name",
+                  "desc": "Last name"
+                },
+                "phoneNumber": {
+                  "label": "Phone number",
+                  "placeholder": "Phone number",
+                  "desc": "Phone number"
+                },
+                "email": {
+                  "label": "Email",
+                  "placeholder": "Email",
+                  "desc": "Email"
+                },
+                "Password": {
+                  "label": "Password",
+                  "placeholder": "Password",
+                  "desc": "Password"
+                },
+                "termsAccepted": {
+                  "label": "Terms accepted",
+                  "placeholder": "Terms accepted",
+                  "desc": "Terms accepted"
+                },
+                "marketingEmails": {
+                  "label": "Marketing emails",
+                  "placeholder": "Marketing emails",
+                  "desc": "Marketing emails"
+                }
+              },
+              "actions": {
+                "proceed": "Register"
+              }
             }
           }
         }
