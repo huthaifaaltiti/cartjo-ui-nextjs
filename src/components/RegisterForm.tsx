@@ -86,7 +86,7 @@ const RegisterForm: React.FC = () => {
     onSuccess: (data) => {
       showSuccessToast({
         title: "Success!",
-        description: data.message,
+        description: data.msg,
       });
     },
     onError: (error: Error) => {
