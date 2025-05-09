@@ -20,6 +20,7 @@ import {
   showWarningToast,
 } from "./shared/CustomToast";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { apiRequest } from "@/utils/apiRequest";
 
 const RegisterForm: React.FC = () => {
   const locale = useLocale();
@@ -27,6 +28,7 @@ const RegisterForm: React.FC = () => {
   const t = useTranslations(
     "routes.auth.components.AuthTabs.components.register"
   );
+  const tg = useTranslations("general");
   const v = useTranslations(
     "routes.auth.components.AuthTabs.components.register.validations"
   );
@@ -60,28 +62,41 @@ const RegisterForm: React.FC = () => {
 
   const registerMutation = useMutation({
     mutationFn: async (data: z.infer<typeof formSchema>) => {
-      const response = await fetch(API_ENDPOINTS.AUTH.REGISTER, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, countryCode: "00962", lang: locale }),
-      });
+      try {
+        const response = await apiRequest<{ msg: string }>(
+          API_ENDPOINTS.AUTH.REGISTER,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              ...data,
+              countryCode: "00962",
+              lang: locale,
+            }),
+          }
+        );
 
-      if (!response.ok) {
-        const resp = await response.json();
+        return response;
+      } catch (error: unknown) {
+        if (typeof error === "object" && error !== null && "status" in error) {
+          const err = error as {
+            status: number;
+            error?: string;
+            message?: string;
+          };
 
-        console.log(resp);
+          if (err.status === 400) {
+            showWarningToast({
+              title: err.error ?? "Warning",
+              description: err.message ?? "Bad Request",
+            });
+          }
 
-        if (resp?.statusCode === 400) {
-          showWarningToast({
-            title: resp?.error,
-            description: resp?.message,
-          });
+          // Re-throw to trigger onError
+          throw new Error(err.message || "Registration failed");
         }
 
-        // throw new Error("Registration failed");
+        throw error;
       }
-
-      return response.json();
     },
     onSuccess: (data) => {
       showSuccessToast({
@@ -101,50 +116,142 @@ const RegisterForm: React.FC = () => {
     registerMutation.mutate(values);
   };
 
-  const renderInput = (
-    name: keyof z.infer<typeof formSchema>,
-    labelKey: string
-  ) => (
-    <FormField
-      control={form.control}
-      name={name}
-      render={({ field }) => (
-        <FormItem className={isArabic ? "text-right" : "text-left"}>
-          <FormLabel className="text-sm font-normal">
-            {t(`dataSet.${labelKey}.label`)}
-          </FormLabel>
-          <FormControl>
-            <Input
-              className={`placeholder:text-xs text-xs ${
-                isArabic ? "placeholder:text-right" : "placeholder:text-left"
-              }`}
-              placeholder={t(`dataSet.${labelKey}.placeholder`)}
-              {...field}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="w-full flex items-center justify-between gap-5">
-          <div className="w-1/2">{renderInput("firstName", "firstName")}</div>
-          <div className="w-1/2">{renderInput("lastName", "lastName")}</div>
+          <div className="w-1/2">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem className={isArabic ? "text-right" : "text-left"}>
+                  <FormLabel className="text-sm font-normal">
+                    {t("dataSet.firstName.label")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className={`placeholder:text-xs text-xs ${
+                        isArabic
+                          ? "placeholder:text-right"
+                          : "placeholder:text-left"
+                      }`}
+                      placeholder={t("dataSet.firstName.placeholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="w-1/2">
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem className={isArabic ? "text-right" : "text-left"}>
+                  <FormLabel className="text-sm font-normal">
+                    {t("dataSet.lastName.label")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className={`placeholder:text-xs text-xs ${
+                        isArabic
+                          ? "placeholder:text-right"
+                          : "placeholder:text-left"
+                      }`}
+                      placeholder={t("dataSet.lastName.placeholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <div className="w-full flex items-center justify-between gap-5">
           <div className="w-1/2">
-            {renderInput("phoneNumber", "phoneNumber")}
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem className={isArabic ? "text-right" : "text-left"}>
+                  <FormLabel className="text-sm font-normal">
+                    {t("dataSet.phoneNumber.label")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className={`placeholder:text-xs text-xs ${
+                        isArabic
+                          ? "placeholder:text-right"
+                          : "placeholder:text-left"
+                      }`}
+                      placeholder={t("dataSet.phoneNumber.placeholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-          <div className="w-1/2">{renderInput("email", "email")}</div>
+          <div className="w-1/2">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className={isArabic ? "text-right" : "text-left"}>
+                  <FormLabel className="text-sm font-normal">
+                    {t("dataSet.email.label")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className={`placeholder:text-xs text-xs ${
+                        isArabic
+                          ? "placeholder:text-right"
+                          : "placeholder:text-left"
+                      }`}
+                      placeholder={t("dataSet.email.placeholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <div className="w-full flex items-center justify-between gap-5">
-          <div className="w-full">{renderInput("password", "Password")}</div>
+          <div className="w-full">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className={isArabic ? "text-right" : "text-left"}>
+                  <FormLabel className="text-sm font-normal">
+                    {t("dataSet.password.label")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      className={`placeholder:text-xs text-xs ${
+                        isArabic
+                          ? "placeholder:text-right"
+                          : "placeholder:text-left"
+                      }`}
+                      placeholder={t("dataSet.password.placeholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <p className="w-full text-center text-text-primary-200 text-sm">
@@ -207,8 +314,11 @@ const RegisterForm: React.FC = () => {
         <Button
           className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 transition-all"
           type="submit"
+          disabled={registerMutation?.isPending}
         >
-          {t("actions.proceed")}
+          {registerMutation?.isPending
+            ? tg("loadingStates.loadingApi")
+            : t("actions.proceed")}
         </Button>
       </form>
     </Form>

@@ -1,4 +1,9 @@
 {
+  "general": {
+    "loadingStates": {
+      "loadingApi": "Sending data..."
+    }
+  },
   "components": {
     "TopBar": {
       "deliver": "We deliver to you every day from",
@@ -77,7 +82,7 @@
                   "placeholder": "Email",
                   "desc": "Email"
                 },
-                "Password": {
+                "password": {
                   "label": "Password",
                   "placeholder": "Password",
                   "desc": "Password"
