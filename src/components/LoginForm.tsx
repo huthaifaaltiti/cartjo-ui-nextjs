@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,11 +23,14 @@ import {
   showWarningToast,
 } from "./shared/CustomToast";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = locale === "ar";
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const formSchema = z.object({
     identifier: z
@@ -85,14 +88,27 @@ const LoginForm = () => {
           messages?.forEach(
             (message: { property: string; message: string }) => {
               showWarningToast({
-                title: message?.property,
+                title: message?.property || t("general.toast.title.warning"),
                 description: message?.message,
+                dismissText: t("general.toast.dismissText"),
               });
             }
           );
+
+          return Promise.reject();
         }
 
-        throw new Error("Login failed");
+        if (!resp?.isSuccess && resp?.statusCode === 500) {
+          const { message } = resp;
+
+          showErrorToast({
+            title: t("general.toast.title.error"),
+            description: message,
+            dismissText: t("general.toast.dismissText"),
+          });
+
+          return Promise.reject();
+        }
       }
 
       return response.json();
@@ -101,16 +117,20 @@ const LoginForm = () => {
       const { message } = data;
 
       showSuccessToast({
-        title: "Success!",
+        title: t("general.toast.title.success"),
         description: message,
+        dismissText: t("general.toast.dismissText"),
       });
     },
     onError: (error: Error) => {
+      if (!error) return;
+
       const { message } = error;
 
       showErrorToast({
-        title: "Error!",
+        title: t("general.toast.title.error"),
         description: message,
+        dismissText: t("general.toast.dismissText"),
       });
     },
   });
@@ -168,30 +188,47 @@ const LoginForm = () => {
                 )}
               </FormLabel>
               <FormControl>
-                <Input
-                  className={`placeholder:text-xs text-xs ${
-                    isArabic
-                      ? "placeholder:text-right"
-                      : "placeholder:text-left"
-                  }`}
-                  placeholder={t(
-                    "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder"
-                  )}
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    className={`placeholder:text-xs text-xs  ${
+                      isArabic
+                        ? "placeholder:text-right pl-10"
+                        : "placeholder:text-left pr-10"
+                    }`}
+                    placeholder={t(
+                      "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder"
+                    )}
+                    {...field}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className={`absolute inset-y-0 ${
+                      isArabic ? "left-2" : "right-2"
+                    } flex items-center text-gray-500`}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
+
         <Button
           className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 transition-all"
           type="submit"
+          disabled={loginMutation?.isPending}
         >
-          {t(
-            "routes.auth.components.AuthTabs.components.login.actions.proceed"
-          )}
+          {loginMutation?.isPending
+            ? t("general.loadingStates.loadingApi")
+            : t(
+                "routes.auth.components.AuthTabs.components.login.actions.proceed"
+              )}
         </Button>
       </form>
     </Form>

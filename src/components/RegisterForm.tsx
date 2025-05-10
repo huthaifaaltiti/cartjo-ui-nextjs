@@ -127,7 +127,6 @@ const RegisterForm = () => {
       });
     },
     onError: (error: Error) => {
-      console.log(error.message);
       showErrorToast({
         title: t("general.toast.title.error"),
         description: error.message,
