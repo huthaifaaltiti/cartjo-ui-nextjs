@@ -1,3 +1,5 @@
+"use client";
+
 import { memo } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -22,29 +24,40 @@ import {
 } from "./shared/CustomToast";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 
-const LoginForm: React.FC = () => {
+const LoginForm = () => {
   const locale = useLocale();
   const isArabic = locale === "ar";
-  const t = useTranslations("routes.auth.components.AuthTabs.components.login");
-  const v = useTranslations(
-    "routes.auth.components.AuthTabs.components.login.validations"
-  );
+  const t = useTranslations();
 
   const formSchema = z.object({
     identifier: z
       .string()
-      .min(3, { message: v("identifier.min") })
-      .max(50, { message: v("identifier.max") })
+      .min(3, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.login.validations.identifier.min"
+        ),
+      })
+      .max(50, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.login.validations.identifier.max"
+        ),
+      })
       .refine(
         (val) =>
           /^[a-zA-Z0-9._]{2,50}$/.test(val) || // username pattern
           /^7[789]\d{7}$/.test(val) || // Jordanian mobile pattern
           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), // email pattern
         {
-          message: v("identifier.pattern"),
+          message: t(
+            "routes.auth.components.AuthTabs.components.login.validations.identifier.pattern"
+          ),
         }
       ),
-    password: z.string().min(6, { message: v("password.min") }),
+    password: z.string().min(6, {
+      message: t(
+        "routes.auth.components.AuthTabs.components.login.validations.password.min"
+      ),
+    }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -115,7 +128,9 @@ const LoginForm: React.FC = () => {
           render={({ field }) => (
             <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
               <FormLabel className={"text-sm font-normal"}>
-                {t("dataSet.username.label")}
+                {t(
+                  "routes.auth.components.AuthTabs.components.login.dataSet.username.label"
+                )}
               </FormLabel>
               <FormControl>
                 <Input
@@ -124,13 +139,17 @@ const LoginForm: React.FC = () => {
                       ? "placeholder:text-right"
                       : "placeholder:text-left"
                   }`}
-                  placeholder={t("dataSet.username.placeholder")}
+                  placeholder={t(
+                    "routes.auth.components.AuthTabs.components.login.dataSet.username.placeholder"
+                  )}
                   {...field}
                 />
               </FormControl>
 
               <FormDescription className="text-xs text-text-primary-100">
-                {t("dataSet.username.desc")}
+                {t(
+                  "routes.auth.components.AuthTabs.components.login.dataSet.username.desc"
+                )}
               </FormDescription>
 
               <FormMessage />
@@ -144,7 +163,9 @@ const LoginForm: React.FC = () => {
           render={({ field }) => (
             <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
               <FormLabel className="text-sm text-text-primary-400 font-normal">
-                {t("dataSet.password.label")}
+                {t(
+                  "routes.auth.components.AuthTabs.components.login.dataSet.password.label"
+                )}
               </FormLabel>
               <FormControl>
                 <Input
@@ -153,7 +174,9 @@ const LoginForm: React.FC = () => {
                       ? "placeholder:text-right"
                       : "placeholder:text-left"
                   }`}
-                  placeholder={t("dataSet.password.placeholder")}
+                  placeholder={t(
+                    "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder"
+                  )}
                   {...field}
                 />
               </FormControl>
@@ -166,7 +189,9 @@ const LoginForm: React.FC = () => {
           className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 transition-all"
           type="submit"
         >
-          {t("actions.proceed")}
+          {t(
+            "routes.auth.components.AuthTabs.components.login.actions.proceed"
+          )}
         </Button>
       </form>
     </Form>
