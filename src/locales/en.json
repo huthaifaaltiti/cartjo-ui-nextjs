@@ -8,7 +8,8 @@
         "success": "Success",
         "error": "Error",
         "warning": "Warning"
-      }
+      },
+      "dismissText": "Dismiss"
     }
   },
   "errors": {
@@ -38,7 +39,7 @@
           "register": "Register",
           "components": {
             "login": {
-              "hint": "If you have an account, sign in with your username or email address.",
+              "hint": "If you have an account, sign in with your identifier.",
               "dataSet": {
                 "username": {
                   "label": "Identifier",

@@ -25,9 +25,9 @@ import {
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 
 const LoginForm = () => {
+  const t = useTranslations();
   const locale = useLocale();
   const isArabic = locale === "ar";
-  const t = useTranslations();
 
   const formSchema = z.object({
     identifier: z

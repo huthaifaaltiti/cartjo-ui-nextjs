@@ -1,4 +1,6 @@
-import { memo } from "react";
+"use client";
+
+import { memo, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,28 +23,47 @@ import {
 } from "./shared/CustomToast";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { apiRequest } from "@/utils/apiRequest";
+import { Eye, EyeOff } from "lucide-react";
 
-const RegisterForm: React.FC = () => {
+const RegisterForm = () => {
+  const t = useTranslations();
   const locale = useLocale();
   const isArabic = locale === "ar";
-  const t = useTranslations(
-    "routes.auth.components.AuthTabs.components.register"
-  );
-  const tg = useTranslations("general");
-  const v = useTranslations(
-    "routes.auth.components.AuthTabs.components.register.validations"
-  );
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const formSchema = z.object({
-    firstName: z.string().min(2, { message: v("firstName.min") }),
-    lastName: z.string().min(2, { message: v("lastName.min") }),
-    phoneNumber: z
-      .string()
-      .regex(/^7[789]\d{7}$/, { message: v("phoneNumber.pattern") }),
-    email: z.string().email({ message: v("email.invalid") }),
-    password: z.string().min(6, { message: v("password.min") }),
+    firstName: z.string().min(2, {
+      message: t(
+        "routes.auth.components.AuthTabs.components.register.validations.firstName.min"
+      ),
+    }),
+    lastName: z.string().min(2, {
+      message: t(
+        "routes.auth.components.AuthTabs.components.register.validations.lastName.min"
+      ),
+    }),
+    phoneNumber: z.string().regex(/^7[789]\d{7}$/, {
+      message: t(
+        "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.pattern"
+      ),
+    }),
+    email: z.string().email({
+      message: t(
+        "routes.auth.components.AuthTabs.components.register.validations.email.invalid"
+      ),
+    }),
+    password: z.string().min(6, {
+      message: t(
+        "routes.auth.components.AuthTabs.components.register.validations.password.min"
+      ),
+    }),
     termsAccepted: z.literal(true, {
-      errorMap: () => ({ message: v("termsAccepted.required") }),
+      errorMap: () => ({
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.termsAccepted.required"
+        ),
+      }),
     }),
     marketingEmails: z.boolean().optional(),
   });
@@ -100,14 +121,17 @@ const RegisterForm: React.FC = () => {
     },
     onSuccess: (data) => {
       showSuccessToast({
-        title: "Success!",
+        title: t("general.toast.title.success"),
         description: data.msg,
+        dismissText: t("general.toast.dismissText"),
       });
     },
     onError: (error: Error) => {
+      console.log(error.message);
       showErrorToast({
-        title: "Error!",
+        title: t("general.toast.title.error"),
         description: error.message,
+        dismissText: t("general.toast.dismissText"),
       });
     },
   });
@@ -119,7 +143,11 @@ const RegisterForm: React.FC = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="w-full flex items-center justify-between gap-5">
+        <div
+          className={`w-full flex items-center justify-between gap-5 ${
+            isArabic ? "flex-row-reverse" : "flex-row"
+          }`}
+        >
           <div className="w-1/2">
             <FormField
               control={form.control}
@@ -127,16 +155,20 @@ const RegisterForm: React.FC = () => {
               render={({ field }) => (
                 <FormItem className={isArabic ? "text-right" : "text-left"}>
                   <FormLabel className="text-sm font-normal">
-                    {t("dataSet.firstName.label")}
+                    {t(
+                      "routes.auth.components.AuthTabs.components.register.dataSet.firstName.label"
+                    )}
                   </FormLabel>
                   <FormControl>
                     <Input
                       className={`placeholder:text-xs text-xs ${
                         isArabic
-                          ? "placeholder:text-right"
-                          : "placeholder:text-left"
+                          ? "placeholder:text-right text-right"
+                          : "placeholder:text-left text-left"
                       }`}
-                      placeholder={t("dataSet.firstName.placeholder")}
+                      placeholder={t(
+                        "routes.auth.components.AuthTabs.components.register.dataSet.firstName.placeholder"
+                      )}
                       {...field}
                     />
                   </FormControl>
@@ -152,16 +184,20 @@ const RegisterForm: React.FC = () => {
               render={({ field }) => (
                 <FormItem className={isArabic ? "text-right" : "text-left"}>
                   <FormLabel className="text-sm font-normal">
-                    {t("dataSet.lastName.label")}
+                    {t(
+                      "routes.auth.components.AuthTabs.components.register.dataSet.lastName.label"
+                    )}
                   </FormLabel>
                   <FormControl>
                     <Input
                       className={`placeholder:text-xs text-xs ${
                         isArabic
-                          ? "placeholder:text-right"
-                          : "placeholder:text-left"
+                          ? "placeholder:text-right text-right"
+                          : "placeholder:text-left text-left"
                       }`}
-                      placeholder={t("dataSet.lastName.placeholder")}
+                      placeholder={t(
+                        "routes.auth.components.AuthTabs.components.register.dataSet.lastName.placeholder"
+                      )}
                       {...field}
                     />
                   </FormControl>
@@ -180,7 +216,9 @@ const RegisterForm: React.FC = () => {
               render={({ field }) => (
                 <FormItem className={isArabic ? "text-right" : "text-left"}>
                   <FormLabel className="text-sm font-normal">
-                    {t("dataSet.phoneNumber.label")}
+                    {t(
+                      "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.label"
+                    )}
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -189,7 +227,9 @@ const RegisterForm: React.FC = () => {
                           ? "placeholder:text-right"
                           : "placeholder:text-left"
                       }`}
-                      placeholder={t("dataSet.phoneNumber.placeholder")}
+                      placeholder={t(
+                        "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.placeholder"
+                      )}
                       {...field}
                     />
                   </FormControl>
@@ -205,7 +245,9 @@ const RegisterForm: React.FC = () => {
               render={({ field }) => (
                 <FormItem className={isArabic ? "text-right" : "text-left"}>
                   <FormLabel className="text-sm font-normal">
-                    {t("dataSet.email.label")}
+                    {t(
+                      "routes.auth.components.AuthTabs.components.register.dataSet.email.label"
+                    )}
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -214,7 +256,9 @@ const RegisterForm: React.FC = () => {
                           ? "placeholder:text-right"
                           : "placeholder:text-left"
                       }`}
-                      placeholder={t("dataSet.email.placeholder")}
+                      placeholder={t(
+                        "routes.auth.components.AuthTabs.components.register.dataSet.email.placeholder"
+                      )}
                       {...field}
                     />
                   </FormControl>
@@ -233,19 +277,39 @@ const RegisterForm: React.FC = () => {
               render={({ field }) => (
                 <FormItem className={isArabic ? "text-right" : "text-left"}>
                   <FormLabel className="text-sm font-normal">
-                    {t("dataSet.password.label")}
+                    {t(
+                      "routes.auth.components.AuthTabs.components.register.dataSet.password.label"
+                    )}
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      className={`placeholder:text-xs text-xs ${
-                        isArabic
-                          ? "placeholder:text-right"
-                          : "placeholder:text-left"
-                      }`}
-                      placeholder={t("dataSet.password.placeholder")}
-                      {...field}
-                    />
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        className={`placeholder:text-xs text-xs  ${
+                          isArabic
+                            ? "placeholder:text-right pl-10"
+                            : "placeholder:text-left pr-10"
+                        }`}
+                        placeholder={t(
+                          "routes.auth.components.AuthTabs.components.register.dataSet.password.placeholder"
+                        )}
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        className={`absolute inset-y-0 ${
+                          isArabic ? "left-2" : "right-2"
+                        } flex items-center text-gray-500`}
+                        tabIndex={-1}
+                      >
+                        {showPassword ? (
+                          <EyeOff size={16} />
+                        ) : (
+                          <Eye size={16} />
+                        )}
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -254,43 +318,32 @@ const RegisterForm: React.FC = () => {
           </div>
         </div>
 
-        <p className="w-full text-center text-text-primary-200 text-sm">
-          {t("note")}{" "}
-          <span className="text-primary-500 hover:text-primary-900 cursor-pointer">
-            {t("privacyPolicy")}
+        <p
+          className={`w-full text-text-primary-200 text-sm ${
+            isArabic ? "text-right" : "text-left"
+          }`}
+        >
+          {t("routes.auth.components.AuthTabs.components.register.note")}{" "}
+          <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
+            {t(
+              "routes.auth.components.AuthTabs.components.register.privacyPolicy"
+            )}
           </span>
         </p>
 
-        <div className="w-full flex items-center gap-5">
-          <FormField
-            control={form.control}
-            name="termsAccepted"
-            render={({ field }) => (
-              <FormItem className="flex items-center justify-center space-x-2 rtl:space-x-reverse">
-                <FormControl className="h-4 mt-2">
-                  <input
-                    type="checkbox"
-                    id="termsAccepted"
-                    checked={field.value}
-                    onChange={field.onChange}
-                    className="w-4 h-4"
-                  />
-                </FormControl>
-                <FormLabel
-                  htmlFor="termsAccepted"
-                  className="text-sm font-normal"
-                >
-                  {t("dataSet.termsAccepted.label")}
-                </FormLabel>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div
+          className={`w-full flex items-center gap-5 ${
+            isArabic ? "justify-end" : "justify-start"
+          }`}
+        >
           <FormField
             control={form.control}
             name="marketingEmails"
             render={({ field }) => (
-              <FormItem className="flex items-center space-x-2 rtl:space-x-reverse">
+              <FormItem
+                dir={isArabic ? "rtl" : "ltr"}
+                className="flex items-center space-x-2 rtl:space-x-reverse"
+              >
                 <FormControl className="h-4 mt-2">
                   <input
                     type="checkbox"
@@ -304,8 +357,40 @@ const RegisterForm: React.FC = () => {
                   htmlFor="marketingEmails"
                   className="text-sm font-normal"
                 >
-                  {t("dataSet.marketingEmails.label")}
+                  {t(
+                    "routes.auth.components.AuthTabs.components.register.dataSet.marketingEmails.label"
+                  )}
                 </FormLabel>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="termsAccepted"
+            render={({ field }) => (
+              <FormItem
+                dir={isArabic ? "rtl" : "ltr"}
+                className="flex items-center justify-center space-x-2 rtl:space-x-reverse"
+              >
+                <FormControl className="h-4 mt-2">
+                  <input
+                    type="checkbox"
+                    id="termsAccepted"
+                    checked={field.value}
+                    onChange={field.onChange}
+                    className="w-4 h-4"
+                  />
+                </FormControl>
+                <FormLabel
+                  htmlFor="termsAccepted"
+                  className="text-sm font-normal"
+                >
+                  {t(
+                    "routes.auth.components.AuthTabs.components.register.dataSet.termsAccepted.label"
+                  )}
+                </FormLabel>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -317,8 +402,10 @@ const RegisterForm: React.FC = () => {
           disabled={registerMutation?.isPending}
         >
           {registerMutation?.isPending
-            ? tg("loadingStates.loadingApi")
-            : t("actions.proceed")}
+            ? t("general.loadingStates.loadingApi")
+            : t(
+                "routes.auth.components.AuthTabs.components.register.actions.proceed"
+              )}
         </Button>
       </form>
     </Form>

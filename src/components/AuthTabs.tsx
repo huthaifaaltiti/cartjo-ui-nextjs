@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { useTranslations } from "next-intl";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import Login from "./Login";
 import Register from "./Register";
 

@@ -1,8 +1,7 @@
-// components/ui/CustomToast.tsx
 import { toast } from "sonner";
 import React from "react";
 import { cn } from "@/lib/utils";
-import { CheckCircle, AlertTriangle, XCircle } from "lucide-react"; // Icons for variants
+import { CheckCircle, AlertTriangle, XCircle } from "lucide-react";
 
 interface CustomToastProps {
   title?: string;
@@ -17,7 +16,7 @@ interface CustomToastProps {
 const baseClass =
   "w-[95vw] md:w-[30rem] text-white rounded-2xl shadow-lg p-4 flex justify-between items-start gap-4 animate-in fade-in slide-in-from-top duration-300";
 
-// ✅ General-purpose function (already exists)
+// General-purpose function (already exists)
 export const showCustomToast = ({
   title,
   description,
@@ -49,32 +48,32 @@ export const showCustomToast = ({
   );
 };
 
-// ✅ Success Toast
+// Success Toast
 export const showSuccessToast = (
   props: Omit<CustomToastProps, "icon" | "className">
 ) =>
   showCustomToast({
     ...props,
-    icon: <CheckCircle className="text-green-300" />,
-    className: "bg-green-600",
+    icon: <CheckCircle className="text-green-500" />,
+    className: "bg-white-50 border-[3px] border-green-500",
   });
 
-// ✅ Warning Toast
+// Warning Toast
 export const showWarningToast = (
   props: Omit<CustomToastProps, "icon" | "className">
 ) =>
   showCustomToast({
     ...props,
-    icon: <AlertTriangle className="text-yellow-300" />,
-    className: "bg-yellow-600",
+    icon: <AlertTriangle className="text-yellow-600" />,
+    className: "bg-white-50 border-[3px] border-yellow-600",
   });
 
-// ✅ Error Toast
+// Error Toast
 export const showErrorToast = (
   props: Omit<CustomToastProps, "icon" | "className">
 ) =>
   showCustomToast({
     ...props,
-    icon: <XCircle className="text-red-300" />,
-    className: "bg-red-600",
+    icon: <XCircle className="text-red-600" />,
+    className: "bg-white-50 border-[3px] border-red-600",
   });
