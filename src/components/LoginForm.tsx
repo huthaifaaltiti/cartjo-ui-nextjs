@@ -24,11 +24,13 @@ import {
 } from "./shared/CustomToast";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = locale === "ar";
+  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -114,13 +116,19 @@ const LoginForm = () => {
       return response.json();
     },
     onSuccess: (data) => {
-      const { message } = data;
+      const { message, token } = data;
 
       showSuccessToast({
         title: t("general.toast.title.success"),
         description: message,
         dismissText: t("general.toast.dismissText"),
       });
+
+      if (token) {
+        document.cookie = `token=${token}; path=/`;
+
+        router.push("/");
+      }
     },
     onError: (error: Error) => {
       if (!error) return;
