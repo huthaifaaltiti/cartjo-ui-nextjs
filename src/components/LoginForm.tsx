@@ -125,7 +125,8 @@ const LoginForm = () => {
       });
 
       if (token) {
-        document.cookie = `token=${token}; path=/`;
+        document.cookie = `auth_token=${token}; path=/`;
+        // document.cookie = `auth_token=${token}; path=/ Secure; HttpOnly; SameSite=Strict`;
 
         router.push("/");
       }
