@@ -1,4 +1,23 @@
 {
+  "general": {
+    "loadingStates": {
+      "loadingApi": "جاري إرسال البيانات..."
+    },
+    "toast": {
+      "title": {
+        "success": "نجاح",
+        "error": "خطأ",
+        "warning": "تحذير"
+      }
+    }
+  },
+  "errors": {
+    "api": {
+      "timeout": "انتهت مهلة الطلب. الرجاء المحاولة مرة أخرى.",
+      "badRequest": "طلب غير صالح",
+      "SomethingWentWrong": "حدث خطأ ما!!!!!"
+    }
+  },
   "components": {
     "TopBar": {
       "deliver": "نقوم بالتوصيل إليك يومياً من",
@@ -22,8 +41,8 @@
               "hint": "إذا كان لديك حساب، قم بتسجيل الدخول باستخدام اسم المستخدم أو البريد الإلكتروني.",
               "dataSet": {
                 "username": {
-                  "label": "المُعرّف",
-                  "placeholder": "المُعرّف",
+                  "label": "المعرف",
+                  "placeholder": "المعرف",
                   "desc": "اسم المستخدم أو رقم الهاتف أو البريد الإلكتروني"
                 },
                 "password": {
@@ -40,66 +59,92 @@
               },
               "actions": {
                 "proceed": "تسجيل الدخول"
+              },
+              "validations": {
+                "identifier": {
+                  "min": "يجب أن يحتوي المعرف على 3 أحرف على الأقل",
+                  "max": "يجب ألا يتجاوز المعرف 50 حرفًا",
+                  "pattern": "يجب أن يكون اسم مستخدم صالح أو رقم هاتف أردني أو بريد إلكتروني"
+                },
+                "password": {
+                  "min": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+                }
+              },
+              "api": {
+                "loginFailed": "فشل تسجيل الدخول"
               }
             },
             "register": {
-              "hint": "There are many advantages to creating an account: the payment process is faster, shipment tracking is possible and much more.",
-              "note": "Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our",
-              "privacyPolicy": "privacy policy.",
+              "hint": "هناك العديد من المزايا لإنشاء حساب: عملية الدفع أسرع، تتبع الشحن ممكن والمزيد.",
+              "note": "سيتم استخدام بياناتك الشخصية لدعم تجربتك في هذا الموقع، لإدارة الوصول إلى حسابك، ولأغراض أخرى موضحة في",
+              "privacyPolicy": "سياسة الخصوصية.",
               "dataSet": {
                 "firstName": {
-                  "label": "First name",
-                  "placeholder": "First name",
-                  "desc": "First name"
+                  "label": "الاسم الأول",
+                  "placeholder": "الاسم الأول",
+                  "desc": "الاسم الأول"
                 },
                 "lastName": {
-                  "label": "Last name",
-                  "placeholder": "Last name",
-                  "desc": "Last name"
+                  "label": "اسم العائلة",
+                  "placeholder": "اسم العائلة",
+                  "desc": "اسم العائلة"
                 },
                 "phoneNumber": {
-                  "label": "Phone number",
-                  "placeholder": "Phone number",
-                  "desc": "Phone number"
+                  "label": "رقم الهاتف",
+                  "placeholder": "رقم الهاتف",
+                  "desc": "رقم الهاتف"
                 },
                 "email": {
-                  "label": "Email",
-                  "placeholder": "Email",
-                  "desc": "Email"
+                  "label": "البريد الإلكتروني",
+                  "placeholder": "البريد الإلكتروني",
+                  "desc": "البريد الإلكتروني"
                 },
-                "Password": {
-                  "label": "Password",
-                  "placeholder": "Password",
-                  "desc": "Password"
+                "password": {
+                  "label": "كلمة المرور",
+                  "placeholder": "كلمة المرور",
+                  "desc": "كلمة المرور"
                 },
                 "termsAccepted": {
-                  "label": "Terms accepted",
-                  "placeholder": "Terms accepted",
-                  "desc": "Terms accepted"
+                  "label": "الموافقة على الشروط",
+                  "placeholder": "الموافقة على الشروط",
+                  "desc": "الموافقة على الشروط"
                 },
                 "marketingEmails": {
-                  "label": "Marketing emails",
-                  "placeholder": "Marketing emails",
-                  "desc": "Marketing emails"
+                  "label": "رسائل تسويقية",
+                  "placeholder": "رسائل تسويقية",
+                  "desc": "رسائل تسويقية"
                 }
               },
               "actions": {
-                "proceed": "Register"
+                "proceed": "إنشاء حساب"
+              },
+              "validations": {
+                "firstName": {
+                  "min": "يجب أن يحتوي الاسم الأول على حرفين على الأقل"
+                },
+                "lastName": {
+                  "min": "يجب أن يحتوي اسم العائلة على حرفين على الأقل"
+                },
+                "phoneNumber": {
+                  "pattern": "يجب أن يبدأ رقم الهاتف بـ 77 أو 78 أو 79 وأن يتكون من 9 أرقام"
+                },
+                "email": {
+                  "invalid": "يرجى إدخال بريد إلكتروني صالح"
+                },
+                "password": {
+                  "min": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+                },
+                "termsAccepted": {
+                  "required": "يجب الموافقة على الشروط والأحكام"
+                }
+              },
+              "api": {
+                "registrationFailed": "فشل في إنشاء الحساب"
               }
             }
           }
         }
       }
-    }
-  },
-  "validations": {
-    "identifier": {
-      "min": "يجب أن يحتوي المُعرّف على 3 أحرف على الأقل",
-      "max": "يجب ألا يزيد المُعرّف عن 50 حرفًا",
-      "pattern": "يجب أن يكون اسم مستخدم، أو رقم هاتف أردني، أو بريد إلكتروني صالح"
-    },
-    "password": {
-      "min": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل"
     }
   }
 }

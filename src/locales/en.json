@@ -2,6 +2,20 @@
   "general": {
     "loadingStates": {
       "loadingApi": "Sending data..."
+    },
+    "toast": {
+      "title": {
+        "success": "Success",
+        "error": "Error",
+        "warning": "Warning"
+      }
+    }
+  },
+  "errors": {
+    "api": {
+      "timeout": "Request timed out. Please try again.",
+      "badRequest": "Bad Request",
+      "somethingWentWrong": "Something went wrong!"
     }
   },
   "components": {
@@ -55,6 +69,9 @@
                 "password": {
                   "min": "Password must be at least 6 characters"
                 }
+              },
+              "api": {
+                "loginFailed": "Login failed"
               }
             },
             "register": {
@@ -120,6 +137,9 @@
                 "termsAccepted": {
                   "required": "You must accept the terms and conditions"
                 }
+              },
+              "api": {
+                "registrationFailed": "Registration failed"
               }
             }
           }
