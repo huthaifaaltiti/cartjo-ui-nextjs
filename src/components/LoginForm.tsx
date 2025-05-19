@@ -25,6 +25,7 @@ import {
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
   const t = useTranslations();
@@ -115,7 +116,7 @@ const LoginForm = () => {
 
       return response.json();
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       const { message, token } = data;
 
       showSuccessToast({
@@ -125,10 +126,26 @@ const LoginForm = () => {
       });
 
       if (token) {
-        document.cookie = `auth_token=${token}; path=/`;
-        // document.cookie = `auth_token=${token}; path=/ Secure; HttpOnly; SameSite=Strict`;
+        // document.cookie = `auth_token=${token}; path=/`;
+        // // document.cookie = `auth_token=${token}; path=/ Secure; HttpOnly; SameSite=Strict`;
 
-        router.push("/");
+        // router.push("/");
+
+        // Sign in with NextAuth using the custom credentials provider
+        const result = await signIn("credentials", {
+          token,
+          redirect: false,
+        });
+
+        if (result?.ok) {
+          router.push("/");
+        } else {
+          showErrorToast({
+            title: t("general.toast.title.error"),
+            description: "Failed to sign in with token",
+            dismissText: t("general.toast.dismissText"),
+          });
+        }
       }
     },
     onError: (error: Error) => {

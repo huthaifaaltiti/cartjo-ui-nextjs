@@ -12,6 +12,7 @@ import { LocaleProvider } from "@/contexts/LocaleContext";
 
 import TopBar from "@/components/TopBar";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
+import SessionWrapper from "@/components/SessionWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,13 +52,15 @@ export default async function LocaleLayout({
         <ReactQueryProvider>
           <NextIntlClientProvider>
             <LocaleProvider locale={locale}>
-              <Toaster
-                position={isArabic ? "top-right" : "top-left"}
-                expand={true}
-                closeButton={false}
-              />
-              <TopBar />
-              {children}
+              <SessionWrapper>
+                <Toaster
+                  position={isArabic ? "top-right" : "top-left"}
+                  expand={true}
+                  closeButton={false}
+                />
+                <TopBar />
+                {children}
+              </SessionWrapper>
             </LocaleProvider>
           </NextIntlClientProvider>
         </ReactQueryProvider>
