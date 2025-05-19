@@ -59,6 +59,7 @@ export default async function LocaleLayout({
                   closeButton={false}
                 />
                 <TopBar />
+
                 {children}
               </SessionWrapper>
             </LocaleProvider>

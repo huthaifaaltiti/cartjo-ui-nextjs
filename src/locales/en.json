@@ -146,6 +146,19 @@
           }
         }
       }
+    },
+    "home": {
+      "components": {
+        "UserMenu": {
+          "signIn": "Sign In"
+        },
+        "UserAccountLink": {
+          "account": "Account"
+        },
+        "UserDashboardLink": {
+          "dashboard": "Dashboard"
+        }
+      }
     }
   }
 }

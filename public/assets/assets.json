@@ -1,0 +1,9 @@
+{
+  "image": {
+    "svg": {
+      "user_dark": "../assets/image/svg/user_dark.svg",
+      "enter_dark": "../assets/image/svg/enter_dark.svg",
+      "dashboard_dark": "../assets/image/svg/dashboard_dark.svg"
+    }
+  }
+}
