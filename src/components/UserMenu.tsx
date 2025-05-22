@@ -25,8 +25,6 @@ const UserMenu = () => {
 
   const canManage = session?.user?.canManage ?? false;
 
-  console.log("Session:", session);
-
   if (status === "loading") return <UserSignInLink />;
 
   if (!session) return <UserSignInLink />;

@@ -1,9 +1,5 @@
-import Dashboard from "@/components/admin/Dashboard";
+import AuthUserDashboard from "@/components/admin/AuthUserDashboard";
 
 export default function Home() {
-  return (
-    <div className="">
-      <Dashboard />
-    </div>
-  );
+  return <AuthUserDashboard />;
 }
