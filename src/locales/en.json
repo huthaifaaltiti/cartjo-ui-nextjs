@@ -152,8 +152,10 @@
         "UserMenu": {
           "signIn": "Sign In"
         },
-        "UserAccountLink": {
-          "account": "Account"
+        "UserAccountLinkMenu": {
+          "account": "Account",
+          "myAccount": "My Account",
+          "logout": "Logout"
         },
         "UserDashboardLink": {
           "dashboard": "Dashboard"
