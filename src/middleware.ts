@@ -1,34 +1,71 @@
-// Combined next-intl and NextAuth
+// middleware.ts - Advanced version with auth protection
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { withAuth } from "next-auth/middleware";
+import { protectedRoutes, publicRoutes } from "./lib/auth-routes";
 
-// next-intl middleware
+// Create the next-intl middleware
 const intlMiddleware = createMiddleware(routing);
 
-export default function middleware(request: NextRequest) {
-  // Skip middleware for NextAuth routes, API routes, and static files
-  if (
-    request.nextUrl.pathname.startsWith("/api/") ||
-    request.nextUrl.pathname.startsWith("/auth") ||
-    request.nextUrl.pathname.startsWith("/_next/") ||
-    request.nextUrl.pathname.startsWith("/_vercel/") ||
-    request.nextUrl.pathname.startsWith("/trpc/") ||
-    request.nextUrl.pathname === "/favicon.ico" ||
-    request.nextUrl.pathname.match(/\..+$/) // Files with extensions
-  ) {
-    return NextResponse.next();
-  }
+const isPublicRoute = (pathname: string): boolean => {
+  const pathnameWithoutLocale = pathname.replace(/^\/[a-z]{2}/, "") || "/";
 
-  // Apply next-intl middleware for internationalization
-  return intlMiddleware(request);
-}
+  return publicRoutes.some(
+    (route) =>
+      pathnameWithoutLocale === route ||
+      pathnameWithoutLocale.startsWith(route + "/")
+  );
+};
+
+const isProtectedRoute = (pathname: string): boolean => {
+  const pathnameWithoutLocale = pathname.replace(/^\/[a-z]{2}/, "") || "/";
+
+  return protectedRoutes.some(
+    (route) =>
+      pathnameWithoutLocale === route ||
+      pathnameWithoutLocale.startsWith(route + "/")
+  );
+};
+
+export default withAuth(
+  function middleware(request: NextRequest) {
+    // Skip middleware for API routes and static files
+    if (
+      request.nextUrl.pathname.startsWith("/api/") ||
+      request.nextUrl.pathname.startsWith("/_next/") ||
+      request.nextUrl.pathname.startsWith("/_vercel/") ||
+      request.nextUrl.pathname.startsWith("/trpc/") ||
+      request.nextUrl.pathname === "/favicon.ico" ||
+      request.nextUrl.pathname.match(/\..+$/)
+    ) {
+      return NextResponse.next();
+    }
+
+    // Apply next-intl middleware for internationalization
+    return intlMiddleware(request);
+  },
+  {
+    callbacks: {
+      authorized: ({ token, req }) => {
+        // Always allow access to public routes
+        if (isPublicRoute(req.nextUrl.pathname)) {
+          return true;
+        }
+
+        // For protected routes, check if user is authenticated
+        if (isProtectedRoute(req.nextUrl.pathname)) {
+          return !!token;
+        }
+
+        // Allow access to all other routes
+        return true;
+      },
+    },
+  }
+);
 
 export const config = {
-  // Match all pathnames except for
-  // - API routes and NextAuth
-  // - Static files
-  // - Files with extensions (e.g. favicon.ico)
   matcher: "/((?!api|trpc|_next|_vercel|.*\\..*).*)",
 };
