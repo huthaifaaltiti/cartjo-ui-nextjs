@@ -177,6 +177,13 @@
           "loggedAsUser": "You are logged in as a regular user.",
           "signOut": "Sign Out",
           "navigateToHome": "Navigate to home page"
+        },
+        "DashboardControlNavLinks": {
+          "navLinks": "Navigation Links",
+          "navItems": {
+            "locations": "Locations",
+            "users": "Users"
+          }
         }
       }
     }
