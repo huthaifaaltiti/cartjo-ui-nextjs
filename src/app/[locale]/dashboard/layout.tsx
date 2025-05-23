@@ -8,12 +8,12 @@ export default async function DashboardLayout({
 }) {
   return (
     <div className="w-full min-h-screen bg-[#f5f4fe]">
-      <MaxWidthWrapper className="py-5">
+      <MaxWidthWrapper>
         <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
           <div className="w-full flex-none md:w-64">
             <DashboardSideNav />
           </div>
-          <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
+          <div className="flex-grow md:overflow-y-auto md:p-3">
             {children}
           </div>
         </div>
