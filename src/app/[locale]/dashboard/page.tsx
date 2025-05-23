@@ -1,5 +1,5 @@
 import AuthUserDashboard from "@/components/admin/AuthUserDashboard";
 
-export default function Home() {
+export default function Dashboard() {
   return <AuthUserDashboard />;
 }
