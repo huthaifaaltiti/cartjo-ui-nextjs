@@ -10,7 +10,6 @@ import "../globals.css";
 
 import { LocaleProvider } from "@/contexts/LocaleContext";
 
-import TopBar from "@/components/TopBar";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
 
@@ -58,8 +57,6 @@ export default async function LocaleLayout({
                   expand={true}
                   closeButton={false}
                 />
-                <TopBar />
-
                 {children}
               </SessionWrapper>
             </LocaleProvider>
