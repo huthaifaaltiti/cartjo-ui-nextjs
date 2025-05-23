@@ -1,24 +1,16 @@
 "use client";
 
 import { memo } from "react";
-import { Session } from "next-auth";
+
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+
+import { ExtendedSession } from "@/types/session";
 
 import NoLoggedUserState from "../shared/NoLoggedUserState";
 import ManageDashboard from "./ManageDashboard";
 import RegularUserLoggedState from "../shared/RegularUserLoggedState";
 import Spinner from "../shared/Spinner";
-
-type ExtendedSession = Session & {
-  user: {
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    role?: string;
-    canManage?: boolean;
-  };
-};
 
 const AuthUserDashboard = () => {
   const t = useTranslations();

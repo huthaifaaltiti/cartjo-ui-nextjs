@@ -9,6 +9,8 @@ interface CustomUser {
   role: string;
   canManage: boolean;
   accessToken: string;
+  firstName: string;
+  lastName: string;
 }
 
 interface CustomSession extends Session {
@@ -18,6 +20,8 @@ interface CustomSession extends Session {
     email: string;
     phoneNumber: string;
     role: string;
+    firstName: string;
+    lastName: string;
     canManage: boolean;
   };
 }
@@ -28,6 +32,8 @@ interface CustomJWT extends JWT {
   email: string;
   phoneNumber: string;
   role: string;
+  firstName: string;
+  lastName: string;
   canManage: boolean;
 }
 
@@ -64,6 +70,8 @@ export const authOptions: NextAuthOptions = {
             phoneNumber: tokenPayload.phoneNumber,
             role: tokenPayload.role,
             canManage: tokenPayload.canManage,
+            firstName: tokenPayload.firstName,
+            lastName: tokenPayload.lastName,
             accessToken: credentials.token,
           } as CustomUser;
         } catch (error) {
@@ -92,6 +100,8 @@ export const authOptions: NextAuthOptions = {
           customToken.email = customUser.email;
           customToken.phoneNumber = customUser.phoneNumber;
           customToken.role = customUser.role;
+          customToken.firstName = customUser.firstName;
+          customToken.lastName = customUser.lastName;
           customToken.canManage = customUser.canManage;
         }
         return customToken;
@@ -110,6 +120,8 @@ export const authOptions: NextAuthOptions = {
         email: customToken.email,
         phoneNumber: customToken.phoneNumber,
         role: customToken.role,
+        firstName: customToken.firstName,
+        lastName: customToken.lastName,
         canManage: customToken.canManage,
       };
       return customSession;
