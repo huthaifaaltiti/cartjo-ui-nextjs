@@ -13,7 +13,7 @@ interface CustomUser {
   lastName: string;
 }
 
-interface CustomSession extends Session {
+export interface CustomSession extends Session {
   accessToken: string;
   user: {
     id: string;
