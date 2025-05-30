@@ -2,7 +2,7 @@ import { memo } from "react";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 
-import Logo from "../shared/Logo";
+import Logo from "../../shared/Logo";
 import DashboardLoggedUserDetails from "./DashboardLoggedUserDetails";
 import DashboardControlNavLinks from "./DashboardControlNavLinks";
 

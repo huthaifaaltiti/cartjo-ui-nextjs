@@ -165,6 +165,9 @@
       }
     },
     "dashboard": {
+      "title": "Locations Management",
+      "desc": "Manage and upload location data with pricing information",
+      "currentLocations": "Current Locations",
       "components": {
         "NoLoggedUserState": {
           "notLoggedIn": "You are not logged in!",
@@ -184,6 +187,10 @@
             "locations": "Locations",
             "users": "Users"
           }
+        },
+        "DashboardLocationCard": {
+          "hide": "Hide",
+          "show": "Show"
         }
       }
     }

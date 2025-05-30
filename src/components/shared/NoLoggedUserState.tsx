@@ -8,11 +8,11 @@ const NoLoggedUserState = () => {
   const t = useTranslations();
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
+    <div className="w-full h-full flex flex-col items-center justify-center">
       <Image
-        src="/assets/image/webp/computer-security-with-login-password-padlock.webp"
+        src="/assets/image/webp/purpleshiny-metallic-padlock-with-a-keyhole.webp"
         alt="Computer Security Illustration"
-        width={600}
+        width={400}
         height={300}
         priority
       />
@@ -21,7 +21,7 @@ const NoLoggedUserState = () => {
         {t("routes.dashboard.components.NoLoggedUserState.notLoggedIn")}
       </h1>
 
-      <p className="text-text-primary-100">
+      <p className="text-primary-300 font-medium">
         {t("routes.dashboard.components.NoLoggedUserState.goTo")}{" "}
         <Link
           href={`/${locale}/auth`}

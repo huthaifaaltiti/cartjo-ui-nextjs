@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 
 import { ExtendedSession } from "@/types/session";
 
-import Spinner from "../shared/Spinner";
+import Spinner from "../../shared/Spinner";
 
 const DashboardLoggedUserDetails = () => {
   const { data: sessionData, status } = useSession();

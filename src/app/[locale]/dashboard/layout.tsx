@@ -1,23 +1,33 @@
-import DashboardSideNav from "@/components/admin/DashboardSideNav";
-import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
+import { getServerSession } from "next-auth/next";
+
+import DashboardSideNav from "@/components/admin/layout/DashboardSideNav";
+import { authOptions } from "@/lib/authOptions";
+import { ExtendedSession } from "@/types/session";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = (await getServerSession(authOptions)) as ExtendedSession;
+  const canManage = session?.user?.canManage ?? false;
+
   return (
     <div className="w-full min-h-screen bg-[#f5f4fe]">
-      <MaxWidthWrapper>
-        <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+      <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+        {canManage && (
           <div className="w-full flex-none md:w-64">
             <DashboardSideNav />
           </div>
-          <div className="flex-grow md:overflow-y-auto md:p-3">
-            {children}
-          </div>
+        )}
+        <div
+          className={`flex-grow md:overflow-y-auto md:p-3 ${
+            !canManage ? "w-full" : ""
+          }`}
+        >
+          {children}
         </div>
-      </MaxWidthWrapper>
+      </div>
     </div>
   );
 }

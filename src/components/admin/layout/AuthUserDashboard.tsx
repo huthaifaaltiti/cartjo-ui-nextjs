@@ -7,10 +7,10 @@ import { useTranslations } from "next-intl";
 
 import { ExtendedSession } from "@/types/session";
 
-import NoLoggedUserState from "../shared/NoLoggedUserState";
-import ManageDashboard from "./ManageDashboard";
-import RegularUserLoggedState from "../shared/RegularUserLoggedState";
-import Spinner from "../shared/Spinner";
+import NoLoggedUserState from "../../shared/NoLoggedUserState";
+import ManageDashboard from "../ManageDashboard";
+import RegularUserLoggedState from "../../shared/RegularUserLoggedState";
+import Spinner from "../../shared/Spinner";
 
 const AuthUserDashboard = () => {
   const t = useTranslations();
