@@ -6,9 +6,11 @@ const LocationsPageHeader = () => {
   return (
     <div className="mb-3 pb-3 border-b">
       <h1 className="text-xl font-bold text-gray-900">
-        {t("routes.dashboard.title")}
+        {t("routes.dashboard.routes.locations.title")}
       </h1>
-      <p className="text-gray-600 text-sm">{t("routes.dashboard.desc")}</p>
+      <p className="text-gray-600 text-sm">
+        {t("routes.dashboard.routes.locations.desc")}
+      </p>
     </div>
   );
 };

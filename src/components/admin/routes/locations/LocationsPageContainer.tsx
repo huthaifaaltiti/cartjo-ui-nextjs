@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { Location } from "@/hooks/react-query/useLocations";
+import { Location } from "@/types/location";
 
 import DashboardLocationCards from "./DashboardLocationCards";
 import DashboardLocationStatCards from "./DashboardLocationStatCards";

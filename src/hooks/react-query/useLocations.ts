@@ -1,14 +1,8 @@
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useQuery } from "@tanstack/react-query";
 
-export interface Location {
-  name: {
-    ar: string;
-    en: string;
-  };
-  price: string;
-  subLocations: Location[];
-}
+import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { Location } from "@/types/location";
 
 export interface LocationsResponse {
   isSuccess: boolean;
@@ -34,9 +28,9 @@ export const useLocations = () =>
     /* 
       Controls how long the data is considered "fresh", During this period, React Query won't re-fetch the data if the component is remounted or re-rendered
     */
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: STALE_TIME,
     /*
     gcTime (garbage collection time, formerly cacheTime) determines how long unused/inactive data stays in memory before being removed. After 10 minutes of inactivity (no subscribers), the cached data is deleted.
     */
-    gcTime: 1000 * 60 * 10, // 10 minutes
+    gcTime: GC_TIME, // 10 minutes
   });

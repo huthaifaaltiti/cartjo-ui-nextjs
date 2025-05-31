@@ -165,9 +165,25 @@
       }
     },
     "dashboard": {
-      "title": "Locations Management",
-      "desc": "Manage and upload location data with pricing information",
-      "currentLocations": "Current Locations",
+      "routes": {
+        "locations": {
+          "title": "Locations Management",
+          "desc": "Manage and upload location data with pricing information",
+          "currentLocations": "Current Locations"
+        },
+        "users": {
+          "title": "Users Management",
+          "desc": "Manage users data",
+          "components": {
+            "DashboardUsersStatCards": {
+              "totalUsers": "Total users",
+              "activeUsers": "Active users",
+              "deletedUsers": "Deleted users",
+              "adminUsers": "Admin users"
+            }
+          }
+        }
+      },
       "components": {
         "NoLoggedUserState": {
           "notLoggedIn": "You are not logged in!",
