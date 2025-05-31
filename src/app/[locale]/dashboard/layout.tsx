@@ -1,8 +1,9 @@
 import { getServerSession } from "next-auth/next";
 
-import DashboardSideNav from "@/components/admin/layout/DashboardSideNav";
-import { authOptions } from "@/lib/authOptions";
 import { ExtendedSession } from "@/types/session";
+import { authOptions } from "@/lib/authOptions";
+
+import DashboardSideNav from "@/components/admin/layout/DashboardSideNav";
 
 export default async function DashboardLayout({
   children,
