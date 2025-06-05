@@ -1,5 +1,10 @@
 import { memo } from "react";
-import DashboardLocationStatCard from "./DashboardLocationStatCard";
+import { useTranslations } from "next-intl";
+import { MapPin } from "lucide-react";
+
+import StatCard from "@/components/shared/StatCard";
+
+import { StatCardType } from "@/types/statCard";
 
 type LocationData = {
   name: { ar: string; en: string };
@@ -12,6 +17,8 @@ type LocationCardsProps = {
 };
 
 const DashboardLocationStatCards = ({ locations }: LocationCardsProps) => {
+  const t = useTranslations();
+
   const countAllLocations = (locations: LocationData[]): number => {
     let count = 0;
 
@@ -30,27 +37,48 @@ const DashboardLocationStatCards = ({ locations }: LocationCardsProps) => {
     return count;
   };
 
-  const totalLocations = Array.isArray(locations)
+  const totalLocations: number = Array.isArray(locations)
     ? countAllLocations(locations)
     : 0;
 
+  const locationsList: StatCardType[] = [
+    {
+      label: t(
+        "routes.dashboard.routes.locations.components.DashboardLocationsStatCards.totalLocations"
+      ),
+      value: totalLocations,
+      color: "purple",
+      icon: MapPin,
+    },
+    {
+      label: t(
+        "routes.dashboard.routes.locations.components.DashboardLocationsStatCards.mainLocations"
+      ),
+      value: locations?.length,
+      color: "green",
+      icon: MapPin,
+    },
+    {
+      label: t(
+        "routes.dashboard.routes.locations.components.DashboardLocationsStatCards.mainLocations"
+      ),
+      value: totalLocations - locations?.length,
+      color: "teal",
+      icon: MapPin,
+    },
+  ];
+
   return (
     <div className="pt-8 grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 border-t">
-      <DashboardLocationStatCard
-        label="Total Locations"
-        value={totalLocations}
-        color="blue"
-      />
-      <DashboardLocationStatCard
-        label="Main Locations"
-        value={locations?.length}
-        color="green"
-      />
-      <DashboardLocationStatCard
-        label="Sub Locations"
-        value={totalLocations - locations?.length}
-        color="purple"
-      />
+      {locationsList.map((loc, i) => (
+        <StatCard
+          label={loc.label}
+          value={loc.value}
+          color={loc.color}
+          icon={loc.icon}
+          key={`locationStatCard-${i}`}
+        />
+      ))}
     </div>
   );
 };

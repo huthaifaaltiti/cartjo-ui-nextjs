@@ -25,7 +25,7 @@ const DashboardLocationCards = ({ locations }: LocationCardsProps) => {
         <MapPin className="h-5 w-5 text-blue-600" />
 
         <h2 className="text-lg font-bold text-gray-800">
-          {t("routes.dashboard.currentLocations")}
+          {t("routes.dashboard.routes.locations.currentLocations")}
         </h2>
       </div>
 

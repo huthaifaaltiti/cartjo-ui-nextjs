@@ -169,7 +169,15 @@
         "locations": {
           "title": "Locations Management",
           "desc": "Manage and upload location data with pricing information",
-          "currentLocations": "Current Locations"
+          "currentLocations": "Current Locations",
+          "components": {
+            "DashboardLocationsStatCards": {
+              "totalLocations": "Total Locations",
+              "mainLocations": "Main Locations",
+              "subLocations": "Sub Locations",
+              "adminUsers": "Admin users"
+            }
+          }
         },
         "users": {
           "title": "Users Management",
