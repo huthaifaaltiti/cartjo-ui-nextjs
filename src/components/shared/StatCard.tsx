@@ -3,13 +3,26 @@ import { memo } from "react";
 const StatCard: React.FC<{
   label: string;
   value: number;
-  color: "blue" | "green" | "purple";
+  color:
+    | "red"
+    | "orange"
+    | "yellow"
+    | "green"
+    | "teal"
+    | "blue"
+    | "purple"
+    | "gray";
   icon: React.ElementType;
 }> = ({ label, value, color, icon: Icon }) => {
-  const colors: Record<"blue" | "green" | "purple", string> = {
-    blue: "bg-blue-100 text-blue-600",
+  const colors: Record<typeof color, string> = {
+    red: "bg-red-50 text-red-600",
+    orange: "bg-orange-100 text-orange-600",
+    yellow: "bg-yellow-100 text-yellow-600",
     green: "bg-green-100 text-green-600",
+    teal: "bg-teal-100 text-teal-600",
+    blue: "bg-blue-100 text-blue-600",
     purple: "bg-purple-100 text-purple-600",
+    gray: "bg-gray-100 text-gray-600",
   };
 
   return (
