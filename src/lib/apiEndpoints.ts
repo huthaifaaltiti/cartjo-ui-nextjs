@@ -13,6 +13,7 @@ export const API_ENDPOINTS = {
     USERS: {
       GET_USERS: `${BASE_URL}/api/v1/user/all`,
       GET_USERS_STATS: `${BASE_URL}/api/v1/user/stats`,
+      GET_TOTAL_USERS: `${BASE_URL}/api/v1/user/all`,
     },
   },
 };
