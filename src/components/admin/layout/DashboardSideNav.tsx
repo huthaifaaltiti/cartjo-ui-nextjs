@@ -13,19 +13,16 @@ const DashboardSideNav = () => {
   return (
     <aside className="h-full w-full p-4">
       <ul className="h-full flex flex-col gap-8">
-        {/* Logo */}
         <li className="p-2 bg-primary-950 rounded">
           <Link href={`/${locale}/dashboard`}>
             <Logo />
           </Link>
         </li>
 
-        {/* User Details */}
         <li>
           <DashboardLoggedUserDetails />
         </li>
 
-        {/* Navigation Links */}
         <li>
           <DashboardControlNavLinks />
         </li>
