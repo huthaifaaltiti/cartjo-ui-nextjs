@@ -4,8 +4,8 @@ import { useTranslations } from "next-intl";
 
 import StatCard from "@/components/shared/StatCard";
 
-import { UsersStats } from "@/types/UsersStats";
 import { StatCardType } from "@/types/statCard";
+import { UsersStats } from "@/types/UsersStats";
 
 type UsersPageContainerProps = {
   stats: UsersStats;
@@ -53,16 +53,18 @@ const DashboardUsersStatCards = ({ stats }: UsersPageContainerProps) => {
   ];
 
   return (
-    <div className="flex items-center gap-3 flex-wrap">
-      {userStatCards.map((userStatCard, i) => (
-        <StatCard
-          label={userStatCard.label}
-          value={userStatCard?.value}
-          color={userStatCard?.color}
-          icon={userStatCard?.icon}
-          key={`userStatCard-${i}`}
-        />
-      ))}
+    <div className="w-full h-auto">
+      <div className="w-full flex items-center flex-wrap gap-3">
+        {userStatCards.map((userStatCard, i) => (
+          <StatCard
+            label={userStatCard.label}
+            value={userStatCard?.value}
+            color={userStatCard?.color}
+            icon={userStatCard?.icon}
+            key={`userStatCard-${i}`}
+          />
+        ))}
+      </div>
     </div>
   );
 };
