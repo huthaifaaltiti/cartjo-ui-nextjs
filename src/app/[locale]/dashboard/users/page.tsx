@@ -1,10 +1,9 @@
 import { getServerSession } from "next-auth";
 
 import UsersPageContainer from "@/components/admin/routes/users/UsersPageContainer";
-
 import { authOptions, CustomSession } from "@/lib/authOptions";
-import { ExtendedSession } from "@/types/session";
 import { fetchUsersStats } from "@/hooks/react-query/useUsersStats";
+import { ExtendedSession } from "@/types/session";
 
 export default async function UsersPage() {
   const session = (await getServerSession(authOptions)) as ExtendedSession;
@@ -16,9 +15,5 @@ export default async function UsersPage() {
 
   const { stats } = await fetchUsersStats(accessToken);
 
-  return (
-    <div className="w-full h-full">
-      <UsersPageContainer stats={stats} />
-    </div>
-  );
+  return <UsersPageContainer stats={stats} />;
 }
