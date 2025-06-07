@@ -1,9 +1,9 @@
-import Spinner from "@/components/shared/Spinner";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
 
 export default function Loading() {
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <Spinner size="lg" />
+      <LoadingSpinner size="lg" />
     </div>
   );
 }

@@ -1,15 +1,17 @@
 import React, { memo } from "react";
 
-interface SpinnerProps {
+interface LoadingSpinnerProps {
   size?: "sm" | "md" | "lg" | "xl";
   className?: string;
   text?: string;
+  variant?: "simple" | "with-text";
 }
 
-const Spinner: React.FC<SpinnerProps> = ({
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = "md",
   className = "",
   text,
+  variant = "with-text",
 }) => {
   const sizeClasses = {
     sm: "w-4 h-4",
@@ -24,6 +26,16 @@ const Spinner: React.FC<SpinnerProps> = ({
     lg: "text-lg",
     xl: "text-xl",
   };
+
+  if (variant === "simple") {
+    return (
+      <div
+        className={`animate-spin rounded-full border-b-2 border-purple-500 ${sizeClasses[size]} ${className}`}
+        role="status"
+        aria-label="Loading"
+      />
+    );
+  }
 
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
@@ -43,4 +55,4 @@ const Spinner: React.FC<SpinnerProps> = ({
   );
 };
 
-export default memo(Spinner);
+export default memo(LoadingSpinner);

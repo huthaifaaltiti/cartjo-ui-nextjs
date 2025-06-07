@@ -10,7 +10,7 @@ import { ExtendedSession } from "@/types/session";
 import NoLoggedUserState from "../../shared/NoLoggedUserState";
 import ManageDashboard from "../ManageDashboard";
 import RegularUserLoggedState from "../../shared/RegularUserLoggedState";
-import Spinner from "../../shared/Spinner";
+import LoadingSpinner from "../../shared/LoadingSpinner";
 
 const AuthUserDashboard = () => {
   const t = useTranslations();
@@ -22,7 +22,7 @@ const AuthUserDashboard = () => {
   if (status === "loading") {
     return (
       <div className="w-full h-[80vh] flex items-center justify-center">
-        <Spinner
+        <LoadingSpinner
           size="lg"
           text={t("general.loadingStates.loadingUserSession")}
         />

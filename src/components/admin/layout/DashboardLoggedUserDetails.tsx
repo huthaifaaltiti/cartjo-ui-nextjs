@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 
 import { ExtendedSession } from "@/types/session";
 
-import Spinner from "../../shared/Spinner";
+import LoadingSpinner from "../../shared/LoadingSpinner";
 
 const DashboardLoggedUserDetails = () => {
   const { data: sessionData, status } = useSession();
@@ -15,7 +15,7 @@ const DashboardLoggedUserDetails = () => {
   if (status === "loading") {
     return (
       <div className="w-full min-h-14 p-3 bg-white-50 flex items-center justify-center rounded">
-        <Spinner size="sm" />
+        <LoadingSpinner size="sm" />
       </div>
     );
   }
