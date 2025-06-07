@@ -1,7 +1,9 @@
 import { memo } from "react";
 
-import { UsersStats } from "@/types/UsersStats";
 import DashboardUsersStatCards from "./DashboardUsersStatCards";
+import DashboardUsersStatCardsLinks from "./DashboardUsersStatCardsLinks";
+
+import { UsersStats } from "@/types/UsersStats";
 
 type UsersPageContainerProps = {
   stats: UsersStats;
@@ -9,8 +11,11 @@ type UsersPageContainerProps = {
 
 const UsersPageContainer = ({ stats }: UsersPageContainerProps) => {
   return (
-    <div className="w-full h-full p-3 ">
-      <DashboardUsersStatCards stats={stats} />
+    <div className="w-full h-full p-3">
+      <div className="w-full border-b">
+        <DashboardUsersStatCards stats={stats} />
+        <DashboardUsersStatCardsLinks />
+      </div>
     </div>
   );
 };
