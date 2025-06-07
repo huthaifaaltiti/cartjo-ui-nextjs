@@ -4,7 +4,7 @@ import { memo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { DollarSign, MapPinned } from "lucide-react";
 
-import { Local } from "@/types/locale";
+import { Locale } from "@/types/locale";
 
 type LocationData = {
   name: { ar: string; en: string };
@@ -39,7 +39,7 @@ const DashboardLocationCard = ({ location, level = 0 }: LocationCardProps) => {
           <MapPinned className="h-5 w-5 text-blue-600" />
 
           <h3 className="font-semibold text-md text-gray-800">
-            {location?.name[locale as Local]}
+            {location?.name[locale as Locale]}
           </h3>
         </div>
         <div className="flex items-center space-x-4">
