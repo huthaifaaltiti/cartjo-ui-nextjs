@@ -211,6 +211,9 @@
           },
           "routes": {
             "totalUsers": {
+              "components": {
+                "SearchBar": { "placeholder": "Search for users" }
+              },
               "errors": {
                 "dataLoadFailure": "Failed to load total users details"
               }
