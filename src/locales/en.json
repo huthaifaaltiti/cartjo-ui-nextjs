@@ -212,7 +212,15 @@
           "routes": {
             "totalUsers": {
               "components": {
-                "SearchBar": { "placeholder": "Search for users" }
+                "SearchBar": { "placeholder": "Search for users" },
+                "TotalUsersList": {
+                  "usersFound": "users found",
+                  "noUsersToLoad": "No more users to load",
+                  "noUsersFound": "No more users found",
+                  "errors": {
+                    "totalUsersFetchingFailure": "Error while fetching users"
+                  }
+                }
               },
               "errors": {
                 "dataLoadFailure": "Failed to load total users details"

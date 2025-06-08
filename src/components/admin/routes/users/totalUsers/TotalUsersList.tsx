@@ -1,11 +1,15 @@
 "use client";
 
 import { memo, useCallback, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
+
 import { useTotalUsersQuery } from "@/hooks/react-query/useTotalUsersQuery";
 import { useTotalUsers } from "@/contexts/TotalUsersContext";
 import { User } from "@/types/user";
+
 import UserCard from "./UserCard";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import ErrorMessage from "@/components/shared/ErrorMessage";
 
 type TotalUsersListProps = {
   initialUsers: User[];
@@ -13,6 +17,7 @@ type TotalUsersListProps = {
 
 const TotalUsersList = ({ initialUsers }: TotalUsersListProps) => {
   const { searchQuery } = useTotalUsers();
+  const t = useTranslations();
 
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -62,48 +67,57 @@ const TotalUsersList = ({ initialUsers }: TotalUsersListProps) => {
   if (!isLoading) {
     return (
       <div className="space-y-4">
-        {/* Users count */}
         <div className="flex justify-between items-center">
           <p className="text-sm text-gray-600">
-            {isLoading ? "Loading..." : `${allUsers.length} users found`}
+            {isLoading
+              ? t("general.loadingStates.loading")
+              : `${allUsers.length} ${t(
+                  "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.usersFound"
+                )}`}
           </p>
         </div>
 
-        {/* Users grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {allUsers.map((user, index) => (
             <UserCard key={`${user._id}-${index}`} user={user} />
           ))}
         </div>
 
-        {/* Loading states */}
         {(isLoading || isFetchingNextPage) && (
           <div className="flex justify-center py-8">
             <LoadingSpinner />
           </div>
         )}
 
-        {/* Intersection observer target */}
         <div ref={loadMoreRef} className="h-4" />
 
-        {/* End message */}
         {!hasNextPage && allUsers.length > 0 && (
           <div className="text-center py-8 text-gray-500">
-            No more users to load
+            {t(
+              "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.noUsersToLoad"
+            )}
           </div>
         )}
 
-        {/* Empty state */}
         {!isLoading && allUsers.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500">No users found</p>
+            <p className="text-gray-500">
+              {t(
+                "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.noUsersFound"
+              )}
+            </p>
           </div>
         )}
 
-        {/* Empty state */}
         {error && allUsers.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500">Error while fetching users</p>
+            <p className="text-gray-500">
+              <ErrorMessage
+                message={t(
+                  "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.errors.totalUsersFetchingFailure"
+                )}
+              />
+            </p>
           </div>
         )}
       </div>
