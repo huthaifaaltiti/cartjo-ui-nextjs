@@ -1,7 +1,7 @@
 "use client";
 
-import ErrorPage from "@/components/shared/ErrorPage";
 import { useTranslations } from "next-intl";
+import ErrorPage from "@/components/shared/ErrorPage";
 
 interface UsersErrorProps {
   error?: Error & { digest?: string };

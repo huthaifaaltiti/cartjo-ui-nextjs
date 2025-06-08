@@ -3,12 +3,12 @@
 import { useTranslations } from "next-intl";
 import ErrorPage from "@/components/shared/ErrorPage";
 
-interface UsersErrorProps {
+interface LocationsErrorProps {
   error?: Error & { digest?: string };
   reset?: () => void;
 }
 
-export default function UsersError({ error, reset }: UsersErrorProps) {
+export default function LocationsError({ error, reset }: LocationsErrorProps) {
   const t = useTranslations();
 
   return (
