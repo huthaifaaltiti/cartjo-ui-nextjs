@@ -19,6 +19,19 @@
       "timeout": "Request timed out. Please try again.",
       "badRequest": "Bad Request",
       "somethingWentWrong": "Something went wrong!"
+    },
+    "components": {
+      "errorPage": {
+        "applicationError": "Application Error",
+        "unexpectedErrorOccurred": "An unexpected error occurred",
+        "couldNotLoadData": "We couldn't load your data. This might be due to an authentication issue or server problem.",
+        "signInAgain": "Sign In Again",
+        "dashboard": "Dashboard",
+        "tryAgain": "Try Again",
+        "retry": "Retry",
+        "signInWithDiffAccount": "Sign in with a different account",
+        "contactSupport": "If the problem continues, please contact support via 0797662401 or try again later."
+      }
     }
   },
   "components": {
