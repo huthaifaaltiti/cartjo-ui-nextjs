@@ -208,6 +208,13 @@
           },
           "errors": {
             "failedLoadUsers": "Failed to Load Users"
+          },
+          "routes": {
+            "totalUsers": {
+              "errors": {
+                "dataLoadFailure": "Failed to load total users details"
+              }
+            }
           }
         }
       },
