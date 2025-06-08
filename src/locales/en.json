@@ -190,6 +190,9 @@
               "subLocations": "Sub Locations",
               "adminUsers": "Admin users"
             }
+          },
+          "errors": {
+            "failedLoadLocations": "Failed to Load Locations"
           }
         },
         "users": {
@@ -202,6 +205,9 @@
               "deletedUsers": "Deleted users",
               "adminUsers": "Admin users"
             }
+          },
+          "errors": {
+            "failedLoadUsers": "Failed to Load Users"
           }
         }
       },
@@ -229,6 +235,9 @@
           "hide": "Hide",
           "show": "Show"
         }
+      },
+      "errors": {
+        "dashboardFailure": "Failed to load dashboard details"
       }
     }
   }
