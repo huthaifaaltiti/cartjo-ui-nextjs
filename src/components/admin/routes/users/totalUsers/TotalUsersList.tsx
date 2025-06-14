@@ -78,9 +78,13 @@ const TotalUsersList = ({ initialUsers }: TotalUsersListProps) => {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {allUsers.map((user, index) => (
-            <UserCard key={`${user._id}-${index}`} user={user} />
-          ))}
+          {allUsers
+            .filter(
+              (user) => user?._id !== process.env.NEXT_PUBLIC_DB_SYSTEM_OBJ_ID
+            )
+            .map((user, index) => (
+              <UserCard key={`${user._id}-${index}`} user={user} />
+            ))}
         </div>
 
         {(isLoading || isFetchingNextPage) && (
