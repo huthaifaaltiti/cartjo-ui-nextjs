@@ -14,6 +14,9 @@ export const API_ENDPOINTS = {
       GET_USERS: `${BASE_URL}/api/v1/user/all`,
       GET_USERS_STATS: `${BASE_URL}/api/v1/user/stats`,
       GET_TOTAL_USERS: `${BASE_URL}/api/v1/user/all`,
+      DELETE_USER: `${BASE_URL}/api/v1/user/delete`,
+      UNDELETE_USER: `${BASE_URL}/api/v1/user/un-delete`,
+      SWITCH_USER_ACTIVE_STATUS: `${BASE_URL}/api/v1/user/status`,
     },
   },
 };
