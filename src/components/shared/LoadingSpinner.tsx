@@ -5,6 +5,7 @@ interface LoadingSpinnerProps {
   className?: string;
   text?: string;
   variant?: "simple" | "with-text";
+  color?: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
@@ -12,6 +13,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   className = "",
   text,
   variant = "with-text",
+  color = "#9333ea",
 }) => {
   const sizeClasses = {
     sm: "w-4 h-4",
@@ -30,7 +32,8 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   if (variant === "simple") {
     return (
       <div
-        className={`animate-spin rounded-full border-b-2 border-purple-500 ${sizeClasses[size]} ${className}`}
+        className={`animate-spin rounded-full border-b-2 ${sizeClasses[size]} ${className}`}
+        style={{ borderColor: color }}
         role="status"
         aria-label="Loading"
       />
@@ -40,13 +43,18 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       <div
-        className={`${sizeClasses[size]} border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin`}
+        className={`${sizeClasses[size]} border-4 rounded-full animate-spin`}
+        style={{
+          borderColor: `${color}20`, // light version (~12.5% opacity) => (parseInt('hex', 16) / 255) * 100 = opacity percentage
+          borderTopColor: color, // top segment for the spinner effect
+        }}
         role="status"
         aria-label="Loading"
       />
       {text && (
         <p
-          className={`mt-2 text-purple-600 font-medium ${textSizeClasses[size]}`}
+          className={`mt-2 font-medium ${textSizeClasses[size]}`}
+          style={{ color }}
         >
           {text}
         </p>
