@@ -12,6 +12,9 @@
         "warning": "Warning"
       },
       "dismissText": "Dismiss"
+    },
+    "authorization": {
+      "unAuthorizedToken": "Unauthorized user token"
     }
   },
   "errors": {
@@ -230,6 +233,28 @@
               },
               "errors": {
                 "dataLoadFailure": "Failed to load total users details"
+              }
+            },
+            "activeUsers": {
+              "components": {
+                "SearchBar": { "placeholder": "Search for active users" },
+                "TotalUsersList": {
+                  "usersFound": "active users found",
+                  "noUsersToLoad": "No more active users to load",
+                  "noUsersFound": "No more active users found",
+                  "errors": {
+                    "totalUsersFetchingFailure": "Error while fetching active users"
+                  }
+                },
+                "UserCardActions": {
+                  "archivingUserDetails": "Archiving active user details...",
+                  "archiveUser": "Archive Active User",
+                  "restoringUserDetails": "Restoring active user details...",
+                  "restoreUser": "Restore Active User"
+                }
+              },
+              "errors": {
+                "dataLoadFailure": "Failed to load active users details"
               }
             }
           }
