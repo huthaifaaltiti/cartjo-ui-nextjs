@@ -256,6 +256,14 @@
               "errors": {
                 "dataLoadFailure": "Failed to load active users details"
               }
+            },
+            "deletedUsers": {
+              "components": {
+                "SearchBar": { "placeholder": "Search for deleted users" }
+              },
+              "errors": {
+                "dataLoadFailure": "Failed to load deleted users details"
+              }
             }
           }
         }
