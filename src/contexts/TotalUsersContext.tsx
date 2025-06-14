@@ -92,7 +92,7 @@ export const TotalUsersProvider = ({
     lang: Locale | string,
     isActive: boolean,
     userId: string
-  ) => {
+  ): Promise<SwitchUserActiveStatusResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.USERS.SWITCH_USER_ACTIVE_STATUS}/${userId}`,
       {

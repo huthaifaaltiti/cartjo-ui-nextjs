@@ -22,7 +22,6 @@ interface FetchUsersParams {
   limit?: number;
   lastId?: string;
   search?: string;
-  isActive?: boolean;
 }
 
 export const fetchTotalUsers = async ({
@@ -31,7 +30,6 @@ export const fetchTotalUsers = async ({
   limit = PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
   lastId,
   search,
-  isActive,
 }: FetchUsersParams): Promise<TotalUsersResp> => {
   const url = new URL(API_ENDPOINTS.DASHBOARD.USERS.GET_TOTAL_USERS);
 
@@ -39,8 +37,6 @@ export const fetchTotalUsers = async ({
   if (lang) url.searchParams.append("lang", lang);
   if (lastId) url.searchParams.append("lastId", lastId);
   if (search) url.searchParams.append("search", search);
-  if (typeof isActive === "boolean")
-    url.searchParams.append("isActive", isActive.toString());
 
   const res = await fetch(url.toString(), {
     headers: {
