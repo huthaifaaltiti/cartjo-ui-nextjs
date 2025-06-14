@@ -264,6 +264,14 @@
               "errors": {
                 "dataLoadFailure": "Failed to load deleted users details"
               }
+            },
+            "adminUsers": {
+              "components": {
+                "SearchBar": { "placeholder": "Search for admin users" }
+              },
+              "errors": {
+                "dataLoadFailure": "Failed to load admin users details"
+              }
             }
           }
         }
