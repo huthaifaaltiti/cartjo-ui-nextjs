@@ -106,7 +106,7 @@ const UserCardActions = ({ user }: { user: User }) => {
 
   return (
     <div className="w-full flex items-center gap-1 relative">
-      {!isLoading && (
+      {isLoading && (
         <div className="w-full h-full absolute inset-0 z-50 flex items-center justify-center bg-white/30 backdrop-blur-md shadow-inner border border-white/40 rounded-lg">
           <div className="p-2 rounded-xl bg-white/20 backdrop-blur-lg shadow-xl">
             <LoadingSpinner size="sm" color="#a29bfe" />
