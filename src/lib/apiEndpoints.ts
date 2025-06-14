@@ -17,6 +17,7 @@ export const API_ENDPOINTS = {
       DELETE_USER: `${BASE_URL}/api/v1/user/delete`,
       UNDELETE_USER: `${BASE_URL}/api/v1/user/un-delete`,
       SWITCH_USER_ACTIVE_STATUS: `${BASE_URL}/api/v1/user/status`,
+      GET_ACTIVE_USERS: `${BASE_URL}/api/v1/user/all`,
     },
   },
 };
