@@ -8,11 +8,11 @@ import { User } from "@/types/user";
 
 import UsersInfiniteScrollList from "@/components/admin/shared/UsersInfiniteScrollList";
 
-type AdminUsersListProps = {
+type UsersListProps = {
   initialUsers: User[];
 };
 
-const AdminUsersList = ({ initialUsers }: AdminUsersListProps) => {
+const AdminUsersList = ({ initialUsers }: UsersListProps) => {
   const {
     searchQuery,
     deleteUser,

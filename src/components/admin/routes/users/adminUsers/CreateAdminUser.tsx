@@ -6,11 +6,11 @@ import { ExtendedSession } from "@/types/session";
 
 import CreateAdminUserForm from "./CreateAdminUserForm";
 
-const CreateAdminUserPage = async () => {
+const CreateAdminUser = async () => {
   const session = (await getServerSession(authOptions)) as ExtendedSession;
   const accessToken = (session as CustomSession)?.accessToken;
 
   return <CreateAdminUserForm accessToken={accessToken} />;
 };
 
-export default memo(CreateAdminUserPage);
+export default memo(CreateAdminUser);
