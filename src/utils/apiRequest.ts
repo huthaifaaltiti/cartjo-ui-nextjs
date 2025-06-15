@@ -12,11 +12,13 @@ export const apiRequest = async <T>(
   const t = createTranslator(locale);
 
   try {
+    const isFormData = options.body instanceof FormData;
+
     const response = await fetch(url, {
       ...options,
       signal: controller.signal,
       headers: {
-        "Content-Type": "application/json",
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
         ...options.headers,
       },
     });

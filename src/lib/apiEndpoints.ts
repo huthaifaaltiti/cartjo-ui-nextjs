@@ -20,6 +20,7 @@ export const API_ENDPOINTS = {
       GET_ACTIVE_USERS: `${BASE_URL}/api/v1/user/all`,
       GET_DELETED_USERS: `${BASE_URL}/api/v1/user/all`,
       GET_ADMIN_USERS: `${BASE_URL}/api/v1/user/all`,
+      CREATE_ADMIN: `${BASE_URL}/api/v1/user/create-admin`,
     },
   },
 };

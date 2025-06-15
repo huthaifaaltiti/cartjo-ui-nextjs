@@ -267,7 +267,10 @@
             },
             "adminUsers": {
               "components": {
-                "SearchBar": { "placeholder": "Search for admin users" }
+                "SearchBar": { "placeholder": "Search for admin users" },
+                "CreateAdminUser": {
+                  "createAdmin": "Create Admin"
+                }
               },
               "errors": {
                 "dataLoadFailure": "Failed to load admin users details"
