@@ -296,7 +296,9 @@
           "navLinks": "Navigation Links",
           "navItems": {
             "locations": "Locations",
-            "users": "Users"
+            "users": "Users",
+            "categories": "Categories",
+            "products": "Products"
           }
         },
         "DashboardLocationCard": {

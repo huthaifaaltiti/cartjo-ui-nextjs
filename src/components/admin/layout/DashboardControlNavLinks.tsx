@@ -3,7 +3,7 @@
 import { memo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MapPin, Users } from "lucide-react";
+import { MapPin, Users, Box, ShoppingBasket } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 const DashboardControlNavLinks = () => {
@@ -24,6 +24,20 @@ const DashboardControlNavLinks = () => {
       ),
       href: "/dashboard/users",
       icon: Users,
+    },
+    {
+      label: t(
+        "routes.dashboard.components.DashboardControlNavLinks.navItems.categories"
+      ),
+      href: "/dashboard/categories",
+      icon: Box,
+    },
+    {
+      label: t(
+        "routes.dashboard.components.DashboardControlNavLinks.navItems.products"
+      ),
+      href: "/dashboard/products",
+      icon: ShoppingBasket,
     },
   ];
 
