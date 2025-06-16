@@ -65,11 +65,11 @@ const createFormSchema = (t: (key: string) => string) =>
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 
-interface CreateAdminUserFormProps {
+interface EditAdminUserFormProps {
   accessToken: string;
 }
 
-const CreateAdminUserForm = ({ accessToken }: CreateAdminUserFormProps) => {
+const EditAdminUserForm = ({ accessToken }: EditAdminUserFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = locale === "ar";
@@ -358,6 +358,18 @@ const CreateAdminUserForm = ({ accessToken }: CreateAdminUserFormProps) => {
             )}
           />
 
+          {/* Privacy Policy Note */}
+          <p
+            className={`text-text-primary-200 text-sm ${getFormItemClassName()}`}
+          >
+            {t("routes.auth.components.AuthTabs.components.register.note")}{" "}
+            <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
+              {t(
+                "routes.auth.components.AuthTabs.components.register.privacyPolicy"
+              )}
+            </span>
+          </p>
+
           {/* Checkboxes */}
           <div
             className={`flex gap-5 ${
@@ -441,4 +453,4 @@ const CreateAdminUserForm = ({ accessToken }: CreateAdminUserFormProps) => {
   );
 };
 
-export default memo(CreateAdminUserForm);
+export default memo(EditAdminUserForm);
