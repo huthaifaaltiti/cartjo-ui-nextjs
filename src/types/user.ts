@@ -15,6 +15,7 @@ export interface User {
   isActive: boolean;
   isDeleted: boolean;
   permissions: string[];
+  profilePic: string;
   createdBy: string;
   termsAccepted: boolean;
   marketingEmails: boolean;

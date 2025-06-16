@@ -32,6 +32,8 @@ const DashboardUserCardActions = ({
   const t = useTranslations();
   const locale = useLocale();
 
+  console.log({ user });
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [canShowEditButton, setCanShowEditButton] = useState<boolean>(false);
   const [isAdminEditModalOpen, setIsAdminEditModalOpen] =
@@ -204,7 +206,7 @@ const DashboardUserCardActions = ({
       </div>
 
       <Modal isOpen={isAdminEditModalOpen} onClose={handleCloseEditAdminModal}>
-        <EditAdminUserForm accessToken={accessToken} />
+        <EditAdminUserForm accessToken={accessToken} user={user} />
       </Modal>
     </>
   );

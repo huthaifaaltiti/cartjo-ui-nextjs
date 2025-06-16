@@ -67,9 +67,10 @@ type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 
 interface EditAdminUserFormProps {
   accessToken: string;
+  user: User;
 }
 
-const EditAdminUserForm = ({ accessToken }: EditAdminUserFormProps) => {
+const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = locale === "ar";
@@ -85,13 +86,13 @@ const EditAdminUserForm = ({ accessToken }: EditAdminUserFormProps) => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      phoneNumber: user?.phoneNumber || "",
+      email: user?.email || "",
       password: "",
-      termsAccepted: true,
-      marketingEmails: false,
+      termsAccepted: user?.termsAccepted || true,
+      marketingEmails: user?.marketingEmails || false,
     },
   });
 
@@ -130,13 +131,16 @@ const EditAdminUserForm = ({ accessToken }: EditAdminUserFormProps) => {
         formData.append("profilePic", img);
       }
 
-      const response = await fetch(API_ENDPOINTS.DASHBOARD.USERS.CREATE_ADMIN, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await fetch(
+        `${API_ENDPOINTS.DASHBOARD.USERS.UPDATE_ADMIN}/${user?._id}`,
+        {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -193,7 +197,12 @@ const EditAdminUserForm = ({ accessToken }: EditAdminUserFormProps) => {
         />
 
         <div
-          style={{ backgroundImage: imgUrl ? `url(${imgUrl})` : "none" }}
+          style={{
+            backgroundImage:
+              imgUrl || user?.profilePic
+                ? `url(${imgUrl || user?.profilePic})`
+                : "none",
+          }}
           className="w-24 h-24 bg-white-50 rounded-full flex items-center justify-center shadow-md bg-cover bg-center overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
           onClick={handleImageSelect}
         >
@@ -357,18 +366,6 @@ const EditAdminUserForm = ({ accessToken }: EditAdminUserFormProps) => {
               </FormItem>
             )}
           />
-
-          {/* Privacy Policy Note */}
-          <p
-            className={`text-text-primary-200 text-sm ${getFormItemClassName()}`}
-          >
-            {t("routes.auth.components.AuthTabs.components.register.note")}{" "}
-            <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
-              {t(
-                "routes.auth.components.AuthTabs.components.register.privacyPolicy"
-              )}
-            </span>
-          </p>
 
           {/* Checkboxes */}
           <div
