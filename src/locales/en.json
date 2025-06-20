@@ -21,7 +21,12 @@
       "itemsFound": "Items found",
       "noItemsFound": "No items found"
     },
-    "actions": { "delete": "Delete", "restore": "Restore", "edit": "Edit" }
+    "actions": {
+      "delete": "Delete",
+      "restore": "Restore",
+      "edit": "Edit",
+      "create": "Create"
+    }
   },
   "errors": {
     "api": {
@@ -290,6 +295,7 @@
         "categories": {
           "title": "Categories Management",
           "desc": "Manage categories data",
+          "createCategory": "Create Category",
           "errors": {
             "failedLoadData": "Failed to Load categories"
           },
