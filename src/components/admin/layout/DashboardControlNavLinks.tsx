@@ -3,43 +3,13 @@
 import { memo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MapPin, Users, Box, ShoppingBasket } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useDashboardNavLinks } from "@/hooks/useDashboardNavLinks";
 
 const DashboardControlNavLinks = () => {
   const pathname = usePathname();
   const t = useTranslations();
-
-  const navLinks = [
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.locations"
-      ),
-      href: "/dashboard/locations",
-      icon: MapPin,
-    },
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.users"
-      ),
-      href: "/dashboard/users",
-      icon: Users,
-    },
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.categories"
-      ),
-      href: "/dashboard/categories",
-      icon: Box,
-    },
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.products"
-      ),
-      href: "/dashboard/products",
-      icon: ShoppingBasket,
-    },
-  ];
+  const navLinks = useDashboardNavLinks();
 
   const hoverClass = "hover:bg-primary-500 hover:text-white-50 transition-all";
   const activeClass = "bg-primary-500 text-white-50";
