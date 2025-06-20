@@ -1,5 +1,18 @@
-import AuthUserDashboard from "@/components/admin/layout/AuthUserDashboard";
+import { getAccessTokenFromServerSession } from "@/lib/serverSession";
+import { fetchCategories } from "@/hooks/react-query/useCategoriesQuery";
+import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 
-export default function Dashboard() {
-  return <div>Cat</div>;
+import CategoriesPage from "@/components/admin/routes/categories/CategoriesPage";
+
+export default async function Page() {
+  const accessToken = await getAccessTokenFromServerSession();
+
+  const { categories } = await fetchCategories({
+    token: accessToken,
+    limit: PAGINATION_LIMITS.INITIAL_TOTAL_USERS_LIMIT,
+  });
+
+  return (
+    <CategoriesPage initialCategories={categories} accessToken={accessToken} />
+  );
 }
