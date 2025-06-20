@@ -6,7 +6,7 @@ import { User } from "@/types/user";
 
 import SearchAdminUsers from "./SearchAdminUsers";
 import AdminUsersList from "./AdminUsersList";
-import CreateAdminUser from "./CreateAdminUserBtn";
+import CreateAdminUserBtn from "./CreateAdminUserBtn";
 
 interface AdminUsersPageProps {
   initialUsers: User[];
@@ -16,7 +16,7 @@ interface AdminUsersPageProps {
 const AdminUsersPage = ({ initialUsers, accessToken }: AdminUsersPageProps) => {
   return (
     <AdminUsersContextProvider accessToken={accessToken}>
-      <CreateAdminUser />
+      <CreateAdminUserBtn />
       <SearchAdminUsers />
 
       <div className="w-full mt-3">
