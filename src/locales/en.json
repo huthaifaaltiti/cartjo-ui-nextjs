@@ -296,6 +296,16 @@
           "components": {
             "SearchBar": { "placeholder": "Search for categories" }
           }
+        },
+        "subCategories": {
+          "title": "SubCategories Management",
+          "desc": "Manage sub-categories data",
+          "errors": {
+            "failedLoadData": "Failed to Load sub-categories"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for sub-categories" }
+          }
         }
       },
       "components": {
