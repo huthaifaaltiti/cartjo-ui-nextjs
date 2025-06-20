@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import { Category } from "@/types/category";
 import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
+
 import CategoryCardActions from "./CategoryCardActions";
 
 type CategoryCardProps = {
@@ -86,11 +87,11 @@ const CategoryCard = ({
 
       <div className="mt-auto">
         <CategoryCardActions
-          category={category}
-          deleteUser={deleteCategory}
-          unDeleteUser={unDeleteCategory}
+          cardItem={category}
+          deleteFn={deleteCategory}
+          unDeleteFn={unDeleteCategory}
           accessToken={accessToken}
-          switchUserActiveStatus={switchCategoryActiveStatus}
+          switchUserActiveStatusFn={switchCategoryActiveStatus}
           queryKey={queryKey}
         />
       </div>
