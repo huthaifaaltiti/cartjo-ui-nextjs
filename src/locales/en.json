@@ -277,6 +277,13 @@
               }
             }
           }
+        },
+        "categories": {
+          "title": "Categories Management",
+          "desc": "Manage categories data",
+          "errors": {
+            "failedLoadData": "Failed to Load categories"
+          }
         }
       },
       "components": {
