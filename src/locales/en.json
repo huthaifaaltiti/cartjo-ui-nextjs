@@ -15,6 +15,11 @@
     },
     "authorization": {
       "unAuthorizedToken": "Unauthorized user token"
+    },
+    "items": {
+      "noMoreItems": "No more items to show",
+      "itemsFound": "Items found",
+      "noItemsFound": "No items found"
     }
   },
   "errors": {
@@ -35,6 +40,9 @@
         "signInWithDiffAccount": "Sign in with a different account",
         "contactSupport": "If the problem continues, please contact support via 0797662401 or try again later."
       }
+    },
+    "data": {
+      "fetchingFailure": "Data fetching failed"
     }
   },
   "components": {
@@ -283,6 +291,9 @@
           "desc": "Manage categories data",
           "errors": {
             "failedLoadData": "Failed to Load categories"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for categories" }
           }
         }
       },
