@@ -20,7 +20,8 @@
       "noMoreItems": "No more items to show",
       "itemsFound": "Items found",
       "noItemsFound": "No items found"
-    }
+    },
+    "actions": { "delete": "Delete", "restore": "Restore", "edit": "Edit" }
   },
   "errors": {
     "api": {
