@@ -23,5 +23,11 @@ export const API_ENDPOINTS = {
       CREATE_ADMIN: `${BASE_URL}/api/v1/user/create-admin`,
       UPDATE_ADMIN: `${BASE_URL}/api/v1/user/update-admin`,
     },
+    CATEGORIES: {
+      GET_ALL: `${BASE_URL}/api/v1/category/all`,
+      DELETE: `${BASE_URL}/api/v1/category/delete`,
+      UN_DELETE: `${BASE_URL}/api/v1/category/un-delete`,
+      SWITCH_ACTIVE_STATUS: `${BASE_URL}/api/v1/category/status`,
+    },
   },
 };
