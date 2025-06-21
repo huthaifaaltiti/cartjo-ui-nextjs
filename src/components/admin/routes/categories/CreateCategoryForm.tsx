@@ -3,7 +3,7 @@
 import { memo, useRef, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -27,42 +27,20 @@ import ImageUploader, {
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { User } from "@/types/user";
 import { useCategories } from "@/contexts/CategoriesContext";
+import { invalidateQuery } from "@/utils/queryUtils";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
-    firstName: z.string().min(2, {
+    name_ar: z.string().min(2, {
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.firstName.min"
+        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.minChars"
       ),
     }),
-    lastName: z.string().min(2, {
+    name_en: z.string().min(2, {
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.lastName.min"
+        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.minChars"
       ),
     }),
-    phoneNumber: z.string().regex(/^7[789]\d{7}$/, {
-      message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.pattern"
-      ),
-    }),
-    email: z.string().email({
-      message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.email.invalid"
-      ),
-    }),
-    password: z.string().min(6, {
-      message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.password.min"
-      ),
-    }),
-    termsAccepted: z.literal(true, {
-      errorMap: () => ({
-        message: t(
-          "routes.auth.components.AuthTabs.components.register.validations.termsAccepted.required"
-        ),
-      }),
-    }),
-    marketingEmails: z.boolean().optional(),
   });
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
@@ -71,10 +49,11 @@ const CreateCategoryForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = locale === "ar";
-  const { accessToken } = useCategories();
+  const { accessToken, queryKey } = useCategories();
+  const queryClient = useQueryClient();
 
   const imageUploaderRef = useRef<ImageUploaderRef>(null);
-  const [profileImage, setProfileImage] = useState<{
+  const [categoryImage, setCategoryImage] = useState<{
     file: File | null;
     url: string;
   }>({
@@ -87,18 +66,13 @@ const CreateCategoryForm = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      password: "",
-      termsAccepted: true,
-      marketingEmails: false,
+      name_ar: "",
+      name_en: "",
     },
   });
 
   const handleImageChange = (file: File | null, url: string) => {
-    setProfileImage({ file, url });
+    setCategoryImage({ file, url });
   };
 
   const handleImageError = (error: string) => {
@@ -117,14 +91,13 @@ const CreateCategoryForm = () => {
         formData.append(key, String(value));
       });
 
-      formData.append("countryCode", "00962");
       formData.append("lang", locale);
 
-      if (profileImage.file) {
-        formData.append("profilePic", profileImage.file);
+      if (categoryImage.file) {
+        formData.append("image", categoryImage.file);
       }
 
-      const response = await fetch(API_ENDPOINTS.DASHBOARD.USERS.CREATE_ADMIN, {
+      const response = await fetch(API_ENDPOINTS.DASHBOARD.CATEGORIES.CREATE, {
         method: "POST",
         body: formData,
         headers: {
@@ -134,12 +107,16 @@ const CreateCategoryForm = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData?.message || "Registration failed");
+        throw new Error(errorData?.message || "Category creation failed");
       }
 
       return response.json();
     },
-    onSuccess: (data: { isSuccess: boolean; message: string; user: User }) => {
+    onSuccess: async (data: {
+      isSuccess: boolean;
+      message: string;
+      user: User;
+    }) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -149,6 +126,8 @@ const CreateCategoryForm = () => {
 
         form.reset();
         imageUploaderRef.current?.clear();
+
+        await invalidateQuery(queryClient, queryKey);
       }
     },
     onError: (error: Error) => {
@@ -177,7 +156,7 @@ const CreateCategoryForm = () => {
     <div className="space-y-6">
       <ImageUploader
         ref={imageUploaderRef}
-        value={profileImage.url}
+        value={categoryImage.url}
         onChange={handleImageChange}
         onError={handleImageError}
         label={t(
@@ -191,7 +170,6 @@ const CreateCategoryForm = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Name Fields */}
           <div
             className={`flex gap-5 ${
               isArabic ? "flex-row-reverse" : "flex-row"
@@ -200,19 +178,19 @@ const CreateCategoryForm = () => {
             <div className="flex-1">
               <FormField
                 control={form.control}
-                name="firstName"
+                name="name_ar"
                 render={({ field }) => (
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.firstName.label"
+                        "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_ar.label"
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.firstName.placeholder"
+                          "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_ar.placeholder"
                         )}
                         {...field}
                       />
@@ -226,19 +204,19 @@ const CreateCategoryForm = () => {
             <div className="flex-1">
               <FormField
                 control={form.control}
-                name="lastName"
+                name="name_en"
                 render={({ field }) => (
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.lastName.label"
+                        "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_en.label"
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.lastName.placeholder"
+                          "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_en.placeholder"
                         )}
                         {...field}
                       />
