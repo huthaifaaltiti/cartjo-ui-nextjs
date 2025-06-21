@@ -61,6 +61,12 @@
     "LanguageSelector": {
       "english": "English",
       "arabic": "العربية"
+    },
+    "ImageUploader": {
+      "errors": {
+        "sizeLimit": "File size must be less than {maxSize}MB.",
+        "invalidType": "File type not supported. Accepted types: {types}."
+      }
     }
   },
   "routes": {
@@ -295,7 +301,10 @@
         "categories": {
           "title": "Categories Management",
           "desc": "Manage categories data",
-          "createCategory": "Create Category",
+          "createCategory": {
+            "label": "Create Category",
+            "uploadImage": "Upload category image"
+          },
           "errors": {
             "failedLoadData": "Failed to Load categories"
           },
