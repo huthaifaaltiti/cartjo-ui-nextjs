@@ -6,7 +6,7 @@ import { Category } from "@/types/category";
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { useCategories } from "@/contexts/CategoriesContext";
 
-import InfiniteScrollList from "../../shared/InfiniteScrollList";
+import InfiniteScrollList from "../../../shared/InfiniteScrollList";
 import CategoryCard from "./CategoryCard";
 
 type CategoriesListProps = {
