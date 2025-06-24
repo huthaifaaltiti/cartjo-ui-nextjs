@@ -164,7 +164,7 @@ const CategoryCardActions = <
           />
         </div>
 
-        <div className="w-3/4">
+        <div className="w-3/4 flex items-center gap-4">
           {!cardItem.isDeleted ? (
             <Button
               disabled={isLoading}
@@ -188,18 +188,18 @@ const CategoryCardActions = <
               {t("general.actions.restore")}
             </Button>
           )}
-        </div>
 
-        {showEditButton && renderEditForm && (
-          <Button
-            disabled={isLoading}
-            className="min-w-40 w-auto min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all"
-            onClick={() => setIsEditModalOpen(true)}
-          >
-            <Package className="w-1 h-1" />
-            {t("general.actions.edit")}
-          </Button>
-        )}
+          {showEditButton && renderEditForm && (
+            <Button
+              disabled={isLoading}
+              className="min-w-40 w-auto min-h-3 bg-gray-500 hover:bg-gray-600 text-white-50 transition-all"
+              onClick={() => setIsEditModalOpen(true)}
+            >
+              <Package className="w-1 h-1" />
+              {t("general.actions.edit")}
+            </Button>
+          )}
+        </div>
       </div>
 
       {renderEditForm && (

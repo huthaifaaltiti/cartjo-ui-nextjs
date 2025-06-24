@@ -5,6 +5,7 @@ import { Category } from "@/types/category";
 import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
 
 import CategoryCardActions from "./CategoryCardActions";
+import EditCategoryForm from "./EditCategoryForm";
 
 type CategoryCardProps = {
   item: Category;
@@ -93,6 +94,8 @@ const CategoryCard = ({
           accessToken={accessToken}
           switchUserActiveStatusFn={switchCategoryActiveStatus}
           queryKey={queryKey}
+          showEditButton={true}
+          renderEditForm={() => <EditCategoryForm category={category} />}
         />
       </div>
     </div>

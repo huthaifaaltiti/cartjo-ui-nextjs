@@ -29,6 +29,7 @@ export const API_ENDPOINTS = {
       UN_DELETE: `${BASE_URL}/api/v1/category/un-delete`,
       SWITCH_ACTIVE_STATUS: `${BASE_URL}/api/v1/category/status`,
       CREATE: `${BASE_URL}/api/v1/category/create`,
+      EDIT: `${BASE_URL}/api/v1/category/update`,
     },
   },
 };

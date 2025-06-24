@@ -329,6 +329,26 @@
                   "minChars": "English name must be at least 2 characters long"
                 }
               }
+            },
+            "EditCategoryForm": {
+              "fields": {
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                }
+              },
+              "validations": {
+                "name_ar": {
+                  "minChars": "Arabic name must be at least 2 characters long"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least 2 characters long"
+                }
+              }
             }
           }
         },
