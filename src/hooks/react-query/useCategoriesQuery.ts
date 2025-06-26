@@ -37,7 +37,7 @@ export const fetchCategories = async ({
   if (lastId) url.searchParams.append("lastId", lastId);
   if (search) url.searchParams.append("search", search);
 
-  const res = await fetch(url, {
+  const res = await fetch(url.toString(), {
     headers: {
       Authorization: `Bearer ${token}`,
     },
