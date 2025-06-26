@@ -23,7 +23,7 @@ const CategoriesPage = ({
       <ModalCreateButton
         icon={<Blocks />}
         createTranslationKey="routes.dashboard.routes.categories.createCategory.label"
-        ModalContent={CreateCategoryForm}
+        ModalContent={<CreateCategoryForm />}
       />
       <SearchCategories />
 

@@ -1,26 +1,24 @@
 "use client";
 
-import { ComponentType, memo, ReactNode, useState } from "react";
+import { memo, ReactNode, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/shared/Modal";
 
-type Props<P extends object = Record<string, unknown>> = {
+type Props = {
   icon?: ReactNode;
   createTranslationKey?: string;
-  ModalContent: ComponentType<P>;
-  modalContentProps?: P;
+  ModalContent: ReactNode;
   buttonClassName?: string;
 };
 
-const ModalCreateButton = <P extends object>({
+const ModalCreateButton = ({
   icon,
   createTranslationKey,
   ModalContent,
-  modalContentProps,
   buttonClassName = "w-auto min-h-3 bg-primary-500 hover:bg-primary-600 text-white-50 transition-all",
-}: Props<P>) => {
+}: Props) => {
   const t = useTranslations();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +38,7 @@ const ModalCreateButton = <P extends object>({
       </div>
 
       <Modal isOpen={isOpen} onClose={handleClose}>
-        <ModalContent {...(modalContentProps ?? ({} as P))} />
+        {ModalContent}
       </Modal>
     </>
   );
