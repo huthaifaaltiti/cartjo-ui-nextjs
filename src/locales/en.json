@@ -355,11 +355,42 @@
         "subCategories": {
           "title": "SubCategories Management",
           "desc": "Manage sub-categories data",
+          "createSubCategory": {
+            "label": "Create SubCategory",
+            "uploadImage": "Upload sub-category image"
+          },
           "errors": {
             "failedLoadData": "Failed to Load sub-categories"
           },
           "components": {
-            "SearchBar": { "placeholder": "Search for sub-categories" }
+            "SearchBar": { "placeholder": "Search for sub-categories" },
+            "CreateSubCategoryForm": {
+              "fields": {
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                },
+                "category": {
+                  "label": "Category",
+                  "placeholder": "Select a category"
+                }
+              },
+              "validations": {
+                "name_ar": {
+                  "minChars": "Arabic name must be at least 2 characters long"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least 2 characters long"
+                },
+                "category": {
+                  "required": "Category is required"
+                }
+              }
+            }
           }
         }
       },
