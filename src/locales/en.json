@@ -390,6 +390,12 @@
                   "required": "Category is required"
                 }
               }
+            },
+            "CategoryListSelector": {
+              "select": {
+                "all": "All Categories",
+                "one": "Select Category"
+              }
             }
           }
         }
