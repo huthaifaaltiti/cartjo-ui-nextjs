@@ -23,6 +23,7 @@ interface FetchSubCategoriesParams {
   limit?: number;
   lastId?: string;
   search?: string;
+  catId?: string;
 }
 
 export const fetchSubCategories = async ({
@@ -31,6 +32,7 @@ export const fetchSubCategories = async ({
   limit = PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
   lastId,
   search,
+  catId,
 }: FetchSubCategoriesParams): Promise<SubCategoriesResp> => {
   const url = new URL(API_ENDPOINTS.DASHBOARD.SUB_CATEGORIES.GET_ALL);
 
@@ -38,6 +40,7 @@ export const fetchSubCategories = async ({
   if (lastId) url.searchParams.append("lastId", lastId.toString());
   if (search) url.searchParams.append("search", search.toString());
   if (lang) url.searchParams.append("lang", lang.toString());
+  if (catId) url.searchParams.append("catId", catId.toString());
 
   const res = await fetch(url.toString(), {
     headers: {
@@ -50,13 +53,19 @@ export const fetchSubCategories = async ({
   return resObj;
 };
 
-export const useSubCategoriesQuery = (search?: string) => {
+export const useSubCategoriesQuery = ({
+  search,
+  catId,
+}: {
+  search?: string;
+  catId?: string;
+}) => {
   const { data: session } = useSession();
   const locale = useLocale();
   const accessToken = (session as CustomSession)?.accessToken;
 
   return useInfiniteQuery<SubCategoriesResp>({
-    queryKey: ["subCategories", search],
+    queryKey: ["subCategories", search, catId],
     queryFn: ({ pageParam }) => {
       if (!accessToken) throw new Error("No access token found");
 
@@ -66,6 +75,7 @@ export const useSubCategoriesQuery = (search?: string) => {
         limit: PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
         lastId: pageParam as string,
         search,
+        catId,
       });
     },
     getNextPageParam: (lastPage) => {

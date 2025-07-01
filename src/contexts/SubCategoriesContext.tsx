@@ -27,6 +27,8 @@ interface SubCategoriesContextType {
     isActive: boolean,
     subCatId: string
   ) => Promise<SwitchActiveStatusResponse>;
+  selectedCatId?: string;
+  setSelectedCatId?: (id: string | undefined) => void;
 }
 
 interface SubCategoriesContextProviderProps {
@@ -44,6 +46,7 @@ export const SubCategoriesContextProvider = ({
 }: SubCategoriesContextProviderProps) => {
   const queryKey = "subCategories";
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedCatId, setSelectedCatId] = useState<string | undefined>();
 
   const deleteSubCategory = async (
     token: string,
@@ -125,6 +128,8 @@ export const SubCategoriesContextProvider = ({
         deleteSubCategory,
         unDeleteSubCategory,
         switchSubCategoryActiveStatus,
+        selectedCatId,
+        setSelectedCatId,
       }}
     >
       {children}

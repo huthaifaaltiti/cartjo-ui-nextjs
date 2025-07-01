@@ -1,3 +1,5 @@
+"use client";
+
 import { memo } from "react";
 import { BlocksIcon } from "lucide-react";
 
@@ -9,6 +11,7 @@ import ModalCreateButton from "@/components/shared/ModalCreateButton";
 import CreateSubCategoryForm from "./CreateSubCategoryForm";
 import SearchSubCategories from "./SearchSubCategories";
 import SubCategoriesList from "./SubCategoriesList";
+import CategoryListSelector from "./CategoryListSelector";
 
 type SubCategoriesPageProps = {
   initialCategories: Category[];
@@ -23,11 +26,18 @@ const SubCategoriesPage = ({
 }: SubCategoriesPageProps) => {
   return (
     <SubCategoriesContextProvider accessToken={accessToken}>
-      <ModalCreateButton
-        icon={<BlocksIcon />}
-        createTranslationKey="routes.dashboard.routes.subCategories.createSubCategory.label"
-        ModalContent={<CreateSubCategoryForm categories={initialCategories} />}
-      />
+      <div className="w-full flex items-center justify-between gap-2">
+        <CategoryListSelector categoriesList={initialCategories} />
+
+        <ModalCreateButton
+          icon={<BlocksIcon />}
+          createTranslationKey="routes.dashboard.routes.subCategories.createSubCategory.label"
+          ModalContent={
+            <CreateSubCategoryForm categories={initialCategories} />
+          }
+        />
+      </div>
+
       <SearchSubCategories />
 
       <div className="w-full mt-3">

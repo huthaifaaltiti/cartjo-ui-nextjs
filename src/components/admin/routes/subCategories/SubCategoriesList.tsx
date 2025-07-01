@@ -1,7 +1,6 @@
 "use client";
 
 import { memo } from "react";
-
 import { useSubCategories } from "@/contexts/SubCategoriesContext";
 
 import InfiniteScrollList from "../../../shared/InfiniteScrollList";
@@ -23,6 +22,7 @@ const SubCategoriesList = ({
     deleteSubCategory,
     unDeleteSubCategory,
     switchSubCategoryActiveStatus,
+    selectedCatId,
   } = useSubCategories();
 
   const {
@@ -32,11 +32,13 @@ const SubCategoriesList = ({
     isFetchingNextPage,
     isLoading,
     error,
-  } = useSubCategoriesQuery(searchQuery);
+  } = useSubCategoriesQuery({
+    search: searchQuery,
+    catId: selectedCatId,
+  });
 
-  const subCategories = data?.pages.flatMap((page) => page.subCategories) || [
-    ...initialSubCategories,
-  ];
+  const subCategories =
+    data?.pages.flatMap((page) => page.subCategories) || initialSubCategories;
 
   return (
     <InfiniteScrollList
