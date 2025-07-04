@@ -39,5 +39,13 @@ export const API_ENDPOINTS = {
       CREATE: `${BASE_URL}/api/v1/sub-category/create`,
       EDIT: `${BASE_URL}/api/v1/sub-category/update`,
     },
+    PRODUCTS: {
+      ALL: `${BASE_URL}/api/v1/product/all`,
+      DELETE: `${BASE_URL}/api/v1/product/delete`,
+      UN_DELETE: `${BASE_URL}/api/v1/product/un-delete`,
+      SWITCH_ACTIVE_STATUS: `${BASE_URL}/api/v1/product/status`,
+      CREATE: `${BASE_URL}/api/v1/product/create`,
+      EDIT: `${BASE_URL}/api/v1/product/update`,
+    },
   },
 };
