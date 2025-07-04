@@ -398,6 +398,13 @@
               }
             }
           }
+        },
+        "products": {
+          "title": "Products Management",
+          "desc": "Manage products data",
+          "components": {
+            "SearchBar": { "placeholder": "Search for products" }
+          }
         }
       },
       "components": {
