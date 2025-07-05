@@ -19,13 +19,31 @@
     "items": {
       "noMoreItems": "No more items to show",
       "itemsFound": "Items found",
-      "noItemsFound": "No items found"
+      "noItemsFound": "No items found",
+      "stock": "Stock",
+      "sold": "Sold",
+      "favorites": "Favorites",
+      "states": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "inStock": "In Stock",
+        "lowStock": "Low Stock",
+        "outOfStock": "outOfInStock"
+      }
     },
     "actions": {
       "delete": "Delete",
       "restore": "Restore",
       "edit": "Edit",
-      "create": "Create"
+      "create": "Create",
+      "activate": "Activate",
+      "deActivate": "De Activate"
+    },
+    "others": {
+      "unknown": "Unknown",
+      "created": "Created",
+      "createdBy": "Created by",
+      "updated": "Updated"
     }
   },
   "errors": {
