@@ -7,8 +7,13 @@ import { ImagePlus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ImageUploaderProps {
-  value?: string;
-  onChange?: (file: File | null, url: string) => void;
+  value?: string | string[];
+  onChange?: (data: {
+    files: File[] | null;
+    urls: string[] | null;
+    file?: File | null;
+    url?: string;
+  }) => void;
   onError?: (error: string) => void;
   className?: string;
   containerClassName?: string;
@@ -21,6 +26,8 @@ interface ImageUploaderProps {
   showRemoveButton?: boolean;
   label?: string;
   required?: boolean;
+  multiple?: boolean;
+  maxImages?: number;
   ref?: React.Ref<ImageUploaderRef>;
 }
 
@@ -57,10 +64,16 @@ const ImageUploader = ({
   showRemoveButton = true,
   label,
   required = false,
+  multiple = false,
+  maxImages = 10,
   ref,
 }: ImageUploaderProps) => {
   const t = useTranslations();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Handle both single and multiple values
+  const images = Array.isArray(value) ? value : value ? [value] : [];
+  const isMultipleMode = multiple;
 
   if (ref && typeof ref === "object" && ref !== null) {
     ref.current = {
@@ -68,7 +81,7 @@ const ImageUploader = ({
         if (inputRef.current) {
           inputRef.current.value = "";
         }
-        onChange?.(null, "");
+        onChange?.({ files: null, urls: null });
       },
       triggerUpload: () => {
         inputRef.current?.click();
@@ -79,7 +92,9 @@ const ImageUploader = ({
   const validateFile = (file: File): string | null => {
     const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
     if (file.size > maxSizeInBytes) {
-      return t("errors.sizeLimit", { maxSize: maxSizeInMB });
+      return t("components.ImageUploader.errors.sizeLimit", {
+        maxSize: maxSizeInMB,
+      });
     }
 
     const acceptedTypes = accept.split(", ").map((type) => type.trim());
@@ -91,40 +106,102 @@ const ImageUploader = ({
     });
 
     if (!isValidType) {
-      return t("errors.invalidType", { types: accept });
+      return t("components.ImageUploader.errors.invalidType", {
+        types: accept,
+      });
     }
 
     return null;
   };
 
   const handleImageSelect = () => {
+    console.log("handleImageSelect called", {
+      disabled,
+      isMultipleMode,
+      imagesLength: images.length,
+      maxImages,
+    });
     if (disabled) return;
+    if (isMultipleMode && images.length >= maxImages) {
+      onError?.(
+        t("components.ImageUploader.errors.maxImagesReached", { maxImages })
+      );
+      return;
+    }
+    console.log("About to click input");
     inputRef.current?.click();
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const files = Array.from(e.target.files || []);
 
-    if (!file) {
+    if (files.length === 0) {
       return;
     }
 
-    const validationError = validateFile(file);
-    if (validationError) {
-      onError?.(validationError);
-      return;
-    }
+    if (isMultipleMode) {
+      // Check if adding these files would exceed the limit
+      if (images.length + files.length > maxImages) {
+        onError?.(
+          t("components.ImageUploader.errors.maxImagesReached", { maxImages })
+        );
+        return;
+      }
 
-    const url = URL.createObjectURL(file);
-    onChange?.(file, url);
+      // Validate all files
+      const validationErrors: string[] = [];
+      files.forEach((file, index) => {
+        const error = validateFile(file);
+        if (error) {
+          validationErrors.push(`File ${index + 1}: ${error}`);
+        }
+      });
+
+      if (validationErrors.length > 0) {
+        onError?.(validationErrors.join(", "));
+        return;
+      }
+
+      // Create URLs for all files
+      const newUrls = files.map((file) => URL.createObjectURL(file));
+      const allUrls = [...images, ...newUrls];
+
+      console.log("About to call onChange with:", { files, urls: allUrls });
+      onChange?.({ files, urls: allUrls });
+    } else {
+      // Single image mode
+      const file = files[0];
+      const validationError = validateFile(file);
+      if (validationError) {
+        onError?.(validationError);
+        return;
+      }
+
+      const url = URL.createObjectURL(file);
+      console.log("About to call onChange with:", {
+        files: [file],
+        urls: [url],
+        file,
+        url,
+      });
+      onChange?.({ files: [file], urls: [url], file, url });
+    }
   };
-
-  const handleRemoveImage = (e: React.MouseEvent) => {
+  const handleRemoveImage = (e: React.MouseEvent, indexToRemove: number) => {
     e.stopPropagation();
-    if (inputRef.current) {
-      inputRef.current.value = "";
+
+    if (isMultipleMode) {
+      const newImages = images.filter((_, index) => index !== indexToRemove);
+      onChange?.({
+        files: null,
+        urls: newImages,
+      });
+    } else {
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+      onChange?.({ files: null, urls: null, file: null, url: "" });
     }
-    onChange?.(null, "");
   };
 
   const renderPlaceholder = () => {
@@ -132,12 +209,79 @@ const ImageUploader = ({
     return <ImagePlus className="text-primary-500 w-5 h-5" />;
   };
 
+  const renderImagePreview = (imageUrl: string, index: number) => (
+    <div className="relative" key={index}>
+      <div
+        style={{
+          backgroundImage: `url(${imageUrl})`,
+        }}
+        className={cn(
+          sizeClasses[size],
+          variantClasses[variant],
+          "bg-white-50 flex items-center justify-center shadow-md bg-cover bg-center overflow-hidden transition-all",
+          disabled
+            ? "cursor-not-allowed opacity-60"
+            : "cursor-pointer hover:shadow-lg",
+          className
+        )}
+        onClick={!isMultipleMode ? handleImageSelect : undefined}
+        role="button"
+        tabIndex={disabled ? -1 : 0}
+        aria-label={`Image ${index + 1}`}
+      />
+
+      {showRemoveButton && !disabled && (
+        <button
+          type="button"
+          onClick={(e) => handleRemoveImage(e, index)}
+          className="absolute -top-1 -right-1 bg-primary-100 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-primary-200 transition-colors shadow-md"
+          aria-label={`Remove image ${index + 1}`}
+        >
+          <X className="w-3 h-3" />
+        </button>
+      )}
+    </div>
+  );
+
+  const renderUploadButton = () => (
+    <div className="relative">
+      <div
+        className={cn(
+          sizeClasses[size],
+          variantClasses[variant],
+          "bg-white-50 flex items-center justify-center shadow-md bg-cover bg-center overflow-hidden transition-all",
+          disabled
+            ? "cursor-not-allowed opacity-60"
+            : "cursor-pointer hover:shadow-lg",
+          className
+        )}
+        onClick={handleImageSelect}
+        role="button"
+        tabIndex={disabled ? -1 : 0}
+        aria-label={images.length > 0 ? "Add another image" : "Upload image"}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleImageSelect();
+          }
+        }}
+      >
+        {renderPlaceholder()}
+      </div>
+    </div>
+  );
+
   return (
     <div className={cn("space-y-2", containerClassName)}>
       {label && (
         <label className="text-sm font-medium text-gray-700">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
+          {isMultipleMode && (
+            <span className="text-gray-500 ml-1 text-xs">
+              ({images.length}/{maxImages})
+            </span>
+          )}
         </label>
       )}
 
@@ -150,48 +294,29 @@ const ImageUploader = ({
           onChange={handleImageChange}
           disabled={disabled}
           aria-label={label || "Upload image"}
+          multiple={isMultipleMode}
         />
 
-        <div className="relative">
-          <div
-            style={{
-              backgroundImage: value ? `url(${value})` : "none",
-            }}
-            className={cn(
-              sizeClasses[size],
-              variantClasses[variant],
-              "bg-white-50 flex items-center justify-center shadow-md bg-cover bg-center overflow-hidden transition-all",
-              disabled
-                ? "cursor-not-allowed opacity-60"
-                : "cursor-pointer hover:shadow-lg",
-              className
-            )}
-            onClick={handleImageSelect}
-            role="button"
-            tabIndex={disabled ? -1 : 0}
-            aria-label={value ? "Change image" : "Upload image"}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                handleImageSelect();
-              }
-            }}
-          >
-            {!value && renderPlaceholder()}
-          </div>
-
-          {value && showRemoveButton && !disabled && (
-            <button
-              type="button"
-              onClick={handleRemoveImage}
-              className="absolute -top-1 -right-1 bg-primary-100 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-primary-200 transition-colors shadow-md"
-              aria-label="Remove image"
-            >
-              <X className="w-3 h-3" />
-            </button>
+        <div
+          className={cn(
+            "flex gap-3",
+            isMultipleMode ? "flex-wrap" : "flex-row"
           )}
+        >
+          {/* Render existing images */}
+          {images.map((imageUrl, index) => renderImagePreview(imageUrl, index))}
+
+          {/* Render upload button */}
+          {(!isMultipleMode && images.length === 0) ||
+          (isMultipleMode && images.length < maxImages)
+            ? renderUploadButton()
+            : null}
         </div>
       </div>
+
+      <label className="text-xs font-medium text-gray-700">
+        {t("components.ImageUploader.labels.maxFileSize")} ({maxSizeInMB} MB)
+      </label>
     </div>
   );
 };

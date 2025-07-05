@@ -81,9 +81,13 @@
       "arabic": "العربية"
     },
     "ImageUploader": {
+      "labels": {
+        "maxFileSize": "Max file size"
+      },
       "errors": {
-        "sizeLimit": "File size must be less than {maxSize}MB.",
-        "invalidType": "File type not supported. Accepted types: {types}."
+        "sizeLimit": "File size must be less than {maxSize} MB.",
+        "invalidType": "File type not supported. Accepted types: ({types}).",
+        "maxImagesReached": "Max number of files reached! ({maxImages})"
       }
     }
   },
@@ -420,8 +424,43 @@
         "products": {
           "title": "Products Management",
           "desc": "Manage products data",
+          "createProduct": {
+            "label": "Create Product",
+            "uploadImage": "Upload product image"
+          },
           "components": {
-            "SearchBar": { "placeholder": "Search for products" }
+            "SearchBar": { "placeholder": "Search for products" },
+            "CreateProductForm": {
+              "fields": {
+                "images": {
+                  "label": "Images",
+                  "placeholder": "Images"
+                },
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                },
+                "category": {
+                  "label": "Category",
+                  "placeholder": "Select a category"
+                }
+              },
+              "validations": {
+                "name_ar": {
+                  "minChars": "Arabic name must be at least 2 characters long"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least 2 characters long"
+                },
+                "category": {
+                  "required": "Category is required"
+                }
+              }
+            }
           }
         }
       },
