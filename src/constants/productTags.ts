@@ -1,0 +1,16 @@
+export const PRODUCTS_TAGS_SUGGESTIONS = [
+  "electronics",
+  "clothing",
+  "books",
+  "home",
+  "beauty",
+  "toys",
+  "fitness",
+  "accessories",
+  "furniture",
+  "sports",
+  "groceries",
+  "automotive",
+  "health",
+  "office",
+];

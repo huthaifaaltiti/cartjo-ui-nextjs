@@ -89,6 +89,14 @@
         "invalidType": "File type not supported. Accepted types: ({types}).",
         "maxImagesReached": "Max number of files reached! ({maxImages})"
       }
+    },
+    "TagsInput": {
+      "labels": {
+        "addTags": "Add tags...",
+        "clearAllTags": "Clear all tags",
+        "tags": "tags",
+        "maxTagsReached": "Maximum tags reached"
+      }
     }
   },
   "routes": {
@@ -432,9 +440,13 @@
             "SearchBar": { "placeholder": "Search for products" },
             "CreateProductForm": {
               "fields": {
+                "mainImage": {
+                  "label": "Product main images",
+                  "placeholder": "Product main images"
+                },
                 "images": {
-                  "label": "Images",
-                  "placeholder": "Images"
+                  "label": "Product Images",
+                  "placeholder": "Product Images"
                 },
                 "name_ar": {
                   "label": "Arabic Name",
@@ -444,12 +456,58 @@
                   "label": "English Name",
                   "placeholder": "English Name"
                 },
+                "desc_ar": {
+                  "label": "Arabic Description",
+                  "placeholder": "Arabic Description"
+                },
+                "desc_en": {
+                  "label": "English Description",
+                  "placeholder": "English Description"
+                },
+                "price": {
+                  "label": "Price",
+                  "placeholder": "Price"
+                },
+                "currency": {
+                  "label": "Currency",
+                  "placeholder": "Currency"
+                },
+                "totalAmountCount": {
+                  "label": "Total amount count",
+                  "placeholder": "Total amount count"
+                },
+                "typeHint": {
+                  "label": "Type Hint",
+                  "placeholder": "Type Hint"
+                },
                 "category": {
                   "label": "Category",
                   "placeholder": "Select a category"
+                },
+                "subCategory": {
+                  "label": "Sub-Category",
+                  "placeholder": "Select a sub-category"
+                },
+                "tags": {
+                  "label": "Tags",
+                  "placeholder": "Add tags"
+                },
+                "availableCount": {
+                  "label": "Available count",
+                  "placeholder": "Available count"
+                },
+                "discountRate": {
+                  "label": "Discount rate",
+                  "placeholder": "Discount rate"
                 }
               },
               "validations": {
+                "mainImage": {
+                  "required": "Product main image should be provided"
+                },
+                "images": {
+                  "required": "Product's images should be provided"
+                },
                 "name_ar": {
                   "minChars": "Arabic name must be at least 2 characters long"
                 },
@@ -458,6 +516,36 @@
                 },
                 "category": {
                   "required": "Category is required"
+                },
+                "desc_ar": {
+                  "minChars": "Arabic desc must be at least 20 characters long"
+                },
+                "desc_en": {
+                  "minChars": "English desc must be at least 20 characters long"
+                },
+                "price": {
+                  "min": "Price must be at least 1"
+                },
+                "totalAmountCount": {
+                  "min": "Total amount count must be at least 1"
+                },
+                "currency": {
+                  "notSupported": "Select one of the supported currencies"
+                },
+                "typeHint": {
+                  "notSupported": "Select one of the supported type hints"
+                },
+                "subCategory": {
+                  "required": "SubCategory is required"
+                },
+                "tags": {
+                  "min": "Add one tag at least"
+                },
+                "availableCount": {
+                  "min": "Available amount count must be at least 1"
+                },
+                "discountRate": {
+                  "min": "Discount amount must be at least 1"
                 }
               }
             }
