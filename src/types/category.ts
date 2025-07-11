@@ -1,3 +1,5 @@
+import { SubCategory } from "./subCategory";
+
 type Name = {
   ar: string;
   en: string;
@@ -15,6 +17,7 @@ export interface Category {
   __v: number;
   name: Name;
   image: string;
+  subCategories: SubCategory[];
   isActive: boolean;
   isDeleted: boolean;
   unDeletedBy: null | Actor;
