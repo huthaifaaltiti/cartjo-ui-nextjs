@@ -149,7 +149,7 @@ const ProductCardActions = ({
   };
 
   return (
-    <div className="absolute right-0 top-full mt-2 w-48 bg-white-50 rounded-lg shadow-lg border border-gray-200 z-10">
+    <div className="absolute right-0 top-full mt-2 w-48 bg-white-50 rounded-lg shadow-lg border border-gray-200 z-50">
       <div className="py-2 relative">
         {isLoading && (
           <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
