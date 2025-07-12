@@ -1,19 +1,21 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { memo, useState } from "react";
 import { FileText } from "lucide-react";
-// import { useQueryClient } from "@tanstack/react-query";
 
 import { useBulkUploadLocations } from "@/hooks/react-query/useBulkUploadLocations";
+import { useHandleApiError } from "@/hooks/handleApiError";
+
 import FileUpload from "../../../shared/FileUpload";
 import StatusMessage from "@/components/shared/StatusMessage";
-import { useRouter } from "next/navigation";
 
 const DashboardUploadLocations = () => {
   const router = useRouter();
   // const queryClient = useQueryClient();
   const { mutate: uploadFile, isPending: isUploadLoading } =
     useBulkUploadLocations();
+  const handleApiError = useHandleApiError();
 
   const [statusMessage, setStatusMessage] = useState("");
   const [statusType, setStatusType] = useState<"success" | "error" | "">("");
@@ -37,9 +39,7 @@ const DashboardUploadLocations = () => {
         }
       },
       onError: (error) => {
-        console.error(error);
-        setStatusMessage("Failed to upload file. Please try again.");
-        setStatusType("error");
+        handleApiError(error);
       },
     });
   };

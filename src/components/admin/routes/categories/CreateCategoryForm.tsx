@@ -24,10 +24,13 @@ import {
 import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { User } from "@/types/user";
 import { useCategories } from "@/contexts/CategoriesContext";
+
+import { User } from "@/types/user";
+
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
+import { useHandleApiError } from "@/hooks/handleApiError";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -51,6 +54,7 @@ const CreateCategoryForm = () => {
   const isArabic = locale === "ar";
   const { accessToken, queryKey } = useCategories();
   const queryClient = useQueryClient();
+  const handleApiError = useHandleApiError();
 
   const imageUploaderRef = useRef<ImageUploaderRef>(null);
   const [categoryImage, setCategoryImage] = useState<{
@@ -131,11 +135,7 @@ const CreateCategoryForm = () => {
       }
     },
     onError: (error: Error) => {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: error.message,
-        dismissText: t("general.toast.dismissText"),
-      });
+      handleApiError(error);
     },
   });
 

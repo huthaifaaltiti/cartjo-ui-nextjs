@@ -25,11 +25,7 @@ import {
 import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { User } from "@/types/user";
-import { invalidateQuery } from "@/utils/queryUtils";
 import { useProducts } from "@/contexts/Products.context";
-import { Category } from "@/types/category";
 import {
   Select,
   SelectContent,
@@ -37,13 +33,20 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+import TagsInput from "@/components/shared/TagsInput";
+
+import { User } from "@/types/user";
+import { Category } from "@/types/category";
 import { Currency } from "@/enums/currency.enum";
 import { TypeHint } from "@/enums/typeHint.enum";
 import { Textarea } from "@/components/ui/textarea";
 import { SubCategory } from "@/types/subCategory";
+
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { invalidateQuery } from "@/utils/queryUtils";
 import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
-import TagsInput from "@/components/shared/TagsInput";
 import { tagStyledClassName } from "@/constants/tagsInputStyles";
+import { useHandleApiError } from "@/hooks/handleApiError";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -138,6 +141,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   const isArabic = locale === "ar";
   const { token, queryKey } = useProducts();
   const queryClient = useQueryClient();
+  const handleApiError = useHandleApiError();
 
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
@@ -256,9 +260,6 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
-      console.log("🧪 Incoming form data values:", data);
-      console.log("🧪 prodImages.mainImage.file:", prodImages.mainImage.file);
-
       // Exclude fields that need special handling
       const excludedFields = [
         "images",
@@ -300,10 +301,6 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
         formData.append("discountRate", String(data.discountRate));
       }
 
-      for (const [key, value] of formData.entries()) {
-        console.log("📦", key, value);
-      }
-
       const response = await fetch(API_ENDPOINTS.DASHBOARD.PRODUCTS.CREATE, {
         method: "POST",
         body: formData,
@@ -343,11 +340,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
     },
 
     onError: (error: Error) => {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: error.message,
-        dismissText: t("general.toast.dismissText"),
-      });
+      handleApiError(error);
     },
   });
 

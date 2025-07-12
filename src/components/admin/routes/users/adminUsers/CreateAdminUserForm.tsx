@@ -19,12 +19,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  showErrorToast,
   showSuccessToast,
   showWarningToast,
 } from "@/components/shared/CustomToast";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+
 import { User } from "@/types/user";
+
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { useHandleApiError } from "@/hooks/handleApiError";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -73,6 +75,7 @@ const CreateAdminUserForm = ({ accessToken }: CreateAdminUserFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = locale === "ar";
+  const handleApiError = useHandleApiError();
 
   const imgInputRef = useRef<HTMLInputElement>(null);
 
@@ -159,11 +162,7 @@ const CreateAdminUserForm = ({ accessToken }: CreateAdminUserFormProps) => {
       }
     },
     onError: (error: Error) => {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: error.message,
-        dismissText: t("general.toast.dismissText"),
-      });
+      handleApiError(error);
     },
   });
 

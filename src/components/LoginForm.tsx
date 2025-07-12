@@ -2,6 +2,16 @@
 
 import { memo, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,19 +23,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
 import {
   showErrorToast,
   showSuccessToast,
   showWarningToast,
 } from "./shared/CustomToast";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
   const t = useTranslations();

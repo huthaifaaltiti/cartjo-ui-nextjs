@@ -9,6 +9,8 @@ export const useHandleApiError = () => {
   const t = useTranslations();
 
   const handleApiError = (error: Error) => {
+    if (!error) return;
+    
     showErrorToast({
       title: t("general.toast.title.error"),
       description: error.message,

@@ -24,11 +24,7 @@ import {
 import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { User } from "@/types/user";
-import { invalidateQuery } from "@/utils/queryUtils";
 import { useSubCategories } from "@/contexts/SubCategoriesContext";
-import { Category } from "@/types/category";
 import {
   Select,
   SelectContent,
@@ -36,6 +32,13 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+
+import { User } from "@/types/user";
+import { Category } from "@/types/category";
+
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { invalidateQuery } from "@/utils/queryUtils";
+import { useHandleApiError } from "@/hooks/handleApiError";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -68,6 +71,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
   const isArabic = locale === "ar";
   const { accessToken, queryKey } = useSubCategories();
   const queryClient = useQueryClient();
+  const handleApiError = useHandleApiError();
 
   const imageUploaderRef = useRef<ImageUploaderRef>(null);
   const [subCategoryImage, setSubCategoryImage] = useState<{
@@ -152,11 +156,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
       }
     },
     onError: (error: Error) => {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: error.message,
-        dismissText: t("general.toast.dismissText"),
-      });
+      handleApiError(error);
     },
   });
 
