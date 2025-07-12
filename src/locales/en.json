@@ -697,6 +697,9 @@
         "DashboardLocationCard": {
           "hide": "Hide",
           "show": "Show"
+        },
+        "BackToDashboardBtn": {
+          "label": "Back to dashboard"
         }
       },
       "errors": {
