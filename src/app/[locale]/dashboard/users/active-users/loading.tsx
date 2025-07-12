@@ -1,9 +1,5 @@
-import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import PageLoader from "@/components/shared/PageLoader";
 
-export default function ActiveUsersLoadingPage() {
-  return (
-    <div className="w-full min-h-[55vh] h-full flex items-center justify-center">
-      <LoadingSpinner size="lg" />
-    </div>
-  );
+export default function Loading() {
+  return <PageLoader />;
 }
