@@ -41,9 +41,11 @@ import { Currency } from "@/enums/currency.enum";
 import { TypeHint } from "@/enums/typeHint.enum";
 import { Textarea } from "@/components/ui/textarea";
 import { SubCategory } from "@/types/subCategory";
+import { Product } from "@/types/product.type";
 import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
 import TagsInput from "@/components/shared/TagsInput";
 import { tagStyledClassName } from "@/constants/tagsInputStyles";
+import { useHandleApiError } from "@/hooks/handleApiError";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -130,14 +132,19 @@ type FormData = z.infer<ReturnType<typeof editFormSchema>>;
 
 type CreateSubCategoryFormProps = {
   categories: Category[];
+  product: Product;
 };
 
-const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
+const EditProductForm = ({
+  categories,
+  product,
+}: CreateSubCategoryFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = locale === "ar";
   const { token, queryKey } = useProducts();
   const queryClient = useQueryClient();
+  const handleApiError = useHandleApiError();
 
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
@@ -148,15 +155,21 @@ const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   }>({
     mainImage: {
       file: null,
-      url: "",
+      url: product?.mainImage || "",
     },
     images: {
       files: [],
-      urls: [],
+      urls: product?.images || [],
     },
   });
 
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [tags, setTags] = useState<Tag[]>(
+    product?.tags?.map((tag) => ({
+      id: tag,
+      text: tag,
+      className: "",
+    })) || []
+  );
 
   const prodTagsSuggestions = PRODUCTS_TAGS_SUGGESTIONS.map((sug) => {
     return {
@@ -165,6 +178,13 @@ const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
       className: "",
     };
   });
+
+  const prodCat = categories?.filter(
+    (cat) => cat?._id === product?.categoryId?._id
+  )[0];
+  const prodSubCat = prodCat?.subCategories?.filter(
+    (subCat) => subCat?._id === product?.subCategoryId?._id
+  )[0];
 
   const handleTagsChange = (newTags: string[]) => {
     const updatedTags = newTags.map((text, index) => ({
@@ -219,27 +239,27 @@ const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      mainImage: "",
-      images: [],
-      name_ar: "",
-      name_en: "",
-      categoryId: "",
-      subCategoryId: "",
-      description_ar: "",
-      description_en: "",
-      price: 0,
-      currency: "",
-      totalAmountCount: 0,
-      typeHint: "",
-      tags: [],
-      availableCount: 0,
-      discountRate: 0,
+      mainImage: product?.mainImage || "",
+      images: product?.images || [],
+      name_ar: product?.name.ar || "",
+      name_en: product?.name.en || "",
+      categoryId: prodCat?._id || "",
+      subCategoryId: prodSubCat?._id || "",
+      description_ar: product?.description.ar || "",
+      description_en: product?.description.en || "",
+      price: product?.price || 0,
+      currency: product?.currency || "",
+      totalAmountCount: product?.totalAmountCount || 0,
+      typeHint: product?.typeHint || "",
+      tags: product?.tags || [],
+      availableCount: product?.availableCount || 0,
+      discountRate: product?.discountRate || 0,
     },
   });
 
   const selectedCategoryId = form.watch("categoryId");
   const selectedCategory: Category | undefined = categories.find(
-    (cat) => cat._id === selectedCategoryId
+    (cat) => cat._id === (selectedCategoryId || prodCat?._id)
   );
 
   const subCategories = selectedCategory?.subCategories || [];
@@ -255,9 +275,6 @@ const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   const registerMutation = useMutation({
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
-
-      console.log("🧪 Incoming form data values:", data);
-      console.log("🧪 prodImages.mainImage.file:", prodImages.mainImage.file);
 
       // Exclude fields that need special handling
       const excludedFields = [
@@ -300,19 +317,16 @@ const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
         formData.append("discountRate", String(data.discountRate));
       }
 
-      for (const [key, value] of formData.entries()) {
-        console.log("📦", key, value);
-      }
-
-      const response = await fetch(API_ENDPOINTS.DASHBOARD.PRODUCTS.CREATE, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log({ response });
+      const response = await fetch(
+        `${API_ENDPOINTS.DASHBOARD.PRODUCTS.EDIT}/${product?._id}`,
+        {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -343,11 +357,7 @@ const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
     },
 
     onError: (error: Error) => {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: error.message,
-        dismissText: t("general.toast.dismissText"),
-      });
+      handleApiError(error);
     },
   });
 
@@ -388,6 +398,13 @@ const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
     return () => subscription.unsubscribe();
   }, [form]);
 
+  useEffect(() => {
+    if (product && prodCat && prodSubCat) {
+      form.setValue("categoryId", prodCat._id);
+      form.setValue("subCategoryId", prodSubCat._id);
+    }
+  }, [form, product, prodCat, prodSubCat]);
+
   return (
     <div className="space-y-6 max-h-[80vh] overflow-y-auto">
       <Form {...form}>
@@ -411,9 +428,7 @@ const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     }
                     onChange={handleMainImageChange}
                     onError={handleImageError}
-                    label={t(
-                      "routes.dashboard.routes.products.components.EditProductForm.fields.mainImage.label"
-                    )}
+                    label={""}
                     maxSizeInMB={2}
                     size="sm"
                     variant="rounded"
@@ -443,9 +458,7 @@ const EditProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     value={prodImages.images.urls}
                     onChange={handleImagesChange}
                     onError={handleImageError}
-                    label={t(
-                      "routes.dashboard.routes.products.components.EditProductForm.fields.images.label"
-                    )}
+                    label={""}
                     maxSizeInMB={2}
                     size="sm"
                     variant="rounded"
