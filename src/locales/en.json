@@ -333,7 +333,8 @@
           "desc": "Manage categories data",
           "createCategory": {
             "label": "Create Category",
-            "uploadImage": "Upload category image"
+            "uploadImage": "Upload category image",
+            "creationFailed": "Category creation failed"
           },
           "errors": {
             "failedLoadData": "Failed to Load categories"
@@ -342,6 +343,10 @@
             "SearchBar": { "placeholder": "Search for categories" },
             "CreateCategoryForm": {
               "fields": {
+                "categoryImage": {
+                  "label": "Category image",
+                  "placeholder": "Category image"
+                },
                 "name_ar": {
                   "label": "Arabic Name",
                   "placeholder": "Arabic Name"
@@ -352,6 +357,9 @@
                 }
               },
               "validations": {
+                "categoryImage": {
+                  "required": "Category image should be provided"
+                },
                 "name_ar": {
                   "minChars": "Arabic name must be at least 2 characters long"
                 },

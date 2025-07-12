@@ -34,6 +34,11 @@ import { useHandleApiError } from "@/hooks/handleApiError";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
+    categoryImage: z.string().min(2, {
+      message: t(
+        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage.required"
+      ),
+    }),
     name_ar: z.string().min(2, {
       message: t(
         "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.minChars"
@@ -70,13 +75,18 @@ const CreateCategoryForm = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      categoryImage: "",
       name_ar: "",
       name_en: "",
     },
   });
 
-  const handleImageChange = (file: File | null, url: string) => {
-    setCategoryImage({ file, url });
+  const handleImageChange = (data: { file?: File | null; url?: string }) => {
+    const url = data.url || "";
+
+    setCategoryImage({ file: data.file ?? null, url });
+
+    form.setValue("categoryImage", url);
   };
 
   const handleImageError = (error: string) => {
@@ -91,13 +101,17 @@ const CreateCategoryForm = () => {
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
+      const excludedFields = ["categoryImage"];
+
       Object.entries(data).forEach(([key, value]) => {
+        if (excludedFields.includes(key)) return;
+
         formData.append(key, String(value));
       });
 
       formData.append("lang", locale);
 
-      if (categoryImage.file) {
+      if (categoryImage?.file) {
         formData.append("image", categoryImage.file);
       }
 
@@ -111,7 +125,12 @@ const CreateCategoryForm = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData?.message || "Category creation failed");
+        throw new Error(
+          errorData?.message ||
+            t(
+              "routes.dashboard.routes.categories.createCategory.creationFailed"
+            )
+        );
       }
 
       return response.json();
@@ -154,22 +173,34 @@ const CreateCategoryForm = () => {
 
   return (
     <div className="space-y-6">
-      <ImageUploader
-        ref={imageUploaderRef}
-        value={categoryImage.url}
-        onChange={handleImageChange}
-        onError={handleImageError}
-        label={t(
-          "routes.dashboard.routes.categories.createCategory.uploadImage"
-        )}
-        maxSizeInMB={2}
-        size="sm"
-        variant="rounded"
-        accept="image/png, image/jpeg, image/jpg"
-      />
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="categoryImage"
+            render={() => (
+              <FormItem className={getFormItemClassName()}>
+                <FormLabel className="text-sm font-normal">
+                  {t(
+                    "routes.dashboard.routes.categories.createCategory.uploadImage"
+                  )}
+                </FormLabel>
+                <ImageUploader
+                  ref={imageUploaderRef}
+                  value={categoryImage.url}
+                  onChange={handleImageChange}
+                  onError={handleImageError}
+                  label={""}
+                  maxSizeInMB={2}
+                  size="sm"
+                  variant="rounded"
+                  accept="image/png, image/jpeg, image/jpg"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div
             className={`flex gap-5 ${
               isArabic ? "flex-row-reverse" : "flex-row"
