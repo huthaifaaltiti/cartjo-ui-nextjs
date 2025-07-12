@@ -10,16 +10,18 @@ import {
   User,
   MoreVertical,
 } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
+import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { formatDate } from "@/utils/formatDate";
 
 import { Product } from "@/types/product.type";
 import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
 
 import ProductCardActions from "./ProductCardActions";
-import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import ImageGallery from "../../shared/ImageGallery";
+import EditProductForm from "./EditProductForm";
 
 type DashboardProductCardProps = {
   item: Product;
@@ -41,6 +43,9 @@ const DashboardProductCard = ({
 }: DashboardProductCardProps) => {
   const t = useTranslations();
   const locale = useLocale();
+  const { data } = useCategoriesQuery();
+
+  const categories = data?.pages.flatMap((page) => page.categories) || [];
 
   const [showActions, setShowActions] = useState(false);
 
@@ -111,6 +116,9 @@ const DashboardProductCard = ({
               switchActiveStatusFn={switchProductActiveStatus}
               product={product}
               setShowActions={setShowActions}
+              renderEditForm={() => (
+                <EditProductForm product={product} categories={categories} />
+              )}
             />
           )}
         </div>
