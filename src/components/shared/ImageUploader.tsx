@@ -187,6 +187,7 @@ const ImageUploader = ({
       onChange?.({ files: [file], urls: [url], file, url });
     }
   };
+  
   const handleRemoveImage = (e: React.MouseEvent, indexToRemove: number) => {
     e.stopPropagation();
 
@@ -213,7 +214,7 @@ const ImageUploader = ({
     <div className="relative" key={index}>
       <div
         style={{
-          backgroundImage: `url(${imageUrl})`,
+          backgroundImage: `url(${encodeURI(imageUrl)})`,
         }}
         className={cn(
           sizeClasses[size],
