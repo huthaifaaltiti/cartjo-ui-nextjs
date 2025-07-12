@@ -2,19 +2,22 @@
 
 import { memo, useCallback, useState } from "react";
 import { Edit, Package, PackageOpen } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useLocale, useTranslations } from "next-intl";
+import { useQueryClient } from "@tanstack/react-query";
+
+import { invalidateQuery } from "@/utils/queryUtils";
 
 import { Product } from "@/types/product.type";
 import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
+
 import { useProducts } from "@/contexts/Products.context";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
+import { Button } from "@/components/ui/button";
+import Modal from "@/components/shared/Modal";
 import {
   showErrorToast,
   showSuccessToast,
 } from "@/components/shared/CustomToast";
-import { useLocale, useTranslations } from "next-intl";
-import { invalidateQuery } from "@/utils/queryUtils";
-import { useQueryClient } from "@tanstack/react-query";
 
 type ProductCardActionsProps = {
   setShowActions: (showActions: boolean) => void;
@@ -27,6 +30,7 @@ type ProductCardActionsProps = {
     isActive: boolean,
     id: string
   ) => Promise<SwitchActiveStatusResponse>;
+  renderEditForm?: (item: Product) => React.ReactNode;
 };
 
 const ProductCardActions = ({
@@ -35,6 +39,7 @@ const ProductCardActions = ({
   deleteFn,
   unDeleteFn,
   switchActiveStatusFn,
+  renderEditForm,
 }: ProductCardActionsProps) => {
   const { token, queryKey } = useProducts();
   const t = useTranslations();
@@ -42,6 +47,7 @@ const ProductCardActions = ({
   const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const handleDelete = useCallback(async () => {
     setIsLoading(true);
@@ -131,9 +137,7 @@ const ProductCardActions = ({
   ) => {
     switch (action) {
       case "edit":
-        // Add your edit logic here
-        console.log("Edit action triggered");
-        setShowActions(false);
+        setIsEditModalOpen(true);
         break;
       case "delete":
         handleDelete();
@@ -149,59 +153,72 @@ const ProductCardActions = ({
   };
 
   return (
-    <div className="absolute right-0 top-full mt-2 w-48 bg-white-50 rounded-lg shadow-lg border border-gray-200 z-50">
-      <div className="py-2 relative">
-        {isLoading && (
-          <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
-            <div className="text-xs text-gray-500">
-              {t("general.processing")}
+    <>
+      <div className="absolute right-0 top-full mt-2 w-48 bg-white-50 rounded-lg shadow-lg border border-gray-200 z-50">
+        <div className="py-2 relative">
+          {isLoading && (
+            <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
+              <div className="text-xs text-gray-500">
+                {t("general.processing")}
+              </div>
             </div>
-          </div>
-        )}
-
-        <button
-          onClick={() => handleAction("edit")}
-          className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2 text-gray-700"
-        >
-          <Edit size={16} />
-          <span>{t("general.actions.edit", { default: "Edit Product" })}</span>
-        </button>
-
-        <div className="border-t border-gray-100 my-1" />
-
-        <div className="w-full flex items-start gap-3 p-2">
-          {!product.isDeleted ? (
-            <Button
-              disabled={isLoading}
-              className={`w-auto min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
-              onClick={() => handleAction("delete")}
-            >
-              <Package className="w-1 h-1" />
-              {t("general.actions.delete")}
-            </Button>
-          ) : (
-            <Button
-              disabled={isLoading}
-              className={`w-auto min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
-              onClick={() => handleAction("un-delete")}
-            >
-              <PackageOpen className="w-1 h-1" />
-              {t("general.actions.restore")}
-            </Button>
           )}
 
-          <ToggleSwitch
-            value={product.isActive}
-            onChange={handleToggleActiveStatus}
-            width={50}
-            height={22}
-            trackColorInactive="#E55050"
-            trackColorActive="#16610E"
-            isDisabled={false}
-          />
+          <button
+            onClick={() => handleAction("edit")}
+            className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2 text-gray-700"
+          >
+            <Edit size={16} />
+            <span>
+              {t("general.actions.edit", { default: "Edit Product" })}
+            </span>
+          </button>
+
+          <div className="border-t border-gray-100 my-1" />
+
+          <div className="w-full flex items-start gap-3 p-2">
+            {!product.isDeleted ? (
+              <Button
+                disabled={isLoading}
+                className={`w-auto min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
+                onClick={() => handleAction("delete")}
+              >
+                <Package className="w-1 h-1" />
+                {t("general.actions.delete")}
+              </Button>
+            ) : (
+              <Button
+                disabled={isLoading}
+                className={`w-auto min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
+                onClick={() => handleAction("un-delete")}
+              >
+                <PackageOpen className="w-1 h-1" />
+                {t("general.actions.restore")}
+              </Button>
+            )}
+
+            <ToggleSwitch
+              value={product.isActive}
+              onChange={handleToggleActiveStatus}
+              width={50}
+              height={22}
+              trackColorInactive="#E55050"
+              trackColorActive="#16610E"
+              isDisabled={false}
+            />
+          </div>
         </div>
       </div>
-    </div>
+
+      {renderEditForm && (
+        <Modal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+        >
+          {renderEditForm(product)}
+        </Modal>
+      )}
+    </>
   );
 };
 
