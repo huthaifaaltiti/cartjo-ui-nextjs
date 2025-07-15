@@ -1,17 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+
+import { ErrorPageProps } from "@/types/common";
 import ErrorPage from "@/components/shared/ErrorPage";
 
-interface SubCategoriesErrorProps {
-  error?: Error & { digest?: string };
-  reset?: () => void;
-}
-
-export default function SubCategoriesError({
-  error,
-  reset,
-}: SubCategoriesErrorProps) {
+export default function SubCategoriesError({ error, reset }: ErrorPageProps) {
   const t = useTranslations();
 
   return (

@@ -31,3 +31,10 @@ export interface FetchPaginatedArgs {
   lastId?: string;
   search?: string;
 }
+
+// --
+
+export interface ErrorPageProps {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}

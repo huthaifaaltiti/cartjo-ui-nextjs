@@ -1,14 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+
+import { ErrorPageProps } from "@/types/common";
 import ErrorPage from "@/components/shared/ErrorPage";
 
-interface DashboardErrorProps {
-  error?: Error & { digest?: string };
-  reset?: () => void;
-}
-
-export default function DashboardError({ error, reset }: DashboardErrorProps) {
+export default function DashboardError({ error, reset }: ErrorPageProps) {
   const t = useTranslations();
 
   return (

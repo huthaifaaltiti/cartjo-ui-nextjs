@@ -1,12 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import ErrorPage from "@/components/shared/ErrorPage";
 
-interface ErrorPageProps {
-  error?: Error & { digest?: string };
-  reset?: () => void;
-}
+import { ErrorPageProps } from "@/types/common";
+import ErrorPage from "@/components/shared/ErrorPage";
 
 export default function DeletedUsersErrorPage({
   error,

@@ -1,14 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+
+import { ErrorPageProps } from "@/types/common";
 import ErrorPage from "@/components/shared/ErrorPage";
 
-interface LocationsErrorProps {
-  error?: Error & { digest?: string };
-  reset?: () => void;
-}
-
-export default function LocationsError({ error, reset }: LocationsErrorProps) {
+export default function LocationsError({ error, reset }: ErrorPageProps) {
   const t = useTranslations();
 
   return (
