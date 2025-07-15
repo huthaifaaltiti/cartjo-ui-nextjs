@@ -3,27 +3,75 @@
     "loadingStates": {
       "loadingApi": "جاري إرسال البيانات...",
       "loading": "جاري التحميل...",
-      "loadingUserSession": "جاري تحميل جلسة المستخدم..."
+      "loadingUserSession": "جاري تحميل جلسة المستخدم.."
     },
     "toast": {
       "title": {
-        "success": "نجح",
+        "success": "نجاح",
         "error": "خطأ",
         "warning": "تحذير"
       },
-      "dismissText": "إغلاق"
+      "dismissText": "تجاهل"
+    },
+    "authorization": {
+      "unAuthorizedToken": "رمز مستخدم غير مصرح به"
+    },
+    "items": {
+      "noMoreItems": "لا توجد المزيد من العناصر لعرضها",
+      "itemsFound": "تم العثور على عناصر",
+      "noItemsFound": "لم يتم العثور على عناصر",
+      "stock": "المخزون",
+      "sold": "مباع",
+      "favorites": "المفضلة",
+      "states": {
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "inStock": "متوفر في المخزون",
+        "lowStock": "مخزون منخفض",
+        "outOfStock": "غير متوفر في المخزون"
+      }
+    },
+    "actions": {
+      "delete": "حذف",
+      "restore": "استعادة",
+      "edit": "تعديل",
+      "create": "إنشاء",
+      "activate": "تفعيل",
+      "deActivate": "إلغاء التفعيل"
+    },
+    "others": {
+      "unknown": "غير معروف",
+      "created": "تم الإنشاء",
+      "createdBy": "تم الإنشاء بواسطة",
+      "updated": "تم التحديث"
     }
   },
   "errors": {
     "api": {
       "timeout": "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.",
-      "badRequest": "طلب غير صحيح",
+      "badRequest": "طلب غير صالح",
       "somethingWentWrong": "حدث خطأ ما!"
+    },
+    "components": {
+      "errorPage": {
+        "applicationError": "خطأ في التطبيق",
+        "unexpectedErrorOccurred": "حدث خطأ غير متوقع",
+        "couldNotLoadData": "لم نتمكن من تحميل بياناتك. قد يكون هذا بسبب مشكلة في المصادقة أو مشكلة في الخادم.",
+        "signInAgain": "تسجيل الدخول مرة أخرى",
+        "dashboard": "لوحة التحكم",
+        "tryAgain": "حاول مرة أخرى",
+        "retry": "إعادة المحاولة",
+        "signInWithDiffAccount": "تسجيل الدخول باستخدام حساب مختلف",
+        "contactSupport": "إذا استمرت المشكلة، يرجى الاتصال بالدعم عبر 0797662401 أو المحاولة مرة أخرى لاحقًا."
+      }
+    },
+    "data": {
+      "fetchingFailure": "فشل جلب البيانات"
     }
   },
   "components": {
     "TopBar": {
-      "deliver": "نحن نوصل إليك يومياً من",
+      "deliver": "نقوم بالتوصيل إليك يوميًا من",
       "fromTime": "7:00",
       "to": "إلى",
       "toTime": "23:00"
@@ -31,6 +79,24 @@
     "LanguageSelector": {
       "english": "English",
       "arabic": "العربية"
+    },
+    "ImageUploader": {
+      "labels": {
+        "maxFileSize": "الحد الأقصى لحجم الملف"
+      },
+      "errors": {
+        "sizeLimit": "يجب أن يكون حجم الملف أقل من {maxSize} ميغابايت.",
+        "invalidType": "نوع الملف غير مدعوم. الأنواع المقبولة: ({types}).",
+        "maxImagesReached": "تم الوصول إلى الحد الأقصى لعدد الملفات! ({maxImages})"
+      }
+    },
+    "TagsInput": {
+      "labels": {
+        "addTags": "أضف وسوم...",
+        "clearAllTags": "مسح جميع الوسوم",
+        "tags": "وسوم",
+        "maxTagsReached": "تم الوصول إلى الحد الأقصى للوسوم"
+      }
     }
   },
   "routes": {
@@ -38,7 +104,7 @@
       "components": {
         "AuthTabs": {
           "login": "تسجيل الدخول",
-          "register": "إنشاء حساب",
+          "register": "تسجيل",
           "components": {
             "login": {
               "hint": "إذا كان لديك حساب، قم بتسجيل الدخول باستخدام المعرف الخاص بك.",
@@ -57,7 +123,7 @@
                   "label": "تذكرني"
                 },
                 "lostPassword": {
-                  "label": "هل فقدت كلمة المرور؟"
+                  "label": "هل نسيت كلمة المرور؟"
                 }
               },
               "actions": {
@@ -65,12 +131,12 @@
               },
               "validations": {
                 "identifier": {
-                  "min": "يجب أن يكون المعرف 3 أحرف على الأقل",
-                  "max": "يجب أن يكون المعرف 50 حرف على الأكثر",
-                  "pattern": "يجب أن يكون اسم مستخدم صالح أو رقم هاتف أردني أو بريد إلكتروني"
+                  "min": "يجب أن يتكون المعرف من 3 أحرف على الأقل",
+                  "max": "يجب أن يتكون المعرف من 50 حرفًا على الأكثر",
+                  "pattern": "يجب أن يكون اسم مستخدم صالحًا أو رقم هاتف أردني أو بريدًا إلكترونيًا"
                 },
                 "password": {
-                  "min": "يجب أن تكون كلمة المرور 6 أحرف على الأقل"
+                  "min": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
                 }
               },
               "api": {
@@ -78,9 +144,9 @@
               }
             },
             "register": {
-              "hint": "هناك العديد من المزايا لإنشاء حساب: عملية الدفع أسرع، تتبع الشحنات ممكن والكثير أكثر.",
-              "note": "سيتم استخدام بياناتك الشخصية لدعم تجربتك في هذا الموقع، لإدارة الوصول إلى حسابك، ولأغراض أخرى موضحة في",
-              "privacyPolicy": "سياسة الخصوصية.",
+              "hint": "هناك العديد من المزايا لإنشاء حساب: عملية الدفع أسرع، تتبع الشحنة ممكن وأكثر من ذلك بكثير.",
+              "note": "سيتم استخدام بياناتك الشخصية لدعم تجربتك عبر هذا الموقع، ولإدارة الوصول إلى حسابك، ولأغراض أخرى موصوفة في",
+              "privacyPolicy": "سياسة الخصوصية الخاصة بنا.",
               "dataSet": {
                 "firstName": {
                   "label": "الاسم الأول",
@@ -108,37 +174,37 @@
                   "desc": "كلمة المرور"
                 },
                 "termsAccepted": {
-                  "label": "موافقة على الشروط",
-                  "placeholder": "موافقة على الشروط",
-                  "desc": "موافقة على الشروط"
+                  "label": "الموافقة على الشروط",
+                  "placeholder": "الموافقة على الشروط",
+                  "desc": "الموافقة على الشروط"
                 },
                 "marketingEmails": {
-                  "label": "رسائل تسويقية",
-                  "placeholder": "رسائل تسويقية",
-                  "desc": "رسائل تسويقية"
+                  "label": "رسائل البريد الإلكتروني التسويقية",
+                  "placeholder": "رسائل البريد الإلكتروني التسويقية",
+                  "desc": "رسائل البريد الإلكتروني التسويقية"
                 }
               },
               "actions": {
-                "proceed": "إنشاء حساب"
+                "proceed": "تسجيل"
               },
               "validations": {
                 "firstName": {
-                  "min": "يجب أن يكون الاسم الأول حرفين على الأقل"
+                  "min": "يجب أن يتكون الاسم الأول من حرفين على الأقل"
                 },
                 "lastName": {
-                  "min": "يجب أن يكون اسم العائلة حرفين على الأقل"
+                  "min": "يجب أن يتكون اسم العائلة من حرفين على الأقل"
                 },
                 "phoneNumber": {
-                  "pattern": "يجب أن يبدأ رقم الهاتف بـ 77 أو 78 أو 79 ويكون 9 أرقام"
+                  "pattern": "يجب أن يبدأ رقم الهاتف بـ 77 أو 78 أو 79 وأن يتكون من 9 أرقام"
                 },
                 "email": {
-                  "invalid": "يرجى إدخال عنوان بريد إلكتروني صالح"
+                  "invalid": "الرجاء إدخال عنوان بريد إلكتروني صالح"
                 },
                 "password": {
-                  "min": "يجب أن تكون كلمة المرور 6 أحرف على الأقل"
+                  "min": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
                 },
                 "termsAccepted": {
-                  "required": "يجب قبول الشروط والأحكام"
+                  "required": "يجب عليك قبول الشروط والأحكام"
                 }
               },
               "api": {
@@ -177,6 +243,9 @@
               "subLocations": "المواقع الفرعية",
               "adminUsers": "المستخدمون الإداريون"
             }
+          },
+          "errors": {
+            "failedLoadLocations": "فشل تحميل المواقع"
           }
         },
         "users": {
@@ -189,19 +258,443 @@
               "deletedUsers": "المستخدمون المحذوفون",
               "adminUsers": "المستخدمون الإداريون"
             }
+          },
+          "errors": {
+            "failedLoadUsers": "فشل تحميل المستخدمين"
+          },
+          "routes": {
+            "totalUsers": {
+              "components": {
+                "SearchBar": {
+                  "placeholder": "البحث عن المستخدمين"
+                },
+                "TotalUsersList": {
+                  "usersFound": "تم العثور على مستخدمين",
+                  "noUsersToLoad": "لا توجد المزيد من المستخدمين لتحميلهم",
+                  "noUsersFound": "لم يتم العثور على مستخدمين",
+                  "errors": {
+                    "totalUsersFetchingFailure": "خطأ أثناء جلب المستخدمين"
+                  }
+                },
+                "UserCardActions": {
+                  "archivingUserDetails": "أرشفة تفاصيل المستخدم...",
+                  "archiveUser": "أرشفة المستخدم",
+                  "restoringUserDetails": "استعادة تفاصيل المستخدم...",
+                  "restoreUser": "استعادة المستخدم"
+                }
+              },
+              "errors": {
+                "dataLoadFailure": "فشل تحميل تفاصيل إجمالي المستخدمين"
+              }
+            },
+            "activeUsers": {
+              "components": {
+                "SearchBar": {
+                  "placeholder": "البحث عن المستخدمين النشطين"
+                },
+                "TotalUsersList": {
+                  "usersFound": "تم العثور على مستخدمين نشطين",
+                  "noUsersToLoad": "لا توجد المزيد من المستخدمين النشطين لتحميلهم",
+                  "noUsersFound": "لم يتم العثور على مستخدمين نشطين",
+                  "errors": {
+                    "totalUsersFetchingFailure": "خطأ أثناء جلب المستخدمين النشطين"
+                  }
+                },
+                "UserCardActions": {
+                  "archivingUserDetails": "أرشفة تفاصيل المستخدم النشط...",
+                  "archiveUser": "أرشفة المستخدم النشط",
+                  "restoringUserDetails": "استعادة تفاصيل المستخدم النشط...",
+                  "restoreUser": "استعادة المستخدم النشط"
+                }
+              },
+              "errors": {
+                "dataLoadFailure": "فشل تحميل تفاصيل المستخدمين النشطين"
+              }
+            },
+            "deletedUsers": {
+              "components": {
+                "SearchBar": {
+                  "placeholder": "البحث عن المستخدمين المحذوفين"
+                }
+              },
+              "errors": {
+                "dataLoadFailure": "فشل تحميل تفاصيل المستخدمين المحذوفين"
+              }
+            },
+            "adminUsers": {
+              "components": {
+                "SearchBar": {
+                  "placeholder": "البحث عن المستخدمين الإداريين"
+                },
+                "CreateAdminUser": {
+                  "createAdmin": "إنشاء مسؤول"
+                }
+              },
+              "errors": {
+                "dataLoadFailure": "فشل تحميل تفاصيل المستخدمين الإداريين"
+              }
+            }
+          }
+        },
+        "categories": {
+          "title": "إدارة الفئات",
+          "desc": "إدارة بيانات الفئات",
+          "createCategory": {
+            "label": "إنشاء فئة",
+            "uploadImage": "تحميل صورة الفئة",
+            "creationFailed": "فشل إنشاء الفئة"
+          },
+          "errors": {
+            "failedLoadData": "فشل تحميل الفئات"
+          },
+          "components": {
+            "SearchBar": {
+              "placeholder": "البحث عن الفئات"
+            },
+            "CreateCategoryForm": {
+              "fields": {
+                "categoryImage": {
+                  "label": "صورة الفئة",
+                  "placeholder": "صورة الفئة"
+                },
+                "name_ar": {
+                  "label": "الاسم بالعربية",
+                  "placeholder": "الاسم بالعربية"
+                },
+                "name_en": {
+                  "label": "الاسم بالإنجليزية",
+                  "placeholder": "الاسم بالإنجليزية"
+                }
+              },
+              "validations": {
+                "categoryImage": {
+                  "required": "يجب توفير صورة الفئة"
+                },
+                "name_ar": {
+                  "minChars": "يجب أن يتكون الاسم العربي من حرفين على الأقل"
+                },
+                "name_en": {
+                  "minChars": "يجب أن يتكون الاسم الإنجليزي من حرفين على الأقل"
+                }
+              }
+            },
+            "EditCategoryForm": {
+              "fields": {
+                "name_ar": {
+                  "label": "الاسم بالعربية",
+                  "placeholder": "الاسم بالعربية"
+                },
+                "name_en": {
+                  "label": "الاسم بالإنجليزية",
+                  "placeholder": "الاسم بالإنجليزية"
+                }
+              },
+              "validations": {
+                "name_ar": {
+                  "minChars": "يجب أن يتكون الاسم العربي من حرفين على الأقل"
+                },
+                "name_en": {
+                  "minChars": "يجب أن يتكون الاسم الإنجليزي من حرفين على الأقل"
+                }
+              }
+            }
+          }
+        },
+        "subCategories": {
+          "title": "إدارة الفئات الفرعية",
+          "desc": "إدارة بيانات الفئات الفرعية",
+          "createSubCategory": {
+            "label": "إنشاء فئة فرعية",
+            "uploadImage": "تحميل صورة الفئة الفرعية"
+          },
+          "errors": {
+            "failedLoadData": "فشل تحميل الفئات الفرعية"
+          },
+          "components": {
+            "SearchBar": {
+              "placeholder": "البحث عن الفئات الفرعية"
+            },
+            "CreateSubCategoryForm": {
+              "fields": {
+                "name_ar": {
+                  "label": "الاسم بالعربية",
+                  "placeholder": "الاسم بالعربية"
+                },
+                "name_en": {
+                  "label": "الاسم بالإنجليزية",
+                  "placeholder": "الاسم بالإنجليزية"
+                },
+                "category": {
+                  "label": "الفئة",
+                  "placeholder": "اختر فئة"
+                }
+              },
+              "validations": {
+                "name_ar": {
+                  "minChars": "يجب أن يتكون الاسم العربي من حرفين على الأقل"
+                },
+                "name_en": {
+                  "minChars": "يجب أن يتكون الاسم الإنجليزي من حرفين على الأقل"
+                },
+                "category": {
+                  "required": "الفئة مطلوبة"
+                }
+              }
+            },
+            "CategoryListSelector": {
+              "select": {
+                "all": "جميع الفئات",
+                "one": "اختر فئة"
+              }
+            }
+          }
+        },
+        "products": {
+          "title": "إدارة المنتجات",
+          "desc": "إدارة بيانات المنتجات",
+          "createProduct": {
+            "label": "إنشاء منتج",
+            "uploadImage": "تحميل صورة المنتج"
+          },
+          "components": {
+            "SearchBar": {
+              "placeholder": "البحث عن المنتجات"
+            },
+            "CreateProductForm": {
+              "fields": {
+                "mainImage": {
+                  "label": "الصور الرئيسية للمنتج",
+                  "placeholder": "الصور الرئيسية للمنتج"
+                },
+                "images": {
+                  "label": "صور المنتج",
+                  "placeholder": "صور المنتج"
+                },
+                "name_ar": {
+                  "label": "الاسم بالعربية",
+                  "placeholder": "الاسم بالعربية"
+                },
+                "name_en": {
+                  "label": "الاسم بالإنجليزية",
+                  "placeholder": "الاسم بالإنجليزية"
+                },
+                "desc_ar": {
+                  "label": "الوصف بالعربية",
+                  "placeholder": "الوصف بالعربية"
+                },
+                "desc_en": {
+                  "label": "الوصف بالإنجليزية",
+                  "placeholder": "الوصف بالإنجليزية"
+                },
+                "price": {
+                  "label": "السعر",
+                  "placeholder": "السعر"
+                },
+                "currency": {
+                  "label": "العملة",
+                  "placeholder": "العملة"
+                },
+                "totalAmountCount": {
+                  "label": "العدد الكلي",
+                  "placeholder": "العدد الكلي"
+                },
+                "typeHint": {
+                  "label": "تلميح النوع",
+                  "placeholder": "تلميح النوع"
+                },
+                "category": {
+                  "label": "الفئة",
+                  "placeholder": "اختر فئة"
+                },
+                "subCategory": {
+                  "label": "الفئة الفرعية",
+                  "placeholder": "اختر فئة فرعية"
+                },
+                "tags": {
+                  "label": "الوسوم",
+                  "placeholder": "أضف وسوم"
+                },
+                "availableCount": {
+                  "label": "العدد المتاح",
+                  "placeholder": "العدد المتاح"
+                },
+                "discountRate": {
+                  "label": "نسبة الخصم",
+                  "placeholder": "نسبة الخصم"
+                }
+              },
+              "validations": {
+                "mainImage": {
+                  "required": "يجب توفير الصورة الرئيسية للمنتج"
+                },
+                "images": {
+                  "required": "يجب توفير صور المنتج"
+                },
+                "name_ar": {
+                  "minChars": "يجب أن يتكون الاسم العربي من حرفين على الأقل"
+                },
+                "name_en": {
+                  "minChars": "يجب أن يتكون الاسم الإنجليزي من حرفين على الأقل"
+                },
+                "category": {
+                  "required": "الفئة مطلوبة"
+                },
+                "desc_ar": {
+                  "minChars": "يجب أن يتكون الوصف العربي من 20 حرفًا على الأقل"
+                },
+                "desc_en": {
+                  "minChars": "يجب أن يتكون الوصف الإنجليزي من 20 حرفًا على الأقل"
+                },
+                "price": {
+                  "min": "يجب أن يكون السعر 1 على الأقل"
+                },
+                "totalAmountCount": {
+                  "min": "يجب أن يكون العدد الكلي 1 على الأقل"
+                },
+                "currency": {
+                  "notSupported": "اختر إحدى العملات المدعومة"
+                },
+                "typeHint": {
+                  "notSupported": "اختر أحد تلميحات الأنواع المدعومة"
+                },
+                "subCategory": {
+                  "required": "الفئة الفرعية مطلوبة"
+                },
+                "tags": {
+                  "min": "أضف وسمًا واحدًا على الأقل"
+                },
+                "availableCount": {
+                  "min": "يجب أن يكون العدد المتاح 1 على الأقل"
+                },
+                "discountRate": {
+                  "min": "يجب أن تكون نسبة الخصم 1 على الأقل"
+                }
+              }
+            },
+            "EditProductForm": {
+              "fields": {
+                "mainImage": {
+                  "label": "الصور الرئيسية للمنتج",
+                  "placeholder": "الصور الرئيسية للمنتج"
+                },
+                "images": {
+                  "label": "صور المنتج",
+                  "placeholder": "صور المنتج"
+                },
+                "name_ar": {
+                  "label": "الاسم بالعربية",
+                  "placeholder": "الاسم بالعربية"
+                },
+                "name_en": {
+                  "label": "الاسم بالإنجليزية",
+                  "placeholder": "الاسم بالإنجليزية"
+                },
+                "desc_ar": {
+                  "label": "الوصف بالعربية",
+                  "placeholder": "الوصف بالعربية"
+                },
+                "desc_en": {
+                  "label": "الوصف بالإنجليزية",
+                  "placeholder": "الوصف بالإنجليزية"
+                },
+                "price": {
+                  "label": "السعر",
+                  "placeholder": "السعر"
+                },
+                "currency": {
+                  "label": "العملة",
+                  "placeholder": "العملة"
+                },
+                "totalAmountCount": {
+                  "label": "العدد الكلي",
+                  "placeholder": "العدد الكلي"
+                },
+                "typeHint": {
+                  "label": "تلميح النوع",
+                  "placeholder": "تلميح النوع"
+                },
+                "category": {
+                  "label": "الفئة",
+                  "placeholder": "اختر فئة"
+                },
+                "subCategory": {
+                  "label": "الفئة الفرعية",
+                  "placeholder": "اختر فئة فرعية"
+                },
+                "tags": {
+                  "label": "الوسوم",
+                  "placeholder": "أضف وسوم"
+                },
+                "availableCount": {
+                  "label": "العدد المتاح",
+                  "placeholder": "العدد المتاح"
+                },
+                "discountRate": {
+                  "label": "نسبة الخصم",
+                  "placeholder": "نسبة الخصم"
+                }
+              },
+              "validations": {
+                "mainImage": {
+                  "required": "يجب توفير الصورة الرئيسية للمنتج"
+                },
+                "images": {
+                  "required": "يجب توفير صور المنتج"
+                },
+                "name_ar": {
+                  "minChars": "يجب أن يتكون الاسم العربي من حرفين على الأقل"
+                },
+                "name_en": {
+                  "minChars": "يجب أن يتكون الاسم الإنجليزي من حرفين على الأقل"
+                },
+                "category": {
+                  "required": "الفئة مطلوبة"
+                },
+                "desc_ar": {
+                  "minChars": "يجب أن يتكون الوصف العربي من 20 حرفًا على الأقل"
+                },
+                "desc_en": {
+                  "minChars": "يجب أن يتكون الوصف الإنجليزي من 20 حرفًا على الأقل"
+                },
+                "price": {
+                  "min": "يجب أن يكون السعر 1 على الأقل"
+                },
+                "totalAmountCount": {
+                  "min": "يجب أن يكون العدد الكلي 1 على الأقل"
+                },
+                "currency": {
+                  "notSupported": "اختر إحدى العملات المدعومة"
+                },
+                "typeHint": {
+                  "notSupported": "اختر أحد تلميحات الأنواع المدعومة"
+                },
+                "subCategory": {
+                  "required": "الفئة الفرعية مطلوبة"
+                },
+                "tags": {
+                  "min": "أضف وسمًا واحدًا على الأقل"
+                },
+                "availableCount": {
+                  "min": "يجب أن يكون العدد المتاح 1 على الأقل"
+                },
+                "discountRate": {
+                  "min": "يجب أن تكون نسبة الخصم 1 على الأقل"
+                }
+              }
+            }
           }
         }
       },
       "components": {
         "NoLoggedUserState": {
           "notLoggedIn": "أنت غير مسجل الدخول!",
-          "goTo": "يرجى الذهاب إلى",
+          "goTo": "الرجاء الذهاب إلى",
           "pathLink": "/auth",
           "toLogin": "لتسجيل الدخول"
         },
         "AuthUserDashboard": {
-          "welcomeBack": "مرحباً بعودتك!",
-          "loggedAsUser": "أنت مسجل دخول كمستخدم عادي.",
+          "welcomeBack": "أهلاً بك مرة أخرى!",
+          "loggedAsUser": "لقد سجلت الدخول كمستخدم عادي.",
           "signOut": "تسجيل الخروج",
           "navigateToHome": "الانتقال إلى الصفحة الرئيسية"
         },
@@ -209,13 +702,22 @@
           "navLinks": "روابط التنقل",
           "navItems": {
             "locations": "المواقع",
-            "users": "المستخدمون"
+            "users": "المستخدمين",
+            "categories": "الفئات",
+            "subCategories": "الفئات الفرعية",
+            "products": "المنتجات"
           }
         },
         "DashboardLocationCard": {
           "hide": "إخفاء",
-          "show": "عرض"
+          "show": "إظهار"
+        },
+        "BackToDashboardBtn": {
+          "label": "العودة إلى لوحة التحكم"
         }
+      },
+      "errors": {
+        "dashboardFailure": "فشل تحميل تفاصيل لوحة التحكم"
       }
     }
   }
