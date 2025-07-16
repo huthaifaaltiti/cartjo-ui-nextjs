@@ -1,12 +1,11 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
+import imageDomains from "@/config/imageDomains";
+
 const nextConfig: NextConfig = {
   images: {
-    domains:
-      process.env.NODE_ENV === "development"
-        ? ["localhost"]
-        : ["your-live-domain.com"],
+    domains: imageDomains,
   },
 };
 
