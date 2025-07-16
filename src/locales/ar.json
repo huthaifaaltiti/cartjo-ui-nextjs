@@ -26,6 +26,7 @@
       "states": {
         "active": "نشط",
         "inactive": "غير نشط",
+        "deleted": "عنصر محذوف",
         "inStock": "متوفر في المخزون",
         "lowStock": "مخزون منخفض",
         "outOfStock": "غير متوفر في المخزون"

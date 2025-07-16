@@ -164,7 +164,7 @@ const CategoryCardActions = <
           />
         </div>
 
-        <div className="w-full flex items-center justify-center gap-4 flex-wrap">
+        <div className="w-full flex items-center justify-center gap-4 flex-wrap sm:flex-nowrap">
           {!cardItem.isDeleted ? (
             <Button
               disabled={isLoading}
