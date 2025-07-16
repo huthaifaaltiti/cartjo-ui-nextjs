@@ -1,3 +1,4 @@
+import { Media } from "./media.type";
 import { SubCategory } from "./subCategory";
 
 type Name = {
@@ -17,6 +18,7 @@ export interface Category {
   __v: number;
   name: Name;
   image: string;
+  mediaId: Media;
   subCategories: SubCategory[];
   isActive: boolean;
   isDeleted: boolean;
