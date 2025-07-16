@@ -29,8 +29,10 @@ import { useCategories } from "@/contexts/CategoriesContext";
 import { User } from "@/types/user";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { isArabicOnly } from "@/utils/text/containsArabic";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { useHandleApiError } from "@/hooks/handleApiError";
+import { isEnglishOnly } from "@/utils/text/containsEnglish";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -39,16 +41,30 @@ const createFormSchema = (t: (key: string) => string) =>
         "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage.required"
       ),
     }),
-    name_ar: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.minChars"
-      ),
-    }),
-    name_en: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.minChars"
-      ),
-    }),
+    name_ar: z
+      .string()
+      .min(2, {
+        message: t(
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.minChars"
+        ),
+      })
+      .refine((val) => isArabicOnly(val), {
+        message: t(
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.arabicCharsOnly"
+        ),
+      }),
+    name_en: z
+      .string()
+      .min(2, {
+        message: t(
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.minChars"
+        ),
+      })
+      .refine((val) => isEnglishOnly(val), {
+        message: t(
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.englishCharsOnly"
+        ),
+      }),
   });
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
