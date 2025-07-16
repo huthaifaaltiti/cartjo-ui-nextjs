@@ -38,7 +38,7 @@ export const showCustomToast = ({
 
         <button
           onClick={() => toast.dismiss(t)}
-          className="text-sm text-white/70 hover:text-white underline transition-colors"
+          className="text-sm text-white/70 hover:text-white underline transition-colors cursor-pointer"
         >
           {dismissText}
         </button>
