@@ -164,12 +164,12 @@ const CategoryCardActions = <
           />
         </div>
 
-        <div className="w-3/4 flex items-center gap-4">
+        <div className="w-full flex items-center justify-center gap-4 flex-wrap">
           {!cardItem.isDeleted ? (
             <Button
               disabled={isLoading}
               className={`${
-                showEditButton ? "min-w-40 w-auto" : "w-full"
+                showEditButton ? "w-full" : "w-full"
               } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
               onClick={handleDelete}
             >
@@ -180,7 +180,7 @@ const CategoryCardActions = <
             <Button
               disabled={isLoading}
               className={`${
-                showEditButton ? "min-w-40 w-auto" : "w-full"
+                showEditButton ? "w-full" : "w-full"
               } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
               onClick={handleUnDelete}
             >
@@ -192,7 +192,7 @@ const CategoryCardActions = <
           {showEditButton && renderEditForm && (
             <Button
               disabled={isLoading}
-              className="min-w-40 w-auto min-h-3 bg-gray-500 hover:bg-gray-600 text-white-50 transition-all"
+              className="w-full min-h-3 bg-gray-500 hover:bg-gray-600 text-white-50 transition-all"
               onClick={() => setIsEditModalOpen(true)}
             >
               <Package className="w-1 h-1" />
