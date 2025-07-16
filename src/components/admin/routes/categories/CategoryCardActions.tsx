@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { invalidateQuery } from "@/utils/queryUtils";
 import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
+import { Locale } from "@/types/locale";
 
 import { Button } from "@/components/ui/button";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
@@ -21,8 +22,16 @@ type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean }
 > = {
   cardItem: T;
-  deleteFn: (token: string, id: string) => Promise<DeletingResponse>;
-  unDeleteFn: (token: string, id: string) => Promise<DeletingResponse>;
+  deleteFn: (
+    token: string,
+    id: string,
+    lang: Locale
+  ) => Promise<DeletingResponse>;
+  unDeleteFn: (
+    token: string,
+    id: string,
+    lang: Locale
+  ) => Promise<DeletingResponse>;
   switchUserActiveStatusFn: (
     token: string,
     lang: string,
@@ -48,7 +57,7 @@ const CategoryCardActions = <
   renderEditForm,
 }: DashboardCardActionsProps<T>) => {
   const t = useTranslations();
-  const locale = useLocale();
+  const locale = useLocale() as Locale;
   const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -57,7 +66,7 @@ const CategoryCardActions = <
   const handleDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await deleteFn(accessToken, cardItem._id);
+      const resp = await deleteFn(accessToken, cardItem._id, locale);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -80,7 +89,7 @@ const CategoryCardActions = <
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await unDeleteFn(accessToken, cardItem._id);
+      const resp = await unDeleteFn(accessToken, cardItem._id, locale);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),

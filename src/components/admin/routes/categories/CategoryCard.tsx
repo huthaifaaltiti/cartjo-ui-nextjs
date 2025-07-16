@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 
 import { Category } from "@/types/category";
+import { Locale } from "@/types/locale";
 import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
 
 import CategoryCardActions from "./CategoryCardActions";
@@ -12,11 +13,13 @@ type CategoryCardProps = {
   item: Category;
   deleteCategory: (
     accessToken: string,
-    userId: string
+    userId: string,
+    lang: Locale
   ) => Promise<DeletingResponse>;
   unDeleteCategory: (
     accessToken: string,
-    userId: string
+    userId: string,
+    lang: Locale
   ) => Promise<DeletingResponse>;
   accessToken: string;
   switchCategoryActiveStatus: (

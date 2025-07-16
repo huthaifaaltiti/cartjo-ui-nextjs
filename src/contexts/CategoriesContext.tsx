@@ -11,8 +11,16 @@ type CategoriesContextType = {
   searchQuery: string;
   accessToken: string;
   setSearchQuery: (searchQuery: string) => void;
-  deleteCategory: (token: string, catId: string) => Promise<DeletingResponse>;
-  unDeleteCategory: (token: string, catId: string) => Promise<DeletingResponse>;
+  deleteCategory: (
+    token: string,
+    catId: string,
+    lang: Locale
+  ) => Promise<DeletingResponse>;
+  unDeleteCategory: (
+    token: string,
+    catId: string,
+    lang: Locale
+  ) => Promise<DeletingResponse>;
   switchCategoryActiveStatus: (
     token: string,
     lang: Locale | string,
@@ -39,12 +47,14 @@ export const CategoriesContextProvider = ({
 
   const deleteCategory = async (
     token: string,
-    catId: string
+    catId: string,
+    lang: Locale
   ): Promise<DeletingResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.CATEGORIES.DELETE}/${catId}`,
       {
         method: "DELETE",
+        body: JSON.stringify({ lang }),
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -62,12 +72,14 @@ export const CategoriesContextProvider = ({
 
   const unDeleteCategory = async (
     token: string,
-    catId: string
+    catId: string,
+    lang: Locale
   ): Promise<DeletingResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.CATEGORIES.UN_DELETE}/${catId}`,
       {
         method: "DELETE",
+        body: JSON.stringify({ lang }),
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
