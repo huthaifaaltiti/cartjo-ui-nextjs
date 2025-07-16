@@ -1,7 +1,8 @@
-import { toast } from "sonner";
 import React from "react";
-import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 import { CheckCircle, AlertTriangle, XCircle } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 
 interface CustomToastProps {
   title?: string;
@@ -16,7 +17,6 @@ interface CustomToastProps {
 const baseClass =
   "w-[95vw] md:w-[30rem] text-white rounded-2xl shadow-lg p-4 flex justify-between items-start gap-4 animate-in fade-in slide-in-from-top duration-300";
 
-// General-purpose function (already exists)
 export const showCustomToast = ({
   title,
   description,
