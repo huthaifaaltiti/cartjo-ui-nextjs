@@ -26,6 +26,7 @@
       "states": {
         "active": "Active",
         "inactive": "Inactive",
+        "deleted": "Deleted",
         "inStock": "In Stock",
         "lowStock": "Low Stock",
         "outOfStock": "outOfInStock"
