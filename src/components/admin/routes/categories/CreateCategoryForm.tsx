@@ -7,7 +7,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -25,6 +24,7 @@ import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
 import { useCategories } from "@/contexts/CategoriesContext";
+import LoadingButton from "@/components/shared/LoadingButton";
 
 import { User } from "@/types/user";
 
@@ -298,17 +298,15 @@ const CreateCategoryForm = () => {
             </div>
           </div>
 
-          <Button
+          <LoadingButton
             type="submit"
-            disabled={registerMutation.isPending}
-            className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 disabled:opacity-50 transition-all"
-          >
-            {registerMutation.isPending
-              ? t("general.loadingStates.loadingApi")
-              : t(
-                  "routes.auth.components.AuthTabs.components.register.actions.proceed"
-                )}
-          </Button>
+            loading={registerMutation.isPending}
+            withAnimate={true}
+            label={t(
+              "routes.auth.components.AuthTabs.components.register.actions.proceed"
+            )}
+            loadingLabel={t("general.loadingStates.loadingApi")}
+          />
         </form>
       </Form>
     </div>

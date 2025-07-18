@@ -1,9 +1,9 @@
 {
   "general": {
     "loadingStates": {
-      "loadingApi": "Sending data...",
-      "loading": "Loading...",
-      "loadingUserSession": "Loading user's session.."
+      "loadingApi": "Sending data",
+      "loading": "Loading",
+      "loadingUserSession": "Loading user's session"
     },
     "toast": {
       "title": {

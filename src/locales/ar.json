@@ -1,9 +1,9 @@
 {
   "general": {
     "loadingStates": {
-      "loadingApi": "جاري إرسال البيانات...",
-      "loading": "جاري التحميل...",
-      "loadingUserSession": "جاري تحميل جلسة المستخدم.."
+      "loadingApi": "جارِ إرسال البيانات",
+      "loading": "جاري التحميل",
+      "loadingUserSession": "جاري تحميل جلسة المستخدم"
     },
     "toast": {
       "title": {
