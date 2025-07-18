@@ -1,9 +1,9 @@
 import { memo } from "react";
 import { Blocks } from "lucide-react";
 
-import { CategoriesContextProvider } from "@/contexts/CategoriesContext";
 import { Category } from "@/types/category";
 
+import { CategoriesContextProvider } from "@/contexts/CategoriesContext";
 import SearchCategories from "./SearchCategories";
 import CategoriesList from "./CategoriesList";
 import ModalCreateButton from "@/components/shared/ModalCreateButton";
