@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import ErrorMessage from "@/components/shared/ErrorMessage";
+import FoundItemsCount from "./FoundItemsCount";
 
 type Props<T, P extends object = Record<string, unknown>> = {
   isLoading: boolean;
@@ -66,11 +67,7 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <p className="text-sm text-gray-600">
-          {isLoading
-            ? t("general.loadingStates.loading")
-            : `${list.length} ${t("general.items.itemsFound")}`}
-        </p>
+        <FoundItemsCount isLoading={isLoading} count={list.length} />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
