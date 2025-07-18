@@ -20,16 +20,16 @@ const CategoriesPage = ({
 }: CategoriesPageProps) => {
   return (
     <CategoriesContextProvider accessToken={accessToken}>
-      <ModalCreateButton
-        icon={<Blocks />}
-        createTranslationKey="routes.dashboard.routes.categories.createCategory.label"
-        ModalContent={<CreateCategoryForm />}
-      />
-      <SearchCategories />
-
-      <div className="w-full mt-3">
-        <CategoriesList initialCategories={initialCategories} />
+      <div className="w-full flex items-center justify-between gap-5 mb-3">
+        <SearchCategories />
+        <ModalCreateButton
+          icon={<Blocks />}
+          createTranslationKey="routes.dashboard.routes.categories.createCategory.label"
+          ModalContent={<CreateCategoryForm />}
+        />
       </div>
+
+      <CategoriesList initialCategories={initialCategories} />
     </CategoriesContextProvider>
   );
 };

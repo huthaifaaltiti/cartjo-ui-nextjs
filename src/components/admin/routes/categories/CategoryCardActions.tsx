@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { invalidateQuery } from "@/utils/queryUtils";
 import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
+import { Locale } from "@/types/locale";
 
 import { Button } from "@/components/ui/button";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
@@ -21,8 +22,16 @@ type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean }
 > = {
   cardItem: T;
-  deleteFn: (token: string, id: string) => Promise<DeletingResponse>;
-  unDeleteFn: (token: string, id: string) => Promise<DeletingResponse>;
+  deleteFn: (
+    token: string,
+    id: string,
+    lang: Locale
+  ) => Promise<DeletingResponse>;
+  unDeleteFn: (
+    token: string,
+    id: string,
+    lang: Locale
+  ) => Promise<DeletingResponse>;
   switchUserActiveStatusFn: (
     token: string,
     lang: string,
@@ -48,7 +57,7 @@ const CategoryCardActions = <
   renderEditForm,
 }: DashboardCardActionsProps<T>) => {
   const t = useTranslations();
-  const locale = useLocale();
+  const locale = useLocale() as Locale;
   const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -57,7 +66,7 @@ const CategoryCardActions = <
   const handleDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await deleteFn(accessToken, cardItem._id);
+      const resp = await deleteFn(accessToken, cardItem._id, locale);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -80,7 +89,7 @@ const CategoryCardActions = <
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await unDeleteFn(accessToken, cardItem._id);
+      const resp = await unDeleteFn(accessToken, cardItem._id, locale);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -164,12 +173,12 @@ const CategoryCardActions = <
           />
         </div>
 
-        <div className="w-3/4 flex items-center gap-4">
+        <div className="w-full flex items-center justify-center gap-4 flex-wrap sm:flex-nowrap">
           {!cardItem.isDeleted ? (
             <Button
               disabled={isLoading}
               className={`${
-                showEditButton ? "min-w-40 w-auto" : "w-full"
+                showEditButton ? "w-full" : "w-full"
               } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
               onClick={handleDelete}
             >
@@ -180,7 +189,7 @@ const CategoryCardActions = <
             <Button
               disabled={isLoading}
               className={`${
-                showEditButton ? "min-w-40 w-auto" : "w-full"
+                showEditButton ? "w-full" : "w-full"
               } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
               onClick={handleUnDelete}
             >
@@ -192,7 +201,7 @@ const CategoryCardActions = <
           {showEditButton && renderEditForm && (
             <Button
               disabled={isLoading}
-              className="min-w-40 w-auto min-h-3 bg-gray-500 hover:bg-gray-600 text-white-50 transition-all"
+              className="w-full min-h-3 bg-gray-500 hover:bg-gray-600 text-white-50 transition-all"
               onClick={() => setIsEditModalOpen(true)}
             >
               <Package className="w-1 h-1" />

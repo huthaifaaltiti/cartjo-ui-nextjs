@@ -115,12 +115,6 @@ const ImageUploader = ({
   };
 
   const handleImageSelect = () => {
-    console.log("handleImageSelect called", {
-      disabled,
-      isMultipleMode,
-      imagesLength: images.length,
-      maxImages,
-    });
     if (disabled) return;
     if (isMultipleMode && images.length >= maxImages) {
       onError?.(
@@ -128,7 +122,6 @@ const ImageUploader = ({
       );
       return;
     }
-    console.log("About to click input");
     inputRef.current?.click();
   };
 

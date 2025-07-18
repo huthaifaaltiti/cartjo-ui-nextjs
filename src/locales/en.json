@@ -26,6 +26,7 @@
       "states": {
         "active": "Active",
         "inactive": "Inactive",
+        "deleted": "Deleted",
         "inStock": "In Stock",
         "lowStock": "Low Stock",
         "outOfStock": "outOfInStock"
@@ -361,10 +362,12 @@
                   "required": "Category image should be provided"
                 },
                 "name_ar": {
-                  "minChars": "Arabic name must be at least 2 characters long"
+                  "minChars": "Arabic name must be at least 2 characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
                 },
                 "name_en": {
-                  "minChars": "English name must be at least 2 characters long"
+                  "minChars": "English name must be at least 2 characters long",
+                  "englishCharsOnly": "Must contain English characters only"
                 }
               }
             },

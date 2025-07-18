@@ -36,6 +36,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
   const isArabic = locale === "ar";
   const dir = locale === "ar" ? "rtl" : "ltr";
+  const layoutFont = isArabic ? notoKufiArabic.className : inter.className;
 
   if (!hasLocale(routing.locales, locale)) {
     notFound();
@@ -43,16 +44,13 @@ export default async function LocaleLayout({
 
   return (
     <html dir={dir} lang={locale}>
-      <body
-        className={`${
-          isArabic ? notoKufiArabic.className : inter.className
-        } antialiased`}
-      >
+      <body className={`${layoutFont} antialiased`}>
         <ReactQueryProvider>
           <NextIntlClientProvider>
             <LocaleProvider locale={locale}>
               <SessionWrapper>
                 <Toaster
+                  toastOptions={{ className: layoutFont }}
                   position={isArabic ? "top-right" : "top-left"}
                   expand={true}
                   closeButton={false}
