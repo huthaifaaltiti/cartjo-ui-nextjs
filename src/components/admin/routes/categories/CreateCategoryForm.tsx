@@ -28,24 +28,39 @@ import { useCategories } from "@/contexts/CategoriesContext";
 
 import { User } from "@/types/user";
 
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { invalidateQuery } from "@/utils/queryUtils";
-import { useHandleApiError } from "@/hooks/handleApiError";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
 
-const createFormSchema = (t: (key: string) => string) =>
-  z.object({
-    categoryImage: z.string().min(2, {
+import { validationConfig } from "@/config/validationConfig";
+
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { useHandleApiError } from "@/hooks/handleApiError";
+
+const createFormSchema = (
+  t: (key: string, options?: Record<string, string | number | Date>) => string
+) => {
+  const { nameMinChars, nameMaxChars, imageMinChars } =
+    validationConfig.category;
+
+  return z.object({
+    categoryImage: z.string().min(imageMinChars, {
       message: t(
         "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage.required"
       ),
     }),
     name_ar: z
       .string()
-      .min(2, {
+      .min(nameMinChars, {
         message: t(
-          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.minChars"
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.minChars",
+          { min: nameMinChars }
+        ),
+      })
+      .max(nameMaxChars, {
+        message: t(
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.maxChars",
+          { max: nameMaxChars }
         ),
       })
       .refine((val) => isArabicOnly(val), {
@@ -55,9 +70,16 @@ const createFormSchema = (t: (key: string) => string) =>
       }),
     name_en: z
       .string()
-      .min(2, {
+      .min(nameMinChars, {
         message: t(
-          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.minChars"
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.minChars",
+          { min: nameMinChars }
+        ),
+      })
+      .max(nameMaxChars, {
+        message: t(
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.maxChars",
+          { max: nameMaxChars }
         ),
       })
       .refine((val) => isEnglishOnly(val), {
@@ -66,6 +88,7 @@ const createFormSchema = (t: (key: string) => string) =>
         ),
       }),
   });
+};
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 

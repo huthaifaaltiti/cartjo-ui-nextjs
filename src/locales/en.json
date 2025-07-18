@@ -362,11 +362,13 @@
                   "required": "Category image should be provided"
                 },
                 "name_ar": {
-                  "minChars": "Arabic name must be at least 2 characters long",
+                  "minChars": "Arabic name must be at least ({min}) characters long",
+                  "maxChars": "Arabic name must be at most ({max}) characters long",
                   "arabicCharsOnly": "Must contain Arabic characters only"
                 },
                 "name_en": {
-                  "minChars": "English name must be at least 2 characters long",
+                  "minChars": "English name must be at least ({min}) characters long",
+                  "maxChars": "English name must be at most ({max}) characters long",
                   "englishCharsOnly": "Must contain English characters only"
                 }
               }
