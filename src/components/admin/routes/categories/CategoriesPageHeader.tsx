@@ -5,7 +5,7 @@ const CategoriesPageHeader = () => {
   const t = useTranslations();
 
   return (
-    <div className="mb-3 pb-3 border-b">
+    <div className="mb-3 pb-3 px-2 md:px-0 border-b">
       <h1 className="text-xl font-bold text-gray-900">
         {t("routes.dashboard.routes.categories.title")}
       </h1>
