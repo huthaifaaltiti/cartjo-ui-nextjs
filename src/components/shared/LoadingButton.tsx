@@ -25,7 +25,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
       className={`w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 disabled:opacity-50 transition-all ${className}`}
       {...props}
     >
-      {!loading ? (
+      {loading ? (
         withAnimate ? (
           <>
             {loadingLabel}
