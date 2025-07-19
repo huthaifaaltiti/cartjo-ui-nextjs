@@ -28,7 +28,7 @@ const ModalCreateButton = ({
 
   return (
     <>
-      <div className="w-auto my-2 flex items-end justify-end">
+      <div className="w-auto my-2 flex items-end justify-end px-2 md:px-0">
         <Button className={buttonClassName} onClick={handleOpen}>
           {icon && <span className="mr-1">{icon}</span>}
           {createTranslationKey
