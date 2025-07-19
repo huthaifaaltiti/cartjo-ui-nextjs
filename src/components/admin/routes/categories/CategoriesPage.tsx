@@ -20,7 +20,7 @@ const CategoriesPage = ({
 }: CategoriesPageProps) => {
   return (
     <CategoriesContextProvider accessToken={accessToken}>
-      <div className="w-full flex items-center justify-between gap-5 mb-3">
+      <div className="w-full flex flex-col items-start gap-1 md:flex-row md:items-center md:justify-between md:gap-5 mb-3">
         <SearchCategories />
         <ModalCreateButton
           icon={<Blocks />}
