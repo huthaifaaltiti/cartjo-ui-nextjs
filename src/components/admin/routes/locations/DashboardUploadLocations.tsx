@@ -48,9 +48,9 @@ const DashboardUploadLocations = () => {
 
   return (
     <div className="w-full bg-white rounded-xl shadow-sm border p-6 mb-8">
-      <div className="flex items-center space-x-3 mb-6">
-        <FileText className="h-6 w-6 text-primary-600" />
-        <h2 className="text-xl font-semibold text-gray-800">
+      <div className="flex items-center gap-2 mb-6">
+        <FileText className="w-5 h-5 md:h-6 md:w-6 text-primary-600" />
+        <h2 className="text-sm md:text-xl font-semibold text-gray-800">
           {t(
             "routes.dashboard.routes.locations.components.DashboardUploadLocations.uploadNewLocations"
           )}

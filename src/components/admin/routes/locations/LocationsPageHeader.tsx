@@ -4,7 +4,7 @@ const LocationsPageHeader = () => {
   const t = useTranslations();
 
   return (
-    <div className="mb-3 pb-3 border-b">
+    <div className="mb-3 pb-3 border-b px-3 md:px-0">
       <h1 className="text-xl font-bold text-gray-900">
         {t("routes.dashboard.routes.locations.title")}
       </h1>
