@@ -13,7 +13,7 @@ export default function FoundItemsCount({
   const isArabic = useLocale() === "ar";
 
   return (
-    <p className="text-sm text-gray-600">
+    <p className="text-sm text-gray-600 px-2 md:px-0">
       {isLoading
         ? t("general.loadingStates.loading")
         : isArabic
