@@ -7,7 +7,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -25,29 +24,60 @@ import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
 import { useCategories } from "@/contexts/CategoriesContext";
+import LoadingButton from "@/components/shared/LoadingButton";
 
 import { User } from "@/types/user";
 import { Category } from "@/types/category";
 
+import { validationConfig } from "@/config/validationConfig";
 import { useHandleApiError } from "@/hooks/handleApiError";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
 
-const createFormSchema = (t: (key: string) => string) =>
-  z.object({
-    name_ar: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_ar.minChars"
-      ),
-    }),
-    name_en: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_en.minChars"
-      ),
-    }),
-  });
+const editFormSchema = (
+  t: (key: string, options?: Record<string, string | number | Date>) => string
+) => {
+  const { nameMinChars, nameMaxChars, imageMinChars } =
+    validationConfig.category;
 
-type FormData = z.infer<ReturnType<typeof createFormSchema>>;
+  return z.object({
+    categoryImage: z.string().min(imageMinChars, {
+      message: t(
+        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage.required"
+      ),
+    }),
+    name_ar: z
+      .string()
+      .min(nameMinChars, {
+        message: t(
+          "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_ar.minChars",
+          { min: nameMinChars }
+        ),
+      })
+      .max(nameMaxChars, {
+        message: t(
+          "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_ar.maxChars",
+          { max: nameMaxChars }
+        ),
+      }),
+    name_en: z
+      .string()
+      .min(nameMinChars, {
+        message: t(
+          "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_en.minChars",
+          { min: nameMinChars }
+        ),
+      })
+      .max(nameMaxChars, {
+        message: t(
+          "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_en.maxChars",
+          { max: nameMaxChars }
+        ),
+      }),
+  });
+};
+
+type FormData = z.infer<ReturnType<typeof editFormSchema>>;
 
 type Props = {
   category: Category;
@@ -67,21 +97,27 @@ const EditCategoryForm = ({ category }: Props) => {
     url: string;
   }>({
     file: null,
-    url: category?.image || "",
+    url: category?.image || category?.mediaId?.supabaseBackupUrl || "",
   });
 
-  const formSchema = createFormSchema(t);
+  const formSchema = editFormSchema(t);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      categoryImage:
+        category?.image || category?.mediaId?.supabaseBackupUrl || "",
       name_ar: category?.name?.ar || "",
       name_en: category?.name?.en || "",
     },
   });
 
-  const handleImageChange = (file: File | null, url: string) => {
-    setCategoryImage({ file, url });
+  const handleImageChange = (data: { file?: File | null; url?: string }) => {
+    const url = data.url || "";
+
+    setCategoryImage({ file: data.file ?? null, url });
+
+    form.setValue("categoryImage", url);
   };
 
   const handleImageError = (error: string) => {
@@ -96,7 +132,11 @@ const EditCategoryForm = ({ category }: Props) => {
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
+      const excludedFields = ["categoryImage"];
+
       Object.entries(data).forEach(([key, value]) => {
+        if (excludedFields.includes(key)) return;
+
         formData.append(key, String(value));
       });
 
@@ -236,17 +276,15 @@ const EditCategoryForm = ({ category }: Props) => {
             </div>
           </div>
 
-          <Button
+          <LoadingButton
             type="submit"
-            disabled={registerMutation.isPending}
-            className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 disabled:opacity-50 transition-all"
-          >
-            {registerMutation.isPending
-              ? t("general.loadingStates.loadingApi")
-              : t(
-                  "routes.auth.components.AuthTabs.components.register.actions.proceed"
-                )}
-          </Button>
+            loading={registerMutation.isPending}
+            withAnimate={true}
+            label={t(
+              "routes.auth.components.AuthTabs.components.register.actions.proceed"
+            )}
+            loadingLabel={t("general.loadingStates.loadingApi")}
+          />
         </form>
       </Form>
     </div>
