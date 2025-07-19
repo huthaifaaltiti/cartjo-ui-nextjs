@@ -60,7 +60,7 @@ const DashboardLocationStatCards = ({ locations }: LocationCardsProps) => {
     },
     {
       label: t(
-        "routes.dashboard.routes.locations.components.DashboardLocationsStatCards.mainLocations"
+        "routes.dashboard.routes.locations.components.DashboardLocationsStatCards.subLocations"
       ),
       value: totalLocations - locations?.length,
       color: "teal",
