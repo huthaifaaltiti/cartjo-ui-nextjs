@@ -238,6 +238,9 @@
           "desc": "Manage and upload location data with pricing information",
           "currentLocations": "Current Locations",
           "components": {
+            "DashboardUploadLocations": {
+              "uploadNewLocations": "Upload New Locations"
+            },
             "DashboardLocationsStatCards": {
               "totalLocations": "Total Locations",
               "mainLocations": "Main Locations",

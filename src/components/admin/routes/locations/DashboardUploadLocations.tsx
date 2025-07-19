@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { memo, useState } from "react";
 import { FileText } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useBulkUploadLocations } from "@/hooks/react-query/useBulkUploadLocations";
 import { useHandleApiError } from "@/hooks/handleApiError";
@@ -12,6 +13,7 @@ import StatusMessage from "@/components/shared/StatusMessage";
 
 const DashboardUploadLocations = () => {
   const router = useRouter();
+  const t = useTranslations();
   // const queryClient = useQueryClient();
   const { mutate: uploadFile, isPending: isUploadLoading } =
     useBulkUploadLocations();
@@ -49,7 +51,9 @@ const DashboardUploadLocations = () => {
       <div className="flex items-center space-x-3 mb-6">
         <FileText className="h-6 w-6 text-primary-600" />
         <h2 className="text-xl font-semibold text-gray-800">
-          Upload New Locations
+          {t(
+            "routes.dashboard.routes.locations.components.DashboardUploadLocations.uploadNewLocations"
+          )}
         </h2>
       </div>
 

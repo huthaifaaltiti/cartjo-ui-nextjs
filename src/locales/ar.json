@@ -238,6 +238,9 @@
           "desc": "إدارة وتحميل بيانات المواقع مع معلومات التسعير",
           "currentLocations": "المواقع الحالية",
           "components": {
+            "DashboardUploadLocations": {
+              "uploadNewLocations": "تحميل مواقع جديدة"
+            },
             "DashboardLocationsStatCards": {
               "totalLocations": "إجمالي المواقع",
               "mainLocations": "المواقع الرئيسية",
