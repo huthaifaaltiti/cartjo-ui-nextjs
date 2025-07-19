@@ -5,6 +5,9 @@
       "loading": "Loading",
       "loadingUserSession": "Loading user's session"
     },
+    "UploadingStates": {
+      "uploadingData":"Uploading Data"
+    },
     "toast": {
       "title": {
         "success": "Success",
@@ -98,6 +101,11 @@
         "tags": "tags",
         "maxTagsReached": "Maximum tags reached"
       }
+    },
+    "FileUpload": {
+      "uploadFile": "Upload File",
+      "browseFile": "Drag and drop your file here, or click to browse",
+      "supportedFormats": "Supported formats: ({formats})"
     }
   },
   "routes": {

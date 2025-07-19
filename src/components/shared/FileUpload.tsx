@@ -2,6 +2,9 @@
 
 import { memo, useRef, useState } from "react";
 import { Loader, Upload } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+import UploadingStatus from "./UploadingStatus";
 
 interface FileUploadProps {
   onUpload: (file: File) => void;
@@ -9,9 +12,13 @@ interface FileUploadProps {
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ onUpload, isLoading }) => {
+  const t = useTranslations();
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [dragActive, setDragActive] = useState(false);
+
+  const acceptedFormats = [".xlsx", ".xls"];
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -69,20 +76,28 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, isLoading }) => {
 
         <div className="space-y-4">
           {isLoading ? (
-            <Loader className="mx-auto h-12 w-12 text-blue-600 animate-spin" />
+            <Loader className="mx-auto h-8 w-8 md:h-12 md:w-12 text-blue-600 animate-spin" />
           ) : (
-            <Upload className="mx-auto h-12 w-12 text-gray-400" />
+            <Upload className="mx-auto h-8 w-8 md:h-12 md:w-12 text-gray-400" />
           )}
 
           <div>
-            <p className="text-lg font-medium text-gray-700">
-              {isLoading ? "Uploading..." : "Upload Excel File"}
+            <p className="text-sm md:text-lg font-medium text-gray-700">
+              {isLoading ? (
+                <UploadingStatus
+                  message={t("general.UploadingStates.uploadingData")}
+                />
+              ) : (
+                t("components.FileUpload.uploadFile")
+              )}
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              Drag and drop your Excel file here, or click to browse
+              {t("components.FileUpload.browseFile")}
             </p>
             <p className="text-xs text-gray-400 mt-2">
-              Supported formats: .xlsx, .xls
+              {t("components.FileUpload.supportedFormats", {
+                formats: acceptedFormats.join(","),
+              })}
             </p>
           </div>
         </div>

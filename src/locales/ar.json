@@ -5,6 +5,9 @@
       "loading": "جاري التحميل",
       "loadingUserSession": "جاري تحميل جلسة المستخدم"
     },
+    "UploadingStates": {
+      "uploadingData": "جارٍ رفع البيانات"
+    },
     "toast": {
       "title": {
         "success": "نجاح",
@@ -98,6 +101,11 @@
         "tags": "وسوم",
         "maxTagsReached": "تم الوصول إلى الحد الأقصى للوسوم"
       }
+    },
+    "FileUpload": {
+      "uploadFile": "ارفع ملفّا",
+      "browseFile": "اسحب ملفا وأفلته هنا، أو انقر لتصفح الملفات",
+      "supportedFormats": "الصيغ المدعومة: ({formats})"
     }
   },
   "routes": {
