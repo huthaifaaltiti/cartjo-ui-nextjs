@@ -35,14 +35,14 @@ const DashboardLocationCard = ({ location, level = 0 }: LocationCardProps) => {
       style={{ marginLeft: `${marginLeft}px` }}
     >
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-2">
           <MapPinned className="h-5 w-5 text-blue-600" />
 
           <h3 className="font-semibold text-md text-gray-800">
             {location?.name[locale as Locale]}
           </h3>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-3">
           <div className="flex items-center bg-white-50 px-3 py-1 rounded-full">
             <DollarSign className="h-4 w-4 text-green-600" />
 

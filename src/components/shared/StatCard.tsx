@@ -27,11 +27,11 @@ const StatCard: React.FC<{
 
   return (
     <div className="bg-white rounded-xl shadow-sm border p-6">
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
         <div className={`p-3 rounded-lg ${colors[color]}`}>
           <Icon className="h-6 w-6" />
         </div>
-        <div className="ml-4">
+        <div>
           <p className="text-sm font-medium text-gray-600">{label}</p>
           <p className="text-2xl font-bold text-gray-900">{value}</p>
         </div>

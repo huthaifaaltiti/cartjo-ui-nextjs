@@ -21,7 +21,7 @@ const DashboardLocationCards = ({ locations }: LocationCardsProps) => {
 
   return (
     <div className="w-full border-t py-5">
-      <div className="flex items-center space-x-3 mb-6">
+      <div className="flex items-center gap-2 mb-6">
         <MapPin className="h-5 w-5 text-blue-600" />
 
         <h2 className="text-lg font-bold text-gray-800">
