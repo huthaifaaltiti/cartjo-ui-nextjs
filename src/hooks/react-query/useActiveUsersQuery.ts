@@ -27,12 +27,14 @@ interface FetchUsersParams {
 export const fetchActiveUsers = async ({
   token,
   lang = "en",
-  limit = PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+  limit = PAGINATION_LIMITS.ACTIVE_USERS,
   lastId,
   search,
   isActive,
 }: FetchUsersParams): Promise<ActiveUsersResp> => {
-  const url = new URL(`${API_ENDPOINTS.DASHBOARD.USERS.GET_ACTIVE_USERS}?isActive=true`);
+  const url = new URL(
+    `${API_ENDPOINTS.DASHBOARD.USERS.GET_ACTIVE_USERS}?isActive=true`
+  );
 
   url.searchParams.append("limit", limit.toString());
   if (lang) url.searchParams.append("lang", lang);
@@ -67,7 +69,7 @@ export const useActiveUsersQuery = (search?: string) => {
       return fetchActiveUsers({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.INITIAL_ACTIVE_USERS_LIMIT,
+        limit: PAGINATION_LIMITS.ACTIVE_USERS,
         lastId: pageParam as string,
         search,
       });

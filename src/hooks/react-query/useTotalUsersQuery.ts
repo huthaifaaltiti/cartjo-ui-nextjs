@@ -27,7 +27,7 @@ interface FetchUsersParams {
 export const fetchTotalUsers = async ({
   token,
   lang = "en",
-  limit = PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+  limit = PAGINATION_LIMITS.TOTAL_USERS,
   lastId,
   search,
 }: FetchUsersParams): Promise<TotalUsersResp> => {
@@ -64,7 +64,7 @@ export const useTotalUsersQuery = (search?: string) => {
       return fetchTotalUsers({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.INITIAL_TOTAL_USERS_LIMIT,
+        limit: PAGINATION_LIMITS.TOTAL_USERS,
         lastId: pageParam as string,
         search,
       });

@@ -14,7 +14,7 @@ import { CustomSession } from "@/lib/authOptions";
 export const fetchProducts = async ({
   token,
   lang = "en",
-  limit = PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+  limit = PAGINATION_LIMITS.PRODUCTS,
   lastId,
   search,
 }: FetchPaginatedArgs): Promise<CommonListResponse<Product>> => {
@@ -51,7 +51,7 @@ export const useProductsQuery = ({ search }: { search?: string }) => {
       return fetchProducts({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.TOTAL_PRODUCTS_LIMIT,
+        limit: PAGINATION_LIMITS.PRODUCTS,
         lastId:
           pageParam && typeof pageParam === "string" ? pageParam : undefined,
 

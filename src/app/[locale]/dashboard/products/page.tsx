@@ -18,12 +18,12 @@ export default async function Page() {
   if (accessToken) {
     const prodsResp = await fetchProducts({
       token: accessToken,
-      limit: PAGINATION_LIMITS.TOTAL_PRODUCTS_LIMIT,
+      limit: PAGINATION_LIMITS.PRODUCTS,
     });
 
     const catsResp = await fetchCategories({
       token: accessToken,
-      limit: PAGINATION_LIMITS.TOTAL_CATEGORIES_LIMIT,
+      limit: PAGINATION_LIMITS.CATEGORIES,
     });
 
     categories = catsResp?.categories || [];

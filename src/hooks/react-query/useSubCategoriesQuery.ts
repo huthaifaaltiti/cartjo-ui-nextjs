@@ -29,7 +29,7 @@ interface FetchSubCategoriesParams {
 export const fetchSubCategories = async ({
   token,
   lang = "en",
-  limit = PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+  limit = PAGINATION_LIMITS.SUB_CATEGORIES,
   lastId,
   search,
   catId,
@@ -72,7 +72,7 @@ export const useSubCategoriesQuery = ({
       return fetchSubCategories({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.TOTAL_SUB_CATEGORIES_LIMIT,
+        limit: PAGINATION_LIMITS.SUB_CATEGORIES,
         lastId: pageParam as string,
         search,
         catId,

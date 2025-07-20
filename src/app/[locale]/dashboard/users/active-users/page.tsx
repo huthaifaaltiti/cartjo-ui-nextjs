@@ -10,7 +10,7 @@ export default async function Page() {
 
   const { users } = await fetchActiveUsers({
     token: accessToken,
-    limit: PAGINATION_LIMITS.INITIAL_ACTIVE_USERS_LIMIT,
+    limit: PAGINATION_LIMITS.ACTIVE_USERS,
     isActive: true,
   });
 

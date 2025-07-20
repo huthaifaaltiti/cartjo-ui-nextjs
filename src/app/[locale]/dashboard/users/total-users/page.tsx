@@ -9,7 +9,7 @@ export default async function Page() {
 
   const { users } = await fetchTotalUsers({
     token: accessToken,
-    limit: PAGINATION_LIMITS.INITIAL_TOTAL_USERS_LIMIT,
+    limit: PAGINATION_LIMITS.TOTAL_USERS,
   });
 
   return <TotalUsersPage initialUsers={users} accessToken={accessToken} />;

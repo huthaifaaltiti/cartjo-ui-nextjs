@@ -26,7 +26,7 @@ interface FetchCategoriesParams {
 export const fetchCategories = async ({
   token,
   lang = "en",
-  limit = PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+  limit = PAGINATION_LIMITS.CATEGORIES,
   lastId,
   search,
 }: FetchCategoriesParams): Promise<CategoriesResp> => {
@@ -63,7 +63,7 @@ export const useCategoriesQuery = (search?: string) => {
       return fetchCategories({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.TOTAL_CATEGORIES_LIMIT,
+        limit: PAGINATION_LIMITS.CATEGORIES,
         lastId: pageParam as string,
         search,
       });

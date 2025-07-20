@@ -27,14 +27,12 @@ interface FetchUsersParams {
 export const fetchDeletedUsers = async ({
   token,
   lang = "en",
-  limit = PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+  limit = PAGINATION_LIMITS.DELETED_USERS,
   lastId,
   search,
   isDeleted,
 }: FetchUsersParams): Promise<ActiveUsersResp> => {
-  const url = new URL(
-    `${API_ENDPOINTS.DASHBOARD.USERS.GET_DELETED_USERS}`
-  );
+  const url = new URL(`${API_ENDPOINTS.DASHBOARD.USERS.GET_DELETED_USERS}`);
 
   url.searchParams.append("limit", limit.toString());
   if (lang) url.searchParams.append("lang", lang);
@@ -69,7 +67,7 @@ export const useDeletedUsersQuery = (search?: string) => {
       return fetchDeletedUsers({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.INITIAL_DELETED_USERS_LIMIT,
+        limit: PAGINATION_LIMITS.DELETED_USERS,
         lastId: pageParam as string,
         search,
         isDeleted: true,

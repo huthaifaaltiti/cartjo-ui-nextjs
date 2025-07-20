@@ -10,7 +10,7 @@ export default async function Page() {
 
   const { users } = await fetchAdminUsers({
     token: accessToken,
-    limit: PAGINATION_LIMITS.INITIAL_ADMIN_USERS_LIMIT,
+    limit: PAGINATION_LIMITS.ADMIN_USERS,
     canManage: true,
   });
 
