@@ -67,7 +67,7 @@ export const useActiveUsersQuery = (search?: string) => {
       return fetchActiveUsers({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+        limit: PAGINATION_LIMITS.INITIAL_ACTIVE_USERS_LIMIT,
         lastId: pageParam as string,
         search,
       });

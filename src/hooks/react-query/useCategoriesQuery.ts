@@ -63,7 +63,7 @@ export const useCategoriesQuery = (search?: string) => {
       return fetchCategories({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+        limit: PAGINATION_LIMITS.TOTAL_CATEGORIES_LIMIT,
         lastId: pageParam as string,
         search,
       });

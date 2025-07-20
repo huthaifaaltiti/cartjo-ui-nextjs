@@ -69,7 +69,7 @@ export const useDeletedUsersQuery = (search?: string) => {
       return fetchDeletedUsers({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+        limit: PAGINATION_LIMITS.INITIAL_DELETED_USERS_LIMIT,
         lastId: pageParam as string,
         search,
         isDeleted: true,

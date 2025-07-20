@@ -9,7 +9,7 @@ export default async function Page() {
 
   const { categories } = await fetchCategories({
     token: accessToken,
-    limit: PAGINATION_LIMITS.INITIAL_TOTAL_USERS_LIMIT,
+    limit: PAGINATION_LIMITS.TOTAL_CATEGORIES_LIMIT,
   });
 
   return (

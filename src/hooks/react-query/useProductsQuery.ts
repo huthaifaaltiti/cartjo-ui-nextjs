@@ -51,7 +51,7 @@ export const useProductsQuery = ({ search }: { search?: string }) => {
       return fetchProducts({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+        limit: PAGINATION_LIMITS.TOTAL_PRODUCTS_LIMIT,
         lastId:
           pageParam && typeof pageParam === "string" ? pageParam : undefined,
 

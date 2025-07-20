@@ -10,7 +10,7 @@ export default async function Page() {
 
   const { users } = await fetchDeletedUsers({
     token: accessToken,
-    limit: PAGINATION_LIMITS.INITIAL_TOTAL_USERS_LIMIT,
+    limit: PAGINATION_LIMITS.INITIAL_DELETED_USERS_LIMIT,
     isDeleted: true,
   });
 

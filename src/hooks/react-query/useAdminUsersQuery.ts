@@ -67,7 +67,7 @@ export const useAdminUsersQuery = (search?: string) => {
       return fetchAdminUsers({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+        limit: PAGINATION_LIMITS.INITIAL_ADMIN_USERS_LIMIT,
         lastId: pageParam as string,
         search,
         canManage: true,

@@ -72,7 +72,7 @@ export const useSubCategoriesQuery = ({
       return fetchSubCategories({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.TOTAL_USERS_LIMIT,
+        limit: PAGINATION_LIMITS.TOTAL_SUB_CATEGORIES_LIMIT,
         lastId: pageParam as string,
         search,
         catId,
