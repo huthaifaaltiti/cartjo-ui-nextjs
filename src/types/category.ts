@@ -17,8 +17,7 @@ export interface Category {
   _id: string;
   __v: number;
   name: Name;
-  image: string;
-  mediaId: Media;
+  media: Media;
   subCategories: SubCategory[];
   isActive: boolean;
   isDeleted: boolean;
