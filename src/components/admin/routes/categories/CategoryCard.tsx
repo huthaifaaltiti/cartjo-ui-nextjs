@@ -1,5 +1,4 @@
 import { memo } from "react";
-import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 
 import { Category } from "@/types/category";
@@ -8,6 +7,7 @@ import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
 
 import CategoryCardActions from "./CategoryCardActions";
 import EditCategoryForm from "./EditCategoryForm";
+import ImageWithFallback from "@/components/shared/ImageWithFallback";
 
 type CategoryCardProps = {
   item: Category;
@@ -67,8 +67,8 @@ const CategoryCard = ({
 
       <div className="flex items-center space-x-3">
         <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 border border-gray-200">
-          <Image
-            src={category?.mediaId?.supabaseBackupUrl || category?.image}
+          <ImageWithFallback
+            src={category?.media?.url}
             alt={category.name.en}
             width={40}
             height={40}

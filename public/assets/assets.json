@@ -1,5 +1,8 @@
 {
   "image": {
+    "jpeg": {
+      "fallback": "../assets/image/jpeg/fallback.jpg"
+    },
     "svg": {
       "user_dark": "../assets/image/svg/user_dark.svg",
       "enter_dark": "../assets/image/svg/enter_dark.svg",
