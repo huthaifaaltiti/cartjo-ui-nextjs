@@ -4,4 +4,9 @@ export const validationConfig = {
     nameMaxChars: 50,
     imageMinChars: 2,
   },
+  subCategory: {
+    nameMinChars: 3,
+    nameMaxChars: 50,
+    imageMinChars: 2,
+  },
 };

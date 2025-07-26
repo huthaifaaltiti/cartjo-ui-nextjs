@@ -6,7 +6,7 @@
       "loadingUserSession": "Loading user's session"
     },
     "UploadingStates": {
-      "uploadingData":"Uploading Data"
+      "uploadingData": "Uploading Data"
     },
     "toast": {
       "title": {
@@ -40,6 +40,7 @@
       "restore": "Restore",
       "edit": "Edit",
       "create": "Create",
+      "proceed": "Proceed",
       "activate": "Activate",
       "deActivate": "De Activate"
     },
@@ -382,6 +383,9 @@
                   "maxChars": "English name must be at most ({max}) characters long",
                   "englishCharsOnly": "Must contain English characters only"
                 }
+              },
+              "errors": {
+                "failedCreation": "Category creation failed"
               }
             },
             "EditCategoryForm": {
@@ -424,6 +428,10 @@
             "SearchBar": { "placeholder": "Search for sub-categories" },
             "CreateSubCategoryForm": {
               "fields": {
+                "subCategoryImage": {
+                  "label": "Sub-Category Image",
+                  "placeholder": "Sub-Category Image"
+                },
                 "name_ar": {
                   "label": "Arabic Name",
                   "placeholder": "Arabic Name"
@@ -438,15 +446,66 @@
                 }
               },
               "validations": {
+                "subCategoryImage": {
+                  "required": "Sub-Category image should be provided"
+                },
                 "name_ar": {
-                  "minChars": "Arabic name must be at least 2 characters long"
+                  "minChars": "Arabic name must be at least ({min}) characters long",
+                  "maxChars": "Arabic name must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain arabic characters only"
                 },
                 "name_en": {
-                  "minChars": "English name must be at least 2 characters long"
+                  "minChars": "English name must be at least ({min}) characters long",
+                  "maxChars": "English name must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain english characters only"
                 },
                 "category": {
                   "required": "Category is required"
                 }
+              },
+              "errors": {
+                "failedCreation": "SubCategory creation failed"
+              }
+            },
+            "EditSubCategoryForm": {
+              "fields": {
+                "subCategoryImage": {
+                  "label": "Sub-Category Image",
+                  "placeholder": "Sub-Category Image"
+                },
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                },
+                "category": {
+                  "label": "Category",
+                  "placeholder": "Select a category"
+                }
+              },
+              "validations": {
+                "subCategoryImage": {
+                  "required": "Sub-Category image should be provided"
+                },
+                "name_ar": {
+                  "minChars": "Arabic name must be at least ({min}) characters long",
+                  "maxChars": "Arabic name must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain arabic characters only"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least ({min}) characters long",
+                  "maxChars": "English name must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "category": {
+                  "required": "Category is required"
+                }
+              },
+              "errors": {
+                "failedCreation": "SubCategory editing failed"
               }
             },
             "CategoryListSelector": {

@@ -7,7 +7,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -32,32 +31,76 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+import LoadingButton from "@/components/shared/LoadingButton";
 
 import { User } from "@/types/user";
 import { Category } from "@/types/category";
 
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { invalidateQuery } from "@/utils/queryUtils";
 import { useHandleApiError } from "@/hooks/handleApiError";
+import { validationConfig } from "@/config/validationConfig";
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 
-const createFormSchema = (t: (key: string) => string) =>
-  z.object({
-    name_ar: z.string().min(2, {
+import { invalidateQuery } from "@/utils/queryUtils";
+import { isArabicOnly } from "@/utils/text/containsArabic";
+import { isEnglishOnly } from "@/utils/text/containsEnglish";
+
+const createFormSchema = (
+  t: (key: string, options?: Record<string, string | number | Date>) => string
+) => {
+  const { nameMinChars, nameMaxChars, imageMinChars } =
+    validationConfig.subCategory;
+
+  return z.object({
+    subCategoryImage: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_ar.minChars"
+        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.subCategoryImage.required"
       ),
     }),
-    name_en: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_en.minChars"
-      ),
-    }),
+    name_ar: z
+      .string()
+      .min(nameMinChars, {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_ar.minChars",
+          { min: nameMinChars }
+        ),
+      })
+      .max(nameMaxChars, {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_ar.maxChars",
+          { max: nameMaxChars }
+        ),
+      })
+      .refine((val) => isArabicOnly(val), {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_ar.arabicCharsOnly"
+        ),
+      }),
+    name_en: z
+      .string()
+      .min(nameMinChars, {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_en.minChars",
+          { min: nameMinChars }
+        ),
+      })
+      .max(nameMaxChars, {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_en.maxChars",
+          { max: nameMaxChars }
+        ),
+      })
+      .refine((val) => isEnglishOnly(val), {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_en.englishCharsOnly"
+        ),
+      }),
     categoryId: z.string().min(1, {
       message: t(
         "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.category.required"
       ),
     }),
   });
+};
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 
@@ -87,14 +130,19 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      subCategoryImage: "",
       name_ar: "",
       name_en: "",
       categoryId: "",
     },
   });
 
-  const handleImageChange = (file: File | null, url: string) => {
-    setSubCategoryImage({ file, url });
+  const handleImageChange = (data: { file?: File | null; url?: string }) => {
+    const url = data.url || "";
+
+    setSubCategoryImage({ file: data.file ?? null, url });
+
+    form.setValue("subCategoryImage", url);
   };
 
   const handleImageError = (error: string) => {
@@ -109,7 +157,11 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
+      const excludedFields = ["subCategoryImage"];
+
       Object.entries(data).forEach(([key, value]) => {
+        if (excludedFields.includes(key)) return;
+
         formData.append(key, String(value));
       });
 
@@ -132,7 +184,12 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData?.message || "SubCategory creation failed");
+        throw new Error(
+          errorData?.message ||
+            t(
+              "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.errors.failedCreation"
+            )
+        );
       }
 
       return response.json();
@@ -175,22 +232,34 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
 
   return (
     <div className="space-y-6">
-      <ImageUploader
-        ref={imageUploaderRef}
-        value={subCategoryImage.url}
-        onChange={handleImageChange}
-        onError={handleImageError}
-        label={t(
-          "routes.dashboard.routes.subCategories.createSubCategory.uploadImage"
-        )}
-        maxSizeInMB={2}
-        size="sm"
-        variant="rounded"
-        accept="image/png, image/jpeg, image/jpg"
-      />
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="subCategoryImage"
+            render={({}) => (
+              <FormItem className={getFormItemClassName()}>
+                <FormLabel className="text-sm font-normal">
+                  {t(
+                    "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.subCategoryImage.label"
+                  )}
+                </FormLabel>
+                <ImageUploader
+                  ref={imageUploaderRef}
+                  value={subCategoryImage.url}
+                  onChange={handleImageChange}
+                  onError={handleImageError}
+                  label={""}
+                  maxSizeInMB={2}
+                  size="sm"
+                  variant="rounded"
+                  accept="image/png, image/jpeg, image/jpg"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div
             className={`flex gap-5 ${
               isArabic ? "flex-row-reverse" : "flex-row"
@@ -204,14 +273,14 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_ar.label"
+                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_ar.label"
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_ar.placeholder"
+                          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_ar.placeholder"
                         )}
                         {...field}
                       />
@@ -230,14 +299,14 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_en.label"
+                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_en.label"
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_en.placeholder"
+                          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_en.placeholder"
                         )}
                         {...field}
                       />
@@ -288,17 +357,13 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
             />
           </div>
 
-          <Button
+          <LoadingButton
             type="submit"
-            disabled={registerMutation.isPending}
-            className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 disabled:opacity-50 transition-all"
-          >
-            {registerMutation.isPending
-              ? t("general.loadingStates.loadingApi")
-              : t(
-                  "routes.auth.components.AuthTabs.components.register.actions.proceed"
-                )}
-          </Button>
+            loading={registerMutation.isPending}
+            withAnimate={true}
+            label={t("general.actions.proceed")}
+            loadingLabel={t("general.UploadingStates.uploadingData")}
+          />
         </form>
       </Form>
     </div>

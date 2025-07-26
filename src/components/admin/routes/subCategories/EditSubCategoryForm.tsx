@@ -1,13 +1,12 @@
 "use client";
 
-import { memo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -32,35 +31,78 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+import LoadingButton from "@/components/shared/LoadingButton";
 
 import { User } from "@/types/user";
 import { SubCategory } from "@/types/subCategory";
 
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
+import { validationConfig } from "@/config/validationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { useHandleApiError } from "@/hooks/handleApiError";
+import { isArabicOnly } from "@/utils/text/containsArabic";
+import { isEnglishOnly } from "@/utils/text/containsEnglish";
 
-const createFormSchema = (t: (key: string) => string) =>
-  z.object({
-    name_ar: z.string().min(2, {
+const editFormSchema = (
+  t: (key: string, options?: Record<string, string | number | Date>) => string
+) => {
+  const { nameMinChars, nameMaxChars, imageMinChars } =
+    validationConfig.subCategory;
+
+  return z.object({
+    subCategoryImage: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_ar.minChars"
+        "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.validations.subCategoryImage.required"
       ),
     }),
-    name_en: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_en.minChars"
-      ),
-    }),
+    name_ar: z
+      .string()
+      .min(nameMinChars, {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.validations.name_ar.minChars",
+          { min: nameMinChars }
+        ),
+      })
+      .max(nameMaxChars, {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.validations.name_ar.maxChars",
+          { max: nameMaxChars }
+        ),
+      })
+      .refine((val) => isArabicOnly(val), {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.validations.name_ar.arabicCharsOnly"
+        ),
+      }),
+    name_en: z
+      .string()
+      .min(nameMinChars, {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.validations.name_en.minChars",
+          { min: nameMinChars }
+        ),
+      })
+      .max(nameMaxChars, {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.validations.name_en.maxChars",
+          { max: nameMaxChars }
+        ),
+      })
+      .refine((val) => isEnglishOnly(val), {
+        message: t(
+          "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.validations.name_en.englishCharsOnly"
+        ),
+      }),
     categoryId: z.string().min(1, {
       message: t(
-        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.category.required"
+        "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.validations.category.required"
       ),
     }),
   });
+};
 
-type FormData = z.infer<ReturnType<typeof createFormSchema>>;
+type FormData = z.infer<ReturnType<typeof editFormSchema>>;
 
 type Props = {
   subCategory: SubCategory;
@@ -74,7 +116,24 @@ const EditCategoryForm = ({ subCategory }: Props) => {
   const { accessToken, queryKey } = useSubCategories();
   const queryClient = useQueryClient();
   const { data } = useCategoriesQuery();
-  const allCategories = data?.pages?.flatMap((page) => page.categories) || [];
+
+  const allCategories = useMemo(() => {
+    return data?.pages?.flatMap((page) => page.data) || [];
+  }, [data]);
+
+  // Memoize the default values to include the categoryId when categories are loaded
+  const defaultValues = useMemo(() => {
+    const categoryId =
+      allCategories?.find((cat) => cat?._id === subCategory?.categoryId)?._id ||
+      "";
+
+    return {
+      subCategoryImage: subCategory?.media?.url || "",
+      name_ar: subCategory?.name?.ar || "",
+      name_en: subCategory?.name?.en || "",
+      categoryId,
+    };
+  }, [allCategories, subCategory]);
 
   const imageUploaderRef = useRef<ImageUploaderRef>(null);
   const [subCategoryImage, setSubCategoryImage] = useState<{
@@ -82,24 +141,22 @@ const EditCategoryForm = ({ subCategory }: Props) => {
     url: string;
   }>({
     file: null,
-    url: subCategory?.image || "",
+    url: subCategory?.media?.url || "",
   });
 
-  const formSchema = createFormSchema(t);
+  const formSchema = editFormSchema(t);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name_ar: subCategory?.name?.ar || "",
-      name_en: subCategory?.name?.en || "",
-      categoryId:
-        allCategories?.filter((cat) => cat?._id === subCategory?.categoryId)[0]
-          ?._id || "",
-    },
+    defaultValues,
   });
 
-  const handleImageChange = (file: File | null, url: string) => {
-    setSubCategoryImage({ file, url });
+  const handleImageChange = (data: { file?: File | null; url?: string }) => {
+    const url = data.url || "";
+
+    setSubCategoryImage({ file: data.file ?? null, url });
+
+    form.setValue("subCategoryImage", url);
   };
 
   const handleImageError = (error: string) => {
@@ -114,7 +171,11 @@ const EditCategoryForm = ({ subCategory }: Props) => {
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
+      const excludedFields = ["subCategoryImage"];
+
       Object.entries(data).forEach(([key, value]) => {
+        if (excludedFields.includes(key)) return;
+
         formData.append(key, String(value));
       });
 
@@ -178,24 +239,41 @@ const EditCategoryForm = ({ subCategory }: Props) => {
 
   const getFormItemClassName = () => (isArabic ? "text-right" : "text-left");
 
+  // Reset form with new default values when they change
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [form, defaultValues]);
+
   return (
     <div className="space-y-6">
-      <ImageUploader
-        ref={imageUploaderRef}
-        value={subCategoryImage.url}
-        onChange={handleImageChange}
-        onError={handleImageError}
-        label={t(
-          "routes.dashboard.routes.categories.createCategory.uploadImage"
-        )}
-        maxSizeInMB={2}
-        size="sm"
-        variant="rounded"
-        accept="image/png, image/jpeg, image/jpg"
-      />
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="subCategoryImage"
+            render={({}) => (
+              <FormItem className={getFormItemClassName()}>
+                <FormLabel className="text-sm font-normal">
+                  {t(
+                    "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.fields.subCategoryImage.label"
+                  )}
+                </FormLabel>
+                <ImageUploader
+                  ref={imageUploaderRef}
+                  value={subCategoryImage.url}
+                  onChange={handleImageChange}
+                  onError={handleImageError}
+                  label={""}
+                  maxSizeInMB={2}
+                  size="sm"
+                  variant="rounded"
+                  accept="image/png, image/jpeg, image/jpg"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div
             className={`flex gap-5 ${
               isArabic ? "flex-row-reverse" : "flex-row"
@@ -262,7 +340,7 @@ const EditCategoryForm = ({ subCategory }: Props) => {
                 <FormItem className="text-left">
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.category.label"
+                      "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.fields.category.label"
                     )}
                   </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
@@ -270,7 +348,7 @@ const EditCategoryForm = ({ subCategory }: Props) => {
                       <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                         <SelectValue
                           placeholder={t(
-                            "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.category.placeholder"
+                            "routes.dashboard.routes.subCategories.components.EditSubCategoryForm.fields.category.placeholder"
                           )}
                         />
                       </SelectTrigger>
@@ -293,17 +371,13 @@ const EditCategoryForm = ({ subCategory }: Props) => {
             />
           </div>
 
-          <Button
+          <LoadingButton
             type="submit"
-            disabled={registerMutation.isPending}
-            className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 disabled:opacity-50 transition-all"
-          >
-            {registerMutation.isPending
-              ? t("general.loadingStates.loadingApi")
-              : t(
-                  "routes.auth.components.AuthTabs.components.register.actions.proceed"
-                )}
-          </Button>
+            loading={registerMutation.isPending}
+            withAnimate={true}
+            label={t("general.actions.proceed")}
+            loadingLabel={t("general.UploadingStates.uploadingData")}
+          />
         </form>
       </Form>
     </div>
