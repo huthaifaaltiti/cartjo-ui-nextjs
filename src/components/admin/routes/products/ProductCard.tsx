@@ -81,7 +81,7 @@ const DashboardProductCard = ({
     <div className="bg-white-50 rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group">
       {/* Header with Actions */}
       <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-2">
           <div
             className={`px-3 py-1 rounded-full text-xs font-medium ${
               product.isActive
@@ -110,16 +110,18 @@ const DashboardProductCard = ({
           </Button>
 
           {showActions && (
-            <ProductCardActions
-              deleteFn={deleteProduct}
-              unDeleteFn={unDeleteProduct}
-              switchActiveStatusFn={switchProductActiveStatus}
-              product={product}
-              setShowActions={setShowActions}
-              renderEditForm={() => (
-                <EditProductForm product={product} categories={categories} />
-              )}
-            />
+            <div className="absolute rtl:right-[-150px] ltr:right-0">
+              <ProductCardActions
+                deleteFn={deleteProduct}
+                unDeleteFn={unDeleteProduct}
+                switchActiveStatusFn={switchProductActiveStatus}
+                product={product}
+                setShowActions={setShowActions}
+                renderEditForm={() => (
+                  <EditProductForm product={product} categories={categories} />
+                )}
+              />
+            </div>
           )}
         </div>
       </div>
