@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { invalidateQuery } from "@/utils/queryUtils";
 
 import { Product } from "@/types/product.type";
-import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
+import { BaseResponse } from "@/types/service-response.type";
 
 import { useProducts } from "@/contexts/Products.context";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
@@ -22,14 +22,14 @@ import {
 type ProductCardActionsProps = {
   setShowActions: (showActions: boolean) => void;
   product: Product;
-  deleteFn: (token: string, prodId: string) => Promise<DeletingResponse>;
-  unDeleteFn: (token: string, prodId: string) => Promise<DeletingResponse>;
+  deleteFn: (token: string, prodId: string) => Promise<BaseResponse>;
+  unDeleteFn: (token: string, prodId: string) => Promise<BaseResponse>;
   switchActiveStatusFn: (
     token: string,
     lang: string,
     isActive: boolean,
     id: string
-  ) => Promise<SwitchActiveStatusResponse>;
+  ) => Promise<BaseResponse>;
   renderEditForm?: (item: Product) => React.ReactNode;
 };
 
@@ -159,14 +159,14 @@ const ProductCardActions = ({
           {isLoading && (
             <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
               <div className="text-xs text-gray-500">
-                {t("general.processing")}
+                {t("general.loadingStates.loadingApi")}
               </div>
             </div>
           )}
 
           <button
             onClick={() => handleAction("edit")}
-            className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2 text-gray-700"
+            className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-1 text-gray-700"
           >
             <Edit size={16} />
             <span>
