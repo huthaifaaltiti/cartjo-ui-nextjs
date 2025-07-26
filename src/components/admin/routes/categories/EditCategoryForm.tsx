@@ -29,7 +29,9 @@ import LoadingButton from "@/components/shared/LoadingButton";
 import { User } from "@/types/user";
 import { Category } from "@/types/category";
 
+import { isArabicLocale } from "@/config/locales.config";
 import { validationConfig } from "@/config/validationConfig";
+
 import { useHandleApiError } from "@/hooks/handleApiError";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
@@ -86,7 +88,7 @@ type Props = {
 const EditCategoryForm = ({ category }: Props) => {
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
   const { accessToken, queryKey } = useCategories();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();

@@ -1,4 +1,5 @@
 import { useTranslations, useLocale } from "next-intl";
+import { isArabicLocale } from "@/config/locales.config";
 
 type FoundItemsCountProps = {
   isLoading: boolean;
@@ -10,7 +11,8 @@ export default function FoundItemsCount({
   count,
 }: FoundItemsCountProps) {
   const t = useTranslations();
-  const isArabic = useLocale() === "ar";
+  const locale = useLocale();
+  const isArabic = isArabicLocale(locale);
 
   return (
     <p className="text-sm text-gray-600 px-2 md:px-0">

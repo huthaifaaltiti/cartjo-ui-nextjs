@@ -1,7 +1,18 @@
 "use client";
 
 import { memo, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations, useLocale } from "next-intl";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+
+import { isArabicLocale } from "@/config/locales.config";
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+
+import { apiRequest } from "@/utils/apiRequest";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,23 +23,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
 import {
   showErrorToast,
   showSuccessToast,
   showWarningToast,
 } from "./shared/CustomToast";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { apiRequest } from "@/utils/apiRequest";
-import { Eye, EyeOff } from "lucide-react";
 
 const RegisterForm = () => {
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 

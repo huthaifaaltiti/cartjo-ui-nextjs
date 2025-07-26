@@ -4,6 +4,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { BaseResponse } from "@/types/service-response.type";
 import { SubCategory } from "@/types/subCategory";
 
+import { isArabicLocale } from "@/config/locales.config";
+
 import SubCategoryCardActions from "./SubCategoryCardActions";
 import EditSubCategoryForm from "./EditSubCategoryForm";
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
@@ -37,7 +39,8 @@ const SubCategoryCard = ({
   queryKey,
 }: SubCategoryCardProps) => {
   const t = useTranslations();
-  const isArabic = useLocale() === "ar";
+  const locale = useLocale();
+  const isArabic = isArabicLocale(locale);
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col">

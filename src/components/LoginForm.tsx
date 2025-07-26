@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { isArabicLocale } from "@/config/locales.config";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,7 +33,7 @@ import {
 const LoginForm = () => {
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);

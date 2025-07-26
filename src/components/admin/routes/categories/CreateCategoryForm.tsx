@@ -33,6 +33,7 @@ import { invalidateQuery } from "@/utils/queryUtils";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
 
 import { validationConfig } from "@/config/validationConfig";
+import { isArabicLocale } from "@/config/locales.config";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/handleApiError";
@@ -95,7 +96,7 @@ type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 const CreateCategoryForm = () => {
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
   const { accessToken, queryKey } = useCategories();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();

@@ -38,9 +38,11 @@ import { SubCategory } from "@/types/subCategory";
 
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { validationConfig } from "@/config/validationConfig";
+import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { invalidateQuery } from "@/utils/queryUtils";
 import { useHandleApiError } from "@/hooks/handleApiError";
+
+import { invalidateQuery } from "@/utils/queryUtils";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
 
@@ -112,7 +114,7 @@ const EditCategoryForm = ({ subCategory }: Props) => {
   const handleApiError = useHandleApiError();
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
   const { accessToken, queryKey } = useSubCategories();
   const queryClient = useQueryClient();
   const { data } = useCategoriesQuery();

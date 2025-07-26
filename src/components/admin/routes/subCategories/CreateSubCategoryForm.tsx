@@ -37,6 +37,7 @@ import { User } from "@/types/user";
 import { Category } from "@/types/category";
 
 import { useHandleApiError } from "@/hooks/handleApiError";
+import { isArabicLocale } from "@/config/locales.config";
 import { validationConfig } from "@/config/validationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 
@@ -111,7 +112,7 @@ type CreateSubCategoryFormProps = {
 const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
   const { accessToken, queryKey } = useSubCategories();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();

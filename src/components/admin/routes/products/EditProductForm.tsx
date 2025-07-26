@@ -25,11 +25,22 @@ import {
 import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
+
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { User } from "@/types/user";
+import { isArabicLocale } from "@/config/locales.config";
+import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
+import { tagStyledClassName } from "@/constants/tagsInputStyles";
+import { useHandleApiError } from "@/hooks/handleApiError";
 import { invalidateQuery } from "@/utils/queryUtils";
-import { useProducts } from "@/contexts/Products.context";
+
+import { User } from "@/types/user";
 import { Category } from "@/types/category";
+import { Currency } from "@/enums/currency.enum";
+import { TypeHint } from "@/enums/typeHint.enum";
+import { Product } from "@/types/product.type";
+import { SubCategory } from "@/types/subCategory";
+
+import { useProducts } from "@/contexts/Products.context";
 import {
   Select,
   SelectContent,
@@ -37,15 +48,8 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
-import { Currency } from "@/enums/currency.enum";
-import { TypeHint } from "@/enums/typeHint.enum";
 import { Textarea } from "@/components/ui/textarea";
-import { SubCategory } from "@/types/subCategory";
-import { Product } from "@/types/product.type";
-import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
 import TagsInput from "@/components/shared/TagsInput";
-import { tagStyledClassName } from "@/constants/tagsInputStyles";
-import { useHandleApiError } from "@/hooks/handleApiError";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -141,7 +145,7 @@ const EditProductForm = ({
 }: CreateSubCategoryFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
   const { token, queryKey } = useProducts();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();

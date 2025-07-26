@@ -27,6 +27,7 @@ import { User } from "@/types/user";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/handleApiError";
+import { isArabicLocale } from "@/config/locales.config";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -74,7 +75,7 @@ interface CreateAdminUserFormProps {
 const CreateAdminUserForm = ({ accessToken }: CreateAdminUserFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
   const handleApiError = useHandleApiError();
 
   const imgInputRef = useRef<HTMLInputElement>(null);

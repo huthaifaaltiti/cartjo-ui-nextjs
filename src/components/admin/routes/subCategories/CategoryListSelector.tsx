@@ -5,6 +5,8 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { Category } from "@/types/category";
 
+import { isArabicLocale } from "@/config/locales.config";
+
 import {
   Select,
   SelectContent,
@@ -22,7 +24,7 @@ const CategoryListSelector = ({ categoriesList }: CategoriesListProps) => {
   const { selectedCatId, setSelectedCatId } = useSubCategories();
   const locale = useLocale();
   const t = useTranslations();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
 
   return (
     <div className="w-full md:max-w-sm px-2 md:px-0">

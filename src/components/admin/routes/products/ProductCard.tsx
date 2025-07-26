@@ -14,6 +14,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { formatDate } from "@/utils/formatDate";
+import { isArabicLocale } from "@/config/locales.config";
 
 import { BaseResponse } from "@/types/service-response.type";
 import { Product } from "@/types/product.type";
@@ -25,8 +26,16 @@ import EditProductForm from "./EditProductForm";
 
 type DashboardProductCardProps = {
   item: Product;
-  deleteProduct: (token: string, prodId: string) => Promise<BaseResponse>;
-  unDeleteProduct: (token: string, prodId: string) => Promise<BaseResponse>;
+  deleteProduct: (
+    token: string,
+    locale: string,
+    prodId: string
+  ) => Promise<BaseResponse>;
+  unDeleteProduct: (
+    token: string,
+    locale: string,
+    prodId: string
+  ) => Promise<BaseResponse>;
   switchProductActiveStatus: (
     token: string,
     lang: string,
@@ -43,7 +52,10 @@ const DashboardProductCard = ({
 }: DashboardProductCardProps) => {
   const t = useTranslations();
   const locale = useLocale();
+  const isArabic = isArabicLocale(locale);
   const { data } = useCategoriesQuery();
+
+  console.log({ product });
 
   const categories = data?.pages.flatMap((page) => page.data) || [];
 
@@ -146,7 +158,7 @@ const DashboardProductCard = ({
         {/* Title and Category */}
         <div>
           <h3 className="font-semibold text-sm text-gray-900 mb-1 line-clamp-2 capitalize">
-            {product.name.en}
+            {isArabic ? product.name.ar : product.name.en}
           </h3>
           <p className="text-xs text-gray-500 mb-2 capitalize">
             {product?.categoryId?.name?.en} • {product?.subCategoryId?.name?.en}

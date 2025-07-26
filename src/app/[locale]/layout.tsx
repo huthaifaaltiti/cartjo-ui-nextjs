@@ -8,8 +8,9 @@ import { routing } from "@/i18n/routing";
 
 import "../globals.css";
 
-import { LocaleProvider } from "@/contexts/LocaleContext";
+import { isArabicLocale } from "@/config/locales.config";
 
+import { LocaleProvider } from "@/contexts/LocaleContext";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
 
@@ -34,8 +35,8 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const isArabic = locale === "ar";
-  const dir = locale === "ar" ? "rtl" : "ltr";
+  const isArabic = isArabicLocale(locale);
+  const dir = isArabic ? "rtl" : "ltr";
   const layoutFont = isArabic ? notoKufiArabic.className : inter.className;
 
   if (!hasLocale(routing.locales, locale)) {

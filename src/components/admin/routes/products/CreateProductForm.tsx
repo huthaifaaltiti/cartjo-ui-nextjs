@@ -42,6 +42,8 @@ import { TypeHint } from "@/enums/typeHint.enum";
 import { Textarea } from "@/components/ui/textarea";
 import { SubCategory } from "@/types/subCategory";
 
+import { isArabicLocale } from "@/config/locales.config";
+
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
@@ -138,7 +140,7 @@ type CreateSubCategoryFormProps = {
 const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
   const { token, queryKey } = useProducts();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
@@ -404,9 +406,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     }
                     onChange={handleMainImageChange}
                     onError={handleImageError}
-                    label={t(
-                      "routes.dashboard.routes.products.components.CreateProductForm.fields.mainImage.label"
-                    )}
+                    label={""}
                     maxSizeInMB={2}
                     size="sm"
                     variant="rounded"
@@ -436,9 +436,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     value={prodImages.images.urls}
                     onChange={handleImagesChange}
                     onError={handleImageError}
-                    label={t(
-                      "routes.dashboard.routes.products.components.CreateProductForm.fields.images.label"
-                    )}
+                    label={" "}
                     maxSizeInMB={2}
                     size="sm"
                     variant="rounded"

@@ -5,6 +5,8 @@ import { BaseResponse } from "@/types/service-response.type";
 import { Category } from "@/types/category";
 import { Locale } from "@/types/locale";
 
+import { isArabicLocale } from "@/config/locales.config";
+
 import CategoryCardActions from "./CategoryCardActions";
 import EditCategoryForm from "./EditCategoryForm";
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
@@ -41,7 +43,7 @@ const CategoryCard = ({
 }: CategoryCardProps) => {
   const t = useTranslations();
   const locale = useLocale();
-  const isArabic = locale === "ar";
+  const isArabic = isArabicLocale(locale);
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col">
