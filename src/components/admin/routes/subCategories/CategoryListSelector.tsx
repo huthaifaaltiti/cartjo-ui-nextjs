@@ -3,6 +3,8 @@
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
+import { Category } from "@/types/category";
+
 import {
   Select,
   SelectContent,
@@ -10,7 +12,6 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
-import { Category } from "@/types/category";
 import { useSubCategories } from "@/contexts/SubCategoriesContext";
 
 type CategoriesListProps = {
@@ -24,7 +25,7 @@ const CategoryListSelector = ({ categoriesList }: CategoriesListProps) => {
   const isArabic = locale === "ar";
 
   return (
-    <div className="w-full max-w-sm my-4">
+    <div className="w-full md:max-w-sm px-2 md:px-0">
       <Select
         value={selectedCatId ?? "__all__"}
         onValueChange={(value) =>

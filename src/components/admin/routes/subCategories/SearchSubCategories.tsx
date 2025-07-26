@@ -11,7 +11,7 @@ const SearchSubCategories = () => {
   const t = useTranslations();
 
   return (
-    <div className="w-full">
+    <div className="w-full px-2 md:px-0">
       <SearchBar
         placeholder={t(
           "routes.dashboard.routes.subCategories.components.SearchBar.placeholder"

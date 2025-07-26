@@ -26,21 +26,18 @@ const SubCategoriesPage = ({
 }: SubCategoriesPageProps) => {
   return (
     <SubCategoriesContextProvider accessToken={accessToken}>
-      <div className="w-full flex items-center justify-between gap-2">
-        <CategoryListSelector categoriesList={initialCategories} />
+      <ModalCreateButton
+        icon={<BlocksIcon />}
+        createTranslationKey="routes.dashboard.routes.subCategories.createSubCategory.label"
+        ModalContent={<CreateSubCategoryForm categories={initialCategories} />}
+      />
 
-        <ModalCreateButton
-          icon={<BlocksIcon />}
-          createTranslationKey="routes.dashboard.routes.subCategories.createSubCategory.label"
-          ModalContent={
-            <CreateSubCategoryForm categories={initialCategories} />
-          }
-        />
+      <div className="w-full flex flex-col-reverse items-center justify-between gap-2 md:flex-row md:gap-2">
+        <SearchSubCategories />
+        <CategoryListSelector categoriesList={initialCategories} />
       </div>
 
-      <SearchSubCategories />
-
-      <div className="w-full mt-3">
+      <div className="w-full mt-1">
         <SubCategoriesList initialSubCategories={initialSubCategories} />
       </div>
     </SubCategoriesContextProvider>
