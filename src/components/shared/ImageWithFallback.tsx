@@ -1,4 +1,6 @@
-import React, { memo, useState, useCallback } from "react";
+"use client";
+
+import React, { memo, useState, useCallback, useEffect } from "react";
 import Image, { ImageProps } from "next/image";
 
 import { DEFAULT_FALLBACK_IMAGE } from "@/config/media.config";
@@ -20,6 +22,12 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
       setImgSrc(fallbackSrc);
     }
   }, [imgSrc, fallbackSrc]);
+
+  useEffect(() => {
+    if (src !== imgSrc) {
+      setImgSrc(src);
+    }
+  }, [src, imgSrc]);
 
   return <Image {...rest} src={imgSrc} alt={alt} onError={handleError} />;
 };

@@ -1,30 +1,30 @@
 import { memo } from "react";
-import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 
-import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
+import { BaseResponse } from "@/types/service-response.type";
+import { SubCategory } from "@/types/subCategory";
 
 import SubCategoryCardActions from "./SubCategoryCardActions";
 import EditSubCategoryForm from "./EditSubCategoryForm";
-import { SubCategory } from "@/types/subCategory";
+import ImageWithFallback from "@/components/shared/ImageWithFallback";
 
 type SubCategoryCardProps = {
   item: SubCategory;
   deleteSubCategory: (
     accessToken: string,
     userId: string
-  ) => Promise<DeletingResponse>;
+  ) => Promise<BaseResponse>;
   unDeleteSubCategory: (
     accessToken: string,
     userId: string
-  ) => Promise<DeletingResponse>;
+  ) => Promise<BaseResponse>;
   accessToken: string;
   switchSubCategoryActiveStatus: (
     token: string,
     lang: string,
     isActive: boolean,
     userId: string
-  ) => Promise<SwitchActiveStatusResponse>;
+  ) => Promise<BaseResponse>;
   queryKey: string;
 };
 
@@ -61,11 +61,11 @@ const SubCategoryCard = ({
         )}
       </div>
 
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center gap-2">
         <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 border border-gray-200">
-          <Image
-            src={subCategory?.mediaId?.supabaseBackupUrl || subCategory?.image}
-            alt={subCategory?.name.en}
+          <ImageWithFallback
+            src={subCategory?.media?.url}
+            alt={subCategory.name.en}
             width={40}
             height={40}
             className="object-cover w-full h-full"

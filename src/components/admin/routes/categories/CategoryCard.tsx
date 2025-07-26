@@ -1,9 +1,9 @@
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
+import { BaseResponse } from "@/types/service-response.type";
 import { Category } from "@/types/category";
 import { Locale } from "@/types/locale";
-import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
 
 import CategoryCardActions from "./CategoryCardActions";
 import EditCategoryForm from "./EditCategoryForm";
@@ -15,19 +15,19 @@ type CategoryCardProps = {
     accessToken: string,
     userId: string,
     lang: Locale
-  ) => Promise<DeletingResponse>;
+  ) => Promise<BaseResponse>;
   unDeleteCategory: (
     accessToken: string,
     userId: string,
     lang: Locale
-  ) => Promise<DeletingResponse>;
+  ) => Promise<BaseResponse>;
   accessToken: string;
   switchCategoryActiveStatus: (
     token: string,
     lang: string,
     isActive: boolean,
     userId: string
-  ) => Promise<SwitchActiveStatusResponse>;
+  ) => Promise<BaseResponse>;
   queryKey: string;
 };
 
@@ -65,7 +65,7 @@ const CategoryCard = ({
         )}
       </div>
 
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center gap-2">
         <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 border border-gray-200">
           <ImageWithFallback
             src={category?.media?.url}
