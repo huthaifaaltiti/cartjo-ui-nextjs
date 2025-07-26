@@ -15,8 +15,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { formatDate } from "@/utils/formatDate";
 
+import { BaseResponse } from "@/types/service-response.type";
 import { Product } from "@/types/product.type";
-import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
 
 import ProductCardActions from "./ProductCardActions";
 import { Button } from "@/components/ui/button";
@@ -25,14 +25,14 @@ import EditProductForm from "./EditProductForm";
 
 type DashboardProductCardProps = {
   item: Product;
-  deleteProduct: (token: string, prodId: string) => Promise<DeletingResponse>;
-  unDeleteProduct: (token: string, prodId: string) => Promise<DeletingResponse>;
+  deleteProduct: (token: string, prodId: string) => Promise<BaseResponse>;
+  unDeleteProduct: (token: string, prodId: string) => Promise<BaseResponse>;
   switchProductActiveStatus: (
     token: string,
     lang: string,
     isActive: boolean,
     id: string
-  ) => Promise<SwitchActiveStatusResponse>;
+  ) => Promise<BaseResponse>;
 };
 
 const DashboardProductCard = ({
@@ -45,7 +45,7 @@ const DashboardProductCard = ({
   const locale = useLocale();
   const { data } = useCategoriesQuery();
 
-  const categories = data?.pages.flatMap((page) => page.categories) || [];
+  const categories = data?.pages.flatMap((page) => page.data) || [];
 
   const [showActions, setShowActions] = useState(false);
 
@@ -147,7 +147,7 @@ const DashboardProductCard = ({
             {product.name.en}
           </h3>
           <p className="text-xs text-gray-500 mb-2 capitalize">
-            {product.categoryId.name.en} • {product.subCategoryId.name.en}
+            {product?.categoryId?.name?.en} • {product?.subCategoryId?.name?.en}
           </p>
           <p className="text-xs text-gray-600 line-clamp-2 capitalize">
             {product.description.en}

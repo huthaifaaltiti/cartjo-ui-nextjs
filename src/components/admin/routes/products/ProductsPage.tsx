@@ -2,13 +2,13 @@ import { memo } from "react";
 import { BlocksIcon } from "lucide-react";
 
 import { Product } from "@/types/product.type";
+import { Category } from "@/types/category";
 
 import { ProductsContextProvider } from "@/contexts/Products.context";
 import SearchProducts from "./SearchProducts";
 import ProductsList from "./ProductsList";
 import ModalCreateButton from "@/components/shared/ModalCreateButton";
 import CreateProductForm from "./CreateProductForm";
-import { Category } from "@/types/category";
 
 type ProductsPageProps = {
   initialProducts: Product[];

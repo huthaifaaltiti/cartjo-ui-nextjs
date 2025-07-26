@@ -2,8 +2,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
 
-import { CommonListResponse, FetchPaginatedArgs } from "@/types/common";
+import { FetchPaginatedArgs } from "@/types/common";
 import { Product } from "@/types/product.type";
+import { DataListResponse } from "@/types/service-response.type";
 
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
@@ -17,7 +18,7 @@ export const fetchProducts = async ({
   limit = PAGINATION_LIMITS.PRODUCTS,
   lastId,
   search,
-}: FetchPaginatedArgs): Promise<CommonListResponse<Product>> => {
+}: FetchPaginatedArgs): Promise<DataListResponse<Product>> => {
   const url = new URL(API_ENDPOINTS.DASHBOARD.PRODUCTS.ALL);
 
   if (lang) url.searchParams.append("lang", lang.toString());
@@ -43,7 +44,7 @@ export const useProductsQuery = ({ search }: { search?: string }) => {
   const locale = useLocale();
   const accessToken = (session as CustomSession)?.accessToken;
 
-  return useInfiniteQuery<CommonListResponse<Product>>({
+  return useInfiniteQuery<DataListResponse<Product>>({
     queryKey: ["products", search],
     queryFn: ({ pageParam }) => {
       if (!accessToken) throw new Error("No access token found");

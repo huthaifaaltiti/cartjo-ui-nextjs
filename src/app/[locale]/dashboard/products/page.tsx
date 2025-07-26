@@ -26,7 +26,7 @@ export default async function Page() {
       limit: PAGINATION_LIMITS.CATEGORIES,
     });
 
-    categories = catsResp?.categories || [];
+    categories = catsResp?.data || [];
     products = prodsResp?.data || [];
   }
 
