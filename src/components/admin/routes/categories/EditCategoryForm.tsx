@@ -97,7 +97,7 @@ const EditCategoryForm = ({ category }: Props) => {
     url: string;
   }>({
     file: null,
-    url: category?.image || category?.mediaId?.supabaseBackupUrl || "",
+    url: category?.media?.url || "",
   });
 
   const formSchema = editFormSchema(t);
@@ -105,8 +105,7 @@ const EditCategoryForm = ({ category }: Props) => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      categoryImage:
-        category?.image || category?.mediaId?.supabaseBackupUrl || "",
+      categoryImage: category?.media?.url || "",
       name_ar: category?.name?.ar || "",
       name_en: category?.name?.en || "",
     },
