@@ -784,7 +784,8 @@
             "users": "المستخدمون",
             "categories": "الفئات",
             "subCategories": "الفئات الفرعية",
-            "products": "المنتجات"
+            "products": "المنتجات",
+            "media": "الوسائط"
           }
         },
         "DashboardLocationCard": {

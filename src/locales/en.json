@@ -770,7 +770,8 @@
             "users": "Users",
             "categories": "Categories",
             "subCategories": "SubCategories",
-            "products": "Products"
+            "products": "Products",
+            "media": "Media"
           }
         },
         "DashboardLocationCard": {

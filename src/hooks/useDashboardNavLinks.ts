@@ -1,4 +1,11 @@
-import { MapPin, Users, Box, Boxes, ShoppingBasket } from "lucide-react";
+import {
+  MapPin,
+  Users,
+  Box,
+  Boxes,
+  ShoppingBasket,
+  FileMusic,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function useDashboardNavLinks() {
@@ -39,6 +46,13 @@ export function useDashboardNavLinks() {
       ),
       href: "/dashboard/products",
       icon: ShoppingBasket,
+    },
+    {
+      label: t(
+        "routes.dashboard.components.DashboardControlNavLinks.navItems.media"
+      ),
+      href: "/dashboard/media",
+      icon: FileMusic,
     },
   ];
 
