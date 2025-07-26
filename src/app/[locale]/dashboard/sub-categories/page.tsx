@@ -26,8 +26,8 @@ export default async function Page() {
       limit: PAGINATION_LIMITS.SUB_CATEGORIES,
     });
 
-    categories = catsResp?.categories || [];
-    subCategories = subCatsResp?.subCategories || [];
+    categories = catsResp?.data || [];
+    subCategories = subCatsResp?.data || [];
   }
 
   return (

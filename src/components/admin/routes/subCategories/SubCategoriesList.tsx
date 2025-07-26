@@ -38,7 +38,7 @@ const SubCategoriesList = ({
   });
 
   const subCategories =
-    data?.pages.flatMap((page) => page.subCategories) || initialSubCategories;
+    data?.pages.flatMap((page) => page.data) || initialSubCategories;
 
   return (
     <InfiniteScrollList

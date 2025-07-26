@@ -7,12 +7,10 @@ import CategoriesPage from "@/components/admin/routes/categories/CategoriesPage"
 export default async function Page() {
   const accessToken = await getAccessTokenFromServerSession();
 
-  const { categories } = await fetchCategories({
+  const { data } = await fetchCategories({
     token: accessToken,
     limit: PAGINATION_LIMITS.CATEGORIES,
   });
 
-  return (
-    <CategoriesPage initialCategories={categories} accessToken={accessToken} />
-  );
+  return <CategoriesPage initialCategories={data} accessToken={accessToken} />;
 }

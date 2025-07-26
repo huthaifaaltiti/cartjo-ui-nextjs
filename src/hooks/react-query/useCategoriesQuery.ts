@@ -3,17 +3,12 @@ import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 
 import { Category } from "@/types/category";
+import { DataListResponse } from "@/types/service-response.type";
+
 import { CustomSession } from "@/lib/authOptions";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-
-interface CategoriesResp {
-  isSuccess: boolean;
-  message: string;
-  categoriesNum: number;
-  categories: Category[];
-}
 
 interface FetchCategoriesParams {
   token: string;
@@ -29,7 +24,7 @@ export const fetchCategories = async ({
   limit = PAGINATION_LIMITS.CATEGORIES,
   lastId,
   search,
-}: FetchCategoriesParams): Promise<CategoriesResp> => {
+}: FetchCategoriesParams): Promise<DataListResponse<Category>> => {
   const url = new URL(`${API_ENDPOINTS.DASHBOARD.CATEGORIES.GET_ALL}`);
 
   url.searchParams.append("limit", limit.toString());
@@ -55,7 +50,7 @@ export const useCategoriesQuery = (search?: string) => {
   const locale = useLocale();
   const accessToken = (session as CustomSession)?.accessToken;
 
-  return useInfiniteQuery<CategoriesResp>({
+  return useInfiniteQuery<DataListResponse<Category>>({
     queryKey: ["categories", search],
     queryFn: ({ pageParam }) => {
       if (!accessToken) throw new Error("No access token found");
@@ -69,9 +64,8 @@ export const useCategoriesQuery = (search?: string) => {
       });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.categories && lastPage.categories.length > 0) {
-        const lastCategory =
-          lastPage.categories[lastPage.categories.length - 1];
+      if (lastPage.data && lastPage.data.length > 0) {
+        const lastCategory = lastPage.data[lastPage.data.length - 1];
         return lastCategory._id;
       }
       return undefined;

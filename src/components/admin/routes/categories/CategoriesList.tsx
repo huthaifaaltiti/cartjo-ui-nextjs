@@ -32,7 +32,7 @@ const CategoriesList = ({ initialCategories }: CategoriesListProps) => {
     error,
   } = useCategoriesQuery(searchQuery);
 
-  const categories = data?.pages.flatMap((page) => page.categories) || [
+  const categories = data?.pages.flatMap((page) => page.data) || [
     ...initialCategories,
   ];
 

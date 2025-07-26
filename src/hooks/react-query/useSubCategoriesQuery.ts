@@ -2,6 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
 
+import { DataListResponse } from "@/types/service-response.type";
 import { SubCategory } from "@/types/subCategory";
 
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
@@ -9,13 +10,6 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { CustomSession } from "@/lib/authOptions";
-
-interface SubCategoriesResp {
-  isSuccess: boolean;
-  message: string;
-  subCategoriesNum: number;
-  subCategories: SubCategory[];
-}
 
 interface FetchSubCategoriesParams {
   token: string;
@@ -33,7 +27,7 @@ export const fetchSubCategories = async ({
   lastId,
   search,
   catId,
-}: FetchSubCategoriesParams): Promise<SubCategoriesResp> => {
+}: FetchSubCategoriesParams): Promise<DataListResponse<SubCategory>> => {
   const url = new URL(API_ENDPOINTS.DASHBOARD.SUB_CATEGORIES.GET_ALL);
 
   if (limit) url.searchParams.append("limit", limit.toString());
@@ -64,7 +58,7 @@ export const useSubCategoriesQuery = ({
   const locale = useLocale();
   const accessToken = (session as CustomSession)?.accessToken;
 
-  return useInfiniteQuery<SubCategoriesResp>({
+  return useInfiniteQuery<DataListResponse<SubCategory>>({
     queryKey: ["subCategories", search, catId],
     queryFn: ({ pageParam }) => {
       if (!accessToken) throw new Error("No access token found");
@@ -79,9 +73,8 @@ export const useSubCategoriesQuery = ({
       });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.subCategories && lastPage.subCategories.length > 0) {
-        const lastSubCategory =
-          lastPage.subCategories[lastPage.subCategories.length - 1];
+      if (lastPage.data && lastPage.data.length > 0) {
+        const lastSubCategory = lastPage.data[lastPage.data.length - 1];
         return lastSubCategory._id;
       }
       return undefined;
