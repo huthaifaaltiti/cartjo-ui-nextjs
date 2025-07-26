@@ -1,21 +1,9 @@
+import { Actor, Name } from "./common";
 import { Media } from "./media.type";
 import { SubCategory } from "./subCategory";
 
-type Name = {
-  ar: string;
-  en: string;
-};
-
-type Actor = {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-};
-
 export interface Category {
   _id: string;
-  __v: number;
   name: Name;
   media: Media;
   subCategories: SubCategory[];
