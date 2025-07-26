@@ -22,8 +22,16 @@ import {
 type ProductCardActionsProps = {
   setShowActions: (showActions: boolean) => void;
   product: Product;
-  deleteFn: (token: string, prodId: string) => Promise<BaseResponse>;
-  unDeleteFn: (token: string, prodId: string) => Promise<BaseResponse>;
+  deleteFn: (
+    token: string,
+    lang: string,
+    prodId: string
+  ) => Promise<BaseResponse>;
+  unDeleteFn: (
+    token: string,
+    lang: string,
+    prodId: string
+  ) => Promise<BaseResponse>;
   switchActiveStatusFn: (
     token: string,
     lang: string,
@@ -52,7 +60,7 @@ const ProductCardActions = ({
   const handleDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await deleteFn(token, product._id);
+      const resp = await deleteFn(token, locale, product._id);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -75,7 +83,7 @@ const ProductCardActions = ({
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await unDeleteFn(token, product._id);
+      const resp = await unDeleteFn(token, locale, product._id);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),

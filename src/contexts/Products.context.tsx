@@ -1,23 +1,33 @@
 "use client";
 
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { DeletingResponse, SwitchActiveStatusResponse } from "@/types/common";
-import { Locale } from "@/types/locale";
 import { createContext, ReactNode, useContext, useState } from "react";
+
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+
+import { Locale } from "@/types/locale";
+import { BaseResponse } from "@/types/service-response.type";
 
 type ProductsContextType = {
   token: string;
   queryKey: string;
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
-  deleteProduct: (token: string, prodId: string) => Promise<DeletingResponse>;
-  unDeleteProduct: (token: string, prodId: string) => Promise<DeletingResponse>;
+  deleteProduct: (
+    token: string,
+    locale: string,
+    prodId: string
+  ) => Promise<BaseResponse>;
+  unDeleteProduct: (
+    token: string,
+    locale: string,
+    prodId: string
+  ) => Promise<BaseResponse>;
   switchProductActiveStatus: (
     token: string,
     lang: Locale | string,
     isActive: boolean,
     prodId: string
-  ) => Promise<SwitchActiveStatusResponse>;
+  ) => Promise<BaseResponse>;
 };
 
 const ProductsContext = createContext<ProductsContextType | undefined>(
@@ -38,8 +48,9 @@ export const ProductsContextProvider = ({
 
   const deleteProduct = async (
     token: string,
+    locale: string,
     prodId: string
-  ): Promise<DeletingResponse> => {
+  ): Promise<BaseResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.PRODUCTS.DELETE}/${prodId}`,
       {
@@ -48,6 +59,7 @@ export const ProductsContextProvider = ({
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ lang: locale }),
       }
     );
 
@@ -60,8 +72,9 @@ export const ProductsContextProvider = ({
 
   const unDeleteProduct = async (
     token: string,
+    locale: string,
     prodId: string
-  ): Promise<DeletingResponse> => {
+  ): Promise<BaseResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.PRODUCTS.UN_DELETE}/${prodId}`,
       {
@@ -70,6 +83,7 @@ export const ProductsContextProvider = ({
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ lang: locale }),
       }
     );
 
@@ -85,7 +99,7 @@ export const ProductsContextProvider = ({
     lang: Locale | string,
     isActive: boolean,
     prodId: string
-  ): Promise<SwitchActiveStatusResponse> => {
+  ): Promise<BaseResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.PRODUCTS.SWITCH_ACTIVE_STATUS}/${prodId}`,
       {
