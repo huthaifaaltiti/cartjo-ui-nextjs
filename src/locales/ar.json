@@ -107,6 +107,9 @@
       "uploadFile": "رفع ملف",
       "browseFile": "اسحب ملفك وأفلته هنا، أو انقر للتصفح",
       "supportedFormats": "التنسيقات المدعومة: ({formats})"
+    },
+    "BackToHomePage": {
+      "backToHome": "العودة إلى الرئيسية"
     }
   },
   "routes": {
