@@ -48,7 +48,7 @@ export const dashboardNavLinks = [
   {
     labelKey:
       "routes.dashboard.components.DashboardControlNavLinks.navItems.logo",
-    href: "/dashboard/logo",
+    href: "/dashboard/logos",
     icon: Feather,
   },
 ];

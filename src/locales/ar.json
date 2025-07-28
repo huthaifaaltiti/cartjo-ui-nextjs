@@ -765,6 +765,92 @@
               }
             }
           }
+        },
+        "logos": {
+          "title": "إدارة الشعارات",
+          "desc": "إدارة بيانات الشعارات",
+          "createLogo": {
+            "label": "إنشاء شعار",
+            "uploadImage": "تحميل صورة الشعار",
+            "actionFailed": "فشل في إنشاء الشعار"
+          },
+          "editLogo": {
+            "label": "تعديل الشعار",
+            "uploadImage": "تحميل صورة الشعار",
+            "actionFailed": "فشل في تعديل الشعار"
+          },
+          "errors": {
+            "failedLoadData": "فشل في تحميل الشعارات"
+          },
+          "components": {
+            "SearchBar": {
+              "placeholder": "ابحث عن الشعارات"
+            },
+            "CreateLogoForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "صورة الشعار",
+                  "placeholder": "صورة الشعار"
+                },
+                "name": {
+                  "label": "الاسم",
+                  "placeholder": "الاسم"
+                },
+                "altText": {
+                  "label": "النص البديل",
+                  "placeholder": "النص البديل"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "يجب توفير صورة الشعار"
+                },
+                "name": {
+                  "minChars": "يجب أن لا يقل الاسم عن ({min}) أحرف",
+                  "maxChars": "يجب أن لا يزيد الاسم عن ({max}) أحرف"
+                },
+                "altText": {
+                  "minChars": "يجب أن لا يقل النص البديل عن ({min}) أحرف",
+                  "maxChars": "يجب أن لا يزيد النص البديل عن ({max}) أحرف"
+                }
+              },
+              "errors": {
+                "failedCreation": "فشل في إنشاء الشعار"
+              }
+            },
+            "EditCategoryForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "صورة الشعار",
+                  "placeholder": "صورة الشعار"
+                },
+                "name": {
+                  "label": "الاسم",
+                  "placeholder": "الاسم"
+                },
+                "altText": {
+                  "label": "النص البديل",
+                  "placeholder": "النص البديل"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "يجب توفير صورة الشعار"
+                },
+                "name": {
+                  "minChars": "يجب أن لا يقل الاسم عن ({min}) أحرف",
+                  "maxChars": "يجب أن لا يزيد الاسم عن ({max}) أحرف"
+                },
+                "altText": {
+                  "minChars": "يجب أن لا يقل النص البديل عن ({min}) أحرف",
+                  "maxChars": "يجب أن لا يزيد النص البديل عن ({max}) أحرف"
+                }
+              },
+              "errors": {
+                "failedEditing": "فشل في تعديل الشعار"
+              }
+            }
+          }
         }
       },
       "components": {

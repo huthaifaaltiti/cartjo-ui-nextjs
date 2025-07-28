@@ -47,5 +47,13 @@ export const API_ENDPOINTS = {
       CREATE: `${BASE_URL}/api/v1/product/create`,
       EDIT: `${BASE_URL}/api/v1/product/update`,
     },
+    LOGOS: {
+      ALL: `${BASE_URL}/api/v1/logo/all`,
+      DELETE: `${BASE_URL}/api/v1/logo/delete`,
+      UN_DELETE: `${BASE_URL}/api/v1/logo/un-delete`,
+      SWITCH_ACTIVE_STATUS: `${BASE_URL}/api/v1/logo/status`,
+      CREATE: `${BASE_URL}/api/v1/logo/create`,
+      EDIT: `${BASE_URL}/api/v1/logo/update`,
+    },
   },
 };

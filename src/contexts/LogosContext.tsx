@@ -3,25 +3,26 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
 
-type CategoriesContextType = {
+type LogosContextType = {
   queryKey: string;
   searchQuery: string;
   accessToken: string;
   setSearchQuery: (searchQuery: string) => void;
-  deleteCategory: (
+  deleteLogo: (
     token: string,
-    catId: string,
+    logoId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
-  unDeleteCategory: (
+  unDeleteLogo: (
     token: string,
-    catId: string,
+    logoId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
-  switchCategoryActiveStatus: (
+  switchLogoActiveStatus: (
     token: string,
     lang: Locale | string,
     isActive: boolean,
@@ -29,29 +30,27 @@ type CategoriesContextType = {
   ) => Promise<BaseResponse>;
 };
 
-type CategoriesContextProviderType = {
+type LogosContextProviderType = {
   accessToken: string;
   children: ReactNode;
 };
 
-const CategoriesContext = createContext<undefined | CategoriesContextType>(
-  undefined
-);
+const LogosContext = createContext<undefined | LogosContextType>(undefined);
 
-export const CategoriesContextProvider = ({
+export const LogosContextProvider = ({
   accessToken,
   children,
-}: CategoriesContextProviderType) => {
-  const queryKey: string = "categories";
+}: LogosContextProviderType) => {
+  const queryKey: string = "logos";
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const deleteCategory = async (
+  const deleteLogo = async (
     token: string,
-    catId: string,
+    logoId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
     const res = await fetch(
-      `${API_ENDPOINTS.DASHBOARD.CATEGORIES.DELETE}/${catId}`,
+      `${API_ENDPOINTS.DASHBOARD.LOGOS.DELETE}/${logoId}`,
       {
         method: "DELETE",
         body: JSON.stringify({ lang }),
@@ -63,20 +62,20 @@ export const CategoriesContextProvider = ({
     );
 
     if (!res.ok) {
-      throw new Error("Failed to delete category");
+      throw new Error("Failed to delete logo");
     }
 
     const resJson = await res.json();
     return resJson;
   };
 
-  const unDeleteCategory = async (
+  const unDeleteLogo = async (
     token: string,
-    catId: string,
+    logoId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
     const res = await fetch(
-      `${API_ENDPOINTS.DASHBOARD.CATEGORIES.UN_DELETE}/${catId}`,
+      `${API_ENDPOINTS.DASHBOARD.LOGOS.UN_DELETE}/${logoId}`,
       {
         method: "DELETE",
         body: JSON.stringify({ lang }),
@@ -88,21 +87,21 @@ export const CategoriesContextProvider = ({
     );
 
     if (!res.ok) {
-      throw new Error("Failed to un-delete category");
+      throw new Error("Failed to un-delete logo");
     }
 
     const resJson = await res.json();
     return resJson;
   };
 
-  const switchCategoryActiveStatus = async (
+  const switchLogoActiveStatus = async (
     token: string,
     lang: Locale | string,
     isActive: boolean,
-    catId: string
+    logoId: string
   ): Promise<BaseResponse> => {
     const res = await fetch(
-      `${API_ENDPOINTS.DASHBOARD.CATEGORIES.SWITCH_ACTIVE_STATUS}/${catId}`,
+      `${API_ENDPOINTS.DASHBOARD.LOGOS.SWITCH_ACTIVE_STATUS}/${logoId}`,
       {
         method: "PUT",
         body: JSON.stringify({ lang, isActive }),
@@ -113,35 +112,35 @@ export const CategoriesContextProvider = ({
       }
     );
 
-    if (!res.ok) throw new Error("Could not switch active status");
+    if (!res.ok) throw new Error("Could not switch active status to logo");
 
     const resJson = await res.json();
     return resJson;
   };
 
   return (
-    <CategoriesContext.Provider
+    <LogosContext.Provider
       value={{
         queryKey,
         searchQuery,
         accessToken,
         setSearchQuery,
-        deleteCategory,
-        unDeleteCategory,
-        switchCategoryActiveStatus,
+        deleteLogo,
+        unDeleteLogo,
+        switchLogoActiveStatus,
       }}
     >
       {children}
-    </CategoriesContext.Provider>
+    </LogosContext.Provider>
   );
 };
 
-export const useCategories = () => {
-  const context = useContext(CategoriesContext);
+export const useLogos = () => {
+  const context = useContext(LogosContext);
 
   if (context === undefined)
     throw new Error(
-      "Categories context should be used within categories context provider"
+      "Logos context should be used within logo context provider"
     );
 
   return context;

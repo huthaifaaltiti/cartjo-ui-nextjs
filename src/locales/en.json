@@ -109,7 +109,7 @@
       "supportedFormats": "Supported formats: ({formats})"
     },
     "BackToHomePage": {
-      "backToHome":"Back Home"
+      "backToHome": "Back Home"
     }
   },
   "routes": {
@@ -748,6 +748,90 @@
                 "discountRate": {
                   "min": "Discount amount must be at least 1"
                 }
+              }
+            }
+          }
+        },
+        "logos": {
+          "title": "Logos Management",
+          "desc": "Manage logos data",
+          "createLogo": {
+            "label": "Create Logo",
+            "uploadImage": "Upload logo image",
+            "actionFailed": "Logo creation failed"
+          },
+          "editLogo": {
+            "label": "Edit Logo",
+            "uploadImage": "Upload logo image",
+            "actionFailed": "Logo editing failed"
+          },
+          "errors": {
+            "failedLoadData": "Failed to Load logos"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for logos" },
+            "CreateLogoForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "Logo image",
+                  "placeholder": "Logo image"
+                },
+                "name": {
+                  "label": "Name",
+                  "placeholder": "Name"
+                },
+                "altText": {
+                  "label": "Alternative text",
+                  "placeholder": "Alternative text"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "Logo image should be provided"
+                },
+                "name": {
+                  "minChars": "Name must be at least ({min}) characters long",
+                  "maxChars": "Name must be at most ({max}) characters long"
+                },
+                "altText": {
+                  "minChars": "Alternative text must be at least ({min}) characters long",
+                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                }
+              },
+              "errors": {
+                "failedCreation": "Logo creation failed"
+              }
+            },
+            "EditCategoryForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "Logo image",
+                  "placeholder": "Logo image"
+                },
+                "name": {
+                  "label": "Name",
+                  "placeholder": "Name"
+                },
+                "altText": {
+                  "label": "Alternative text",
+                  "placeholder": "Alternative text"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "Logo image should be provided"
+                },
+                "name": {
+                  "minChars": "Name must be at least ({min}) characters long",
+                  "maxChars": "Name must be at most ({max}) characters long"
+                },
+                "altText": {
+                  "minChars": "Alternative text must be at least ({min}) characters long",
+                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                }
+              },
+              "errors": {
+                "failedEditing": "Logo editing failed"
               }
             }
           }
