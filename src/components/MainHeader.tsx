@@ -2,6 +2,7 @@ import { memo } from "react";
 import MaxWidthWrapper from "./shared/MaxWidthWrapper";
 import UserActions from "./UserActions";
 import AppStaticLogo from "./shared/AppStaticLogo";
+import { DynamicLogo } from "./shared/DynamicLogo";
 
 const MAinHeader = () => {
   return (
@@ -10,6 +11,7 @@ const MAinHeader = () => {
         <div className="w-full flex items-center justify-between gap-5">
           <div className="w-1/3">
             <AppStaticLogo />
+            <DynamicLogo />
           </div>
           <div className="w-2/3">Search bar</div>
           <div className="w-1/3">

@@ -54,6 +54,7 @@ export const API_ENDPOINTS = {
       SWITCH_ACTIVE_STATUS: `${BASE_URL}/api/v1/logo/status`,
       CREATE: `${BASE_URL}/api/v1/logo/create`,
       EDIT: `${BASE_URL}/api/v1/logo/update`,
+      ACTIVE: `${BASE_URL}/api/v1/logo/active`,
     },
   },
 };

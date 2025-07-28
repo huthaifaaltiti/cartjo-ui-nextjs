@@ -3,7 +3,7 @@ import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 
 import { Logo } from "@/types/logo";
-import { DataListResponse } from "@/types/service-response.type";
+import { DataListResponse, DataResponse } from "@/types/service-response.type";
 
 import { CustomSession } from "@/lib/authOptions";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
@@ -39,6 +39,27 @@ export const fetchLogos = async ({
   });
 
   if (!res.ok) throw new Error("Could not retrieve logos");
+
+  const resObj = await res.json();
+
+  return resObj;
+};
+
+export const fetchActiveLogo = async ({
+  token,
+  lang = "en",
+}: FetchLogosParams): Promise<DataResponse<Logo>> => {
+  const url = new URL(`${API_ENDPOINTS.DASHBOARD.LOGOS.ACTIVE}`);
+
+  if (lang) url.searchParams.append("lang", lang);
+
+  const res = await fetch(url.toString(), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) throw new Error("Could not retrieve active logo");
 
   const resObj = await res.json();
 
