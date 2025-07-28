@@ -788,7 +788,8 @@
             "categories": "الفئات",
             "subCategories": "الفئات الفرعية",
             "products": "المنتجات",
-            "media": "الوسائط"
+            "media": "الوسائط",
+            "logo": "الشعار"
           }
         },
         "DashboardLocationCard": {

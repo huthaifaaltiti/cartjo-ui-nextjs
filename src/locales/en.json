@@ -774,7 +774,8 @@
             "categories": "Categories",
             "subCategories": "SubCategories",
             "products": "Products",
-            "media": "Media"
+            "media": "Media",
+            "logo": "Logo"
           }
         },
         "DashboardLocationCard": {

@@ -5,6 +5,7 @@ import {
   Boxes,
   ShoppingBasket,
   FileMusic,
+  Feather,
 } from "lucide-react";
 
 export const dashboardNavLinks = [
@@ -43,5 +44,11 @@ export const dashboardNavLinks = [
       "routes.dashboard.components.DashboardControlNavLinks.navItems.media",
     href: "/dashboard/media",
     icon: FileMusic,
+  },
+  {
+    labelKey:
+      "routes.dashboard.components.DashboardControlNavLinks.navItems.logo",
+    href: "/dashboard/logo",
+    icon: Feather,
   },
 ];
