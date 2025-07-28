@@ -1,7 +1,7 @@
 import { memo } from "react";
 import Image from "next/image";
 
-const Logo = () => {
+const AppStaticLogo = () => {
   return (
     <Image
       className="w-32"
@@ -14,4 +14,4 @@ const Logo = () => {
   );
 };
 
-export default memo(Logo);
+export default memo(AppStaticLogo);
