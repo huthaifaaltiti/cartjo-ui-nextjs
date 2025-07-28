@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import {
   Heart,
   ShoppingCart,
@@ -23,6 +23,7 @@ import ProductCardActions from "./ProductCardActions";
 import { Button } from "@/components/ui/button";
 import ImageGallery from "../../shared/ImageGallery";
 import EditProductForm from "./EditProductForm";
+import { typeHintLabels } from "@/enums/typeHint.enum";
 
 type DashboardProductCardProps = {
   item: Product;
@@ -55,9 +56,12 @@ const DashboardProductCard = ({
   const isArabic = isArabicLocale(locale);
   const { data } = useCategoriesQuery();
 
-  console.log({ product });
+  const categories = useMemo(
+    () => data?.pages.flatMap((page) => page.data) ?? [],
+    [data]
+  );
 
-  const categories = data?.pages.flatMap((page) => page.data) || [];
+  console.log({ product });
 
   const [showActions, setShowActions] = useState(false);
 
@@ -143,7 +147,11 @@ const DashboardProductCard = ({
         <ImageGallery
           images={allImages}
           alt={product.name.en}
-          badgeText={product.typeHint}
+          badgeText={
+            isArabic
+              ? typeHintLabels[product.typeHint as keyof typeof typeHintLabels]
+              : product.typeHint
+          }
           bulletActiveColor="bg-white-50"
           bulletInactiveColor="bg-black-50/30"
           badgeColorClass="bg-primary-50/50 text-primary-800"
@@ -161,16 +169,22 @@ const DashboardProductCard = ({
             {isArabic ? product.name.ar : product.name.en}
           </h3>
           <p className="text-xs text-gray-500 mb-2 capitalize">
-            {product?.categoryId?.name?.en} • {product?.subCategoryId?.name?.en}
+            {isArabic
+              ? product?.categoryId?.name?.ar
+              : product?.categoryId?.name?.en}{" "}
+            •{" "}
+            {isArabic
+              ? product?.subCategoryId?.name?.ar
+              : product?.subCategoryId?.name?.en}
           </p>
           <p className="text-xs text-gray-600 line-clamp-2 capitalize">
-            {product.description.en}
+            {isArabic ? product.description.ar : product.description.en}
           </p>
         </div>
 
         {/* Price and Stock */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center gap-1">
             <DollarSign size={14} className="text-gray-500" />
 
             <span className="text-sm font-bold text-gray-900">
@@ -181,7 +195,7 @@ const DashboardProductCard = ({
           <div className="text-right text-sm">
             <p className="text-gray-500">{t("general.items.stock")}</p>
             <p className="font-semibold text-gray-900">
-              {product.availableCount}/{product.totalAmountCount}
+              ({product.availableCount}/{product.totalAmountCount})
             </p>
           </div>
         </div>
@@ -192,9 +206,9 @@ const DashboardProductCard = ({
             {product.tags.map((tag: string, index: number) => (
               <span
                 key={index}
-                className="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
               >
-                <Tag size={10} className="mr-1" />
+                <Tag size={10} />
                 {tag}
               </span>
             ))}
@@ -205,7 +219,7 @@ const DashboardProductCard = ({
         <div className="grid grid-cols-3 gap-4 pt-3 border-t border-gray-100">
           {/* Sold Count */}
           <div className="flex flex-col items-center justify-center text-center">
-            <div className="flex items-center justify-center space-x-1">
+            <div className="flex items-center justify-center gap-1">
               <ShoppingCart size={14} className="text-gray-500" />
               <span className="text-sm font-medium text-gray-900">
                 {product.sellCount}
@@ -216,7 +230,7 @@ const DashboardProductCard = ({
 
           {/* Favorites */}
           <div className="flex flex-col items-center justify-center text-center">
-            <div className="flex items-center justify-center space-x-1">
+            <div className="flex items-center justify-center gap-1">
               <Heart size={14} className="text-gray-500" />
               <span className="text-sm font-medium text-gray-900">
                 {product.favoriteCount}
@@ -229,9 +243,9 @@ const DashboardProductCard = ({
 
           {/* Created At */}
           <div className="flex flex-col items-center justify-center text-center">
-            <div className="flex items-center justify-center space-x-1">
+            <div className="flex items-center justify-center gap-1">
               <Calendar size={14} className="text-gray-500" />
-              <span className="text-sm font-medium text-gray-900">
+              <span className="text-xs font-medium text-gray-900">
                 {formatDate(product.createdAt, locale)}
               </span>
             </div>
@@ -242,9 +256,9 @@ const DashboardProductCard = ({
 
           {/* Updated At */}
           <div className="flex flex-col items-center justify-center text-center col-span-3 sm:col-span-1">
-            <div className="flex items-center justify-center space-x-1">
+            <div className="flex items-center justify-center gap-1">
               <Calendar size={14} className="text-gray-500" />
-              <span className="text-sm font-medium text-gray-900">
+              <span className="text-xs font-medium text-gray-900">
                 {product.updatedAt
                   ? formatDate(product.updatedAt, locale)
                   : "NA"}
@@ -257,9 +271,9 @@ const DashboardProductCard = ({
         </div>
 
         {/* Creator Info */}
-        <div className="flex items-center space-x-2 pt-2 border-t border-gray-100">
+        <div className="flex items-center gap-1 pt-2 border-t border-gray-100">
           <User size={16} className="text-gray-500" />
-          <span className="text-sm text-gray-600">
+          <span className="text-xs text-gray-600">
             {t("general.others.createdBy")}{" "}
             {product?.createdBy
               ? `${product.createdBy.firstName} ${product.createdBy.lastName}`
