@@ -1,60 +1,12 @@
-import {
-  MapPin,
-  Users,
-  Box,
-  Boxes,
-  ShoppingBasket,
-  FileMusic,
-} from "lucide-react";
 import { useTranslations } from "next-intl";
+import { dashboardNavLinks } from "@/config/dashboardNavLinks.config";
 
 export function useDashboardNavLinks() {
   const t = useTranslations();
 
-  const navLinks = [
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.locations"
-      ),
-      href: "/dashboard/locations",
-      icon: MapPin,
-    },
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.users"
-      ),
-      href: "/dashboard/users",
-      icon: Users,
-    },
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.categories"
-      ),
-      href: "/dashboard/categories",
-      icon: Box,
-    },
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.subCategories"
-      ),
-      href: "/dashboard/sub-categories",
-      icon: Boxes,
-    },
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.products"
-      ),
-      href: "/dashboard/products",
-      icon: ShoppingBasket,
-    },
-    {
-      label: t(
-        "routes.dashboard.components.DashboardControlNavLinks.navItems.media"
-      ),
-      href: "/dashboard/media",
-      icon: FileMusic,
-    },
-  ];
-
-  return navLinks;
+  return dashboardNavLinks.map((item) => ({
+    label: t(item.labelKey),
+    href: item.href,
+    icon: item.icon,
+  }));
 }

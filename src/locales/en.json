@@ -107,6 +107,9 @@
       "uploadFile": "Upload File",
       "browseFile": "Drag and drop your file here, or click to browse",
       "supportedFormats": "Supported formats: ({formats})"
+    },
+    "BackToHomePage": {
+      "backToHome":"Back Home"
     }
   },
   "routes": {
