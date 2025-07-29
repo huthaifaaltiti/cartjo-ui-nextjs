@@ -15,6 +15,7 @@ import ToggleSwitch from "@/components/shared/ToggleSwitch";
 import {
   showErrorToast,
   showSuccessToast,
+  showWarningToast,
 } from "@/components/shared/CustomToast";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
@@ -72,6 +73,12 @@ const LogoCardActions = <
           description: resp.message,
           dismissText: t("general.toast.dismissText"),
         });
+      } else {
+        showWarningToast({
+          title: t("general.toast.title.success"),
+          description: resp.message,
+          dismissText: t("general.toast.dismissText"),
+        });
       }
     } catch (err) {
       showErrorToast({
@@ -89,8 +96,15 @@ const LogoCardActions = <
     setIsLoading(true);
     try {
       const resp = await unDeleteFn(accessToken, cardItem._id, locale);
+
       if (resp.isSuccess) {
         showSuccessToast({
+          title: t("general.toast.title.warning"),
+          description: resp.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+      } else {
+        showWarningToast({
           title: t("general.toast.title.success"),
           description: resp.message,
           dismissText: t("general.toast.dismissText"),
@@ -125,6 +139,12 @@ const LogoCardActions = <
         });
 
         setChangeLogo(true);
+      } else {
+        showWarningToast({
+          title: t("general.toast.title.success"),
+          description: resp.message,
+          dismissText: t("general.toast.dismissText"),
+        });
       }
     } catch (err) {
       showErrorToast({
