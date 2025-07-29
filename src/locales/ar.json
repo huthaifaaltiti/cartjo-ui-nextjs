@@ -8,6 +8,9 @@
     "UploadingStates": {
       "uploadingData": "جاري رفع البيانات"
     },
+    "data": {
+      "noData": "لا توجد بيانات"
+    },
     "toast": {
       "title": {
         "success": "نجاح",
@@ -110,6 +113,10 @@
     },
     "BackToHomePage": {
       "backToHome": "العودة إلى الرئيسية"
+    },
+    "DeliverLocation": {
+      "header": "التسليم إلى",
+      "selectPlaceholder": "التسليم إلى"
     }
   },
   "routes": {

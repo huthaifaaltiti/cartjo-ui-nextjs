@@ -5,4 +5,6 @@ export interface Location {
   };
   price: string;
   subLocations: Location[];
+  __v?: number;
+  _id: string;
 }

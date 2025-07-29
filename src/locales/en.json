@@ -8,6 +8,9 @@
     "UploadingStates": {
       "uploadingData": "Uploading Data"
     },
+    "data": {
+      "noData": "No data"
+    },
     "toast": {
       "title": {
         "success": "Success",
@@ -110,6 +113,10 @@
     },
     "BackToHomePage": {
       "backToHome": "Back Home"
+    },
+    "DeliverLocation": {
+      "header": "Deliver to",
+      "selectPlaceholder": "Deliver to"
     }
   },
   "routes": {
