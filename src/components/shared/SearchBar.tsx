@@ -3,6 +3,7 @@ import { memo } from "react";
 type SearchBarProps = {
   placeholder: string;
   searchQuery: string;
+  className?: string;
   setSearchQuery: (searchQuery: string) => void;
 };
 
@@ -10,7 +11,11 @@ const SearchBar = ({
   placeholder = "Search something..",
   searchQuery,
   setSearchQuery,
+  className,
 }: SearchBarProps) => {
+  const defaultClassName =
+    "w-full px-4 py-2 text-sm border border-gray-300 bg-white-50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500";
+
   return (
     <div className="w-full">
       <input
@@ -18,7 +23,7 @@ const SearchBar = ({
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-4 py-2 text-sm border border-gray-300 bg-white-50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+        className={className ? className : defaultClassName}
       />
     </div>
   );

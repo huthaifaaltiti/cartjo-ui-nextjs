@@ -240,6 +240,9 @@
         },
         "UserDashboardLink": {
           "dashboard": "لوحة التحكم"
+        },
+        "MainSearchBar": {
+          "placeholder": "ابحث عن منتجات أو تصنيفات أيّة أشياء أخرى.."
         }
       }
     },

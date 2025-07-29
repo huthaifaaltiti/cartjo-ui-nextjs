@@ -1,11 +1,12 @@
 import MainHeader from "@/components/MainHeader";
 import TopBar from "@/components/TopBar";
+import { HomeContextProvider } from "@/contexts/HomeContext";
 
 export default function Home() {
   return (
-    <div className="">
+    <HomeContextProvider>
       <TopBar />
       <MainHeader />
-    </div>
+    </HomeContextProvider>
   );
 }
