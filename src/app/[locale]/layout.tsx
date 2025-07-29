@@ -13,6 +13,7 @@ import { isArabicLocale } from "@/config/locales.config";
 import { LocaleProvider } from "@/contexts/LocaleContext";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
+import { LogoContextProvider } from "@/contexts/LogoContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,13 +51,15 @@ export default async function LocaleLayout({
           <NextIntlClientProvider>
             <LocaleProvider locale={locale}>
               <SessionWrapper>
-                <Toaster
-                  toastOptions={{ className: layoutFont }}
-                  position={isArabic ? "top-right" : "top-left"}
-                  expand={true}
-                  closeButton={false}
-                />
-                {children}
+                <LogoContextProvider>
+                  <Toaster
+                    toastOptions={{ className: layoutFont }}
+                    position={!isArabic ? "top-right" : "top-left"}
+                    expand={true}
+                    closeButton={false}
+                  />
+                  {children}
+                </LogoContextProvider>
               </SessionWrapper>
             </LocaleProvider>
           </NextIntlClientProvider>

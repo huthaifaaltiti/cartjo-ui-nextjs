@@ -1,17 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { useLocale } from "next-intl";
 
-import { CustomSession } from "@/lib/authOptions";
 import { fetchActiveLogo } from "@/hooks/react-query/useLogosQuery";
 
-export function DynamicLogo() {
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
-  const { data: session } = useSession();
-  const locale = useLocale();
-  const accessToken = (session as CustomSession)?.accessToken;
+import { useLogoContext } from "@/contexts/LogoContext";
+import StaticLogo from "./StaticLogo";
+import CustomImage from "../admin/shared/CustomImage";
+
+export default function DynamicLogo() {
+  const { changeLogo, setChangeLogo, accessToken, locale } = useLogoContext();
+
+  const [logo, setLogo] = useState<{ url: string | null; altText: string }>({
+    url: "",
+    altText: "",
+  });
 
   useEffect(() => {
     const getActiveLogo = async () => {
@@ -19,16 +22,33 @@ export function DynamicLogo() {
 
       try {
         const res = await fetchActiveLogo({ token: accessToken, lang: locale });
-        setLogoUrl(res?.data?.media?.url ?? null);
+
+        if (res?.isSuccess) {
+          setLogo(() => ({
+            url: res?.data?.media?.url ?? null,
+            altText: res?.data?.altText ?? "Web app logo",
+          }));
+
+          setChangeLogo(false);
+        }
       } catch (error) {
         console.error("Failed to fetch active logo:", error);
       }
     };
 
     getActiveLogo();
-  }, [accessToken, locale]);
+  }, [accessToken, locale, changeLogo]);
 
-  if (!logoUrl) return null;
+  if (!logo?.url) return <StaticLogo />;
 
-  return <img src={logoUrl} alt="Site Logo" className="h-10" />;
+  return (
+    <CustomImage
+      src={logo.url}
+      alt={logo.altText}
+      fill={false}
+      height={40}
+      width={120}
+      loading="lazy"
+    />
+  );
 }
