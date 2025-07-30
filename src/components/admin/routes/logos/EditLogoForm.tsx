@@ -36,7 +36,7 @@ import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { useHandleApiError } from "@/hooks/handleApiError";
+import { useHandleApiError } from "@/hooks/useHandleApiError";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string

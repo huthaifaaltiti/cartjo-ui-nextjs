@@ -30,7 +30,7 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { isArabicLocale } from "@/config/locales.config";
 import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
 import { tagStyledClassName } from "@/constants/tagsInputStyles";
-import { useHandleApiError } from "@/hooks/handleApiError";
+import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { invalidateQuery } from "@/utils/queryUtils";
 
 import { User } from "@/types/user";

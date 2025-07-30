@@ -36,7 +36,7 @@ import LoadingButton from "@/components/shared/LoadingButton";
 import { User } from "@/types/user";
 import { Category } from "@/types/category";
 
-import { useHandleApiError } from "@/hooks/handleApiError";
+import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicLocale } from "@/config/locales.config";
 import { validationConfig } from "@/config/validationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";

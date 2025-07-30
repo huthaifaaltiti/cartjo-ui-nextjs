@@ -40,7 +40,7 @@ import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { useHandleApiError } from "@/hooks/handleApiError";
+import { useHandleApiError } from "@/hooks/useHandleApiError";
 
 import { invalidateQuery } from "@/utils/queryUtils";
 import { isArabicOnly } from "@/utils/text/containsArabic";

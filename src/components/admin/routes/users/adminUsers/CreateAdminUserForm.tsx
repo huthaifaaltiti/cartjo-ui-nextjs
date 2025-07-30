@@ -26,7 +26,7 @@ import {
 import { User } from "@/types/user";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { useHandleApiError } from "@/hooks/handleApiError";
+import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicLocale } from "@/config/locales.config";
 
 const createFormSchema = (t: (key: string) => string) =>

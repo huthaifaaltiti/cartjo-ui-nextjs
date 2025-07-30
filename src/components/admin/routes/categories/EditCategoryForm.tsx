@@ -32,7 +32,7 @@ import { Category } from "@/types/category";
 import { isArabicLocale } from "@/config/locales.config";
 import { validationConfig } from "@/config/validationConfig";
 
-import { useHandleApiError } from "@/hooks/handleApiError";
+import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
 
