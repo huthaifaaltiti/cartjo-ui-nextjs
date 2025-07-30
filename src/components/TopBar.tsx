@@ -8,7 +8,7 @@ const TopBar: React.FC = () => {
   const t = useTranslations("components.TopBar");
 
   return (
-    <div className="w-full py-2 border-b border-[#E5E7EB]">
+    <div className="w-full py-3">
       <MaxWidthWrapper>
         <div className="w-full flex items-center justify-between">
           <p className="text-sm text-text-primary-100">
