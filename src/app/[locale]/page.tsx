@@ -1,3 +1,4 @@
+import HeroSection from "@/components/HeroSection";
 import MainHeader from "@/components/MainHeader";
 import TopBar from "@/components/TopBar";
 import { HomeContextProvider } from "@/contexts/HomeContext";
@@ -7,6 +8,7 @@ export default function Home() {
     <HomeContextProvider>
       <TopBar />
       <MainHeader />
+      <HeroSection />
     </HomeContextProvider>
   );
 }
