@@ -54,7 +54,7 @@ const LocationSelector = ({
 
   return (
     <select
-      className="max-w-[6.5rem] w-auto text-text-primary-100 text-xs"
+      className="max-w-[6.5rem] w-auto text-text-primary-100 text-xs cursor-pointer"
       value={selectedLocation}
       onChange={(e) => handleLocationChange(e.target.value)}
       disabled={isLoading || !locations?.length}
