@@ -9,7 +9,8 @@
       "uploadingData": "جاري رفع البيانات"
     },
     "data": {
-      "noData": "لا توجد بيانات"
+      "noData": "لا توجد بيانات",
+      "tryAgain": "حاول لاحقا"
     },
     "toast": {
       "title": {
@@ -111,12 +112,20 @@
       "browseFile": "اسحب ملفك وأفلته هنا، أو انقر للتصفح",
       "supportedFormats": "التنسيقات المدعومة: ({formats})"
     },
+    "ErrorMessage": {
+      "somethingWrong": "حدث خطأ ما"
+    },
     "BackToHomePage": {
       "backToHome": "العودة إلى الرئيسية"
     },
     "DeliverLocation": {
       "header": "التسليم إلى",
       "selectPlaceholder": "التسليم إلى"
+    },
+    "CategoriesCarouselClient": {
+      "failedLoad": "فشل تحميل التصنيفات الرئيسية",
+      "noData": "لم يتم العثور على تصنيفات رئيسية",
+      "checkLater": "تحقق مرة أخرى لاحقًا للحصول على فئات جديدة"
     }
   },
   "routes": {

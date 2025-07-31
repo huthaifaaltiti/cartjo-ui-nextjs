@@ -9,7 +9,8 @@
       "uploadingData": "Uploading Data"
     },
     "data": {
-      "noData": "No data"
+      "noData": "No data",
+      "tryAgain": "Please try again later"
     },
     "toast": {
       "title": {
@@ -111,12 +112,20 @@
       "browseFile": "Drag and drop your file here, or click to browse",
       "supportedFormats": "Supported formats: ({formats})"
     },
+    "ErrorMessage": {
+      "somethingWrong": "Something went wrong"
+    },
     "BackToHomePage": {
       "backToHome": "Back Home"
     },
     "DeliverLocation": {
       "header": "Deliver to",
       "selectPlaceholder": "Deliver to"
+    },
+    "CategoriesCarouselClient": {
+      "failedLoad": "Failed to load categories",
+      "noData": "No categories found",
+      "checkLater": "Check back later for new categories"
     }
   },
   "routes": {

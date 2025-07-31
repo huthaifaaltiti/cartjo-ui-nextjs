@@ -23,29 +23,36 @@ const LocationSelector = ({
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
 
-  const renderLocationsRecursive = (locs: Location[], level = 0) =>
+  const renderLocationsRecursive = (
+    locs: Location[],
+    level = 0,
+    parentId = ""
+  ) =>
     locs.flatMap((location) => {
       const label = isArabic ? location.name.ar : location.name.en;
-      
+
       let prefix = "";
       if (level === 1) prefix = " - ";
       else if (level === 2) prefix = " -- ";
       else if (level > 2) prefix = "  - ".repeat(level - 1) + " --- ";
-      
+
       const displayLabel = `${prefix}${label}`;
 
+      const uniqueKey = `${parentId}-${location._id}-${level}`;
+
       const options = [
-        <option 
-          key={location._id} 
-          value={location._id}
-        >
+        <option key={uniqueKey} value={location._id}>
           {displayLabel}
         </option>,
       ];
 
       if (location.subLocations?.length > 0) {
         options.push(
-          ...renderLocationsRecursive(location.subLocations, level + 1)
+          ...renderLocationsRecursive(
+            location.subLocations,
+            level + 1,
+            uniqueKey
+          )
         );
       }
 
