@@ -7,20 +7,24 @@ import { useSession } from "next-auth/react";
 import { CustomSession } from "@/lib/authOptions";
 import { Locale } from "@/types/locale";
 
-type LogoContextProps = {
+type HomeEffectsContextProps = {
   changeLogo: boolean;
   setChangeLogo: (changeLogo: boolean) => void;
   accessToken: string;
   locale: Locale | string;
 };
 
-const LogoContext = createContext<undefined | LogoContextProps>(undefined);
+const HomeEffectsContext = createContext<undefined | HomeEffectsContextProps>(
+  undefined
+);
 
-type LogoContextProviderProps = {
+type HomeEffectsContextProviderProps = {
   children: ReactNode;
 };
 
-export const LogoContextProvider = ({ children }: LogoContextProviderProps) => {
+export const HomeEffectsContextProvider = ({
+  children,
+}: HomeEffectsContextProviderProps) => {
   const [changeLogo, setChangeLogo] = useState<boolean>(false);
 
   const { data: session } = useSession();
@@ -29,7 +33,7 @@ export const LogoContextProvider = ({ children }: LogoContextProviderProps) => {
   const locale = useLocale();
 
   return (
-    <LogoContext.Provider
+    <HomeEffectsContext.Provider
       value={{
         changeLogo,
         setChangeLogo,
@@ -38,15 +42,17 @@ export const LogoContextProvider = ({ children }: LogoContextProviderProps) => {
       }}
     >
       {children}
-    </LogoContext.Provider>
+    </HomeEffectsContext.Provider>
   );
 };
 
-export const useLogoContext = () => {
-  const context = useContext(LogoContext);
+export const useHomeEffectsContext = () => {
+  const context = useContext(HomeEffectsContext);
 
   if (!context) {
-    throw new Error("Logo context must be used within a Logo context provider");
+    throw new Error(
+      "Home Effects Context must be used within a Logo context provider"
+    );
   }
 
   return context;

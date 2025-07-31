@@ -13,7 +13,7 @@ import { isArabicLocale } from "@/config/locales.config";
 import { LocaleProvider } from "@/contexts/LocaleContext";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
-import { LogoContextProvider } from "@/contexts/LogoContext";
+import { HomeEffectsContextProvider } from "@/contexts/HomeEffectsContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,7 +51,7 @@ export default async function LocaleLayout({
           <NextIntlClientProvider>
             <LocaleProvider locale={locale}>
               <SessionWrapper>
-                <LogoContextProvider>
+                <HomeEffectsContextProvider>
                   <Toaster
                     toastOptions={{ className: layoutFont }}
                     position={!isArabic ? "top-right" : "top-left"}
@@ -59,7 +59,7 @@ export default async function LocaleLayout({
                     closeButton={false}
                   />
                   {children}
-                </LogoContextProvider>
+                </HomeEffectsContextProvider>
               </SessionWrapper>
             </LocaleProvider>
           </NextIntlClientProvider>
