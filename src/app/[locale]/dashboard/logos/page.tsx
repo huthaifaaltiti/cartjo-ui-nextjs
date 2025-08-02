@@ -10,7 +10,7 @@ export default async function Page() {
 
   const { data } = await fetchLogos({
     token: accessToken,
-    limit: PAGINATION_LIMITS.CATEGORIES,
+    limit: PAGINATION_LIMITS.LOGOS,
   });
 
   return <LogosPage initialLogos={data} accessToken={accessToken} />;
