@@ -870,6 +870,90 @@
               }
             }
           }
+        },
+        "banners": {
+          "title": "إدارة اللافتات",
+          "desc": "إدارة بيانات اللافتات",
+          "createBanner": {
+            "label": "إنشاء لافتة",
+            "uploadImage": "رفع صورة اللافتة",
+            "actionFailed": "فشل إنشاء اللافتة"
+          },
+          "editBanner": {
+            "label": "تعديل اللافتة",
+            "uploadImage": "رفع صورة اللافتة",
+            "actionFailed": "فشل تعديل اللافتة"
+          },
+          "errors": {
+            "failedLoadData": "فشل تحميل اللافتات"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "ابحث عن لافتةات" },
+            "CreateBannerForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "صورة اللافتة",
+                  "placeholder": "صورة اللافتة"
+                },
+                "name": {
+                  "label": "الاسم",
+                  "placeholder": "الاسم"
+                },
+                "altText": {
+                  "label": "النص البديل",
+                  "placeholder": "النص البديل"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "يجب توفير صورة اللافتة"
+                },
+                "name": {
+                  "minChars": "يجب أن يكون الاسم على الأقل ({min}) حروف",
+                  "maxChars": "يجب ألا يزيد الاسم عن ({max}) حروف"
+                },
+                "altText": {
+                  "minChars": "يجب أن يكون النص البديل على الأقل ({min}) حروف",
+                  "maxChars": "يجب ألا يزيد النص البديل عن ({max}) حروف"
+                }
+              },
+              "errors": {
+                "failedCreation": "فشل إنشاء اللافتة"
+              }
+            },
+            "EditBannerForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "صورة اللافتة",
+                  "placeholder": "صورة اللافتة"
+                },
+                "name": {
+                  "label": "الاسم",
+                  "placeholder": "الاسم"
+                },
+                "altText": {
+                  "label": "النص البديل",
+                  "placeholder": "النص البديل"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "يجب توفير صورة الشعار"
+                },
+                "name": {
+                  "minChars": "يجب أن يكون الاسم على الأقل ({min}) حروف",
+                  "maxChars": "يجب ألا يزيد الاسم عن ({max}) حروف"
+                },
+                "altText": {
+                  "minChars": "يجب أن يكون النص البديل على الأقل ({min}) حروف",
+                  "maxChars": "يجب ألا يزيد النص البديل عن ({max}) حروف"
+                }
+              },
+              "errors": {
+                "failedEditing": "فشل تعديل الشعار"
+              }
+            }
+          }
         }
       },
       "components": {
@@ -894,7 +978,8 @@
             "subCategories": "الفئات الفرعية",
             "products": "المنتجات",
             "media": "الوسائط",
-            "logo": "الشعار"
+            "logo": "الشعار",
+            "banner": "اللافتات"
           }
         },
         "DashboardLocationCard": {
