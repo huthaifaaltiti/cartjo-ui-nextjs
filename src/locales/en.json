@@ -126,6 +126,11 @@
       "failedLoad": "Failed to load categories",
       "noData": "No categories found",
       "checkLater": "Check back later for new categories"
+    },
+    "BannersCarouselClient": {
+      "failedLoad": "Failed to load banners",
+      "noData": "No active banners found",
+      "checkLater": "Check back later for new banners"
     }
   },
   "routes": {

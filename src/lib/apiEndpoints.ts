@@ -56,5 +56,14 @@ export const API_ENDPOINTS = {
       EDIT: `${BASE_URL}/api/v1/logo/update`,
       ACTIVE: `${BASE_URL}/api/v1/logo/active`,
     },
+    BANNERS: {
+      ALL: `${BASE_URL}/api/v1/banner/all`,
+      DELETE: `${BASE_URL}/api/v1/banner/delete`,
+      UN_DELETE: `${BASE_URL}/api/v1/banner/un-delete`,
+      SWITCH_ACTIVE_STATUS: `${BASE_URL}/api/v1/banner/status`,
+      CREATE: `${BASE_URL}/api/v1/banner/create`,
+      EDIT: `${BASE_URL}/api/v1/banner/update`,
+      ACTIVE: `${BASE_URL}/api/v1/banner/active`,
+    },
   },
 };

@@ -7,6 +7,8 @@ export interface Name {
 
 export type Description = Name;
 
+export type TranslatedText = Name;
+
 // ---
 
 export interface FetchPaginatedArgs {
