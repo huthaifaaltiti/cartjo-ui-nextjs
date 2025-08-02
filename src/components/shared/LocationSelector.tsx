@@ -28,7 +28,7 @@ const LocationSelector = ({
     level = 0,
     parentId = ""
   ) =>
-    locs.flatMap((location) => {
+    locs.flatMap((location, i) => {
       const label = isArabic ? location.name.ar : location.name.en;
 
       let prefix = "";
@@ -38,7 +38,7 @@ const LocationSelector = ({
 
       const displayLabel = `${prefix}${label}`;
 
-      const uniqueKey = `${parentId}-${location._id}-${level}`;
+      const uniqueKey = `${parentId}-${location._id}-${level}-${i}`;
 
       const options = [
         <option key={uniqueKey} value={location._id}>

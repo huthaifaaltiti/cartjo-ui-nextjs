@@ -112,7 +112,7 @@ const BannersCarouselClient = () => {
                 >
                   <MaxWidthWrapper>
                     <div className="w-full h-full flex py-20 px-10 bg-white-50">
-                      <div className="w-2/4 flex flex-col gap-2">
+                      {/* <div className="w-2/4 flex flex-col gap-2">
                         <div className="w-full ">
                           <span
                             className="shadow-none px-4 py-2 rounded-lg min-w-[100px] inline-block capitalize font-bold"
@@ -124,7 +124,7 @@ const BannersCarouselClient = () => {
                             {isArabic ? banner?.label?.ar : banner?.label?.en}
                           </span>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="w-2/4">2</div>
                     </div>
                   </MaxWidthWrapper>
