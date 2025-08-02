@@ -3,18 +3,14 @@ import { Media } from "./media.type";
 
 export interface Banner {
   _id: string;
-  label: TranslatedText;
   title: TranslatedText;
-  subTitle: TranslatedText;
+  withAction: boolean;
   ctaBtn: {
-    text: string;
+    label: TranslatedText;
     link: string;
-  };
-  offerDetails: {
-    preSalePrice: number;
-    afterSalePrice: number;
-    desc: string;
-  };
+    labelClr: string;
+    bgClr: string;
+  } | null;
   media: Media;
   startDate: Date;
   endDate: Date;
