@@ -127,6 +127,11 @@
       "noData": "No categories found",
       "checkLater": "Check back later for new categories"
     },
+    "BannersCarouselClient": {
+      "failedLoad": "Failed to load banners",
+      "noData": "No active banners found",
+      "checkLater": "Check back later for new banners"
+    },
     "ShowcaseSection": {
       "btnText": "View All"
     }
@@ -857,6 +862,90 @@
               }
             }
           }
+        },
+        "banners": {
+          "title": "Banners Management",
+          "desc": "Manage banners data",
+          "createBanner": {
+            "label": "Create Banner",
+            "uploadImage": "Upload banner image",
+            "actionFailed": "Banner creation failed"
+          },
+          "editBanner": {
+            "label": "Edit Banner",
+            "uploadImage": "Upload banner image",
+            "actionFailed": "Banner editing failed"
+          },
+          "errors": {
+            "failedLoadData": "Failed to Load banners"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for banners" },
+            "CreateBannerForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "Banner image",
+                  "placeholder": "Banner image"
+                },
+                "name": {
+                  "label": "Name",
+                  "placeholder": "Name"
+                },
+                "altText": {
+                  "label": "Alternative text",
+                  "placeholder": "Alternative text"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "Banner image should be provided"
+                },
+                "name": {
+                  "minChars": "Name must be at least ({min}) characters long",
+                  "maxChars": "Name must be at most ({max}) characters long"
+                },
+                "altText": {
+                  "minChars": "Alternative text must be at least ({min}) characters long",
+                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                }
+              },
+              "errors": {
+                "failedCreation": "Banner creation failed"
+              }
+            },
+            "EditBannerForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "Banner image",
+                  "placeholder": "Banner image"
+                },
+                "name": {
+                  "label": "Name",
+                  "placeholder": "Name"
+                },
+                "altText": {
+                  "label": "Alternative text",
+                  "placeholder": "Alternative text"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "Logo image should be provided"
+                },
+                "name": {
+                  "minChars": "Name must be at least ({min}) characters long",
+                  "maxChars": "Name must be at most ({max}) characters long"
+                },
+                "altText": {
+                  "minChars": "Alternative text must be at least ({min}) characters long",
+                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                }
+              },
+              "errors": {
+                "failedEditing": "Logo editing failed"
+              }
+            }
+          }
         }
       },
       "components": {
@@ -881,7 +970,8 @@
             "subCategories": "SubCategories",
             "products": "Products",
             "media": "Media",
-            "logo": "Logo"
+            "logo": "Logo",
+            "banner": "Banners"
           }
         },
         "DashboardLocationCard": {

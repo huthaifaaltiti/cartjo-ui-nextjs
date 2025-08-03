@@ -19,7 +19,7 @@ import {
 } from "@/components/shared/CustomToast";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
-import { useLogoContext } from "@/contexts/LogoContext";
+import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
 
 type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean }
@@ -58,7 +58,7 @@ const LogoCardActions = <
   const t = useTranslations();
   const locale = useLocale() as Locale;
   const queryClient = useQueryClient();
-  const { setChangeLogo } = useLogoContext();
+  const { setChangeLogo } = useHomeEffectsContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);

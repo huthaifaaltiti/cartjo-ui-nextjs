@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 
 import { fetchActiveLogo } from "@/hooks/react-query/useLogosQuery";
 
-import { useLogoContext } from "@/contexts/LogoContext";
+import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
 import StaticLogo from "./StaticLogo";
 import CustomImage from "../admin/shared/CustomImage";
 
 export default function DynamicLogo() {
-  const { changeLogo, setChangeLogo, accessToken, locale } = useLogoContext();
+  const { changeLogo, setChangeLogo, accessToken, locale } =
+    useHomeEffectsContext();
 
   const [logo, setLogo] = useState<{ url: string | null; altText: string }>({
     url: "",

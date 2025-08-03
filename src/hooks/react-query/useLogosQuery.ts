@@ -21,7 +21,7 @@ interface FetchLogosParams {
 export const fetchLogos = async ({
   token,
   lang = "en",
-  limit = PAGINATION_LIMITS.CATEGORIES,
+  limit = PAGINATION_LIMITS.LOGOS,
   lastId,
   search,
 }: FetchLogosParams): Promise<DataListResponse<Logo>> => {
@@ -79,7 +79,7 @@ export const useLogosQuery = (search?: string) => {
       return fetchLogos({
         token: accessToken,
         lang: locale,
-        limit: PAGINATION_LIMITS.CATEGORIES,
+        limit: PAGINATION_LIMITS.LOGOS,
         lastId: pageParam as string,
         search,
       });
