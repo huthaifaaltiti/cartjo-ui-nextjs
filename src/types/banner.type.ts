@@ -5,12 +5,7 @@ export interface Banner {
   _id: string;
   title: TranslatedText;
   withAction: boolean;
-  ctaBtn: {
-    label: TranslatedText;
-    link: string;
-    labelClr: string;
-    bgClr: string;
-  } | null;
+  link: string | null;
   media: Media;
   startDate: Date;
   endDate: Date;

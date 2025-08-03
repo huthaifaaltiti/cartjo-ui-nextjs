@@ -8,6 +8,7 @@ import { Locale } from "@/types/locale";
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import BannersCardActions from "./BannersCardActions";
 import { isArabicLocale } from "@/config/locales.config";
+import EditBannerForm from "./EditBannerForm";
 
 type BannerCardProps = {
   item: Banner;
@@ -67,18 +68,18 @@ const BannerCard = ({
         )}
       </div>
 
-      <div className="flex items-center gap-2">
-        <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 border border-gray-200">
-          {/* <ImageWithFallback
-            src={banner?.media?.url}
+      <div className="flex flex-col gap-2">
+        <div className="w-full h-12 rounded overflow-hidden bg-gray-100 border border-gray-200">
+          <ImageWithFallback
+            src={banner?.media?.url || ""}
             alt={banner?.title?.en}
             width={40}
             height={40}
             className="object-cover w-full h-full"
-          /> */}
+          />
         </div>
 
-        <h3 className="text-sm font-semibold text-gray-900 capitalize">
+        <h3 className="text-sm font-semibold text-gray-900 capitalize rtl:text-right ltr:text-left">
           {isArabic ? banner?.title?.ar : banner?.title?.en}
         </h3>
       </div>
@@ -105,7 +106,7 @@ const BannerCard = ({
           switchUserActiveStatusFn={switchBannerActiveStatus}
           queryKey={queryKey}
           showEditButton={true}
-          renderEditForm={() => <></>}
+          renderEditForm={() => <EditBannerForm banner={banner} />}
         />
       </div>
     </div>

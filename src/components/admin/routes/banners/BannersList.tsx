@@ -19,9 +19,9 @@ const BannersList = ({ initialBanners }: BannersListProps) => {
     queryKey,
     searchQuery,
     token,
-    // deleteLogo,
-    // unDeleteLogo,
-    // switchLogoActiveStatus,
+    deleteBanner,
+    unDeleteBanner,
+    switchBannerActiveStatus,
   } = useBanners();
 
   const {
@@ -47,9 +47,9 @@ const BannersList = ({ initialBanners }: BannersListProps) => {
       fetchNextPage={fetchNextPage}
       ListItemCard={BannerCard}
       cardProps={{
-        // deleteLogo,
-        // unDeleteLogo,
-        // switchLogoActiveStatus,
+        deleteBanner,
+        unDeleteBanner,
+        switchBannerActiveStatus,
         queryKey,
         accessToken: token,
       }}

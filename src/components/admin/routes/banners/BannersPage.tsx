@@ -25,7 +25,7 @@ const BannersPage = ({ data, token }: BannersPageProps) => {
           ModalContent={<CreateBannerForm />}
         />
       </div>
-      {/* <BannersList initialBanners={data} /> */}
+      <BannersList initialBanners={data} />
     </BannersContextProvider>
   );
 };
