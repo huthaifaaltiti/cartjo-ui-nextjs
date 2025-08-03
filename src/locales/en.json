@@ -126,6 +126,9 @@
       "failedLoad": "Failed to load categories",
       "noData": "No categories found",
       "checkLater": "Check back later for new categories"
+    },
+    "ShowcaseSection": {
+      "btnText": "View All"
     }
   },
   "routes": {
