@@ -16,4 +16,11 @@ export const validationConfig = {
     altTextMinChars: 3,
     altTextMaxChars: 50,
   },
+  banner: {
+    imageMinChars: 2,
+    titleMinChars: 3,
+    titleMaxChars: 50,
+    bannerLinkMinChars: 5,
+    bannerLinkMaxChars: 255,
+  },
 };

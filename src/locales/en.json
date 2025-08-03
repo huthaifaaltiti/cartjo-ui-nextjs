@@ -883,30 +883,47 @@
             "SearchBar": { "placeholder": "Search for banners" },
             "CreateBannerForm": {
               "fields": {
-                "logoImage": {
+                "bannerImage": {
                   "label": "Banner image",
                   "placeholder": "Banner image"
                 },
-                "name": {
-                  "label": "Name",
-                  "placeholder": "Name"
+                "title_ar": {
+                  "label": "Ar Title",
+                  "placeholder": "Ar Title"
                 },
-                "altText": {
-                  "label": "Alternative text",
-                  "placeholder": "Alternative text"
+                "title_en": {
+                  "label": "En Title",
+                  "placeholder": "En Title"
+                },
+                "link": {
+                  "label": "Banner cta link",
+                  "placeholder": "Banner cta link"
+                },
+                "withAction": {
+                  "label": "Banner with an action?",
+                  "placeholder": "Banner with an action?"
                 }
               },
               "validations": {
-                "logoImage": {
+                "bannerImage": {
                   "required": "Banner image should be provided"
                 },
-                "name": {
-                  "minChars": "Name must be at least ({min}) characters long",
-                  "maxChars": "Name must be at most ({max}) characters long"
+                "title_ar": {
+                  "minChars": "Arabic title must be at least ({min}) characters long",
+                  "maxChars": "Arabic title must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain arabic characters only"
                 },
-                "altText": {
-                  "minChars": "Alternative text must be at least ({min}) characters long",
-                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                "title_en": {
+                  "minChars": "English title must be at least ({min}) characters long",
+                  "maxChars": "English title must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "link": {
+                  "minChars": "Link must be at least ({min}) characters long",
+                  "maxChars": "Link must be at most ({max}) characters long"
+                },
+                "withAction": {
+                  "required": "Banner with an action label should be provided"
                 }
               },
               "errors": {
