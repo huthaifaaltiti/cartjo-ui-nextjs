@@ -71,7 +71,7 @@ const BannerCard = ({
       <div className="flex flex-col gap-2">
         <div className="w-full h-12 rounded overflow-hidden bg-gray-100 border border-gray-200">
           <ImageWithFallback
-            src={banner?.media?.url || ""}
+            src={isArabic ? banner?.media?.ar?.url : banner?.media?.en?.url}
             alt={banner?.title?.en}
             width={40}
             height={40}

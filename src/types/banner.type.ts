@@ -6,7 +6,10 @@ export interface Banner {
   title: TranslatedText;
   withAction: boolean;
   link: string | null;
-  media: Media;
+  media: {
+    ar: Media;
+    en: Media;
+  };
   startDate: Date;
   endDate: Date;
   isActive: boolean;
