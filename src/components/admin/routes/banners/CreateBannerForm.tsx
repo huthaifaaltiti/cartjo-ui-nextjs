@@ -53,9 +53,14 @@ const createFormSchema = (
 
   return z
     .object({
-      bannerImage: z.string().min(imageMinChars, {
+      bannerImage_ar: z.string().min(imageMinChars, {
         message: t(
-          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.bannerImage.required"
+          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.bannerImage_ar.required"
+        ),
+      }),
+      bannerImage_en: z.string().min(imageMinChars, {
+        message: t(
+          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.bannerImage_en.required"
         ),
       }),
       title_ar: z
@@ -137,7 +142,14 @@ const CreateBannerForm = () => {
   const [withAction, setWithAction] = useState<boolean>(false);
 
   const imageUploaderRef = useRef<ImageUploaderRef>(null);
-  const [bannerImage, setBannerImage] = useState<{
+  const [bannerImage_ar, setBannerImage_ar] = useState<{
+    file: File | null;
+    url: string;
+  }>({
+    file: null,
+    url: "",
+  });
+  const [bannerImage_en, setBannerImage_en] = useState<{
     file: File | null;
     url: string;
   }>({
@@ -150,7 +162,8 @@ const CreateBannerForm = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      bannerImage: "",
+      bannerImage_ar: "",
+      bannerImage_en: "",
       title_ar: "",
       title_en: "",
       link: "",
@@ -158,12 +171,20 @@ const CreateBannerForm = () => {
     },
   });
 
-  const handleImageChange = (data: { file?: File | null; url?: string }) => {
+  const handleImageChange_ar = (data: { file?: File | null; url?: string }) => {
     const url = data.url || "";
 
-    setBannerImage({ file: data.file ?? null, url });
+    setBannerImage_ar({ file: data.file ?? null, url });
 
-    form.setValue("bannerImage", url);
+    form.setValue("bannerImage_ar", url);
+  };
+
+  const handleImageChange_en = (data: { file?: File | null; url?: string }) => {
+    const url = data.url || "";
+
+    setBannerImage_en({ file: data.file ?? null, url });
+
+    form.setValue("bannerImage_en", url);
   };
 
   const handleImageError = (error: string) => {
@@ -178,7 +199,7 @@ const CreateBannerForm = () => {
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
-      const excludedFields = ["bannerImage"];
+      const excludedFields = ["bannerImage_ar", "bannerImage_en"];
 
       Object.entries(data).forEach(([key, value]) => {
         if (excludedFields.includes(key)) return;
@@ -188,8 +209,12 @@ const CreateBannerForm = () => {
 
       formData.append("lang", locale);
 
-      if (bannerImage?.file) {
-        formData.append("image", bannerImage.file);
+      if (bannerImage_ar?.file) {
+        formData.append("image_ar", bannerImage_ar.file);
+      }
+
+      if (bannerImage_en?.file) {
+        formData.append("image_en", bannerImage_en.file);
       }
 
       const response = await fetch(API_ENDPOINTS.DASHBOARD.BANNERS.CREATE, {
@@ -251,31 +276,68 @@ const CreateBannerForm = () => {
     <div className="space-y-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="bannerImage"
-            render={() => (
-              <FormItem className={getFormItemClassName()}>
-                <FormLabel className="text-sm font-normal">
-                  {t(
-                    "routes.dashboard.routes.banners.createBanner.uploadImage"
-                  )}
-                </FormLabel>
-                <ImageUploader
-                  ref={imageUploaderRef}
-                  value={bannerImage.url}
-                  onChange={handleImageChange}
-                  onError={handleImageError}
-                  label={""}
-                  maxSizeInMB={2}
-                  size="sm"
-                  variant="rounded"
-                  accept="image/png, image/jpeg, image/jpg, image/gif"
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div
+            className={`flex gap-5 ${
+              isArabic ? "flex-row-reverse" : "flex-row"
+            }`}
+          >
+            <div className="flex-1">
+              <FormField
+                control={form.control}
+                name="bannerImage_ar"
+                render={() => (
+                  <FormItem className={getFormItemClassName()}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.dashboard.routes.banners.createBanner.uploadImage_ar"
+                      )}
+                    </FormLabel>
+
+                    <ImageUploader
+                      ref={imageUploaderRef}
+                      value={bannerImage_ar.url}
+                      onChange={handleImageChange_ar}
+                      onError={handleImageError}
+                      label={""}
+                      maxSizeInMB={2}
+                      size="sm"
+                      variant="rounded"
+                      accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex-1">
+              <FormField
+                control={form.control}
+                name="bannerImage_en"
+                render={() => (
+                  <FormItem className={getFormItemClassName()}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.dashboard.routes.banners.createBanner.uploadImage_en"
+                      )}
+                    </FormLabel>
+                    <ImageUploader
+                      ref={imageUploaderRef}
+                      value={bannerImage_en.url}
+                      onChange={handleImageChange_en}
+                      onError={handleImageError}
+                      label={""}
+                      maxSizeInMB={2}
+                      size="sm"
+                      variant="rounded"
+                      accept="image/png, image/jpeg, image/jpg, image/gif"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
 
           <div
             className={`flex gap-5 ${

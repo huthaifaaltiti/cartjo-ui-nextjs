@@ -876,7 +876,8 @@
           "desc": "إدارة بيانات اللافتات",
           "createBanner": {
             "label": "إنشاء لافتة",
-            "uploadImage": "رفع صورة اللافتة",
+            "uploadImage_ar": "رفع صورة اللافتة العربية",
+            "uploadImage_en": "رفع صورة اللافتة الإنجليزية",
             "actionFailed": "فشل إنشاء اللافتة"
           },
           "editBanner": {
@@ -891,30 +892,54 @@
             "SearchBar": { "placeholder": "ابحث عن لافتةات" },
             "CreateBannerForm": {
               "fields": {
-                "logoImage": {
-                  "label": "صورة اللافتة",
-                  "placeholder": "صورة اللافتة"
+                "bannerImage_ar": {
+                  "label": "صورة البانر العربي",
+                  "placeholder": "صورة البانر العربي"
                 },
-                "name": {
-                  "label": "الاسم",
-                  "placeholder": "الاسم"
+                "bannerImage_en": {
+                  "label": "صورة البانر الإنجليزي",
+                  "placeholder": "صورة البانر الإنجليزي"
                 },
-                "altText": {
-                  "label": "النص البديل",
-                  "placeholder": "النص البديل"
+                "title_ar": {
+                  "label": "العنوان العربي",
+                  "placeholder": "العنوان العربي"
+                },
+                "title_en": {
+                  "label": "العنوان الإنجليزي",
+                  "placeholder": "العنوان الإنجليزي"
+                },
+                "link": {
+                  "label": "رابط الدعوة إلى الإجراء للبانر",
+                  "placeholder": "رابط الدعوة إلى الإجراء للبانر"
+                },
+                "withAction": {
+                  "label": "هل البانر يحتوي على إجراء؟",
+                  "placeholder": "هل البانر يحتوي على إجراء؟"
                 }
               },
               "validations": {
-                "logoImage": {
-                  "required": "يجب توفير صورة اللافتة"
+                "bannerImage_ar": {
+                  "required": "يجب توفير صورة البانر العربي"
                 },
-                "name": {
-                  "minChars": "يجب أن يكون الاسم على الأقل ({min}) حروف",
-                  "maxChars": "يجب ألا يزيد الاسم عن ({max}) حروف"
+                "bannerImage_en": {
+                  "required": "يجب توفير صورة البانر الإنجليزي"
                 },
-                "altText": {
-                  "minChars": "يجب أن يكون النص البديل على الأقل ({min}) حروف",
-                  "maxChars": "يجب ألا يزيد النص البديل عن ({max}) حروف"
+                "title_ar": {
+                  "minChars": "يجب أن يكون العنوان العربي على الأقل ({min}) أحرف",
+                  "maxChars": "يجب أن يكون العنوان العربي على الأكثر ({max}) أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "title_en": {
+                  "minChars": "يجب أن يكون العنوان الإنجليزي على الأقل ({min}) أحرف",
+                  "maxChars": "يجب أن يكون العنوان الإنجليزي على الأكثر ({max}) أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "link": {
+                  "minChars": "يجب أن يكون الرابط على الأقل ({min}) أحرف",
+                  "maxChars": "يجب أن يكون الرابط على الأكثر ({max}) أحرف"
+                },
+                "withAction": {
+                  "required": "يجب توفير تسمية للبانر مع إجراء"
                 }
               },
               "errors": {
@@ -923,34 +948,58 @@
             },
             "EditBannerForm": {
               "fields": {
-                "logoImage": {
-                  "label": "صورة اللافتة",
-                  "placeholder": "صورة اللافتة"
+                "bannerImage_ar": {
+                  "label": "صورة البانر العربي",
+                  "placeholder": "صورة البانر العربي"
                 },
-                "name": {
-                  "label": "الاسم",
-                  "placeholder": "الاسم"
+                "bannerImage_en": {
+                  "label": "صورة البانر الإنجليزي",
+                  "placeholder": "صورة البانر الإنجليزي"
                 },
-                "altText": {
-                  "label": "النص البديل",
-                  "placeholder": "النص البديل"
+                "title_ar": {
+                  "label": "العنوان العربي",
+                  "placeholder": "العنوان العربي"
+                },
+                "title_en": {
+                  "label": "العنوان الإنجليزي",
+                  "placeholder": "العنوان الإنجليزي"
+                },
+                "link": {
+                  "label": "رابط الدعوة إلى الإجراء للبانر",
+                  "placeholder": "رابط الدعوة إلى الإجراء للبانر"
+                },
+                "withAction": {
+                  "label": "هل البانر يحتوي على إجراء؟",
+                  "placeholder": "هل البانر يحتوي على إجراء؟"
                 }
               },
               "validations": {
-                "logoImage": {
-                  "required": "يجب توفير صورة الشعار"
+                "bannerImage_ar": {
+                  "required": "يجب توفير صورة البانر العربي"
                 },
-                "name": {
-                  "minChars": "يجب أن يكون الاسم على الأقل ({min}) حروف",
-                  "maxChars": "يجب ألا يزيد الاسم عن ({max}) حروف"
+                "bannerImage_en": {
+                  "required": "يجب توفير صورة البانر الإنجليزي"
                 },
-                "altText": {
-                  "minChars": "يجب أن يكون النص البديل على الأقل ({min}) حروف",
-                  "maxChars": "يجب ألا يزيد النص البديل عن ({max}) حروف"
+                "title_ar": {
+                  "minChars": "يجب أن يكون العنوان العربي على الأقل ({min}) أحرف",
+                  "maxChars": "يجب أن يكون العنوان العربي على الأكثر ({max}) أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "title_en": {
+                  "minChars": "يجب أن يكون العنوان الإنجليزي على الأقل ({min}) أحرف",
+                  "maxChars": "يجب أن يكون العنوان الإنجليزي على الأكثر ({max}) أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "link": {
+                  "minChars": "يجب أن يكون الرابط على الأقل ({min}) أحرف",
+                  "maxChars": "يجب أن يكون الرابط على الأكثر ({max}) أحرف"
+                },
+                "withAction": {
+                  "required": "يجب توفير تسمية للبانر مع إجراء"
                 }
               },
               "errors": {
-                "failedEditing": "فشل تعديل الشعار"
+                "failedEditing": "فشل تعديل اللافتة"
               }
             }
           }

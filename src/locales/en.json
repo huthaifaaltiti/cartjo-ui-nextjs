@@ -868,7 +868,8 @@
           "desc": "Manage banners data",
           "createBanner": {
             "label": "Create Banner",
-            "uploadImage": "Upload banner image",
+            "uploadImage_ar": "Upload ar banner image",
+            "uploadImage_en": "Upload en banner image",
             "actionFailed": "Banner creation failed"
           },
           "editBanner": {
@@ -883,9 +884,13 @@
             "SearchBar": { "placeholder": "Search for banners" },
             "CreateBannerForm": {
               "fields": {
-                "bannerImage": {
-                  "label": "Banner image",
-                  "placeholder": "Banner image"
+                "bannerImage_ar": {
+                  "label": "Ar Banner image",
+                  "placeholder": "Ar Banner image"
+                },
+                "bannerImage_en": {
+                  "label": "En Banner image",
+                  "placeholder": "En Banner image"
                 },
                 "title_ar": {
                   "label": "Ar Title",
@@ -905,8 +910,11 @@
                 }
               },
               "validations": {
-                "bannerImage": {
-                  "required": "Banner image should be provided"
+                "bannerImage_ar": {
+                  "required": "Banner ar image should be provided"
+                },
+                "bannerImage_en": {
+                  "required": "Banner en image should be provided"
                 },
                 "title_ar": {
                   "minChars": "Arabic title must be at least ({min}) characters long",
@@ -932,34 +940,58 @@
             },
             "EditBannerForm": {
               "fields": {
-                "logoImage": {
-                  "label": "Banner image",
-                  "placeholder": "Banner image"
+                "bannerImage_ar": {
+                  "label": "Banner ar image",
+                  "placeholder": "Banner ar image"
                 },
-                "name": {
-                  "label": "Name",
-                  "placeholder": "Name"
+                "bannerImage_en": {
+                  "label": "En Banner image",
+                  "placeholder": "En Banner image"
                 },
-                "altText": {
-                  "label": "Alternative text",
-                  "placeholder": "Alternative text"
+                "title_ar": {
+                  "label": "Ar Title",
+                  "placeholder": "Ar Title"
+                },
+                "title_en": {
+                  "label": "En Title",
+                  "placeholder": "En Title"
+                },
+                "link": {
+                  "label": "Banner cta link",
+                  "placeholder": "Banner cta link"
+                },
+                "withAction": {
+                  "label": "Banner with an action?",
+                  "placeholder": "Banner with an action?"
                 }
               },
               "validations": {
-                "logoImage": {
-                  "required": "Logo image should be provided"
+                "bannerImage_ar": {
+                  "required": "Banner ar image should be provided"
                 },
-                "name": {
-                  "minChars": "Name must be at least ({min}) characters long",
-                  "maxChars": "Name must be at most ({max}) characters long"
+                "bannerImage_en": {
+                  "required": "Banner en image should be provided"
                 },
-                "altText": {
-                  "minChars": "Alternative text must be at least ({min}) characters long",
-                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                "title_ar": {
+                  "minChars": "Arabic title must be at least ({min}) characters long",
+                  "maxChars": "Arabic title must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain arabic characters only"
+                },
+                "title_en": {
+                  "minChars": "English title must be at least ({min}) characters long",
+                  "maxChars": "English title must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "link": {
+                  "minChars": "Link must be at least ({min}) characters long",
+                  "maxChars": "Link must be at most ({max}) characters long"
+                },
+                "withAction": {
+                  "required": "Banner with an action label should be provided"
                 }
               },
               "errors": {
-                "failedEditing": "Logo editing failed"
+                "failedEditing": "Banner editing failed"
               }
             }
           }

@@ -44,8 +44,6 @@ const BannerCard = ({
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
 
-  console.log({ banner });
-
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col">
       <div className="w-auto flex items-end justify-end gap-1 mb-1">
