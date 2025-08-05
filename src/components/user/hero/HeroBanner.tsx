@@ -4,7 +4,7 @@ import BannersCarouselClient from "./BannersCarouselClient";
 
 export default function HeroBanner() {
   return (
-    <div className="w-full h-auto">
+    <div className="w-full">
       <BannersCarouselClient />
     </div>
   );

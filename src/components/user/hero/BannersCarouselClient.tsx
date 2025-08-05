@@ -17,8 +17,8 @@ import { Banner } from "@/types/banner.type";
 import LoadingDotsFlexible from "@/components/shared/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
-import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
-import { Button } from "@/components/ui/button";
+
+import "./BannersCarouselClient.css";
 
 const BannersCarouselClient = () => {
   const { data, isLoading, isFetching, error, isError } =
@@ -29,7 +29,9 @@ const BannersCarouselClient = () => {
 
   const duplicatedBanners: Banner[] = useMemo(() => {
     const originalBanners =
-      data?.pages?.flatMap((page) => page.data || []) ?? [];
+      data?.pages
+        ?.flatMap((page) => page.data || [])
+        .filter((banner) => banner?.isActive) ?? [];
 
     if (originalBanners.length <= 1) return originalBanners;
 
@@ -38,8 +40,6 @@ const BannersCarouselClient = () => {
 
   const banners: Banner[] =
     data?.pages?.flatMap((page) => page.data || []) ?? [];
-
-  console.log({ banners });
 
   const showLoader: boolean =
     (!isLoading && !isFetching && !isError && !data) || isLoading || isFetching;
@@ -50,7 +50,7 @@ const BannersCarouselClient = () => {
   const hasMultipleBanners: boolean = banners?.length > 1;
 
   const containerClass =
-    "w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center border-b";
+    "w-full h-[100px] md:h-[200px] lg:h-[300px] flex items-center justify-center border-b";
 
   if (showLoader) {
     return (
@@ -85,49 +85,44 @@ const BannersCarouselClient = () => {
 
   if (showData) {
     return (
-      <div className={containerClass}>
+      <div className="w-full h-full border-b">
         <Carousel
-          // plugins={
-          //   hasMultipleBanners
-          //     ? [Autoplay({ delay: 6000, stopOnInteraction: false })]
-          //     : []
-          // }
+          plugins={
+            hasMultipleBanners
+              ? [Autoplay({ delay: 6000, stopOnInteraction: false })]
+              : []
+          }
           opts={{
             loop: true,
-            align: "end",
+            align: "start",
             skipSnaps: false,
             dragFree: true,
             containScroll: "trimSnaps",
             startIndex: banners.length,
             direction: isArabic ? "rtl" : "ltr",
           }}
-          className="w-full h-full"
+          className="w-full h-full embla"
         >
-          <CarouselContent className="h-full">
+          <CarouselContent className="w-full h-[100px] md:h-[200px] lg:h-[300px] embla__container">
             {duplicatedBanners.map((banner, index) => (
-              <CarouselItem key={`${banner._id}-${index}`} className="h-full">
-                <div
-                  className="w-full h-[400px] md:h-[500px] lg:h-[600px] bg-cover bg-center"
-                  style={{ backgroundImage: `url(${banner?.media?.url})` }}
-                >
-                  <MaxWidthWrapper>
-                    <div className="w-full h-full flex py-20 px-10 bg-white-50">
-                      {/* <div className="w-2/4 flex flex-col gap-2">
-                        <div className="w-full ">
-                          <span
-                            className="shadow-none px-4 py-2 rounded-lg min-w-[100px] inline-block capitalize font-bold"
-                            style={{
-                              color: labelColors[4],
-                              backgroundImage: `linear-gradient(to right,${labelColors[4]}CC 0%, ${labelColors[4]}00 70%, transparent 100%)`,
-                            }}
-                          >
-                            {isArabic ? banner?.label?.ar : banner?.label?.en}
-                          </span>
-                        </div>
-                      </div> */}
-                      <div className="w-2/4">2</div>
-                    </div>
-                  </MaxWidthWrapper>
+              <CarouselItem
+                key={`${banner._id}-${index}`}
+                // className="embla__slide basis-full"
+                className="basis-full embla__slide"
+              >
+                <div className="w-full h-full">
+                  <div className="w-full h-full overflow-hidden">
+                    <img
+                      src={
+                        isArabic
+                          ? banner?.media?.ar?.url
+                          : banner?.media?.en?.url
+                      }
+                      alt={banner?.title?.[isArabic ? "ar" : "en"] || "Banner"}
+                      // fill // Fills the parent container
+                      className="h-full w-full object-fill"
+                    />
+                  </div>
                 </div>
               </CarouselItem>
             ))}
