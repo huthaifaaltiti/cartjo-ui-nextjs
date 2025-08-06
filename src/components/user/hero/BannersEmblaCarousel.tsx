@@ -57,7 +57,7 @@ const BannersEmblaCarousel = () => {
   const showError: boolean = isError;
 
   const containerClass =
-    "w-full h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center border-b";
+    "w-full h-[250px] md:h-[350px] lg:h-[450px] flex items-center justify-center border-b";
 
   if (showLoader) {
     return (
