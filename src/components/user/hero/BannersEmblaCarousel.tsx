@@ -18,7 +18,7 @@ import NoData from "@/components/shared/NoData";
 import EmblaBannerCard from "./EmblaBannerCard";
 import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
 
-import "./BannersCarouselClient.css";
+import styles from "./BannersCarouselClient.module.css";
 
 const BannersEmblaCarousel = () => {
   const { data, isLoading, isFetching, error, isError } =
@@ -120,14 +120,15 @@ const BannersEmblaCarousel = () => {
   if (showData) {
     return (
       <div className={containerClass}>
-        <div className="embla" ref={emblaRef}>
-          <div className="embla__container">
+        <div className={styles.embla} ref={emblaRef}>
+          <div className={styles.embla__container}>
             {duplicatedBanners.map((banner, index) => (
-              <EmblaBannerCard
+              <div
                 key={banner?._id + index || `banner-${index}`}
-                banner={banner}
-                isArabic={isArabic}
-              />
+                className={styles.embla__slide}
+              >
+                <EmblaBannerCard banner={banner} isArabic={isArabic} />
+              </div>
             ))}
           </div>
         </div>

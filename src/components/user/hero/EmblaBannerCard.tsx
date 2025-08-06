@@ -16,29 +16,27 @@ const EmblaBannerCard = ({ banner, isArabic }: EmblaBannerCardProps) => {
   const altText = banner?.title?.[isArabic ? "ar" : "en"] || "Banner";
 
   return (
-    <div className="embla__slide">
-      <div className="w-full h-full">
-        <div className="w-full h-full overflow-hidden relative">
-          {banner?.withAction && banner?.link && (
-            <Link href={banner?.link} target="_blank">
-              <ImageWithFallback
-                src={imageUrl}
-                alt={altText}
-                fill={true}
-                className="h-full w-full object-fill"
-              />
-            </Link>
-          )}
-
-          {!banner?.withAction && (
+    <div className="w-full h-full">
+      <div className="w-full h-full overflow-hidden relative">
+        {banner?.withAction && banner?.link && (
+          <Link href={banner?.link} target="_blank">
             <ImageWithFallback
               src={imageUrl}
               alt={altText}
               fill={true}
               className="h-full w-full object-fill"
             />
-          )}
-        </div>
+          </Link>
+        )}
+
+        {!banner?.withAction && (
+          <ImageWithFallback
+            src={imageUrl}
+            alt={altText}
+            fill={true}
+            className="h-full w-full object-fill"
+          />
+        )}
       </div>
     </div>
   );
