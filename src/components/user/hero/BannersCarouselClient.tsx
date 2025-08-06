@@ -50,7 +50,7 @@ const BannersCarouselClient = () => {
   const hasMultipleBanners: boolean = banners?.length > 1;
 
   const containerClass =
-    "w-full h-[100px] md:h-[200px] lg:h-[300px] flex items-center justify-center border-b";
+    "w-full h-[200px] md:h-[300px] lg:h-[400px] flex items-center justify-center border-b";
 
   if (showLoader) {
     return (
@@ -94,7 +94,7 @@ const BannersCarouselClient = () => {
           }
           opts={{
             loop: true,
-            align: "start",
+            align: isArabic ? "start" : "center",
             skipSnaps: false,
             dragFree: true,
             containScroll: "trimSnaps",
@@ -103,7 +103,7 @@ const BannersCarouselClient = () => {
           }}
           className="w-full h-full embla"
         >
-          <CarouselContent className="w-full h-[100px] md:h-[200px] lg:h-[300px] embla__container">
+          <CarouselContent className="w-full h-[200px] md:h-[300px] lg:h-[400px] embla__container">
             {duplicatedBanners.map((banner, index) => (
               <CarouselItem
                 key={`${banner._id}-${index}`}
