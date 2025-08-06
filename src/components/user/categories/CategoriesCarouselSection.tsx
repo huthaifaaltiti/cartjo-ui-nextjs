@@ -1,7 +1,7 @@
 import { memo } from "react";
 
-import CategoriesCarouselClient from "./CategoriesCarouselClient";
 import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
+import CategoriesEmblaCarousel from "./CategoriesEmblaCarousel";
 
 const CategoriesCarouselSection = () => {
   return (
@@ -9,7 +9,7 @@ const CategoriesCarouselSection = () => {
       <MaxWidthWrapper className="h-full">
         <div className="h-full flex flex-col">
           <div className="flex-1 min-h-0">
-            <CategoriesCarouselClient />
+            <CategoriesEmblaCarousel />
           </div>
         </div>
       </MaxWidthWrapper>
