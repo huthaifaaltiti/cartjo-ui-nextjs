@@ -73,6 +73,8 @@ const LogoCardActions = <
           description: resp.message,
           dismissText: t("general.toast.dismissText"),
         });
+
+        setChangeLogo(true);
       } else {
         showWarningToast({
           title: t("general.toast.title.success"),
@@ -103,6 +105,8 @@ const LogoCardActions = <
           description: resp.message,
           dismissText: t("general.toast.dismissText"),
         });
+
+        setChangeLogo(true);
       } else {
         showWarningToast({
           title: t("general.toast.title.success"),
