@@ -17,7 +17,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
   return (
     <div className="flex flex-col items-center gap-2 bg-transparent rounded-xl">
       {category.media?.url && (
-        <div className="relative w-32 h-32 rounded-md overflow-hidden">
+        <div className="relative w-28 h-28 rounded-md overflow-hidden">
           <ImageWithFallback
             src={category?.media?.url}
             alt={category.name.en}

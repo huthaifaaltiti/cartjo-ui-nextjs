@@ -15,7 +15,7 @@ import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 import CategoryCard from "./CategoryCard";
 
-import "./CategoriesEmblaCarousel.styles.css";
+import styles from "./CategoriesEmblaCarousel.module.css";
 
 const CategoriesEmblaCarousel = () => {
   const { data, isLoading, isFetching, error, isError } = useCategoriesQuery();
@@ -24,21 +24,20 @@ const CategoriesEmblaCarousel = () => {
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
 
-  const duplicatedCategories = useMemo(() => {
-    return Array.from({ length: 4 }).flatMap(
-      () => data?.pages?.flatMap((page) => page.data || []) ?? []
-    );
-  }, [data]);
-
   const categories: Category[] =
     data?.pages?.flatMap((page) => page.data || []) ?? [];
 
-  const showLoader: boolean =
+  const duplicatedCategories = useMemo(() => {
+    if (categories.length <= 1) return categories;
+    return Array.from({ length: 4 }).flatMap(() => categories);
+  }, [categories]);
+
+  const showLoader =
     (!isLoading && !isFetching && !isError && !data) || isLoading || isFetching;
-  const showNoData: boolean =
-    !isLoading && !isFetching && categories?.length === 0 && !isError;
-  const showData: boolean = !isLoading && !isFetching && categories?.length > 0;
-  const showError: boolean = isError;
+  const showNoData =
+    !isLoading && !isFetching && categories.length === 0 && !isError;
+  const showError = isError;
+  const showData = !isLoading && !isFetching && categories.length > 0;
 
   const containerClass = "w-full h-full flex items-center justify-center";
 
@@ -91,13 +90,15 @@ const CategoriesEmblaCarousel = () => {
   if (showData) {
     return (
       <div className={containerClass}>
-        <div className="embla" ref={emblaRef}>
-          <div className="embla__container">
+        <div className={styles.embla} ref={emblaRef}>
+          <div className={styles.embla__container}>
             {duplicatedCategories.map((category, index) => (
-              <CategoryCard
+              <div
                 key={category?._id + index || `category-${index}`}
-                category={category}
-              />
+                className={styles.embla__slide}
+              >
+                <CategoryCard category={category} />
+              </div>
             ))}
           </div>
         </div>
