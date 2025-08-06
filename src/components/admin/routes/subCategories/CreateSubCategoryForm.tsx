@@ -34,7 +34,7 @@ import {
 import LoadingButton from "@/components/shared/LoadingButton";
 
 import { User } from "@/types/user";
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicLocale } from "@/config/locales.config";

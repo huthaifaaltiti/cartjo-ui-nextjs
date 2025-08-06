@@ -7,6 +7,7 @@ export interface Category {
   name: Name;
   media: Media;
   subCategories: SubCategory[];
+  slug: string | undefined;
   isActive: boolean;
   isDeleted: boolean;
   unDeletedBy: null | Actor;

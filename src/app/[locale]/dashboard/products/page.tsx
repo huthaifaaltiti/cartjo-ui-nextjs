@@ -1,5 +1,5 @@
 import { Product } from "@/types/product.type";
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";

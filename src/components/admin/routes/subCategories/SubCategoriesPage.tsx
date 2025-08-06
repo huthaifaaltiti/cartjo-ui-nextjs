@@ -4,7 +4,7 @@ import { memo } from "react";
 import { BlocksIcon } from "lucide-react";
 
 import { SubCategory } from "@/types/subCategory";
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 
 import { SubCategoriesContextProvider } from "@/contexts/SubCategoriesContext";
 import ModalCreateButton from "@/components/shared/ModalCreateButton";

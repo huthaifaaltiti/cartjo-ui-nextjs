@@ -4,7 +4,7 @@ import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { fetchSubCategories } from "@/hooks/react-query/useSubCategoriesQuery";
 import { fetchCategories } from "@/hooks/react-query/useCategoriesQuery";
 
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 import { SubCategory } from "@/types/subCategory";
 
 import SubCategoriesPage from "@/components/admin/routes/subCategories/SubCategoriesPage";

@@ -3,7 +3,7 @@ import { Description, Name } from "./common";
 import { Currency } from "@/enums/currency.enum";
 import { TypeHint } from "@/enums/typeHint.enum";
 
-import { Category } from "./category";
+import { Category } from "./category.type";
 import { SubCategory } from "./subCategory";
 import { User } from "./user";
 import { Media } from "./media.type";

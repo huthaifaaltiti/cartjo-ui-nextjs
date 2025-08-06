@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useLocale } from "next-intl";
 
 import { isArabicLocale } from "@/config/locales.config";
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
 

@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { BaseResponse } from "@/types/service-response.type";
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 import { Locale } from "@/types/locale";
 
 import { isArabicLocale } from "@/config/locales.config";

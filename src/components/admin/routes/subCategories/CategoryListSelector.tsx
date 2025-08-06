@@ -3,7 +3,7 @@
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 
 import { isArabicLocale } from "@/config/locales.config";
 

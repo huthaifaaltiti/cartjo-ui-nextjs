@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { useCategories } from "@/contexts/CategoriesContext";
 

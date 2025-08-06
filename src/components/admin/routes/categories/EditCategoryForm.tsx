@@ -27,7 +27,7 @@ import { useCategories } from "@/contexts/CategoriesContext";
 import LoadingButton from "@/components/shared/LoadingButton";
 
 import { User } from "@/types/user";
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 
 import { isArabicLocale } from "@/config/locales.config";
 import { validationConfig } from "@/config/validationConfig";

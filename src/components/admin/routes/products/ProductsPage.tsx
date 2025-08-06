@@ -2,7 +2,7 @@ import { memo } from "react";
 import { BlocksIcon } from "lucide-react";
 
 import { Product } from "@/types/product.type";
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 
 import { ProductsContextProvider } from "@/contexts/Products.context";
 import SearchProducts from "./SearchProducts";

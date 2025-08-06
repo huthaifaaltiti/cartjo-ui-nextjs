@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 import { DataListResponse } from "@/types/service-response.type";
 
 import { CustomSession } from "@/lib/authOptions";

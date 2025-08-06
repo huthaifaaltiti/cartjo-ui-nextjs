@@ -34,7 +34,7 @@ import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { invalidateQuery } from "@/utils/queryUtils";
 
 import { User } from "@/types/user";
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 import { Currency } from "@/enums/currency.enum";
 import { TypeHint } from "@/enums/typeHint.enum";
 import { Product } from "@/types/product.type";

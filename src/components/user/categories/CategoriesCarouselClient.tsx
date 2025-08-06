@@ -12,7 +12,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { isArabicLocale } from "@/config/locales.config";
 
-import { Category } from "@/types/category";
+import { Category } from "@/types/category.type";
 
 import CategoryCard from "./CategoryCard";
 import LoadingDotsFlexible from "@/components/shared/LoadingDotsFlexible";
