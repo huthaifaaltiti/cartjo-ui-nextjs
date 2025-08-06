@@ -97,7 +97,7 @@ const BannersEmblaCarousel = () => {
           <div className="embla__container">
             {duplicatedBanners.map((banner, index) => (
               <EmblaBannerCard
-                key={banner._id || index}
+                key={banner?._id + index || index}
                 banner={banner}
                 isArabic={isArabic}
               />

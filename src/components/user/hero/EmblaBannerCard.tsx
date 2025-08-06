@@ -1,6 +1,8 @@
 "use client";
 
 import React, { memo } from "react";
+import Image from "next/image";
+
 import { Banner } from "@/types/banner.type";
 
 type EmblaBannerCardProps = {
@@ -16,10 +18,12 @@ const EmblaBannerCard = ({ banner, isArabic }: EmblaBannerCardProps) => {
   return (
     <div className="embla__slide">
       <div className="w-full h-full">
-        <div className="w-full h-full overflow-hidden">
-          <img
+        <div className="w-full h-full overflow-hidden relative">
+          <Image
             src={imageUrl}
             alt={altText}
+            layout="fill"
+            objectFit="fill"
             className="h-full w-full object-fill"
           />
         </div>
