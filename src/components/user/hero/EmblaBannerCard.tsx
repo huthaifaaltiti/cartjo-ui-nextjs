@@ -3,6 +3,7 @@
 import React, { memo } from "react";
 import { Banner } from "@/types/banner.type";
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
+import Link from "next/link";
 
 type EmblaBannerCardProps = {
   banner: Banner;
@@ -18,12 +19,25 @@ const EmblaBannerCard = ({ banner, isArabic }: EmblaBannerCardProps) => {
     <div className="embla__slide">
       <div className="w-full h-full">
         <div className="w-full h-full overflow-hidden relative">
-          <ImageWithFallback
-            src={imageUrl}
-            alt={altText}
-            fill={true}
-            className="h-full w-full object-fill"
-          />
+          {banner?.withAction && banner?.link && (
+            <Link href={banner?.link} target="_blank">
+              <ImageWithFallback
+                src={imageUrl}
+                alt={altText}
+                fill={true}
+                className="h-full w-full object-fill"
+              />
+            </Link>
+          )}
+
+          {!banner?.withAction && (
+            <ImageWithFallback
+              src={imageUrl}
+              alt={altText}
+              fill={true}
+              className="h-full w-full object-fill"
+            />
+          )}
         </div>
       </div>
     </div>
