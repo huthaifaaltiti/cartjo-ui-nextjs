@@ -1,9 +1,8 @@
 "use client";
 
 import React, { memo } from "react";
-import Image from "next/image";
-
 import { Banner } from "@/types/banner.type";
+import ImageWithFallback from "@/components/shared/ImageWithFallback";
 
 type EmblaBannerCardProps = {
   banner: Banner;
@@ -19,11 +18,10 @@ const EmblaBannerCard = ({ banner, isArabic }: EmblaBannerCardProps) => {
     <div className="embla__slide">
       <div className="w-full h-full">
         <div className="w-full h-full overflow-hidden relative">
-          <Image
+          <ImageWithFallback
             src={imageUrl}
             alt={altText}
-            layout="fill"
-            objectFit="fill"
+            fill={true}
             className="h-full w-full object-fill"
           />
         </div>
