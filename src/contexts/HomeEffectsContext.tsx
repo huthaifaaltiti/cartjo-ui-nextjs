@@ -12,6 +12,8 @@ type HomeEffectsContextProps = {
   setChangeLogo: (changeLogo: boolean) => void;
   accessToken: string;
   locale: Locale | string;
+  changeBanners: boolean;
+  setChangeBanners: (changeBanners: boolean) => void;
 };
 
 const HomeEffectsContext = createContext<undefined | HomeEffectsContextProps>(
@@ -26,6 +28,7 @@ export const HomeEffectsContextProvider = ({
   children,
 }: HomeEffectsContextProviderProps) => {
   const [changeLogo, setChangeLogo] = useState<boolean>(false);
+  const [changeBanners, setChangeBanners] = useState<boolean>(false);
 
   const { data: session } = useSession();
   const accessToken = (session as CustomSession)?.accessToken;
@@ -39,6 +42,8 @@ export const HomeEffectsContextProvider = ({
         setChangeLogo,
         accessToken,
         locale,
+        changeBanners,
+        setChangeBanners,
       }}
     >
       {children}

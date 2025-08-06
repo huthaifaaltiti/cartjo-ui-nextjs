@@ -58,7 +58,7 @@ const BannersCardActions = <
   const t = useTranslations();
   const locale = useLocale() as Locale;
   const queryClient = useQueryClient();
-  const { setChangeLogo } = useHomeEffectsContext();
+  const { setChangeBanners } = useHomeEffectsContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -73,6 +73,8 @@ const BannersCardActions = <
           description: resp.message,
           dismissText: t("general.toast.dismissText"),
         });
+
+        setChangeBanners(true);
       } else {
         showWarningToast({
           title: t("general.toast.title.success"),
@@ -103,6 +105,8 @@ const BannersCardActions = <
           description: resp.message,
           dismissText: t("general.toast.dismissText"),
         });
+
+        setChangeBanners(true);
       } else {
         showWarningToast({
           title: t("general.toast.title.success"),
@@ -138,7 +142,7 @@ const BannersCardActions = <
           dismissText: t("general.toast.dismissText"),
         });
 
-        setChangeLogo(true);
+        setChangeBanners(true);
       } else {
         showWarningToast({
           title: t("general.toast.title.success"),
