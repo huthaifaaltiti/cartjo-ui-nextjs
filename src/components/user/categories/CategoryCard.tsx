@@ -16,21 +16,20 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 
   return (
     <div className="flex flex-col items-center gap-2 bg-transparent rounded-xl">
-      {category.media?.url && (
-        <div className="relative w-28 h-28 rounded-md overflow-hidden">
+      {category?.media?.ar?.url && category?.media?.en?.url && (
+        <div className="relative w-20 h-28 rounded-md overflow-hidden">
           <ImageWithFallback
-            src={category?.media?.url}
-            alt={category.name.en}
-            fill
-            className="object-cover"
+            src={isArabic ? category?.media?.ar?.url : category?.media?.en?.url}
+            alt={
+              (isArabic ? category?.name?.ar : category?.name?.en) ||
+              "category image"
+            }
+            fill={true}
+            className="object-fill"
             sizes="96px"
           />
         </div>
       )}
-
-      <h3 className="text-[#030712] text-md font-bold capitalize text-center">
-        {isArabic ? category?.name?.ar : category?.name?.en}
-      </h3>
     </div>
   );
 };

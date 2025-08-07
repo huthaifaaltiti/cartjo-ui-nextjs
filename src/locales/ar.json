@@ -376,7 +376,14 @@
           "desc": "إدارة بيانات الفئات",
           "createCategory": {
             "label": "إنشاء فئة",
-            "uploadImage": "تحميل صورة الفئة",
+            "uploadArImage": "تحميل صورة الفئة العربية",
+            "uploadEnImage": "تحميل صورة الفئة الإنجليزية",
+            "creationFailed": "فشل إنشاء الفئة"
+          },
+          "editCategory": {
+            "label": "تعديل فئة",
+            "uploadArImage": "تحميل صورة الفئة العربية",
+            "uploadEnImage": "تحميل صورة الفئة الإنجليزية",
             "creationFailed": "فشل إنشاء الفئة"
           },
           "errors": {
@@ -388,9 +395,13 @@
             },
             "CreateCategoryForm": {
               "fields": {
-                "categoryImage": {
-                  "label": "صورة الفئة",
-                  "placeholder": "صورة الفئة"
+                "categoryImage_ar": {
+                  "label": "صورة الفئة العربية",
+                  "placeholder": "صورة الفئة العربية"
+                },
+                "categoryImage_en": {
+                  "label": "صورة الفئة الإنجليزية",
+                  "placeholder": "صورة الفئة الإنجليزية"
                 },
                 "name_ar": {
                   "label": "الاسم العربي",
@@ -402,8 +413,11 @@
                 }
               },
               "validations": {
-                "categoryImage": {
-                  "required": "يجب توفير صورة الفئة"
+                "categoryImage_ar": {
+                  "required": "يجب توفير صورة الفئة العربية"
+                },
+                "categoryImage_en": {
+                  "required": "يجب توفير صورة الفئة الإنجليزية"
                 },
                 "name_ar": {
                   "minChars": "يجب أن يتكون الاسم العربي من ({min}) أحرف على الأقل",
@@ -422,6 +436,14 @@
             },
             "EditCategoryForm": {
               "fields": {
+                "categoryImage_ar": {
+                  "label": "صورة الفئة العربية",
+                  "placeholder": "صورة الفئة العربية"
+                },
+                "categoryImage_en": {
+                  "label": "صورة الفئة الإنجليزية",
+                  "placeholder": "صورة الفئة الإنجليزية"
+                },
                 "name_ar": {
                   "label": "الاسم العربي",
                   "placeholder": "الاسم العربي"
@@ -432,6 +454,12 @@
                 }
               },
               "validations": {
+                "categoryImage_ar": {
+                  "required": "يجب توفير صورة الفئة العربية"
+                },
+                "categoryImage_en": {
+                  "required": "يجب توفير صورة الفئة الإنجليزية"
+                },
                 "name_ar": {
                   "minChars": "يجب أن يتكون الاسم العربي من ({min}) أحرف على الأقل",
                   "maxChars": "يجب أن يتكون الاسم العربي من ({max}) أحرف على الأكثر",

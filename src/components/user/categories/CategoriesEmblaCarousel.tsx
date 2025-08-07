@@ -24,12 +24,13 @@ const CategoriesEmblaCarousel = () => {
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
 
-  const categories: Category[] =
-    data?.pages?.flatMap((page) => page.data || []) ?? [];
+  const categories: Category[] = useMemo(() => {
+    return data?.pages?.flatMap((page) => page.data || []) ?? [];
+  }, [data]);
 
   const duplicatedCategories = useMemo(() => {
     if (categories.length <= 1) return categories;
-    return Array.from({ length: 4 }).flatMap(() => categories);
+    return Array.from({ length: 8 }).flatMap(() => categories);
   }, [categories]);
 
   const showLoader =

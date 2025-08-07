@@ -5,13 +5,9 @@ import CategoriesEmblaCarousel from "./CategoriesEmblaCarousel";
 
 const CategoriesCarouselSection = () => {
   return (
-    <section className="w-full h-60 bg-white py-11">
-      <MaxWidthWrapper className="h-full">
-        <div className="h-full flex flex-col">
-          <div className="flex-1 min-h-0">
-            <CategoriesEmblaCarousel />
-          </div>
-        </div>
+    <section className="w-full min-h-60 h-auto bg-white flex items-center justify-center">
+      <MaxWidthWrapper className="w-full h-full">
+        <CategoriesEmblaCarousel />
       </MaxWidthWrapper>
     </section>
   );

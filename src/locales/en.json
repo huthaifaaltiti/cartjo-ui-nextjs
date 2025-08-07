@@ -376,8 +376,15 @@
           "desc": "Manage categories data",
           "createCategory": {
             "label": "Create Category",
-            "uploadImage": "Upload category image",
+            "uploadArImage": "Upload Ar category image",
+            "uploadEnImage": "Upload En category image",
             "creationFailed": "Category creation failed"
+          },
+          "editCategory": {
+            "label": "Edit Category",
+            "uploadArImage": "Upload Ar category image",
+            "uploadEnImage": "Upload En category image",
+            "creationFailed": "Category updating failed"
           },
           "errors": {
             "failedLoadData": "Failed to Load categories"
@@ -386,9 +393,13 @@
             "SearchBar": { "placeholder": "Search for categories" },
             "CreateCategoryForm": {
               "fields": {
-                "categoryImage": {
-                  "label": "Category image",
-                  "placeholder": "Category image"
+                "categoryImage_ar": {
+                  "label": "Ar Category image",
+                  "placeholder": "Ar Category image"
+                },
+                "categoryImage_en": {
+                  "label": "En Category image",
+                  "placeholder": "En Category image"
                 },
                 "name_ar": {
                   "label": "Arabic Name",
@@ -400,8 +411,11 @@
                 }
               },
               "validations": {
-                "categoryImage": {
-                  "required": "Category image should be provided"
+                "categoryImage_ar": {
+                  "required": "Ar Category image should be provided"
+                },
+                "categoryImage_en": {
+                  "required": "En Category image should be provided"
                 },
                 "name_ar": {
                   "minChars": "Arabic name must be at least ({min}) characters long",
@@ -420,6 +434,14 @@
             },
             "EditCategoryForm": {
               "fields": {
+                "categoryImage_ar": {
+                  "label": "Ar Category image",
+                  "placeholder": "Ar Category image"
+                },
+                "categoryImage_en": {
+                  "label": "En Category image",
+                  "placeholder": "En Category image"
+                },
                 "name_ar": {
                   "label": "Arabic Name",
                   "placeholder": "Arabic Name"
@@ -430,6 +452,12 @@
                 }
               },
               "validations": {
+                "categoryImage_ar": {
+                  "required": "Ar Category image should be provided"
+                },
+                "categoryImage_en": {
+                  "required": "En Category image should be provided"
+                },
                 "name_ar": {
                   "minChars": "Arabic name must be at least ({min}) characters long",
                   "maxChars": "Arabic name must be at most ({max}) characters long",

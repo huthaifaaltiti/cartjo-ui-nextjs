@@ -45,9 +45,14 @@ const createFormSchema = (
     validationConfig.category;
 
   return z.object({
-    categoryImage: z.string().min(imageMinChars, {
+    categoryImage_ar: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage.required"
+        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage_ar.required"
+      ),
+    }),
+    categoryImage_en: z.string().min(imageMinChars, {
+      message: t(
+        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage_en.required"
       ),
     }),
     name_ar: z
@@ -102,7 +107,14 @@ const CreateCategoryForm = () => {
   const handleApiError = useHandleApiError();
 
   const imageUploaderRef = useRef<ImageUploaderRef>(null);
-  const [categoryImage, setCategoryImage] = useState<{
+  const [categoryImage_ar, setCategoryImage_ar] = useState<{
+    file: File | null;
+    url: string;
+  }>({
+    file: null,
+    url: "",
+  });
+  const [categoryImage_en, setCategoryImage_en] = useState<{
     file: File | null;
     url: string;
   }>({
@@ -115,18 +127,27 @@ const CreateCategoryForm = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      categoryImage: "",
+      categoryImage_ar: "",
+      categoryImage_en: "",
       name_ar: "",
       name_en: "",
     },
   });
 
-  const handleImageChange = (data: { file?: File | null; url?: string }) => {
+  const handleImageChange_ar = (data: { file?: File | null; url?: string }) => {
     const url = data.url || "";
 
-    setCategoryImage({ file: data.file ?? null, url });
+    setCategoryImage_ar({ file: data.file ?? null, url });
 
-    form.setValue("categoryImage", url);
+    form.setValue("categoryImage_ar", url);
+  };
+
+  const handleImageChange_en = (data: { file?: File | null; url?: string }) => {
+    const url = data.url || "";
+
+    setCategoryImage_en({ file: data.file ?? null, url });
+
+    form.setValue("categoryImage_en", url);
   };
 
   const handleImageError = (error: string) => {
@@ -141,7 +162,7 @@ const CreateCategoryForm = () => {
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
-      const excludedFields = ["categoryImage"];
+      const excludedFields = ["categoryImage_ar", "categoryImage_en"];
 
       Object.entries(data).forEach(([key, value]) => {
         if (excludedFields.includes(key)) return;
@@ -151,8 +172,12 @@ const CreateCategoryForm = () => {
 
       formData.append("lang", locale);
 
-      if (categoryImage?.file) {
-        formData.append("image", categoryImage.file);
+      if (categoryImage_ar?.file) {
+        formData.append("image_ar", categoryImage_ar.file);
+      }
+
+      if (categoryImage_en?.file) {
+        formData.append("image_en", categoryImage_en.file);
       }
 
       const response = await fetch(API_ENDPOINTS.DASHBOARD.CATEGORIES.CREATE, {
@@ -215,31 +240,67 @@ const CreateCategoryForm = () => {
     <div className="space-y-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="categoryImage"
-            render={() => (
-              <FormItem className={getFormItemClassName()}>
-                <FormLabel className="text-sm font-normal">
-                  {t(
-                    "routes.dashboard.routes.categories.createCategory.uploadImage"
-                  )}
-                </FormLabel>
-                <ImageUploader
-                  ref={imageUploaderRef}
-                  value={categoryImage.url}
-                  onChange={handleImageChange}
-                  onError={handleImageError}
-                  label={""}
-                  maxSizeInMB={2}
-                  size="sm"
-                  variant="rounded"
-                  accept="image/png, image/jpeg, image/jpg"
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div
+            className={`flex gap-5 ${
+              isArabic ? "flex-row-reverse" : "flex-row"
+            }`}
+          >
+            <div className="flex-1">
+              <FormField
+                control={form.control}
+                name="categoryImage_ar"
+                render={() => (
+                  <FormItem className={getFormItemClassName()}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.dashboard.routes.categories.createCategory.uploadArImage"
+                      )}
+                    </FormLabel>
+                    <ImageUploader
+                      ref={imageUploaderRef}
+                      value={categoryImage_ar.url}
+                      onChange={handleImageChange_ar}
+                      onError={handleImageError}
+                      label={""}
+                      maxSizeInMB={2}
+                      size="sm"
+                      variant="rounded"
+                      accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex-1">
+              <FormField
+                control={form.control}
+                name="categoryImage_en"
+                render={() => (
+                  <FormItem className={getFormItemClassName()}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.dashboard.routes.categories.createCategory.uploadEnImage"
+                      )}
+                    </FormLabel>
+                    <ImageUploader
+                      ref={imageUploaderRef}
+                      value={categoryImage_en.url}
+                      onChange={handleImageChange_en}
+                      onError={handleImageError}
+                      label={""}
+                      maxSizeInMB={2}
+                      size="sm"
+                      variant="rounded"
+                      accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
 
           <div
             className={`flex gap-5 ${

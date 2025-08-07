@@ -5,7 +5,10 @@ import { SubCategory } from "./subCategory";
 export interface Category {
   _id: string;
   name: Name;
-  media: Media;
+  media: {
+    ar: Media;
+    en: Media;
+  };
   subCategories: SubCategory[];
   slug: string | undefined;
   isActive: boolean;
