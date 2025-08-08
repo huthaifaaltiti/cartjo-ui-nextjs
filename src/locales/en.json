@@ -52,7 +52,13 @@
       "unknown": "Unknown",
       "created": "Created",
       "createdBy": "Created by",
-      "updated": "Updated"
+      "updated": "Updated",
+      "from": "From",
+      "to": "To"
+    },
+    "date": {
+      "startDate": "Start Date",
+      "endDate": "End Date"
     }
   },
   "errors": {

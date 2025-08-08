@@ -82,7 +82,7 @@ const BannerCard = ({
         </h3>
       </div>
 
-      <div className="text-xs text-gray-600 mb-4 my-1">
+      <div className="text-xs text-gray-600 mt-2 border-t py-3 flex items-center gap-1">
         <p>
           {t("general.others.created")}:{" "}
           {new Date(banner.createdAt).toLocaleDateString("en-US")}
@@ -94,6 +94,24 @@ const BannerCard = ({
           </p>
         )}
       </div>
+
+      {banner?.startDate && banner.endDate && (
+        <div className="text-xs text-gray-600 my-1 border-y py-3 mb-3 flex items-center gap-1">
+          {banner?.startDate && (
+            <p>
+              {t("general.date.startDate")}:{" "}
+              {new Date(banner.startDate).toLocaleDateString("en-US")}
+            </p>
+          )}
+
+          {banner.endDate && (
+            <p>
+              {t("general.date.endDate")}:{" "}
+              {new Date(banner.endDate).toLocaleDateString("en-US")}
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="mt-auto">
         <BannersCardActions
