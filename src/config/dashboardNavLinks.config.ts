@@ -7,6 +7,7 @@ import {
   FileMusic,
   Feather,
   Flag,
+  LayoutPanelTop,
 } from "lucide-react";
 
 export const dashboardNavLinks = [
@@ -57,5 +58,11 @@ export const dashboardNavLinks = [
       "routes.dashboard.components.DashboardControlNavLinks.navItems.banner",
     href: "/dashboard/banners",
     icon: Flag,
+  },
+  {
+    labelKey:
+      "routes.dashboard.components.DashboardControlNavLinks.navItems.showcases",
+    href: "/dashboard/showcases",
+    icon: LayoutPanelTop,
   },
 ];

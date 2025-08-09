@@ -1087,7 +1087,8 @@
             "products": "Products",
             "media": "Media",
             "logo": "Logo",
-            "banner": "Banners"
+            "banner": "Banners",
+            "showcases": "Showcases"
           }
         },
         "DashboardLocationCard": {

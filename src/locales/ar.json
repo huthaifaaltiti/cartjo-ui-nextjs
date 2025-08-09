@@ -1095,7 +1095,8 @@
             "products": "المنتجات",
             "media": "الوسائط",
             "logo": "الشعار",
-            "banner": "اللافتات"
+            "banner": "اللافتات",
+            "showcases": "قوائم العروض"
           }
         },
         "DashboardLocationCard": {
