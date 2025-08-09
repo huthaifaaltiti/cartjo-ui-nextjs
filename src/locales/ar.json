@@ -54,7 +54,14 @@
       "createdBy": "تم الإنشاء بواسطة",
       "updated": "تم التحديث",
       "from": "من",
-      "to": "إلى"
+      "to": "إلى",
+      "date": "التاريخ",
+      "time": "الوقت",
+      "selectDate": "اختر تاريخا"
+    },
+    "date": {
+      "startDate": "تاريخ البداية",
+      "endDate": "تاريخ النهاية"
     }
   },
   "errors": {
@@ -945,6 +952,14 @@
                 "withAction": {
                   "label": "هل البانر يحتوي على إجراء؟",
                   "placeholder": "هل البانر يحتوي على إجراء؟"
+                },
+                "startDate": {
+                  "label": "تاريخ البداية",
+                  "placeholder": "تاريخ البداية"
+                },
+                "endDate": {
+                  "label": "تاريخ النهاية",
+                  "placeholder": "تاريخ النهاية"
                 }
               },
               "validations": {
@@ -970,6 +985,13 @@
                 },
                 "withAction": {
                   "required": "يجب توفير تسمية للبانر مع إجراء"
+                },
+                "startDate": {
+                  "invalid": "الوقت المختار غير صحيح"
+                },
+                "endDate": {
+                  "invalid": "الوقت المختار غير صحيح",
+                  "mustBeAfterStart": "وقت النهاية يجب أن يكون بعد وقت وتاريخ البداية"
                 }
               },
               "errors": {
@@ -1001,6 +1023,14 @@
                 "withAction": {
                   "label": "هل البانر يحتوي على إجراء؟",
                   "placeholder": "هل البانر يحتوي على إجراء؟"
+                },
+                "startDate": {
+                  "label": "تاريخ البداية",
+                  "placeholder": "تاريخ البداية"
+                },
+                "endDate": {
+                  "label": "تاريخ النهاية",
+                  "placeholder": "تاريخ النهاية"
                 }
               },
               "validations": {
@@ -1026,6 +1056,13 @@
                 },
                 "withAction": {
                   "required": "يجب توفير تسمية للبانر مع إجراء"
+                },
+                "startDate": {
+                  "invalid": "الوقت المختار غير صحيح"
+                },
+                "endDate": {
+                  "invalid": "الوقت المختار غير صحيح",
+                  "mustBeAfterStart": "وقت النهاية يجب أن يكون بعد وقت وتاريخ البداية"
                 }
               },
               "errors": {

@@ -100,14 +100,30 @@ const BannerCard = ({
           {banner?.startDate && (
             <p>
               {t("general.date.startDate")}:{" "}
-              {new Date(banner.startDate).toLocaleDateString("en-US")}
+              {new Date(banner.startDate).toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              })}
             </p>
           )}
 
           {banner.endDate && (
             <p>
               {t("general.date.endDate")}:{" "}
-              {new Date(banner.endDate).toLocaleDateString("en-US")}
+              {new Date(banner.endDate).toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              })}
             </p>
           )}
         </div>

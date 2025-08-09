@@ -39,6 +39,7 @@ import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
+import { Calendar24 } from "@/components/shared/Calendar24";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string
@@ -103,8 +104,25 @@ const createFormSchema = (
         }),
       link: z.string().optional(),
       withAction: z.boolean(),
+      startDate: z
+        .date({
+          invalid_type_error: t(
+            "routes.dashboard.routes.banners.components.CreateBannerForm.validations.startDate.invalid"
+          ),
+        })
+        .nullable()
+        .optional(),
+      endDate: z
+        .date({
+          invalid_type_error: t(
+            "routes.dashboard.routes.banners.components.CreateBannerForm.validations.endDate.invalid"
+          ),
+        })
+        .nullable()
+        .optional(),
     })
     .superRefine((data, ctx) => {
+      // Validate link length if withAction = true
       if (data.withAction) {
         if (!data.link || data.link.length < bannerLinkMinChars) {
           ctx.addIssue({
@@ -122,6 +140,19 @@ const createFormSchema = (
             message: t(
               "routes.dashboard.routes.banners.components.CreateBannerForm.validations.link.maxChars",
               { max: bannerLinkMaxChars }
+            ),
+          });
+        }
+      }
+
+      // Validate date order
+      if (data.startDate && data.endDate) {
+        if (data.endDate <= data.startDate) {
+          ctx.addIssue({
+            path: ["endDate"],
+            code: "custom",
+            message: t(
+              "routes.dashboard.routes.banners.components.CreateBannerForm.validations.endDate.mustBeAfterStart"
             ),
           });
         }
@@ -168,6 +199,8 @@ const CreateBannerForm = () => {
       title_en: "",
       link: "",
       withAction: false,
+      startDate: null,
+      endDate: null,
     },
   });
 
@@ -204,7 +237,11 @@ const CreateBannerForm = () => {
       Object.entries(data).forEach(([key, value]) => {
         if (excludedFields.includes(key)) return;
 
-        formData.append(key, String(value));
+        if (value instanceof Date) {
+          formData.append(key, value.toISOString());
+        } else if (value !== null && value !== undefined) {
+          formData.append(key, String(value));
+        }
       });
 
       formData.append("lang", locale);
@@ -276,11 +313,7 @@ const CreateBannerForm = () => {
     <div className="space-y-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div
-            className={`flex gap-5 ${
-              isArabic ? "flex-row-reverse" : "flex-row"
-            }`}
-          >
+          <div className={`flex gap-5 rtl:flex-row-reverse ltr:flex-row`}>
             <div className="flex-1">
               <FormField
                 control={form.control}
@@ -463,6 +496,44 @@ const CreateBannerForm = () => {
                 )}
               />
             </div>
+          </div>
+
+          <div className={`flex flex-col gap-5`}>
+            <FormField
+              control={form.control}
+              name="startDate"
+              render={({ field }) => (
+                <FormItem className={getFormItemClassName()}>
+                  <FormLabel className="text-sm font-normal">
+                    {t(
+                      "routes.dashboard.routes.banners.components.CreateBannerForm.fields.startDate.label"
+                    )}
+                  </FormLabel>
+                  <FormControl>
+                    <Calendar24 value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="endDate"
+              render={({ field }) => (
+                <FormItem className={getFormItemClassName()}>
+                  <FormLabel className="text-sm font-normal">
+                    {t(
+                      "routes.dashboard.routes.banners.components.CreateBannerForm.fields.endDate.label"
+                    )}
+                  </FormLabel>
+                  <FormControl>
+                    <Calendar24 value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <LoadingButton

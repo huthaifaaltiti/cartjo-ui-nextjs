@@ -54,7 +54,10 @@
       "createdBy": "Created by",
       "updated": "Updated",
       "from": "From",
-      "to": "To"
+      "to": "To",
+      "date": "Date",
+      "time": "Time",
+      "selectDate": "Select Date"
     },
     "date": {
       "startDate": "Start Date",
@@ -941,6 +944,14 @@
                 "withAction": {
                   "label": "Banner with an action?",
                   "placeholder": "Banner with an action?"
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Start Date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "End Date"
                 }
               },
               "validations": {
@@ -966,6 +977,13 @@
                 },
                 "withAction": {
                   "required": "Banner with an action label should be provided"
+                },
+                "startDate": {
+                  "invalid": "Invalid Date"
+                },
+                "endDate": {
+                  "invalid": "Invalid Date",
+                  "mustBeAfterStart": "End Date must be after start date"
                 }
               },
               "errors": {
@@ -997,6 +1015,14 @@
                 "withAction": {
                   "label": "Banner with an action?",
                   "placeholder": "Banner with an action?"
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Start Date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "End Date"
                 }
               },
               "validations": {
@@ -1022,6 +1048,13 @@
                 },
                 "withAction": {
                   "required": "Banner with an action label should be provided"
+                },
+                "startDate": {
+                  "invalid": "Invalid Date"
+                },
+                "endDate": {
+                  "invalid": "Invalid Date",
+                  "mustBeAfterStart": "End Date must be after start date"
                 }
               },
               "errors": {
