@@ -57,7 +57,10 @@
       "to": "To",
       "date": "Date",
       "time": "Time",
-      "selectDate": "Select Date"
+      "selectDate": "Select Date",
+      "button_text": "Button Text",
+      "button_link": "Button Link",
+      "created_by": "Created By"
     },
     "date": {
       "startDate": "Start Date",
@@ -1059,6 +1062,210 @@
               },
               "errors": {
                 "failedEditing": "Banner editing failed"
+              }
+            }
+          }
+        },
+        "showcases": {
+          "title": "Showcases Management",
+          "desc": "Manage showcases data",
+          "createShowcase": {
+            "label": "Create showcase",
+            "uploadImage_ar": "Upload ar banner image",
+            "uploadImage_en": "Upload en banner image",
+            "actionFailed": "Showcase creation failed"
+          },
+          "editShowcase": {
+            "label": "Edit Showcase",
+            "uploadImage": "Upload banner image",
+            "actionFailed": "Showcase editing failed"
+          },
+          "errors": {
+            "failedLoadData": "Failed to Load showcases"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for showcases" },
+
+            "CreateShowcaseForm": {
+              "fields": {
+                "title_ar": {
+                  "label": "Arabic Title",
+                  "placeholder": "Enter Arabic title"
+                },
+                "title_en": {
+                  "label": "English Title",
+                  "placeholder": "Enter English title"
+                },
+                "description_ar": {
+                  "label": "Arabic Description",
+                  "placeholder": "Enter Arabic description"
+                },
+                "description_en": {
+                  "label": "English Description",
+                  "placeholder": "Enter English description"
+                },
+                "showAllButtonText_ar": {
+                  "label": "Arabic Button Text",
+                  "placeholder": "Enter Arabic button text"
+                },
+                "showAllButtonText_en": {
+                  "label": "English Button Text",
+                  "placeholder": "Enter English button text"
+                },
+                "showAllButtonLink": {
+                  "label": "Button Link",
+                  "placeholder": "Enter button link URL"
+                },
+                "type": {
+                  "label": "Showcase Type",
+                  "placeholder": "Select showcase type"
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Select start date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "Select end date"
+                }
+              },
+              "validations": {
+                "title_ar": {
+                  "minChars": "Arabic title must be at least {min} characters long",
+                  "maxChars": "Arabic title must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "title_en": {
+                  "minChars": "English title must be at least {min} characters long",
+                  "maxChars": "English title must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "description_ar": {
+                  "minChars": "Arabic description must be at least {min} characters long",
+                  "maxChars": "Arabic description must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "description_en": {
+                  "minChars": "English description must be at least {min} characters long",
+                  "maxChars": "English description must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "showAllButtonText_ar": {
+                  "minChars": "Arabic button text must be at least {min} characters long",
+                  "maxChars": "Arabic button text must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "showAllButtonText_en": {
+                  "minChars": "English button text must be at least {min} characters long",
+                  "maxChars": "English button text must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "showAllButtonLink": {
+                  "minChars": "English button link must be at least {min} characters long",
+                  "maxChars": "English button link must be at most {max} characters long",
+                  "invalidUrl": "Invalid Url"
+                },
+                "startDate": {
+                  "invalid": "Invalid start date"
+                },
+                "endDate": {
+                  "invalid": "Invalid end date",
+                  "mustBeAfterStart": "End date must be after start date"
+                }
+              },
+              "errors": {
+                "failedCreation": "Showcase creation failed"
+              }
+            },
+            "EditShowcaseForm": {
+              "fields": {
+                "title_ar": {
+                  "label": "Arabic Title",
+                  "placeholder": "Enter Arabic title"
+                },
+                "title_en": {
+                  "label": "English Title",
+                  "placeholder": "Enter English title"
+                },
+                "description_ar": {
+                  "label": "Arabic Description",
+                  "placeholder": "Enter Arabic description"
+                },
+                "description_en": {
+                  "label": "English Description",
+                  "placeholder": "Enter English description"
+                },
+                "showAllButtonText_ar": {
+                  "label": "Arabic Button Text",
+                  "placeholder": "Enter Arabic button text"
+                },
+                "showAllButtonText_en": {
+                  "label": "English Button Text",
+                  "placeholder": "Enter English button text"
+                },
+                "showAllButtonLink": {
+                  "label": "Button Link",
+                  "placeholder": "Enter button link URL"
+                },
+                "type": {
+                  "label": "Showcase Type",
+                  "placeholder": "Select showcase type"
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Select start date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "Select end date"
+                }
+              },
+              "validations": {
+                "title_ar": {
+                  "minChars": "Arabic title must be at least {min} characters long",
+                  "maxChars": "Arabic title must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "title_en": {
+                  "minChars": "English title must be at least {min} characters long",
+                  "maxChars": "English title must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "description_ar": {
+                  "minChars": "Arabic description must be at least {min} characters long",
+                  "maxChars": "Arabic description must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "description_en": {
+                  "minChars": "English description must be at least {min} characters long",
+                  "maxChars": "English description must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "showAllButtonText_ar": {
+                  "minChars": "Arabic button text must be at least {min} characters long",
+                  "maxChars": "Arabic button text must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "showAllButtonText_en": {
+                  "minChars": "English button text must be at least {min} characters long",
+                  "maxChars": "English button text must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "showAllButtonLink": {
+                  "minChars": "English button link must be at least {min} characters long",
+                  "maxChars": "English button link must be at most {max} characters long",
+                  "invalidUrl": "Invalid Url"
+                },
+                "startDate": {
+                  "invalid": "Invalid start date"
+                },
+                "endDate": {
+                  "invalid": "Invalid end date",
+                  "mustBeAfterStart": "End date must be after start date"
+                }
+              },
+              "errors": {
+                "failedCreation": "Showcase editing failed"
               }
             }
           }

@@ -23,4 +23,14 @@ export const validationConfig = {
     bannerLinkMinChars: 5,
     bannerLinkMaxChars: 255,
   },
+  showcase: {
+    titleMinChars: 3,
+    titleMaxChars: 50,
+    descMinChars: 3,
+    descMaxChars: 200,
+    linkMinChars: 5,
+    linkBtnTextMaxChars: 255,
+    linkBtnTextMinChars: 5,
+    linkMaxChars: 255,
+  },
 };

@@ -57,7 +57,10 @@
       "to": "إلى",
       "date": "التاريخ",
       "time": "الوقت",
-      "selectDate": "اختر تاريخا"
+      "selectDate": "اختر تاريخا",
+      "button_text": "نص الزر",
+      "button_link": "رابط الزر",
+      "created_by": "أنشأه"
     },
     "date": {
       "startDate": "تاريخ البداية",
@@ -1067,6 +1070,206 @@
               },
               "errors": {
                 "failedEditing": "فشل تعديل اللافتة"
+              }
+            }
+          }
+        },
+        "showcases": {
+          "title": "إدارة العروض",
+          "desc": "إدارة بيانات العروض",
+          "createShowcase": {
+            "label": "إنشاء عرض",
+            "actionFailed": "فشل إنشاء العرض"
+          },
+          "editShowcase": {
+            "label": "تعديل العرض",
+            "actionFailed": "فشل تعديل العرض"
+          },
+          "errors": {
+            "failedLoadData": "فشل تحميل العروض"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "ابحث عن عروض" },
+            "CreateShowcaseForm": {
+              "fields": {
+                "title_ar": {
+                  "label": "العنوان بالعربية",
+                  "placeholder": "أدخل العنوان بالعربية"
+                },
+                "title_en": {
+                  "label": "العنوان بالإنجليزية",
+                  "placeholder": "أدخل العنوان بالإنجليزية"
+                },
+                "description_ar": {
+                  "label": "الوصف بالعربية",
+                  "placeholder": "أدخل الوصف بالعربية"
+                },
+                "description_en": {
+                  "label": "الوصف بالإنجليزية",
+                  "placeholder": "أدخل الوصف بالإنجليزية"
+                },
+                "showAllButtonText_ar": {
+                  "label": "نص الزر بالعربية",
+                  "placeholder": "أدخل نص الزر بالعربية"
+                },
+                "showAllButtonText_en": {
+                  "label": "نص الزر بالإنجليزية",
+                  "placeholder": "أدخل نص الزر بالإنجليزية"
+                },
+                "showAllButtonLink": {
+                  "label": "رابط الزر",
+                  "placeholder": "أدخل رابط الزر"
+                },
+                "type": {
+                  "label": "نوع العرض",
+                  "placeholder": "اختر نوع العرض"
+                },
+                "startDate": {
+                  "label": "تاريخ البداية",
+                  "placeholder": "اختر تاريخ البداية"
+                },
+                "endDate": {
+                  "label": "تاريخ النهاية",
+                  "placeholder": "اختر تاريخ النهاية"
+                }
+              },
+              "validations": {
+                "title_ar": {
+                  "minChars": "يجب أن يحتوي العنوان بالعربية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد العنوان بالعربية عن {max} أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "title_en": {
+                  "minChars": "يجب أن يحتوي العنوان بالإنجليزية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد العنوان بالإنجليزية عن {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "description_ar": {
+                  "minChars": "يجب أن يحتوي الوصف بالعربية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد الوصف بالعربية عن {max} أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "description_en": {
+                  "minChars": "يجب أن يحتوي الوصف بالإنجليزية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد الوصف بالإنجليزية عن {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "showAllButtonText_ar": {
+                  "minChars": "يجب أن يحتوي نص الزر بالعربية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد نص الزر بالعربية عن {max} أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "showAllButtonText_en": {
+                  "minChars": "يجب أن يحتوي نص الزر بالإنجليزية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد نص الزر بالإنجليزية عن {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "showAllButtonLink": {
+                  "minChars": "يجب أن يحتوي رابط الزر على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد رابط الزر عن {max} أحرف",
+                  "invalidUrl": "رابط غير صالح"
+                },
+                "startDate": {
+                  "invalid": "تاريخ البداية غير صالح"
+                },
+                "endDate": {
+                  "invalid": "تاريخ النهاية غير صالح",
+                  "mustBeAfterStart": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية"
+                }
+              },
+              "errors": {
+                "failedCreation": "فشل إنشاء العرض"
+              }
+            },
+            "EditShowcaseForm": {
+              "fields": {
+                "title_ar": {
+                  "label": "العنوان بالعربية",
+                  "placeholder": "أدخل العنوان بالعربية"
+                },
+                "title_en": {
+                  "label": "العنوان بالإنجليزية",
+                  "placeholder": "أدخل العنوان بالإنجليزية"
+                },
+                "description_ar": {
+                  "label": "الوصف بالعربية",
+                  "placeholder": "أدخل الوصف بالعربية"
+                },
+                "description_en": {
+                  "label": "الوصف بالإنجليزية",
+                  "placeholder": "أدخل الوصف بالإنجليزية"
+                },
+                "showAllButtonText_ar": {
+                  "label": "نص الزر بالعربية",
+                  "placeholder": "أدخل نص الزر بالعربية"
+                },
+                "showAllButtonText_en": {
+                  "label": "نص الزر بالإنجليزية",
+                  "placeholder": "أدخل نص الزر بالإنجليزية"
+                },
+                "showAllButtonLink": {
+                  "label": "رابط الزر",
+                  "placeholder": "أدخل رابط الزر"
+                },
+                "type": {
+                  "label": "نوع العرض",
+                  "placeholder": "اختر نوع العرض"
+                },
+                "startDate": {
+                  "label": "تاريخ البداية",
+                  "placeholder": "اختر تاريخ البداية"
+                },
+                "endDate": {
+                  "label": "تاريخ النهاية",
+                  "placeholder": "اختر تاريخ النهاية"
+                }
+              },
+              "validations": {
+                "title_ar": {
+                  "minChars": "يجب أن يحتوي العنوان بالعربية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد العنوان بالعربية عن {max} أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "title_en": {
+                  "minChars": "يجب أن يحتوي العنوان بالإنجليزية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد العنوان بالإنجليزية عن {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "description_ar": {
+                  "minChars": "يجب أن يحتوي الوصف بالعربية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد الوصف بالعربية عن {max} أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "description_en": {
+                  "minChars": "يجب أن يحتوي الوصف بالإنجليزية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد الوصف بالإنجليزية عن {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "showAllButtonText_ar": {
+                  "minChars": "يجب أن يحتوي نص الزر بالعربية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد نص الزر بالعربية عن {max} أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "showAllButtonText_en": {
+                  "minChars": "يجب أن يحتوي نص الزر بالإنجليزية على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد نص الزر بالإنجليزية عن {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "showAllButtonLink": {
+                  "minChars": "يجب أن يحتوي رابط الزر على {min} أحرف على الأقل",
+                  "maxChars": "يجب ألا يزيد رابط الزر عن {max} أحرف",
+                  "invalidUrl": "رابط غير صالح"
+                },
+                "startDate": {
+                  "invalid": "تاريخ البداية غير صالح"
+                },
+                "endDate": {
+                  "invalid": "تاريخ النهاية غير صالح",
+                  "mustBeAfterStart": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية"
+                }
+              },
+              "errors": {
+                "failedCreation": "فشل تعديل العرض"
               }
             }
           }

@@ -65,5 +65,14 @@ export const API_ENDPOINTS = {
       EDIT: `${BASE_URL}/api/v1/banner/update`,
       ACTIVE: `${BASE_URL}/api/v1/banner/active`,
     },
+    SHOWCASES: {
+      ALL: `${BASE_URL}/api/v1/showcase/all`,
+      DELETE: `${BASE_URL}/api/v1/showcase/delete`,
+      UN_DELETE: `${BASE_URL}/api/v1/showcase/un-delete`,
+      SWITCH_ACTIVE_STATUS: `${BASE_URL}/api/v1/showcase/status`,
+      CREATE: `${BASE_URL}/api/v1/showcase/create`,
+      EDIT: `${BASE_URL}/api/v1/showcase/update`,
+      ACTIVE: `${BASE_URL}/api/v1/showcase/active`,
+    },
   },
 };

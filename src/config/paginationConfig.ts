@@ -8,4 +8,5 @@ export const PAGINATION_LIMITS = {
   PRODUCTS: 10,
   LOGOS: 10,
   BANNERS: 10,
+  SHOWCASES: 10,
 };
