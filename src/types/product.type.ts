@@ -20,6 +20,7 @@ export interface Product {
   price: number;
   currency: Currency;
   discountRate: number;
+  ratings: number;
   totalAmountCount: number;
   availableCount: number;
   sellCount: number;

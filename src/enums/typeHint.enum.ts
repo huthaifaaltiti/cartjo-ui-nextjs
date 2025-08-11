@@ -1,13 +1,22 @@
 export enum TypeHint {
-  ORGANIC = "organic",
-  COLD_SALE = "cold_sale",
-  IMPORTED = "imported",
-  CURRENTLY_ADDED = "Currently added",
-}
+  // Pricing & Promotions
+  COLD_SALE = "cold_sale", // Limited-time sale or special discount
+  HOT_DEAL = "hot_deal", // High-demand or flash sale
 
-export const typeHintLabels: Record<TypeHint, string> = {
-  [TypeHint.ORGANIC]: "عضوي",
-  [TypeHint.COLD_SALE]: "تخفيضات باردة",
-  [TypeHint.IMPORTED]: "مُستورد",
-  [TypeHint.CURRENTLY_ADDED]: "مضافة حاليا",
-};
+  // Product Origin & Nature
+  IMPORTED = "imported", // Imported content or material
+  LOCAL = "local", // Locally sourced content
+
+  // Content Highlights
+  STATIC = "static", // Permanent, non-changing content
+  BEST_SELLERS = "best_sellers", // Top-selling books/resources
+  MOST_VIEWED = "most_viewed", // Popular by view count
+  EDITOR_PICK = "editor_pick", // Recommended by editors/admins
+  NEW_ARRIVAL = "new_arrival", // Recently added
+  TRENDING = "trending", // Currently popular
+
+  // Special Categories for a Library
+  FEATURED_AUTHOR = "featured_author", // Highlighting a specific author
+  RECOMMENDED_FOR_YOU = "recommended_for_you", // Personalized picks
+  LIMITED_EDITION = "limited_edition", // Exclusive or rare resources
+}

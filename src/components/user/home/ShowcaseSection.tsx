@@ -30,7 +30,7 @@ const ShowcaseSection = ({
           <p className="text-xs text-text-secondary-200">{desc}</p>
         </div>
 
-        <Link href={uri}>
+        <Link href={uri} target="_blank">
           <Button
             variant="default"
             className="bg-white-50 rounded-[20px] border border-gray-100 shadow-none flex items-center gap-1 group text-[#212529] font-bold hover:shadow transition-all"
