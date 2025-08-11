@@ -70,12 +70,54 @@ const typeHintIcons: Record<
   [TypeHint.LIMITED_EDITION]: Gift,
 };
 
+const typeHintClassName: Record<TypeHint, string> = {
+  [TypeHint.COLD_SALE]: "bg",
+  [TypeHint.HOT_DEAL]: "",
+  [TypeHint.IMPORTED]:
+    "flex items-center gap-1 bg-gradient-to-r from-red-500 to-red-100 text-red-300 px-2 py-1 rounded-lg",
+
+  [TypeHint.LOCAL]: "",
+  [TypeHint.STATIC]: "",
+  [TypeHint.BEST_SELLERS]: "",
+  [TypeHint.MOST_VIEWED]: "",
+  [TypeHint.EDITOR_PICK]: "",
+  [TypeHint.NEW_ARRIVAL]: "",
+  [TypeHint.TRENDING]: "",
+  [TypeHint.FEATURED_AUTHOR]: "",
+  [TypeHint.RECOMMENDED_FOR_YOU]: "",
+  [TypeHint.LIMITED_EDITION]: "",
+};
+
+const typeHintIconClassName: Record<TypeHint, string> = {
+  [TypeHint.COLD_SALE]: "bg",
+  [TypeHint.HOT_DEAL]: "",
+  [TypeHint.IMPORTED]: "w-3 h-3",
+  [TypeHint.LOCAL]: "",
+  [TypeHint.STATIC]: "",
+  [TypeHint.BEST_SELLERS]: "",
+  [TypeHint.MOST_VIEWED]: "",
+  [TypeHint.EDITOR_PICK]: "",
+  [TypeHint.NEW_ARRIVAL]: "",
+  [TypeHint.TRENDING]: "",
+  [TypeHint.FEATURED_AUTHOR]: "",
+  [TypeHint.RECOMMENDED_FOR_YOU]: "",
+  [TypeHint.LIMITED_EDITION]: "",
+};
+
 export const useTypeHints = () => {
   const getLabel = (typeHint: TypeHint, lang: "ar" | "en" = "ar"): string =>
     lang === "ar" ? typeHintLabelsAr[typeHint] : typeHintLabelsEn[typeHint];
 
   const getIcon = (typeHint: TypeHint) => {
     return typeHintIcons[typeHint];
+  };
+
+  const getClassName = (typeHint: TypeHint) => {
+    return typeHintClassName[typeHint];
+  };
+
+  const getIconClassName = (typeHint: TypeHint) => {
+    return typeHintIconClassName[typeHint];
   };
 
   const getAllTypeHints = (): TypeHint[] => Object.values(TypeHint);
@@ -87,5 +129,7 @@ export const useTypeHints = () => {
     getLabel,
     getIcon,
     getAllTypeHints,
+    getClassName,
+    getIconClassName,
   };
 };

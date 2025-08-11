@@ -23,7 +23,7 @@ const HomeShowcaseContent = () => {
   const t = useTranslations();
   const { accessToken } = useShowcases();
 
-  const { getIcon } = useTypeHints();
+  const { getIcon, getClassName, getIconClassName } = useTypeHints();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -145,10 +145,15 @@ const HomeShowcaseContent = () => {
                           className="w-full h-48 object-cover rounded-md mb-3"
                         />
 
-                        <span className="absolute top-[50%] text-xs">
+                        <span
+                          className={`absolute top-1/2 -translate-y-1/2 text-xs px-2 py-1 ${getClassName(
+                            item?.typeHint
+                          )}`}
+                          style={{ width: "auto", backgroundColor: "red" }}
+                        >
                           {getIcon(item?.typeHint) &&
                             React.createElement(getIcon(item?.typeHint)!, {
-                              className: "bg-red-500",
+                              className: getIconClassName(item?.typeHint),
                             })}
                           {item?.typeHint}
                         </span>
