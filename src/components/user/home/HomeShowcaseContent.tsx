@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
@@ -23,9 +23,7 @@ const HomeShowcaseContent = () => {
   const t = useTranslations();
   const { accessToken } = useShowcases();
 
-  const x = useTypeHints();
-
-  console.log({ x });
+  const { getIcon } = useTypeHints();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -148,6 +146,10 @@ const HomeShowcaseContent = () => {
                         />
 
                         <span className="absolute top-[50%] text-xs">
+                          {getIcon(item?.typeHint) &&
+                            React.createElement(getIcon(item?.typeHint)!, {
+                              className: "bg-red-500",
+                            })}
                           {item?.typeHint}
                         </span>
 
