@@ -52,9 +52,14 @@ const createFormSchema = (
     validationConfig.subCategory;
 
   return z.object({
-    subCategoryImage: z.string().min(imageMinChars, {
+    subCategoryImage_ar: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.subCategoryImage.required"
+        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.subCategoryImage_ar.required"
+      ),
+    }),
+    subCategoryImage_en: z.string().min(imageMinChars, {
+      message: t(
+        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.subCategoryImage_en.required"
       ),
     }),
     name_ar: z
@@ -118,7 +123,15 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
   const handleApiError = useHandleApiError();
 
   const imageUploaderRef = useRef<ImageUploaderRef>(null);
-  const [subCategoryImage, setSubCategoryImage] = useState<{
+
+  const [subCategoryImage_ar, setSubCategoryImage_ar] = useState<{
+    file: File | null;
+    url: string;
+  }>({
+    file: null,
+    url: "",
+  });
+  const [subCategoryImage_en, setSubCategoryImage_en] = useState<{
     file: File | null;
     url: string;
   }>({
@@ -131,19 +144,28 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      subCategoryImage: "",
+      subCategoryImage_ar: "",
+      subCategoryImage_en: "",
       name_ar: "",
       name_en: "",
       categoryId: "",
     },
   });
 
-  const handleImageChange = (data: { file?: File | null; url?: string }) => {
+  const handleImageChange_ar = (data: { file?: File | null; url?: string }) => {
     const url = data.url || "";
 
-    setSubCategoryImage({ file: data.file ?? null, url });
+    setSubCategoryImage_ar({ file: data.file ?? null, url });
 
-    form.setValue("subCategoryImage", url);
+    form.setValue("subCategoryImage_ar", url);
+  };
+
+  const handleImageChange_en = (data: { file?: File | null; url?: string }) => {
+    const url = data.url || "";
+
+    setSubCategoryImage_en({ file: data.file ?? null, url });
+
+    form.setValue("subCategoryImage_en", url);
   };
 
   const handleImageError = (error: string) => {
@@ -158,7 +180,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
-      const excludedFields = ["subCategoryImage"];
+      const excludedFields = ["subCategoryImage_ar", "subCategoryImage_en"];
 
       Object.entries(data).forEach(([key, value]) => {
         if (excludedFields.includes(key)) return;
@@ -168,8 +190,12 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
 
       formData.append("lang", locale);
 
-      if (subCategoryImage.file) {
-        formData.append("image", subCategoryImage.file);
+      if (subCategoryImage_ar.file) {
+        formData.append("image_ar", subCategoryImage_ar.file);
+      }
+
+      if (subCategoryImage_en.file) {
+        formData.append("image_en", subCategoryImage_en.file);
       }
 
       const response = await fetch(
@@ -235,31 +261,62 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
     <div className="space-y-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="subCategoryImage"
-            render={({}) => (
-              <FormItem className={getFormItemClassName()}>
-                <FormLabel className="text-sm font-normal">
-                  {t(
-                    "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.subCategoryImage.label"
-                  )}
-                </FormLabel>
-                <ImageUploader
-                  ref={imageUploaderRef}
-                  value={subCategoryImage.url}
-                  onChange={handleImageChange}
-                  onError={handleImageError}
-                  label={""}
-                  maxSizeInMB={2}
-                  size="sm"
-                  variant="rounded"
-                  accept="image/png, image/jpeg, image/jpg"
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className={`flex gap-5 rtl:flex-row-reverse ltr:flex-row`}>
+            <div className="flex-1">
+              <FormField
+                control={form.control}
+                name="subCategoryImage_ar"
+                render={({}) => (
+                  <FormItem className={getFormItemClassName()}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.subCategoryImage_ar.label"
+                      )}
+                    </FormLabel>
+                    <ImageUploader
+                      ref={imageUploaderRef}
+                      value={subCategoryImage_ar.url}
+                      onChange={handleImageChange_ar}
+                      onError={handleImageError}
+                      label={""}
+                      maxSizeInMB={2}
+                      size="sm"
+                      variant="rounded"
+                      accept="image/png, image/jpeg, image/jpg, image/avif"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex-1">
+              <FormField
+                control={form.control}
+                name="subCategoryImage_en"
+                render={({}) => (
+                  <FormItem className={getFormItemClassName()}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.subCategoryImage_en.label"
+                      )}
+                    </FormLabel>
+                    <ImageUploader
+                      ref={imageUploaderRef}
+                      value={subCategoryImage_en.url}
+                      onChange={handleImageChange_en}
+                      onError={handleImageError}
+                      label={""}
+                      maxSizeInMB={2}
+                      size="sm"
+                      variant="rounded"
+                      accept="image/png, image/jpeg, image/jpg, image/avif"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
 
           <div
             className={`flex gap-5 ${

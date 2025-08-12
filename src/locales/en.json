@@ -486,7 +486,8 @@
           "desc": "Manage sub-categories data",
           "createSubCategory": {
             "label": "Create SubCategory",
-            "uploadImage": "Upload sub-category image"
+            "uploadArImage": "Upload Ar sub-category image",
+            "uploadEnImage": "Upload En sub-category image"
           },
           "errors": {
             "failedLoadData": "Failed to Load sub-categories"
@@ -495,9 +496,13 @@
             "SearchBar": { "placeholder": "Search for sub-categories" },
             "CreateSubCategoryForm": {
               "fields": {
-                "subCategoryImage": {
-                  "label": "Sub-Category Image",
-                  "placeholder": "Sub-Category Image"
+                "subCategoryImage_ar": {
+                  "label": "Ar Sub-Category image",
+                  "placeholder": "Ar Sub-Category image"
+                },
+                "subCategoryImage_en": {
+                  "label": "En Sub-Category image",
+                  "placeholder": "En Sub-Category image"
                 },
                 "name_ar": {
                   "label": "Arabic Name",
@@ -513,8 +518,11 @@
                 }
               },
               "validations": {
-                "subCategoryImage": {
-                  "required": "Sub-Category image should be provided"
+                "subCategoryImage_ar": {
+                  "required": "Ar Sub-Category image should be provided"
+                },
+                "subCategoryImage_en": {
+                  "required": "En Sub-Category image should be provided"
                 },
                 "name_ar": {
                   "minChars": "Arabic name must be at least ({min}) characters long",
@@ -536,9 +544,13 @@
             },
             "EditSubCategoryForm": {
               "fields": {
-                "subCategoryImage": {
-                  "label": "Sub-Category Image",
-                  "placeholder": "Sub-Category Image"
+                "subCategoryImage_ar": {
+                  "label": "Ar Sub-Category image",
+                  "placeholder": "Ar Sub-Category image"
+                },
+                "subCategoryImage_en": {
+                  "label": "En Sub-Category image",
+                  "placeholder": "En Sub-Category image"
                 },
                 "name_ar": {
                   "label": "Arabic Name",
@@ -554,8 +566,11 @@
                 }
               },
               "validations": {
-                "subCategoryImage": {
-                  "required": "Sub-Category image should be provided"
+                "subCategoryImage_ar": {
+                  "required": "Ar Sub-Category image should be provided"
+                },
+                "subCategoryImage_en": {
+                  "required": "En Sub-Category image should be provided"
                 },
                 "name_ar": {
                   "minChars": "Arabic name must be at least ({min}) characters long",

@@ -67,8 +67,12 @@ const SubCategoryCard = ({
       <div className="flex items-center gap-2">
         <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 border border-gray-200">
           <ImageWithFallback
-            src={subCategory?.media?.url}
-            alt={subCategory.name.en}
+            src={
+              isArabic
+                ? subCategory?.media?.ar?.url
+                : subCategory?.media?.en?.url
+            }
+            alt={isArabic ? subCategory.name.ar : subCategory.name.en}
             width={40}
             height={40}
             className="object-cover w-full h-full"

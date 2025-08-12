@@ -491,7 +491,8 @@
           "desc": "إدارة بيانات الفئات الفرعية",
           "createSubCategory": {
             "label": "إنشاء فئة فرعية",
-            "uploadImage": "تحميل صورة الفئة الفرعية"
+            "uploadArImage": "تحميل صورة الفئة الفرعية العربية",
+            "uploadEnImage": "تحميل صورة الفئة الفرعية الإنجليزية"
           },
           "errors": {
             "failedLoadData": "فشل تحميل الفئات الفرعية"
@@ -502,9 +503,13 @@
             },
             "CreateSubCategoryForm": {
               "fields": {
-                "subCategoryImage": {
-                  "label": "صورة الفئة الفرعية",
-                  "placeholder": "صورة الفئة الفرعية"
+                "subCategoryImage_ar": {
+                  "label": "صورة الفئة الفرعية العربية",
+                  "placeholder": "صورة الفئة الفرعية العربية"
+                },
+                "subCategoryImage_en": {
+                  "label": "صورة الفئة الفرعية الإنجليزية",
+                  "placeholder": "صورة الفئة الفرعية الإنجليزية"
                 },
                 "name_ar": {
                   "label": "الاسم العربي",
@@ -520,8 +525,11 @@
                 }
               },
               "validations": {
-                "subCategoryImage": {
-                  "required": "يجب توفير صورة الفئة الفرعية"
+                "subCategoryImage_ar": {
+                  "required": "يجب توفير صورة الفئة الفرعية العربية"
+                },
+                "subCategoryImage_en": {
+                  "required": "يجب توفير صورة الفئة الفرعية الإنجليزية"
                 },
                 "name_ar": {
                   "minChars": "يجب أن يتكون الاسم العربي من ({min}) أحرف على الأقل",
@@ -543,9 +551,13 @@
             },
             "EditSubCategoryForm": {
               "fields": {
-                "subCategoryImage": {
-                  "label": "صورة الفئة الفرعية",
-                  "placeholder": "صورة الفئة الفرعية"
+                "subCategoryImage_ar": {
+                  "label": "صورة الفئة الفرعية العربية",
+                  "placeholder": "صورة الفئة الفرعية العربية"
+                },
+                "subCategoryImage_en": {
+                  "label": "صورة الفئة الفرعية الإنجليزية",
+                  "placeholder": "صورة الفئة الفرعية الإنجليزية"
                 },
                 "name_ar": {
                   "label": "الاسم العربي",
@@ -561,8 +573,11 @@
                 }
               },
               "validations": {
-                "subCategoryImage": {
-                  "required": "يجب توفير صورة الفئة الفرعية"
+                "subCategoryImage_ar": {
+                  "required": "يجب توفير صورة الفئة الفرعية العربية"
+                },
+                "subCategoryImage_en": {
+                  "required": "يجب توفير صورة الفئة الفرعية الإنجليزية"
                 },
                 "name_ar": {
                   "minChars": "يجب أن يتكون الاسم العربي من ({min}) أحرف على الأقل",
