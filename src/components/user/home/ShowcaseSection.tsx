@@ -1,13 +1,15 @@
 import { memo, ReactNode } from "react";
-import { MoveRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { MoveRight, MoveLeft } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { isArabicLocale } from "@/config/locales.config";
 
 type ShowcaseSectionProps = {
   header: string;
   desc: string;
+  btnText: string;
   uri: string;
   children: ReactNode;
 };
@@ -16,9 +18,11 @@ const ShowcaseSection = ({
   header,
   desc,
   uri,
+  btnText,
   children,
 }: ShowcaseSectionProps) => {
-  const t = useTranslations();
+  const locale = useLocale();
+  const isAr = isArabicLocale(locale);
 
   return (
     <div className="w-full h-auto">
@@ -35,8 +39,13 @@ const ShowcaseSection = ({
             variant="default"
             className="bg-white-50 rounded-[20px] border border-gray-100 shadow-none flex items-center gap-1 group text-[#212529] font-bold hover:shadow transition-all"
           >
-            {t("components.ShowcaseSection.btnText")}
-            <MoveRight className="w-3 h-3 group-hover:translate-x-1 transition-all" />
+            {btnText}
+
+            {isAr ? (
+              <MoveLeft className="w-3 h-3 group-hover:-translate-x-1 transition-all" />
+            ) : (
+              <MoveRight className="w-3 h-3 group-hover:translate-x-1 transition-all" />
+            )}
           </Button>
         </Link>
       </div>

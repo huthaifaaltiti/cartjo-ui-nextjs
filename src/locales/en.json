@@ -143,9 +143,6 @@
       "failedLoad": "Failed to load banners",
       "noData": "No active banners found",
       "checkLater": "Check back later for new banners"
-    },
-    "ShowcaseSection": {
-      "btnText": "View All"
     }
   },
   "routes": {

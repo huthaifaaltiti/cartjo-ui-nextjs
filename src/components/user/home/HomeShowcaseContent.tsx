@@ -21,9 +21,10 @@ const HomeShowcaseContent = () => {
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
   const t = useTranslations();
+
   const { accessToken } = useShowcases();
 
-  const { getIcon, getClassName, getIconClassName } = useTypeHints();
+  const { getIcon, getGradientStyle, getLabel } = useTypeHints();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -116,6 +117,11 @@ const HomeShowcaseContent = () => {
               desc={
                 isArabic ? actSho?.description?.ar : actSho?.description?.en
               }
+              btnText={
+                isArabic
+                  ? actSho?.showAllButtonText?.ar
+                  : actSho?.showAllButtonText?.en
+              }
               uri={actSho?.showAllButtonLink}
             >
               <div className="w-full flex flex-wrap gap-4">
@@ -146,16 +152,14 @@ const HomeShowcaseContent = () => {
                         />
 
                         <span
-                          className={`absolute top-1/2 -translate-y-1/2 text-xs px-2 py-1 ${getClassName(
-                            item?.typeHint
-                          )}`}
-                          style={{ width: "auto", backgroundColor: "red" }}
+                          className={`absolute top-1/2 left-5 -translate-y-1/2 text-[0.6rem] font-bold uppercase px-2 py-1 flex items-center gap-1 rounded shadow-md`}
+                          style={getGradientStyle(item?.typeHint)}
                         >
                           {getIcon(item?.typeHint) &&
                             React.createElement(getIcon(item?.typeHint)!, {
-                              className: getIconClassName(item?.typeHint),
+                              className: "w-3 h-3",
                             })}
-                          {item?.typeHint}
+                          {getLabel(item?.typeHint, isArabic)}
                         </span>
 
                         <p className="text-lg font-medium mb-2">
