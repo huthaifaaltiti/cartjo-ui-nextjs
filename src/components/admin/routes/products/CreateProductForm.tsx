@@ -410,7 +410,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     maxSizeInMB={2}
                     size="sm"
                     variant="rounded"
-                    accept="image/png, image/jpeg, image/jpg"
+                    accept="image/png, image/jpeg, image/jpg, image/webp, image/avif"
                     multiple={false}
                   />
                   <FormMessage />
@@ -440,7 +440,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     maxSizeInMB={2}
                     size="sm"
                     variant="rounded"
-                    accept="image/png, image/jpeg, image/jpg"
+                    accept="image/png, image/jpeg, image/jpg, image/webp, image/avif"
                     multiple={true}
                     maxImages={3}
                   />
@@ -686,6 +686,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     <FormControl>
                       <Input
                         type="number"
+                        step="any"
                         className={getInputClassName()}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.CreateProductForm.fields.price.placeholder"
