@@ -11,7 +11,7 @@ const HomeShowcase = async () => {
   return (
     <div className="w-full min-h-screen h-full bg-gradient-to-b from-gray-100 to-white-50">
       <MaxWidthWrapper className="w-full py-14">
-        <ShowcasesContextProvider accessToken={token}>
+        <ShowcasesContextProvider accessToken={token || ""}>
           <HomeShowcaseContent />
         </ShowcasesContextProvider>
       </MaxWidthWrapper>
