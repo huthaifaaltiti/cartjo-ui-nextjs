@@ -43,8 +43,6 @@ const HomeShowcaseContent = () => {
 
   useEffect(() => {
     const fetchShowcases = async () => {
-      if (!accessToken) return;
-
       setIsLoading(true);
       setIsError(false);
       setError(null);
