@@ -1,11 +1,8 @@
 "use client";
 
 import { memo } from "react";
-
 import { useBannersQuery } from "@/hooks/react-query/useBannersQuery";
-
 import { Banner } from "@/types/banner.type";
-
 import InfiniteScrollList from "../../../shared/InfiniteScrollList";
 import { useBanners } from "@/contexts/Banners.context";
 import BannerCard from "./BannerCard";

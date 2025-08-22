@@ -1,10 +1,8 @@
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
-
 import { BaseResponse } from "@/types/service-response.type";
 import { Banner } from "@/types/banner.type";
 import { Locale } from "@/types/locale";
-
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import BannersCardActions from "./BannersCardActions";
 import { isArabicLocale } from "@/config/locales.config";
@@ -13,18 +11,18 @@ import EditBannerForm from "./EditBannerForm";
 type BannerCardProps = {
   item: Banner;
   deleteBanner: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   unDeleteBanner: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
-  accessToken: string;
+  accessToken: string | null;
   switchBannerActiveStatus: (
-    token: string,
+    token: string | null,
     lang: string,
     isActive: boolean,
     userId: string

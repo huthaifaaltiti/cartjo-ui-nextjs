@@ -14,7 +14,7 @@ interface FetchActiveBannersParams {
 }
 
 interface FetchBannersParams {
-  token: string;
+  token: string | null;
   lang?: string;
   limit?: number;
   lastId?: string;

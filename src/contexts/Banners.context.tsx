@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useState } from "react";
-
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
@@ -10,19 +9,19 @@ type BannerContextProps = {
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
   queryKey: string;
-  token: string;
+  token: string | null;
   deleteBanner: (
-    token: string,
+    token: string | null,
     bannerId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   unDeleteBanner: (
-    token: string,
+    token: string | null,
     bannerId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   switchBannerActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     bannerId: string
@@ -33,7 +32,7 @@ const BannersContext = createContext<BannerContextProps | undefined>(undefined);
 
 type BannersContextProviderProps = {
   children: ReactNode;
-  token: string;
+  token: string | null;
 };
 
 export const BannersContextProvider = ({
@@ -44,7 +43,7 @@ export const BannersContextProvider = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const deleteBanner = async (
-    token: string,
+    token: string | null,
     bannerId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
@@ -69,7 +68,7 @@ export const BannersContextProvider = ({
   };
 
   const unDeleteBanner = async (
-    token: string,
+    token: string | null,
     bannerId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
@@ -94,7 +93,7 @@ export const BannersContextProvider = ({
   };
 
   const switchBannerActiveStatus = async (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     bannerId: string

@@ -1,8 +1,6 @@
 import { memo } from "react";
 import { Blocks } from "lucide-react";
-
 import { Banner } from "@/types/banner.type";
-
 import { BannersContextProvider } from "@/contexts/Banners.context";
 import SearchBanners from "./SearchBanners";
 import ModalCreateButton from "@/components/shared/ModalCreateButton";
@@ -11,7 +9,7 @@ import CreateBannerForm from "./CreateBannerForm";
 
 type BannersPageProps = {
   data: Banner[];
-  token: string;
+  token: string | null;
 };
 
 const BannersPage = ({ data, token }: BannersPageProps) => {
