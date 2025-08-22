@@ -994,6 +994,7 @@
                   "required": "Banner with an action label should be provided"
                 },
                 "startDate": {
+                  "required": "Start Date is required",
                   "invalid": "Invalid Date"
                 },
                 "endDate": {
@@ -1065,6 +1066,7 @@
                   "required": "Banner with an action label should be provided"
                 },
                 "startDate": {
+                  "required": "Start Date is required",
                   "invalid": "Invalid Date"
                 },
                 "endDate": {

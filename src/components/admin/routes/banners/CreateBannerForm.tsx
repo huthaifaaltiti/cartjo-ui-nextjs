@@ -98,14 +98,14 @@ const createFormSchema = (
         }),
       link: z.string().optional(),
       withAction: z.boolean(),
-      startDate: z
-        .date({
-          invalid_type_error: t(
-            "routes.dashboard.routes.banners.components.CreateBannerForm.validations.startDate.invalid"
-          ),
-        })
-        .nullable()
-        .optional(),
+      startDate: z.date({
+        required_error: t(
+          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.startDate.required"
+        ),
+        invalid_type_error: t(
+          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.startDate.invalid"
+        ),
+      }),
       endDate: z
         .date({
           invalid_type_error: t(
@@ -193,7 +193,7 @@ const CreateBannerForm = () => {
       title_en: "",
       link: "",
       withAction: false,
-      startDate: null,
+      startDate: undefined,
       endDate: null,
     },
   });
@@ -429,34 +429,6 @@ const CreateBannerForm = () => {
               isArabic ? "flex-row-reverse" : "flex-row"
             }`}
           >
-            {withAction && (
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="link"
-                  render={({ field }) => (
-                    <FormItem className={getFormItemClassName()}>
-                      <FormLabel className="text-sm font-normal">
-                        {t(
-                          "routes.dashboard.routes.banners.components.CreateBannerForm.fields.link.label"
-                        )}
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          className={getInputClassName()}
-                          placeholder={t(
-                            "routes.dashboard.routes.banners.components.CreateBannerForm.fields.link.placeholder"
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
-
             <div className={`${!withAction ? "" : "flex-1"}`}>
               <FormField
                 control={form.control}
@@ -490,6 +462,34 @@ const CreateBannerForm = () => {
                 )}
               />
             </div>
+
+            {withAction && (
+              <div className="flex-1">
+                <FormField
+                  control={form.control}
+                  name="link"
+                  render={({ field }) => (
+                    <FormItem className={getFormItemClassName()}>
+                      <FormLabel className="text-sm font-normal">
+                        {t(
+                          "routes.dashboard.routes.banners.components.CreateBannerForm.fields.link.label"
+                        )}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className={getInputClassName()}
+                          placeholder={t(
+                            "routes.dashboard.routes.banners.components.CreateBannerForm.fields.link.placeholder"
+                          )}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
           </div>
 
           <div className={`flex flex-col gap-5`}>
