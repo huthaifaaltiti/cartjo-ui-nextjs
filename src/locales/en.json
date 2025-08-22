@@ -1281,6 +1281,13 @@
               }
             }
           }
+        },
+        "typeHintConfigs": {
+          "title": "Type-Hint Configs Management",
+          "desc": "Manage type-hint configs data",
+          "errors": {
+            "failedLoadData": "Failed to Load type-hint configs"
+          }
         }
       },
       "components": {
