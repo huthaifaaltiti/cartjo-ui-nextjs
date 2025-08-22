@@ -3,7 +3,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
-
 import { CustomSession } from "@/lib/authOptions";
 import { Locale } from "@/types/locale";
 
@@ -13,7 +12,9 @@ type HomeEffectsContextProps = {
   accessToken: string;
   locale: Locale | string;
   changeBanners: boolean;
-  setChangeBanners: (changeBanners: boolean) => void;
+  setChangeBanners: (changeCategories: boolean) => void;
+  changeCategories: boolean;
+  setChangeCategories: (changeCategories: boolean) => void;
 };
 
 const HomeEffectsContext = createContext<undefined | HomeEffectsContextProps>(
@@ -29,6 +30,7 @@ export const HomeEffectsContextProvider = ({
 }: HomeEffectsContextProviderProps) => {
   const [changeLogo, setChangeLogo] = useState<boolean>(false);
   const [changeBanners, setChangeBanners] = useState<boolean>(false);
+  const [changeCategories, setChangeCategories] = useState<boolean>(false);
 
   const { data: session } = useSession();
   const accessToken = (session as CustomSession)?.accessToken;
@@ -44,6 +46,8 @@ export const HomeEffectsContextProvider = ({
         locale,
         changeBanners,
         setChangeBanners,
+        changeCategories,
+        setChangeCategories,
       }}
     >
       {children}

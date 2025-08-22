@@ -4,12 +4,9 @@ import { memo, useCallback, useState } from "react";
 import { Package, PackageOpen } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
-
 import { invalidateQuery } from "@/utils/queryUtils";
-
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
-
 import { Button } from "@/components/ui/button";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
 import {
@@ -18,6 +15,7 @@ import {
 } from "@/components/shared/CustomToast";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
+import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
 
 type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean }
@@ -56,6 +54,7 @@ const CategoryCardActions = <
   const t = useTranslations();
   const locale = useLocale() as Locale;
   const queryClient = useQueryClient();
+  const { setChangeCategories } = useHomeEffectsContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -70,6 +69,8 @@ const CategoryCardActions = <
           description: resp.message,
           dismissText: t("general.toast.dismissText"),
         });
+
+        setChangeCategories(true);
       }
     } catch (err) {
       showErrorToast({
@@ -93,6 +94,8 @@ const CategoryCardActions = <
           description: resp.message,
           dismissText: t("general.toast.dismissText"),
         });
+
+        setChangeCategories(true);
       }
     } catch (err) {
       showErrorToast({
@@ -121,6 +124,8 @@ const CategoryCardActions = <
           description: resp.message,
           dismissText: t("general.toast.dismissText"),
         });
+
+        setChangeCategories(true);
       }
     } catch (err) {
       showErrorToast({

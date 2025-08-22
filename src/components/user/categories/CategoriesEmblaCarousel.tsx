@@ -1,35 +1,34 @@
 "use client";
 
-import React, { memo, useMemo } from "react";
+import React, { memo, useEffect, useMemo } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useLocale, useTranslations } from "next-intl";
-
-import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
+import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { isArabicLocale } from "@/config/locales.config";
-
 import { Category } from "@/types/category.type";
-
 import LoadingDotsFlexible from "@/components/shared/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 import CategoryCard from "./CategoryCard";
-
 import styles from "./CategoriesEmblaCarousel.module.css";
+import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
 
 const CategoriesEmblaCarousel = () => {
-  const { data, isLoading, isFetching, error, isError } = useCategoriesQuery();
-
+  const { data, isLoading, isFetching, error, isError, refetch } =
+    useActiveCategoriesQuery();
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
+  const { changeCategories, setChangeCategories } = useHomeEffectsContext();
 
   const categories: Category[] = useMemo(() => {
-    return data?.pages?.flatMap((page) => page.data || []) ?? [];
+    return data?.data ?? [];
   }, [data]);
 
   const duplicatedCategories = useMemo(() => {
     if (categories.length <= 1) return categories;
+
     return Array.from({ length: 8 }).flatMap(() => categories);
   }, [categories]);
 
@@ -55,6 +54,12 @@ const CategoriesEmblaCarousel = () => {
       ? [Autoplay({ delay: 4000, stopOnInteraction: false })]
       : []
   );
+
+  useEffect(() => {
+    if (changeCategories) {
+      refetch().finally(() => setChangeCategories(false));
+    }
+  }, [changeCategories, refetch, setChangeCategories]);
 
   if (showLoader) {
     return (
