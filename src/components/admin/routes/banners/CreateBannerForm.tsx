@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -23,17 +22,12 @@ import {
 import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
-
 import { useBanners } from "@/contexts/Banners.context";
 import LoadingButton from "@/components/shared/LoadingButton";
-
 import { User } from "@/types/user";
-
 import { invalidateQuery } from "@/utils/queryUtils";
-
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicOnly } from "@/utils/text/containsArabic";

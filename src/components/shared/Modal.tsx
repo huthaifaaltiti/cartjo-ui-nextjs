@@ -11,14 +11,18 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white-50 rounded-xl p-6 w-full max-w-lg relative shadow-lg">
+      {/* Modal Box */}
+      <div className="bg-white-50 rounded-xl p-6 w-full max-w-lg max-h-[calc(100vh-100px)] relative shadow-lg flex flex-col">
+        {/* Close Button */}
         <button
           className="absolute top-3 ltr:right-4 rtl:left-4 text-gray-700 hover:text-black-300 transition-all"
           onClick={onClose}
         >
           ✖
         </button>
-        {children}
+
+        {/* Content (scrollable if too tall) */}
+        <div className="mt-6 overflow-y-auto flex-1">{children}</div>
       </div>
     </div>
   );
