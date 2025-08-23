@@ -60,7 +60,9 @@
       "selectDate": "اختر تاريخا",
       "button_text": "نص الزر",
       "button_link": "رابط الزر",
-      "created_by": "أنشأه"
+      "created_by": "أنشأه",
+      "key": "مفتاح",
+      "priority": "أولوية"
     },
     "date": {
       "startDate": "تاريخ البداية",
@@ -1290,6 +1292,204 @@
               }
             }
           }
+        },
+        "typeHintConfigs": {
+          "title": "إدارة إعدادات التلميحات (Type-Hint)",
+          "desc": "إدارة بيانات إعدادات التلميحات",
+          "createTypeHintConfig": {
+            "label": "إنشاء إعداد تلميح جديد",
+            "actionFailed": "فشل في إنشاء إعداد التلميح"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "ابحث عن إعدادات التلميحات" },
+            "CreateTypeHintConfigForm": {
+              "fields": {
+                "label_ar": {
+                  "label": "الاسم بالعربية",
+                  "placeholder": "أدخل الاسم بالعربية"
+                },
+                "label_en": {
+                  "label": "الاسم بالإنجليزية",
+                  "placeholder": "أدخل الاسم بالإنجليزية"
+                },
+                "icon": {
+                  "label": "اسم الأيقونة",
+                  "placeholder": "أدخل اسم الأيقونة",
+                  "hint": "استخدم أيقونات Lucide (https://lucide.dev/icons) لتحسين تجربة المستخدم."
+                },
+                "clrFrom": {
+                  "label": "كود اللون (من)",
+                  "placeholder": "أدخل كود اللون (من)",
+                  "hint": "استخدم أكواد الألوان hex مثل (ED5353 أو 622A9B، إلخ)"
+                },
+                "clrTo": {
+                  "label": "كود اللون (إلى)",
+                  "placeholder": "أدخل كود اللون (إلى)",
+                  "hint": "استخدم أكواد الألوان hex مثل (ED5353 أو 622A9B، إلخ)"
+                },
+                "textClr": {
+                  "label": "كود لون النص",
+                  "placeholder": "أدخل كود لون النص",
+                  "hint": "استخدم أكواد الألوان hex مثل (ED5353 أو 622A9B، إلخ)"
+                },
+                "priority": {
+                  "label": "الأولوية",
+                  "placeholder": "أدخل قيمة الأولوية",
+                  "hint": "من 1 إلى 10، حيث 1 هي الأعلى أولوية."
+                },
+                "startDate": {
+                  "label": "تاريخ البداية",
+                  "placeholder": "تاريخ البداية"
+                },
+                "endDate": {
+                  "label": "تاريخ الانتهاء",
+                  "placeholder": "تاريخ الانتهاء"
+                }
+              },
+              "validations": {
+                "label_ar": {
+                  "minChars": "يجب أن يحتوي الاسم بالعربية على الأقل {min} أحرف",
+                  "maxChars": "يجب ألا يتجاوز الاسم بالعربية {max} أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "label_en": {
+                  "minChars": "يجب أن يحتوي الاسم بالإنجليزية على الأقل {min} أحرف",
+                  "maxChars": "يجب ألا يتجاوز الاسم بالإنجليزية {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "icon": {
+                  "minChars": "اسم الأيقونة يجب أن يحتوي على الأقل {min} أحرف",
+                  "maxChars": "اسم الأيقونة يجب ألا يتجاوز {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "clrFrom": {
+                  "minChars": "كود اللون (من) يجب أن يحتوي على الأقل {min} أحرف",
+                  "maxChars": "كود اللون (من) يجب ألا يتجاوز {max} أحرف",
+                  "englishCharsAndNumOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "clrTo": {
+                  "minChars": "كود اللون (إلى) يجب أن يحتوي على الأقل {min} أحرف",
+                  "maxChars": "كود اللون (إلى) يجب ألا يتجاوز {max} أحرف",
+                  "englishCharsAndNumOnly": "يجب أن يحتوي على أحرف إنجليزية وأرقام فقط"
+                },
+                "textClr": {
+                  "minChars": "كود لون النص يجب أن يحتوي على الأقل {min} أحرف",
+                  "maxChars": "كود لون النص يجب ألا يتجاوز {max} أحرف",
+                  "englishCharsAndNumOnly": "يجب أن يحتوي على أحرف إنجليزية وأرقام فقط"
+                },
+                "priority": {
+                  "minChars": "الأولوية يجب أن تكون على الأقل {min}",
+                  "maxChars": "الأولوية يجب ألا تتجاوز {max}"
+                },
+                "startDate": {
+                  "required": "تاريخ البداية مطلوب",
+                  "invalid": "تاريخ غير صالح"
+                },
+                "endDate": {
+                  "invalid": "تاريخ غير صالح",
+                  "mustBeAfterStart": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البداية"
+                }
+              },
+              "errors": {
+                "failedCreation": "فشل في إنشاء العنصر"
+              }
+            },
+            "EditTypeHintConfigForm": {
+              "fields": {
+                "label_ar": {
+                  "label": "الاسم بالعربية",
+                  "placeholder": "أدخل الاسم بالعربية"
+                },
+                "label_en": {
+                  "label": "الاسم بالإنجليزية",
+                  "placeholder": "أدخل الاسم بالإنجليزية"
+                },
+                "icon": {
+                  "label": "اسم الأيقونة",
+                  "placeholder": "أدخل اسم الأيقونة",
+                  "hint": "استخدم أيقونات Lucide (https://lucide.dev/icons) لتحسين تجربة المستخدم."
+                },
+                "clrFrom": {
+                  "label": "كود اللون (من)",
+                  "placeholder": "أدخل كود اللون (من)",
+                  "hint": "استخدم أكواد الألوان hex مثل (ED5353 أو 622A9B، إلخ)"
+                },
+                "clrTo": {
+                  "label": "كود اللون (إلى)",
+                  "placeholder": "أدخل كود اللون (إلى)",
+                  "hint": "استخدم أكواد الألوان hex مثل (ED5353 أو 622A9B، إلخ)"
+                },
+                "textClr": {
+                  "label": "كود لون النص",
+                  "placeholder": "أدخل كود لون النص",
+                  "hint": "استخدم أكواد الألوان hex مثل (ED5353 أو 622A9B، إلخ)"
+                },
+                "priority": {
+                  "label": "الأولوية",
+                  "placeholder": "أدخل قيمة الأولوية",
+                  "hint": "من 1 إلى 10، حيث 1 هي الأعلى أولوية."
+                },
+                "startDate": {
+                  "label": "تاريخ البداية",
+                  "placeholder": "تاريخ البداية"
+                },
+                "endDate": {
+                  "label": "تاريخ الانتهاء",
+                  "placeholder": "تاريخ الانتهاء"
+                }
+              },
+              "validations": {
+                "label_ar": {
+                  "minChars": "يجب أن يحتوي الاسم بالعربية على الأقل {min} أحرف",
+                  "maxChars": "يجب ألا يتجاوز الاسم بالعربية {max} أحرف",
+                  "arabicCharsOnly": "يجب أن يحتوي على أحرف عربية فقط"
+                },
+                "label_en": {
+                  "minChars": "يجب أن يحتوي الاسم بالإنجليزية على الأقل {min} أحرف",
+                  "maxChars": "يجب ألا يتجاوز الاسم بالإنجليزية {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "icon": {
+                  "minChars": "اسم الأيقونة يجب أن يحتوي على الأقل {min} أحرف",
+                  "maxChars": "اسم الأيقونة يجب ألا يتجاوز {max} أحرف",
+                  "englishCharsOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "clrFrom": {
+                  "minChars": "كود اللون (من) يجب أن يحتوي على الأقل {min} أحرف",
+                  "maxChars": "كود اللون (من) يجب ألا يتجاوز {max} أحرف",
+                  "englishCharsAndNumOnly": "يجب أن يحتوي على أحرف إنجليزية فقط"
+                },
+                "clrTo": {
+                  "minChars": "كود اللون (إلى) يجب أن يحتوي على الأقل {min} أحرف",
+                  "maxChars": "كود اللون (إلى) يجب ألا يتجاوز {max} أحرف",
+                  "englishCharsAndNumOnly": "يجب أن يحتوي على أحرف إنجليزية وأرقام فقط"
+                },
+                "textClr": {
+                  "minChars": "كود لون النص يجب أن يحتوي على الأقل {min} أحرف",
+                  "maxChars": "كود لون النص يجب ألا يتجاوز {max} أحرف",
+                  "englishCharsAndNumOnly": "يجب أن يحتوي على أحرف إنجليزية وأرقام فقط"
+                },
+                "priority": {
+                  "minChars": "الأولوية يجب أن تكون على الأقل {min}",
+                  "maxChars": "الأولوية يجب ألا تتجاوز {max}"
+                },
+                "startDate": {
+                  "required": "تاريخ البداية مطلوب",
+                  "invalid": "تاريخ غير صالح"
+                },
+                "endDate": {
+                  "invalid": "تاريخ غير صالح",
+                  "mustBeAfterStart": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البداية"
+                }
+              },
+              "errors": {
+                "failedCreation": "فشل في إنشاء العنصر"
+              }
+            }
+          },
+          "errors": {
+            "failedLoadData": "فشل في تحميل إعدادات التلميحات"
+          }
         }
       },
       "components": {
@@ -1316,6 +1516,7 @@
             "media": "الوسائط",
             "logo": "الشعار",
             "banner": "اللافتات",
+            "typeHintConfigs": "تلميحات النوع",
             "showcases": "قوائم العروض"
           }
         },

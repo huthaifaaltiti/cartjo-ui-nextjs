@@ -1,17 +1,17 @@
-import { fetchShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
-import ShowcasesPage from "@/components/admin/routes/showcases/ShowcasesPage";
+import { fetchTypeHintConfigs } from "@/hooks/react-query/useTypeHintConfigsQuery";
+import TypeHintConfigsPage from "@/components/admin/routes/typeHintConfigs/TypeHintConfigsPage";
 
 const Page = async () => {
   const token = await getAccessTokenFromServerSession();
 
-  const { data } = await fetchShowcases({
+  const { data } = await fetchTypeHintConfigs({
     token,
-    limit: PAGINATION_LIMITS.SHOWCASES,
+    limit: PAGINATION_LIMITS.TYPE_HINT_CONFIGS,
   });
 
-  return <ShowcasesPage data={data} token={token} />;
+  return <TypeHintConfigsPage data={data} token={token} />;
 };
 
 export default Page;

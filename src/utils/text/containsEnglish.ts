@@ -17,3 +17,13 @@ export function isEnglishOnly(input: string): boolean {
   const englishOnlyRegex = /^[A-Za-z\s]+$/;
   return englishOnlyRegex.test(input);
 }
+
+/**
+ * Checks if a string contains only English letters with numbers
+ * @param input - The input string
+ * @returns boolean
+ */
+export function isEnglishWithNumOnly(input: string): boolean {
+  const englishAndNumOnlyRegex = /^[A-Za-z0-9\s]+$/;
+  return englishAndNumOnlyRegex.test(input);
+}

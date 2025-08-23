@@ -60,7 +60,9 @@
       "selectDate": "Select Date",
       "button_text": "Button Text",
       "button_link": "Button Link",
-      "created_by": "Created By"
+      "created_by": "Created By",
+      "key": "Key",
+      "priority": "Priority"
     },
     "date": {
       "startDate": "Start Date",
@@ -1287,6 +1289,197 @@
         "typeHintConfigs": {
           "title": "Type-Hint Configs Management",
           "desc": "Manage type-hint configs data",
+          "createTypeHintConfig": {
+            "label": "Create Type-Hint Config",
+            "actionFailed": "Type-hint config creation failed"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for type-hint configs" },
+            "CreateTypeHintConfigForm": {
+              "fields": {
+                "label_ar": {
+                  "label": "Arabic Label",
+                  "placeholder": "Enter Arabic Label"
+                },
+                "label_en": {
+                  "label": "English Label",
+                  "placeholder": "Enter English Label"
+                },
+                "icon": {
+                  "label": "Icon Name",
+                  "placeholder": "Enter icon name",
+                  "hint": "Use Lucide Icons (https://lucide.dev/icons) to make user experience good."
+                },
+                "clrFrom": {
+                  "label": "Color-From Code",
+                  "placeholder": "Enter Color-From code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "clrTo": {
+                  "label": "Color-To Code",
+                  "placeholder": "Enter Color-To code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "textClr": {
+                  "label": "Text color Code",
+                  "placeholder": "Enter Text color code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "priority": {
+                  "label": "Priority",
+                  "placeholder": "Enter priority value",
+                  "hint": "From 1 to 10, 1 is the most priority one."
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Start Date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "End Date"
+                }
+              },
+              "validations": {
+                "label_ar": {
+                  "minChars": "Arabic label must be at least {min} characters long",
+                  "maxChars": "Arabic label must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "label_en": {
+                  "minChars": "English label must be at least {min} characters long",
+                  "maxChars": "English label must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "icon": {
+                  "minChars": "Icon must be at least {min} characters long",
+                  "maxChars": "Icon must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "clrFrom": {
+                  "minChars": "Color-From Code must be at least {min} characters long",
+                  "maxChars": "Color-From Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters only"
+                },
+                "clrTo": {
+                  "minChars": "Color-To Code must be at least {min} characters long",
+                  "maxChars": "Color-To Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters and numbers only"
+                },
+                "textClr": {
+                  "minChars": "Text color Code must be at least {min} characters long",
+                  "maxChars": "Text color Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters and numbers only"
+                },
+                "priority": {
+                  "minChars": "Priority must be at least {min}",
+                  "maxChars": "Priority must be at most {max}"
+                },
+                "startDate": {
+                  "required": "Start Date is required",
+                  "invalid": "Invalid Date"
+                },
+                "endDate": {
+                  "invalid": "Invalid Date",
+                  "mustBeAfterStart": "End Date must be after start date"
+                }
+              },
+              "errors": {
+                "failedCreation": "Showcase creation failed"
+              }
+            },
+            "EditTypeHintConfigForm": {
+              "fields": {
+                "label_ar": {
+                  "label": "Arabic Label",
+                  "placeholder": "Enter Arabic Label"
+                },
+                "label_en": {
+                  "label": "English Label",
+                  "placeholder": "Enter English Label"
+                },
+                "icon": {
+                  "label": "Icon Name",
+                  "placeholder": "Enter icon name",
+                  "hint": "Use Lucide Icons (https://lucide.dev/icons) to make user experience good."
+                },
+                "clrFrom": {
+                  "label": "Color-From Code",
+                  "placeholder": "Enter Color-From code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "clrTo": {
+                  "label": "Color-To Code",
+                  "placeholder": "Enter Color-To code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "textClr": {
+                  "label": "Text color Code",
+                  "placeholder": "Enter Text color code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "priority": {
+                  "label": "Priority",
+                  "placeholder": "Enter priority value",
+                  "hint": "From 1 to 10, 1 is the most priority one."
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Start Date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "End Date"
+                }
+              },
+              "validations": {
+                "label_ar": {
+                  "minChars": "Arabic label must be at least {min} characters long",
+                  "maxChars": "Arabic label must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "label_en": {
+                  "minChars": "English label must be at least {min} characters long",
+                  "maxChars": "English label must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "icon": {
+                  "minChars": "Icon must be at least {min} characters long",
+                  "maxChars": "Icon must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "clrFrom": {
+                  "minChars": "Color-From Code must be at least {min} characters long",
+                  "maxChars": "Color-From Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters only"
+                },
+                "clrTo": {
+                  "minChars": "Color-To Code must be at least {min} characters long",
+                  "maxChars": "Color-To Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters and numbers only"
+                },
+                "textClr": {
+                  "minChars": "Text color Code must be at least {min} characters long",
+                  "maxChars": "Text color Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters and numbers only"
+                },
+                "priority": {
+                  "minChars": "Priority must be at least {min}",
+                  "maxChars": "Priority must be at most {max}"
+                },
+                "startDate": {
+                  "required": "Start Date is required",
+                  "invalid": "Invalid Date"
+                },
+                "endDate": {
+                  "invalid": "Invalid Date",
+                  "mustBeAfterStart": "End Date must be after start date"
+                }
+              },
+              "errors": {
+                "failedCreation": "Showcase creation failed"
+              }
+            }
+          },
           "errors": {
             "failedLoadData": "Failed to Load type-hint configs"
           }
@@ -1316,6 +1509,7 @@
             "media": "Media",
             "logo": "Logo",
             "banner": "Banners",
+            "typeHintConfigs": "Type-Hint Configs",
             "showcases": "Showcases"
           }
         },

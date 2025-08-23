@@ -66,6 +66,16 @@ export const API_ENDPOINTS = {
       EDIT: `${BASE_URL}/api/v1/banner/update`,
       ACTIVE: `${BASE_URL}/api/v1/banner/active`,
     },
+    TYPE_HINT_CONFIGS: {
+      ALL: `${BASE_URL}/api/v1/type-hint-config/all`,
+      LIST: `${BASE_URL}/api/v1/type-hint-config/list`,
+      DELETE: `${BASE_URL}/api/v1/type-hint-config/delete`,
+      UN_DELETE: `${BASE_URL}/api/v1/type-hint-config/un-delete`,
+      SWITCH_ACTIVE_STATUS: `${BASE_URL}/api/v1/type-hint-config/status`,
+      CREATE: `${BASE_URL}/api/v1/type-hint-config/create`,
+      EDIT: `${BASE_URL}/api/v1/type-hint-config/update`,
+      ACTIVE: `${BASE_URL}/api/v1/type-hint-config/active`,
+    },
     SHOWCASES: {
       ALL: `${BASE_URL}/api/v1/showcase/all`,
       DELETE: `${BASE_URL}/api/v1/showcase/delete`,
