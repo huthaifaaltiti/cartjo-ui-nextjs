@@ -74,7 +74,7 @@ export const fetchActiveTypeHintConfigs = async (
   token: string,
   lang: Locale | string,
   limit = PAGINATION_LIMITS.TYPE_HINT_CONFIGS
-) => {
+): Promise<string[]> => {
   const url = new URL(`${API_ENDPOINTS.DASHBOARD.TYPE_HINT_CONFIGS.LIST}`);
 
   if (lang) url.searchParams.append("lang", lang);
@@ -127,7 +127,7 @@ export const useTypeHintConfigsQuery = ({ search }: { search: string }) => {
   });
 };
 
-export const useTypeHintConfigList = () => {
+export const useTypeHintConfigListQuery = () => {
   const { accessToken, locale } = useAuthContext();
 
   return useQuery<string[]>({
@@ -147,7 +147,7 @@ export const useTypeHintConfigList = () => {
 export const useActiveTypeHintConfigsQuery = () => {
   const { accessToken, locale } = useAuthContext();
 
-  return useQuery<DataListResponse<TypeHintConfig>>({
+  return useQuery<string[]>({
     queryKey: ["activeTypeHintConfigs"],
     queryFn: () => {
       if (!accessToken) throw new Error("No access token found");

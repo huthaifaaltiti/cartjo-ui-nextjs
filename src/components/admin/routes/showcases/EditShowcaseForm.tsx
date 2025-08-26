@@ -18,24 +18,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { showSuccessToast } from "@/components/shared/CustomToast";
-
 import LoadingButton from "@/components/shared/LoadingButton";
-
 import { User } from "@/types/user";
-import { TypeHint } from "@/enums/typeHint.enum";
 import { Showcase } from "@/types/showcase.type";
-
 import { invalidateQuery } from "@/utils/queryUtils";
-
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-
 import { useHandleApiError } from "@/hooks/useHandleApiError";
-
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
-
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useShowcases } from "@/contexts/Showcase.context";
 import {
@@ -45,14 +37,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-const typeHintValues: string[] = Object.values(TypeHint);
-for (const key in TypeHint) {
-  typeHintValues.push(key as keyof typeof TypeHint);
-}
+import { useActiveTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintConfigsQuery";
+import RequestingDataLoader from "@/components/shared/RequestingDataLoader";
 
 const editFormSchema = (
-  t: (key: string, options?: Record<string, string | number | Date>) => string
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
+  activeTypeHintConfigsList: string[]
 ) => {
   const {
     titleMinChars,
@@ -201,7 +191,13 @@ const editFormSchema = (
           ),
         }),
 
-      type: z.enum(typeHintValues as [string, ...string[]]),
+      type: z
+        .string()
+        .refine((val) => activeTypeHintConfigsList.includes(val), {
+          message: t(
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid"
+          ),
+        }),
       startDate: z
         .date({
           invalid_type_error: t(
@@ -244,8 +240,13 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
   const { accessToken, queryKey } = useShowcases();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
+  const {
+    data: activeTypeHintConfigsList = [],
+    isLoading: isActiveTypeHintConfigLoading,
+    isFetching: isActiveTypeHintConfigFetching,
+  } = useActiveTypeHintConfigsQuery();
 
-  const formSchema = editFormSchema(t);
+  const formSchema = editFormSchema(t, activeTypeHintConfigsList);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -322,6 +323,10 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
     }`;
 
   const getFormItemClassName = () => (isArabic ? "text-right" : "text-left");
+
+  const isFormTypeHintConfigsListLoading =
+    (isActiveTypeHintConfigLoading || isActiveTypeHintConfigFetching) &&
+    activeTypeHintConfigsList?.length === 0;
 
   return (
     <div className="space-y-6">
@@ -540,28 +545,33 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                       "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.type.label"
                     )}
                   </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
-                        <SelectValue
-                          placeholder={t(
-                            "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.type.placeholder"
-                          )}
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Object.values(TypeHint)?.map((th, i) => (
-                        <SelectItem
-                          key={`TypeHintItem_${i}`}
-                          value={th}
-                          className="cursor-pointer capitalize"
-                        >
-                          {th}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  {isFormTypeHintConfigsListLoading ? (
+                    <RequestingDataLoader />
+                  ) : (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
+                          <SelectValue
+                            placeholder={t(
+                              "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.type.placeholder"
+                            )}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {activeTypeHintConfigsList?.map((th, i) => (
+                          <SelectItem
+                            key={`TypeHintItem_${i}`}
+                            value={th}
+                            className="cursor-pointer capitalize"
+                          >
+                            {th}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -609,7 +619,9 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
 
           <LoadingButton
             type="submit"
-            loading={registerMutation.isPending}
+            loading={
+              isFormTypeHintConfigsListLoading || registerMutation.isPending
+            }
             withAnimate={true}
             label={t("general.actions.proceed")}
             loadingLabel={t("general.UploadingStates.uploadingData")}

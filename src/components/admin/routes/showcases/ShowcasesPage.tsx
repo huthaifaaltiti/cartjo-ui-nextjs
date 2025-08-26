@@ -1,18 +1,15 @@
 import { memo } from "react";
 import { Blocks } from "lucide-react";
-
 import { Showcase } from "@/types/showcase.type";
-
 import { ShowcasesContextProvider } from "@/contexts/Showcase.context";
 import ModalCreateButton from "@/components/shared/ModalCreateButton";
-
 import SearchShowcases from "./SearchShowcases";
 import ShowcasesList from "./ShowcasesList";
 import CreateShowcaseForm from "./CreateShowcaseForm";
 
 type ShowcasesPageProps = {
   data: Showcase[];
-  token: string;
+  token: string | null;
 };
 
 const ShowcasesPage = ({ data, token }: ShowcasesPageProps) => {

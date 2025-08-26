@@ -1,76 +1,55 @@
 "use client";
 
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useMemo } from "react";
 import { useLocale, useTranslations } from "next-intl";
-
-import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
-
-import { Showcase } from "@/types/showcase.type";
-
-import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
+import { isArabicLocale } from "@/config/locales.config";
+import { PAGINATION_LIMITS } from "@/config/paginationConfig";
+import { useActiveShowcasesQuery } from "@/hooks/react-query/useShowcasesQuery";
 import ShowcaseSection from "./ShowcaseSection";
-import { useShowcases } from "@/contexts/Showcase.context";
+import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
 import LoadingDotsFlexible from "@/components/shared/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
-import { isArabicLocale } from "@/config/locales.config";
-import { Star, Heart, ShoppingCart } from "lucide-react";
-import { useTypeHints } from "@/hooks/useTypeHints";
+import ShowcaseProductRowCard from "./ShowcaseProductRowCard";
+import ShowcaseProduct313 from "./ShowcaseProduct313";
+import ShowcaseProduct131 from "./ShowcaseProduct131";
 
 const HomeShowcaseContent = () => {
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
   const t = useTranslations();
+  const { data, isLoading, isFetching, isError, error } =
+    useActiveShowcasesQuery(PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE);
 
-  const { accessToken } = useShowcases();
-
-  const { getIcon, getGradientStyle, getLabel } = useTypeHints();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
-  const [activeShowcasesList, setActiveShowcasesList] = useState<Showcase[]>(
-    []
+  const activeShowcasesList = useMemo(
+    () =>
+      data?.data?.sort(
+        (a, b) => (a.priority ?? Infinity) - (b.priority ?? Infinity)
+      ) ?? [],
+    [data]
   );
 
+  // Generate one random layout type per showcase
+  const showcaseLayouts = useMemo(() => {
+    // const showcaseItemsViewType = ["row", "313", "131"];
+    const showcaseItemsViewType = ["row"];
+
+    return activeShowcasesList.map(() => {
+      const randNum = Math.floor(Math.random() * showcaseItemsViewType.length);
+      return showcaseItemsViewType[randNum];
+    });
+  }, [activeShowcasesList]);
+
   const showLoader =
-    (!isLoading && activeShowcasesList.length === 0) || isLoading;
-  const showNoData = !isLoading && activeShowcasesList.length === 0 && !isError;
+    (!isLoading && !isFetching && !isError && !data?.isSuccess) ||
+    isLoading ||
+    isFetching;
   const showError = isError;
-  const showData = !isLoading && !isError && activeShowcasesList.length > 0;
+  const showNoData =
+    !showLoader && !showError && activeShowcasesList.length === 0;
+  const showData = !showLoader && !showError && activeShowcasesList.length > 0;
 
   const containerClass = "w-full h-full flex items-center justify-center";
-
-  useEffect(() => {
-    const fetchShowcases = async () => {
-      setIsLoading(true);
-      setIsError(false);
-      setError(null);
-
-      try {
-        const showcasesResp = await fetchActiveShowcases({
-          token: accessToken,
-          lang: locale,
-        });
-
-        if (showcasesResp?.isSuccess) {
-          setActiveShowcasesList([...showcasesResp.data]);
-          console.log(showcasesResp.data);
-        } else {
-          setIsError(true);
-          setError(new Error("Failed to fetch showcases"));
-        }
-      } catch (error) {
-        console.error("Error fetching showcases:", error);
-        setIsError(true);
-        setError(error instanceof Error ? error : new Error("Unknown error"));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchShowcases();
-  }, [accessToken, locale]);
 
   if (showLoader) {
     return (
@@ -108,121 +87,53 @@ const HomeShowcaseContent = () => {
     return (
       <div className="w-full min-h-screen h-full bg-gradient-to-b from-gray-100 to-white-50">
         <MaxWidthWrapper className="w-full py-14 flex flex-col gap-8">
-          {activeShowcasesList?.map((actSho, i) => (
-            <ShowcaseSection
-              key={actSho?._id + i}
-              header={isArabic ? actSho?.title?.ar : actSho?.title?.en}
-              desc={
-                isArabic ? actSho?.description?.ar : actSho?.description?.en
-              }
-              btnText={
-                isArabic
-                  ? actSho?.showAllButtonText?.ar
-                  : actSho?.showAllButtonText?.en
-              }
-              uri={actSho?.showAllButtonLink}
-            >
-              <div className="w-full flex flex-wrap gap-4">
-                {actSho?.items?.map((item, itemIndex) => {
-                  const yellowStars = Math.floor(item?.ratings || 0);
-                  const greyStars = 5 - yellowStars;
+          {activeShowcasesList?.map((actSho, i) => {
+            const layoutType = showcaseLayouts[i];
 
-                  return (
-                    <div
-                      key={item?._id + itemIndex}
-                      className="relative min-w-[200px] flex-1 border rounded-lg p-4"
-                    >
-                      {item?.discountRate > 0 && (
-                        <span className="text-sm text-white-50 bg-[#DC2626] absolute top-5 left-5 py-1 px-2 rounded-lg">
-                          {item?.discountRate}%
-                        </span>
-                      )}
-
-                      <span className="absolute top-5 right-5">
-                        <Heart />
-                      </span>
-
-                      <div className="w-full">
-                        <img
-                          src={item?.mainImage}
-                          alt={isArabic ? item?.name?.ar : item?.name?.en}
-                          className="w-full h-48 object-cover rounded-md mb-3"
+            return (
+              <ShowcaseSection
+                key={actSho?._id + i}
+                header={isArabic ? actSho?.title?.ar : actSho?.title?.en}
+                desc={
+                  isArabic ? actSho?.description?.ar : actSho?.description?.en
+                }
+                btnText={
+                  isArabic
+                    ? actSho?.showAllButtonText?.ar
+                    : actSho?.showAllButtonText?.en
+                }
+                uri={actSho?.showAllButtonLink}
+              >
+                <div className="w-full">
+                  {layoutType === "row" && (
+                    <div className="w-full flex justify-between gap-4">
+                      {actSho?.items?.map((item, itemIndex) => (
+                        <ShowcaseProductRowCard
+                          key={`Showcase-product_${i}_${itemIndex}`}
+                          item={item}
+                          isArabic={isArabic}
                         />
-
-                        <span
-                          className={`absolute top-1/2 left-5 -translate-y-1/2 text-[0.6rem] font-bold uppercase px-2 py-1 flex items-center gap-1 rounded shadow-md`}
-                          style={getGradientStyle(item?.typeHint)}
-                        >
-                          {getIcon(item?.typeHint) &&
-                            React.createElement(getIcon(item?.typeHint)!, {
-                              className: "w-3 h-3",
-                            })}
-                          {getLabel(item?.typeHint, isArabic)}
-                        </span>
-
-                        <p className="text-lg font-medium mb-2">
-                          {isArabic ? item?.name?.ar : item?.name?.en}
-                        </p>
-
-                        <div className="w-auto flex items-center gap-1">
-                          {Array.from(
-                            { length: yellowStars },
-                            (_, starIndex) => (
-                              <Star
-                                key={`yellow-${starIndex}`}
-                                className="w-4 h-4 text-yellow-500 fill-yellow-500"
-                              />
-                            )
-                          )}
-                          {Array.from({ length: greyStars }, (_, starIndex) => (
-                            <Star
-                              key={`grey-${starIndex}`}
-                              className="w-4 h-4 text-gray-300 fill-gray-300"
-                            />
-                          ))}
-                          <span className="mx-2 text-sm text-gray-600">
-                            ({item?.ratings || 0})
-                          </span>
-                        </div>
-
-                        <div className="w-full">
-                          {item?.discountRate ? (
-                            <div className="w-full flex items-center gap-1">
-                              <span className="text-[#DC2626] font-extrabold">
-                                <span>{item?.currency}</span>{" "}
-                                <span>
-                                  {item?.price -
-                                    (item?.discountRate / 100) * item?.price}
-                                </span>
-                              </span>
-
-                              <span className="relative text-sm before:absolute before:w-full before:h-[1px] before:bg-black-500 before:top-1/2 before:-translate-y-1/2">
-                                {item?.currency} {item?.price}
-                              </span>
-                            </div>
-                          ) : (
-                            <div>
-                              <span>
-                                {item?.price} {item?.currency}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <ShoppingCart className="w-8 h-8 text-white-50 bg-[#16A34A] p-1 rounded-md" />
-
-                          <span className="uppercase text-sm font-bold text-[#16A34A]">
-                            In Stock
-                          </span>
-                        </div>
-                      </div>
+                      ))}
                     </div>
-                  );
-                })}
-              </div>
-            </ShowcaseSection>
-          ))}
+                  )}
+
+                  {layoutType === "313" && (
+                    <ShowcaseProduct313
+                      items={actSho?.items}
+                      isArabic={isArabic}
+                    />
+                  )}
+
+                  {layoutType === "131" && (
+                    <ShowcaseProduct131
+                      items={actSho?.items}
+                      isArabic={isArabic}
+                    />
+                  )}
+                </div>
+              </ShowcaseSection>
+            );
+          })}
         </MaxWidthWrapper>
       </div>
     );

@@ -1,6 +1,6 @@
 import { memo, ReactNode } from "react";
 import { MoveRight, MoveLeft } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

@@ -19,7 +19,6 @@ import {
 import { showSuccessToast } from "@/components/shared/CustomToast";
 import LoadingButton from "@/components/shared/LoadingButton";
 import { User } from "@/types/user";
-import { TypeHint } from "@/enums/typeHint.enum";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
@@ -30,11 +29,6 @@ import { isEnglishOnly } from "@/utils/text/containsEnglish";
 import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
-
-const typeHintValues: string[] = Object.values(TypeHint);
-for (const key in TypeHint) {
-  typeHintValues.push(key as keyof typeof TypeHint);
-}
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string

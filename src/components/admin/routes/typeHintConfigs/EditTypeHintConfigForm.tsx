@@ -19,7 +19,6 @@ import {
 import { showSuccessToast } from "@/components/shared/CustomToast";
 import LoadingButton from "@/components/shared/LoadingButton";
 import { User } from "@/types/user";
-import { TypeHint } from "@/enums/typeHint.enum";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
@@ -31,11 +30,7 @@ import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
 import { TypeHintConfig } from "@/types/typeHintConfig.type";
-
-const typeHintValues: string[] = Object.values(TypeHint);
-for (const key in TypeHint) {
-  typeHintValues.push(key as keyof typeof TypeHint);
-}
+import { staticTypeHintConfigs } from "@/constants/staticTypeHintConfigs.constant";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string
@@ -370,6 +365,9 @@ const EditTypeHintConfigForm = ({
                     </FormLabel>
                     <FormControl>
                       <Input
+                        disabled={staticTypeHintConfigs.includes(
+                          field.value.split(" ").join("-")
+                        )}
                         className={getInputClassName()}
                         placeholder={t(
                           "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.label_en.placeholder"

@@ -1,4 +1,3 @@
-import { TypeHint } from "@/enums/typeHint.enum";
 import { Actor, TranslatedText } from "./common";
 import { Product } from "./product.type";
 
@@ -8,7 +7,8 @@ export interface Showcase {
   description: TranslatedText;
   showAllButtonText: TranslatedText;
   showAllButtonLink: string;
-  type: TypeHint;
+  priority: number | null;
+  type: string;
   items: Product[];
   startDate: Date;
   endDate: Date;

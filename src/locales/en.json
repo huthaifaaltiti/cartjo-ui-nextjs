@@ -3,7 +3,8 @@
     "loadingStates": {
       "loadingApi": "Sending data",
       "loading": "Loading",
-      "loadingUserSession": "Loading user's session"
+      "loadingUserSession": "Loading user's session",
+      "requestingData": "Requesting data, be patient 🤗"
     },
     "UploadingStates": {
       "uploadingData": "Uploading Data"
@@ -1181,6 +1182,7 @@
                   "maxChars": "English button link must be at most {max} characters long",
                   "invalidUrl": "Invalid Url"
                 },
+                "type": { "invalid": "Invalid showcase hint-type" },
                 "startDate": {
                   "invalid": "Invalid start date"
                 },
@@ -1272,6 +1274,7 @@
                   "maxChars": "English button link must be at most {max} characters long",
                   "invalidUrl": "Invalid Url"
                 },
+                "type": { "invalid": "Invalid showcase hint-type" },
                 "startDate": {
                   "invalid": "Invalid start date"
                 },

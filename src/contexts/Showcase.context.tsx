@@ -10,7 +10,7 @@ import { BaseResponse } from "@/types/service-response.type";
 type ShowcasesContextType = {
   queryKey: string;
   searchQuery: string;
-  accessToken: string;
+  accessToken: string | null;
   setSearchQuery: (searchQuery: string) => void;
   deleteShowcase: (
     token: string,
@@ -31,7 +31,7 @@ type ShowcasesContextType = {
 };
 
 type ShowcasesContextProviderType = {
-  accessToken: string;
+  accessToken: string | null;
   children: ReactNode;
 };
 
