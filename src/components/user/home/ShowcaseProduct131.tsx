@@ -1,6 +1,6 @@
 // ShowcaseProductOneThreeOne.tsx
 import { memo } from "react";
-import ShowcaseProductRowCard from "./ShowcaseProductRowCard";
+import ShowcaseProductRowCard from "./ShowcaseProductVertCard";
 import { Product } from "@/types/product.type";
 
 type Props = {

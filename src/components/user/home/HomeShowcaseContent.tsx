@@ -10,8 +10,8 @@ import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
 import LoadingDotsFlexible from "@/components/shared/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
-import ShowcaseProductRowCard from "./ShowcaseProductRowCard";
-import ShowcaseProduct313 from "./ShowcaseProduct313";
+import ShowcaseProductRowCard from "./ShowcaseProductVertCard";
+import ShowcaseProduct313 from "./ShowcaseProduct212";
 import ShowcaseProduct131 from "./ShowcaseProduct131";
 
 const HomeShowcaseContent = () => {
@@ -32,7 +32,7 @@ const HomeShowcaseContent = () => {
   // Generate one random layout type per showcase
   const showcaseLayouts = useMemo(() => {
     // const showcaseItemsViewType = ["row", "313", "131"];
-    const showcaseItemsViewType = ["row"];
+    const showcaseItemsViewType = ["313"];
 
     return activeShowcasesList.map(() => {
       const randNum = Math.floor(Math.random() * showcaseItemsViewType.length);
@@ -86,7 +86,7 @@ const HomeShowcaseContent = () => {
   if (showData) {
     return (
       <div className="w-full min-h-screen h-full bg-gradient-to-b from-gray-100 to-white-50">
-        <MaxWidthWrapper className="w-full py-14 flex flex-col gap-8">
+        <MaxWidthWrapper className="w-full max-w-max py-10 flex flex-col gap-8">
           {activeShowcasesList?.map((actSho, i) => {
             const layoutType = showcaseLayouts[i];
 
@@ -107,7 +107,7 @@ const HomeShowcaseContent = () => {
                 <div className="w-full">
                   {layoutType === "row" && (
                     <div className="w-full flex justify-between gap-4">
-                      {actSho?.items?.map((item, itemIndex) => (
+                      {actSho?.items?.slice(0, 4).map((item, itemIndex) => (
                         <ShowcaseProductRowCard
                           key={`Showcase-product_${i}_${itemIndex}`}
                           item={item}
@@ -118,10 +118,12 @@ const HomeShowcaseContent = () => {
                   )}
 
                   {layoutType === "313" && (
-                    <ShowcaseProduct313
-                      items={actSho?.items}
-                      isArabic={isArabic}
-                    />
+                    <div className="w-full">
+                      <ShowcaseProduct313
+                        items={actSho?.items}
+                        isArabic={isArabic}
+                      />
+                    </div>
                   )}
 
                   {layoutType === "131" && (
