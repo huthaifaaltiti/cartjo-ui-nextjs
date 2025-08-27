@@ -12,7 +12,7 @@ import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 import ShowcaseProductRowCard from "./ShowcaseProductVertCard";
 import ShowcaseProduct313 from "./ShowcaseProduct212";
-import ShowcaseProduct131 from "./ShowcaseProduct131";
+import ShowcaseProduct131 from "./ShowcaseProduct121";
 
 const HomeShowcaseContent = () => {
   const locale = useLocale();
@@ -31,8 +31,7 @@ const HomeShowcaseContent = () => {
 
   // Generate one random layout type per showcase
   const showcaseLayouts = useMemo(() => {
-    // const showcaseItemsViewType = ["row", "313", "131"];
-    const showcaseItemsViewType = ["313"];
+    const showcaseItemsViewType = ["row", "212", "121"];
 
     return activeShowcasesList.map(() => {
       const randNum = Math.floor(Math.random() * showcaseItemsViewType.length);
@@ -117,7 +116,7 @@ const HomeShowcaseContent = () => {
                     </div>
                   )}
 
-                  {layoutType === "313" && (
+                  {layoutType === "212" && (
                     <div className="w-full">
                       <ShowcaseProduct313
                         items={actSho?.items}
@@ -126,7 +125,7 @@ const HomeShowcaseContent = () => {
                     </div>
                   )}
 
-                  {layoutType === "131" && (
+                  {layoutType === "121" && (
                     <ShowcaseProduct131
                       items={actSho?.items}
                       isArabic={isArabic}

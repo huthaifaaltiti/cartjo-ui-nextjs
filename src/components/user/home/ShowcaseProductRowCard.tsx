@@ -47,7 +47,7 @@ const ShowcaseProductRowCard = ({
         } hover:scale-105 active:scale-95`}
       >
         <Heart
-          className={`w-4 h-4 transition-all duration-300 ${
+          className={`w-5 h-5 transition-all duration-300 ${
             isWishlisted
               ? "text-primary-500 fill-primary-500"
               : "text-gray-600 hover:text-primary-500"
