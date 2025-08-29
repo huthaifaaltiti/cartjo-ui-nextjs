@@ -1,8 +1,5 @@
 import { Description, Name } from "./common";
-
 import { Currency } from "@/enums/currency.enum";
-import { TypeHint } from "@/enums/typeHint.enum";
-
 import { Category } from "./category.type";
 import { SubCategory } from "./subCategory";
 import { User } from "./user";
@@ -25,7 +22,7 @@ export interface Product {
   availableCount: number;
   sellCount: number;
   favoriteCount: number;
-  typeHint: TypeHint;
+  typeHint: string;
   tags: string[];
   slug: string;
   categoryId: Category;
