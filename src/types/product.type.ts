@@ -33,6 +33,7 @@ export interface Product {
   isAvailable: boolean;
   isActive: boolean;
   isDeleted: boolean;
+  isWishListed: boolean;
   deletedAt: Date | null;
   unDeletedAt: Date | null;
   createdAt: Date;
