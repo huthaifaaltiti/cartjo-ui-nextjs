@@ -38,7 +38,7 @@ import TagsInput from "@/components/shared/TagsInput";
 import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { Currency } from "@/enums/currency.enum";
-import { TypeHint } from "@/enums/typeHint.enum";
+// import { TypeHint } from "@/enums/typeHint.enum";
 import { Textarea } from "@/components/ui/textarea";
 import { SubCategory } from "@/types/subCategory";
 
@@ -49,18 +49,22 @@ import { invalidateQuery } from "@/utils/queryUtils";
 import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
 import { tagStyledClassName } from "@/constants/tagsInputStyles";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
+import { useActiveTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintConfigsQuery";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
   currencyValues.push(Currency[key as keyof typeof Currency]);
 }
 
-const typeHintValues: string[] = Object.values(TypeHint);
-for (const key in TypeHint) {
-  typeHintValues.push(key as keyof typeof TypeHint);
-}
+// const typeHintValues: string[] = Object.values(TypeHint);
+// for (const key in TypeHint) {
+//   typeHintValues.push(key as keyof typeof TypeHint);
+// }
 
-const createFormSchema = (t: (key: string) => string) =>
+const createFormSchema = (
+  t: (key: string) => string,
+  activeTypeHintConfigsList: string[]
+) =>
   z.object({
     mainImage: z.string().min(2, {
       message: t(
@@ -112,11 +116,13 @@ const createFormSchema = (t: (key: string) => string) =>
         "routes.dashboard.routes.products.components.CreateProductForm.validations.totalAmountCount.min"
       ),
     }),
-    typeHint: z.enum(typeHintValues as [string, ...string[]], {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.typeHint.notSupported"
-      ),
-    }),
+    typeHint: z
+      .string()
+      .refine((val) => activeTypeHintConfigsList.includes(val), {
+        message: t(
+          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid"
+        ),
+      }),
     subCategoryId: z.string().min(1, {
       message: t(
         "routes.dashboard.routes.products.components.CreateProductForm.validations.subCategory.required"
@@ -144,6 +150,11 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   const { token, queryKey } = useProducts();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
+  const {
+    data: activeTypeHintConfigsList = [],
+    // isLoading: isActiveTypeHintConfigLoading,
+    // isFetching: isActiveTypeHintConfigFetching,
+  } = useActiveTypeHintConfigsQuery();
 
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
@@ -220,7 +231,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
     form.setValue("images", urls);
   };
 
-  const formSchema = createFormSchema(t);
+  const formSchema = createFormSchema(t, activeTypeHintConfigsList);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -816,7 +827,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Object.values(TypeHint)?.map((th, i) => (
+                        {activeTypeHintConfigsList?.map((th, i) => (
                           <SelectItem
                             key={`TypeHintItem_${i}`}
                             value={th}

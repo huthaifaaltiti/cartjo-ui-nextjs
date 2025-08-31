@@ -4,7 +4,7 @@ import { CustomSession } from "@/lib/authOptions";
 import { Locale } from "@/types/locale";
 
 export const useAuthContext = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const locale: Locale | string = useLocale();
   const accessToken: string | null = (session as CustomSession)?.accessToken;
 
@@ -12,5 +12,6 @@ export const useAuthContext = () => {
     session: session as CustomSession | null,
     locale,
     accessToken,
+    status,
   };
 };

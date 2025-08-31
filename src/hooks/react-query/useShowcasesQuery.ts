@@ -20,6 +20,7 @@ interface FetchShowcasesParams {
 }
 
 export const fetchActiveShowcases = async (
+  token?: string,
   lang = "en",
   limit = PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE
 ): Promise<DataListResponse<Showcase>> => {
@@ -28,7 +29,11 @@ export const fetchActiveShowcases = async (
   if (lang) url.searchParams.append("lang", lang);
   if (limit) url.searchParams.append("limit", String(limit));
 
-  const res = await fetch(url.toString(), {});
+  const res = await fetch(url.toString(), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!res.ok) throw new Error("Could not retrieve active showcase(s)");
 
@@ -99,13 +104,28 @@ export const useShowcasesQuery = ({ search }: { search: string }) => {
 };
 
 export const useActiveShowcasesQuery = (itemsNumPerShowcase: number) => {
-  const { accessToken, locale } = useAuthContext();
+  const { accessToken, locale, status } = useAuthContext();
+
+  console.log({ accessToken });
 
   return useQuery<DataListResponse<Showcase>>({
     queryKey: ["activeShowcases", itemsNumPerShowcase],
-    queryFn: () => fetchActiveShowcases(locale, itemsNumPerShowcase),
+    queryFn: () =>
+      fetchActiveShowcases(accessToken, locale, itemsNumPerShowcase),
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
-    enabled: !!accessToken,
+    // Sol #1 => Remove enabled => Query will run regardless of auth state
+    // enabled: !!accessToken,
+
+    // Sol #2
+    // Only disable when session is still loading
+    enabled: status !== "loading",
+
+    // Sol #3
+    // Enable when either:
+    // 1. User is authenticated and has token
+    // 2. Session loading is complete (authenticated or unauthenticated)
+    // enabled:
+    //   status === "authenticated" ? !!accessToken : status === "unauthenticated",
   });
 };

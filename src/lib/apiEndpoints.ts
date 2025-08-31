@@ -85,5 +85,19 @@ export const API_ENDPOINTS = {
       EDIT: `${BASE_URL}/api/v1/showcase/update`,
       ACTIVE: `${BASE_URL}/api/v1/showcase/active`,
     },
+    WISHLIST: {
+      ONE: `${BASE_URL}/api/v1/wish-list`,
+      ADD: `${BASE_URL}/api/v1/wish-list/add`,
+      REMOVE: `${BASE_URL}/api/v1/wish-list/remove`,
+      REMOVE_ALL: `${BASE_URL}/api/v1/wish-list/remove-all`,
+    },
+  },
+  LOGGED_USER: {
+    WISHLIST: {
+      ONE: `${BASE_URL}/api/v1/wish-list`,
+      ADD: `${BASE_URL}/api/v1/wish-list/add`,
+      REMOVE: `${BASE_URL}/api/v1/wish-list/remove`,
+      REMOVE_ALL: `${BASE_URL}/api/v1/wish-list/remove-all`,
+    },
   },
 };
