@@ -49,13 +49,15 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
+        const pathnameSlug = req?.nextUrl?.pathname;
+
         // Always allow access to public routes
-        if (isPublicRoute(req.nextUrl.pathname)) {
+        if (isPublicRoute(pathnameSlug)) {
           return true;
         }
 
         // For protected routes, check if user is authenticated
-        if (isProtectedRoute(req.nextUrl.pathname)) {
+        if (isProtectedRoute(pathnameSlug)) {
           return !!token;
         }
 
