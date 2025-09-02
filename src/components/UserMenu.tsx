@@ -3,10 +3,10 @@
 import { memo } from "react";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
-
 import UserSignInLink from "./UserSignInLink";
 import UserDashboardLink from "./admin/UserDashboardLink";
 import UserAccountLinkMenu from "./UserAccountLinkMenu";
+import UserWishlistAndCart from "./UserWishlistAndCart";
 
 type ExtendedSession = Session & {
   user: {
@@ -32,7 +32,11 @@ const UserMenu = () => {
   return (
     <div className="flex items-center gap-1">
       {canManage && <UserDashboardLink />}
-      <UserAccountLinkMenu />
+
+      <div className="w-auto flex items-center gap-2">
+        <UserAccountLinkMenu />
+        <UserWishlistAndCart />
+      </div>
     </div>
   );
 };

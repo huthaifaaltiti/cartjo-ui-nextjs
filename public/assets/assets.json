@@ -9,7 +9,8 @@
       "dashboard_dark": "../assets/image/svg/dashboard_dark.svg"
     },
     "webp": {
-      "computer_security_with_login_password_padlock": "../assets/image/webp/computer-security-with-login-password-padlock.webp"
+      "computer_security_with_login_password_padlock": "../assets/image/webp/computer-security-with-login-password-padlock.webp",
+      "list_of_outstanding_tasks": "/assets/image/webp/list_of_outstanding_tasks.webp"
     }
   }
 }

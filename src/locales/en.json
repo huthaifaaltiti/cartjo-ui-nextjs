@@ -47,7 +47,8 @@
       "create": "Create",
       "proceed": "Proceed",
       "activate": "Activate",
-      "deActivate": "De Activate"
+      "deActivate": "De Activate",
+      "returnToHomePage": "Return To Home Page"
     },
     "others": {
       "unknown": "Unknown",
@@ -1526,6 +1527,19 @@
       },
       "errors": {
         "dashboardFailure": "Failed to load dashboard details"
+      }
+    },
+    "wishlist": {
+      "header": "Wishlist",
+      "errors": {
+        "failedLoadData": "Failed to load wishlist items"
+      },
+      "components": {
+        "NoWishlistItems": {
+          "wishlistIsEmpty": "Your wishlist is empty! Ready to make a wish?",
+          "adviceStartAddingItems": "Start adding items you love to your wishlist by tapping on the heart icon",
+          "discoverProducts": "Discover Products"
+        }
       }
     }
   }

@@ -47,7 +47,8 @@
       "create": "إنشاء",
       "proceed": "متابعة",
       "activate": "تفعيل",
-      "deActivate": "إلغاء التفعيل"
+      "deActivate": "إلغاء التفعيل",
+      "returnToHomePage": "العودة للمنزل"
     },
     "others": {
       "unknown": "غير معروف",
@@ -1533,6 +1534,19 @@
       },
       "errors": {
         "dashboardFailure": "فشل تحميل تفاصيل لوحة التحكم"
+      }
+    },
+    "wishlist": {
+      "header": "المفضَّلة",
+      "errors": {
+        "failedLoadData": "فشل تحميل عناصر قائمة الأمنيات"
+      },
+      "components": {
+        "NoWishlistItems": {
+          "wishlistIsEmpty": "جاهز تتمنّى أمنية؟",
+          "adviceStartAddingItems": "ابدأ بإضافة المنتجات اللي أعجبتك لقائمة أمنياتك بالضغط على علامة القلب",
+          "discoverProducts": "استكشف العناصر"
+        }
       }
     }
   }
