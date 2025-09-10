@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useTranslations } from "next-intl";
-import LoadingDots from "./LoadingDots";
+import LoadingDots from "./loaders/LoadingDots";
 
 const RequestingDataLoader = () => {
   const t = useTranslations();

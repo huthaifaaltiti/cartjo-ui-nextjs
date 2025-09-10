@@ -1,7 +1,6 @@
 import React from "react";
-
 import { Button } from "@/components/ui/button";
-import LoadingDots from "./LoadingDots";
+import LoadingDots from "./loaders/LoadingDots";
 
 type LoadingButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   loading: boolean;

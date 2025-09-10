@@ -7,7 +7,7 @@ import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { useActiveShowcasesQuery } from "@/hooks/react-query/useShowcasesQuery";
 import ShowcaseSection from "./ShowcaseSection";
 import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
-import LoadingDotsFlexible from "@/components/shared/LoadingDotsFlexible";
+import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 import ShowcaseProductRowCard from "./ShowcaseProductVertCard";

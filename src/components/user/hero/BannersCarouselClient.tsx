@@ -14,7 +14,7 @@ import { isArabicLocale } from "@/config/locales.config";
 
 import { Banner } from "@/types/banner.type";
 
-import LoadingDotsFlexible from "@/components/shared/LoadingDotsFlexible";
+import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 

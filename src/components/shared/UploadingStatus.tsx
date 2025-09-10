@@ -1,5 +1,5 @@
 import { memo } from "react";
-import LoadingDots from "./LoadingDots";
+import LoadingDots from "./loaders/LoadingDots";
 
 type UploadingStatusProps = {
   message: string;

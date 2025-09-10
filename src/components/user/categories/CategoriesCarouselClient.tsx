@@ -15,7 +15,7 @@ import { isArabicLocale } from "@/config/locales.config";
 import { Category } from "@/types/category.type";
 
 import CategoryCard from "./CategoryCard";
-import LoadingDotsFlexible from "@/components/shared/LoadingDotsFlexible";
+import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 

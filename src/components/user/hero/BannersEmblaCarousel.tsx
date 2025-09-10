@@ -6,7 +6,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { useLocale, useTranslations } from "next-intl";
 import { useActiveBannersQuery } from "@/hooks/react-query/useBannersQuery";
 import { isArabicLocale } from "@/config/locales.config";
-import LoadingDotsFlexible from "@/components/shared/LoadingDotsFlexible";
+import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 import EmblaBannerCard from "./EmblaBannerCard";
