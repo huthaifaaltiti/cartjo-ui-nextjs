@@ -27,6 +27,7 @@ const WishlistItems = () => {
     fetchNextPage,
     isError,
     error,
+    refetch,
   } = useWishlistQuery({ search: "" });
 
   const wishlistProducts = useMemo(() => {
@@ -41,6 +42,10 @@ const WishlistItems = () => {
     const totalWishlistItemsCount = data?.pages[0]?.data?.productsCount ?? 0;
     setWishlistItemsCount(totalWishlistItemsCount);
   }, [wishlistProducts.length, setWishlistItemsCount]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   // loading session
   if (status === "loading") {
