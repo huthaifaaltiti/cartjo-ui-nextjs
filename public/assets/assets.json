@@ -1,15 +1,16 @@
 {
   "image": {
     "jpeg": {
-      "fallback": "../assets/image/jpeg/fallback.jpg"
+      "fallback": "/assets/image/jpeg/fallback.jpg"
     },
     "svg": {
-      "user_dark": "../assets/image/svg/user_dark.svg",
-      "enter_dark": "../assets/image/svg/enter_dark.svg",
-      "dashboard_dark": "../assets/image/svg/dashboard_dark.svg"
+      "user_dark": "/assets/image/svg/user_dark.svg",
+      "enter_dark": "/assets/image/svg/enter_dark.svg",
+      "dashboard_dark": "/assets/image/svg/dashboard_dark.svg",
+      "heart_minus": "/assets/image/svg/heart_minus.svg"
     },
     "webp": {
-      "computer_security_with_login_password_padlock": "../assets/image/webp/computer-security-with-login-password-padlock.webp",
+      "computer_security_with_login_password_padlock": "/assets/image/webp/computer-security-with-login-password-padlock.webp",
       "list_of_outstanding_tasks": "/assets/image/webp/list_of_outstanding_tasks.webp"
     }
   }
