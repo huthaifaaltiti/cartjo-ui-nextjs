@@ -11,8 +11,8 @@ import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 import ShowcaseProductRowCard from "./ShowcaseProductVertCard";
-import ShowcaseProduct313 from "./ShowcaseProduct212";
-import ShowcaseProduct131 from "./ShowcaseProduct121";
+import ShowcaseProduct212 from "./ShowcaseProduct212";
+import ShowcaseProduct121 from "./ShowcaseProduct121";
 
 const HomeShowcaseContent = () => {
   const locale = useLocale();
@@ -118,7 +118,7 @@ const HomeShowcaseContent = () => {
 
                   {layoutType === "212" && (
                     <div className="w-full">
-                      <ShowcaseProduct313
+                      <ShowcaseProduct212
                         items={actSho?.items}
                         isArabic={isArabic}
                       />
@@ -126,7 +126,7 @@ const HomeShowcaseContent = () => {
                   )}
 
                   {layoutType === "121" && (
-                    <ShowcaseProduct131
+                    <ShowcaseProduct121
                       items={actSho?.items}
                       isArabic={isArabic}
                     />

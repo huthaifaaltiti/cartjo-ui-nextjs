@@ -106,8 +106,6 @@ export const useShowcasesQuery = ({ search }: { search: string }) => {
 export const useActiveShowcasesQuery = (itemsNumPerShowcase: number) => {
   const { accessToken, locale, status } = useAuthContext();
 
-  console.log({ accessToken });
-
   return useQuery<DataListResponse<Showcase>>({
     queryKey: ["activeShowcases", itemsNumPerShowcase],
     queryFn: () =>
