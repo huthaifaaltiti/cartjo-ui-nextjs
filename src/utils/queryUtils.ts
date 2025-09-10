@@ -29,3 +29,19 @@ export const invalidateQuery = async (
 ): Promise<void> => {
   await queryClient.invalidateQueries({ queryKey: [queryKey] });
 };
+
+let client: QueryClient | null = null;
+
+export const getQueryClient = () => {
+  // Always create a fresh client on the server
+  if (typeof window === "undefined") {
+    return new QueryClient();
+  }
+
+  // Reuse client on the client (singleton)
+  if (!client) {
+    client = new QueryClient();
+  }
+
+  return client;
+};

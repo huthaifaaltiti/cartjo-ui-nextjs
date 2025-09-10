@@ -9,6 +9,7 @@
     "UploadingStates": {
       "uploadingData": "جاري رفع البيانات"
     },
+    "processing": "جارٍ المعالجة",
     "data": {
       "noData": "لا توجد بيانات",
       "tryAgain": "حاول لاحقا"
@@ -1543,9 +1544,23 @@
       },
       "components": {
         "NoWishlistItems": {
-          "wishlistIsEmpty": "جاهز تتمنّى أمنية؟",
-          "adviceStartAddingItems": "ابدأ بإضافة المنتجات اللي أعجبتك لقائمة أمنياتك بالضغط على علامة القلب",
-          "discoverProducts": "استكشف العناصر"
+          "wishlistIsEmpty": "قائمة أمنياتك فارغة! جاهز تتمنّى أمنية؟",
+          "adviceStartAddingItems": "ابدأ بإضافة المنتجات التي تحبها إلى قائمة أمنياتك بالضغط على أيقونة القلب",
+          "discoverProducts": "استكشف المنتجات"
+        },
+        "WishlistLayoutHeaderActions": {
+          "emptyWishlist": "إفراغ قائمة الأمنيات",
+          "itemCount": "عدد العناصر ({count})",
+          "noItemsToRemove": "لا توجد عناصر لحذفها",
+          "clearAllItems": "احذف كل العناصر",
+          "confirmDeleteTitle": "تأكيد الحذف",
+          "confirmDeleteMessage": "هل أنت متأكد أنك تريد حذف جميع عناصر قائمة الأمنيات؟ ستتم إزالة بيانات قائمتك بعد التأكيد.",
+          "confirmDelete": "احذف جميع العناصر",
+          "cancel": "إلغاء",
+          "deleting": "جارٍ حذف العناصر...",
+          "deleteError": "حدث خطأ أثناء حذف عناصر قائمة الأمنيات",
+          "sendToCart": "أرسل جميع العناصر إلى سلة التسوق",
+          "sendingToCart": "جارٍ إرسال العناصر إلى سلة التسوق..."
         }
       }
     }

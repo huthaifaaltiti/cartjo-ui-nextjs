@@ -9,6 +9,7 @@
     "UploadingStates": {
       "uploadingData": "Uploading Data"
     },
+    "processing": "Processing",
     "data": {
       "noData": "No data",
       "tryAgain": "Please try again later"
@@ -1539,6 +1540,20 @@
           "wishlistIsEmpty": "Your wishlist is empty! Ready to make a wish?",
           "adviceStartAddingItems": "Start adding items you love to your wishlist by tapping on the heart icon",
           "discoverProducts": "Discover Products"
+        },
+        "WishlistLayoutHeaderActions": {
+          "emptyWishlist": "Empty Wishlist",
+          "itemCount": "Item Count ({count})",
+          "noItemsToRemove": "No items to remove",
+          "clearAllItems": "Clear all items",
+          "confirmDeleteTitle": "Delete Confirmation",
+          "confirmDeleteMessage": "Are you sure that you want to delete all wishlist items? Your wishlist data will be removed after confirming.",
+          "confirmDelete": "Delete all items",
+          "cancel": "Cancel",
+          "deleting": "Deleting Items...",
+          "deleteError": "Error happened while deleting wishlist items",
+          "sendToCart": "Send All Items To Cart",
+          "sendingToCart": "Sending Items To Cart..."
         }
       }
     }

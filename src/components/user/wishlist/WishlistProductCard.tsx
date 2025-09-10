@@ -1,41 +1,41 @@
 "use client";
 
 import { memo, useCallback, useState } from "react";
-import { Heart, ShoppingCart, Star } from "lucide-react";
-import ImageWithFallback from "@/components/shared/ImageWithFallback";
-import { Product } from "@/types/product.type";
-import { useLoggedUserWishlist } from "@/contexts/LoggedUserWishList.context";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { Heart, ShoppingCart, Star } from "lucide-react";
+import { Product } from "@/types/product.type";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import {
   showErrorToast,
   showSuccessToast,
   showWarningToast,
 } from "@/components/shared/CustomToast";
-import { useAuthContext } from "@/hooks/useAuthContext";
-// import LoadingSpinner from "@/components/shared/loaders/LoadingSpinner";
 import { LoadingProductWishList } from "@/components/shared/loaders/LoadingProduct";
+import { useWishlist } from "@/contexts/Wishlist.context";
+import { isArabicLocale } from "@/config/locales.config";
 
-const WishlistProductCard = ({
-  item,
-  isArabic = false,
-}: {
-  item: Product;
-  isArabic: boolean;
-}) => {
-  const locale = useLocale();
+const WishlistProductCard = ({ item: product }: { item: Product }) => {
+  const router = useRouter();
   const t = useTranslations();
+  const locale = useLocale();
+  const isArabic = isArabicLocale(locale);
 
-  const [isWishListed, setIsWishListed] = useState(item?.isWishListed || false);
+  const [isWishListed, setIsWishListed] = useState(
+    product?.isWishListed || false
+  );
   const [isHovered, setIsHovered] = useState(false);
   const [isWishListing, setIsWishListing] = useState(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
 
   const { accessToken } = useAuthContext();
-  // const { addItem, removeItem } = useLoggedUserWishlist();
 
-  const discountedPrice = item?.discountRate
-    ? item.price - (item.discountRate / 100) * item.price
-    : item.price;
+  const { removeWishlistItem } = useWishlist();
+
+  const discountedPrice = product?.discountRate
+    ? product.price - (product.discountRate / 100) * product.price
+    : product.price;
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -44,59 +44,27 @@ const WishlistProductCard = ({
     }).format(price);
   };
 
-  const handleAddWishListItem = useCallback(async () => {
-    setIsWishListing(true);
-    console.log("WishlistProductCard item", item);
-    try {
-      // const resp = await addItem(accessToken, locale, item?._id);
-
-      // if (resp.isSuccess) {
-      //   showSuccessToast({
-      //     title: t("general.toast.title.success"),
-      //     description: resp.message,
-      //     dismissText: t("general.toast.dismissText"),
-      //   });
-
-      //   setIsWishListed(true);
-      // } else {
-      //   showWarningToast({
-      //     title: t("general.toast.title.warning"),
-      //     description: resp.message,
-      //     dismissText: t("general.toast.dismissText"),
-      //   });
-      // }
-    } catch (err) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (err as Error)?.message,
-        dismissText: t("general.toast.dismissText"),
-      });
-    } finally {
-      setIsWishListing(false);
-    }
-  }, [locale, accessToken, item._id, t]);
-
   const handleRemoveWishListItem = useCallback(async () => {
     setIsWishListing(true);
 
     try {
-      // const resp = await removeItem(accessToken, locale, item?._id);
+      const resp = await removeWishlistItem(accessToken, locale, product?._id);
+      if (resp.isSuccess) {
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+          description: resp.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+        setIsWishListed(false);
 
-      // if (resp.isSuccess) {
-      //   showSuccessToast({
-      //     title: t("general.toast.title.success"),
-      //     description: resp.message,
-      //     dismissText: t("general.toast.dismissText"),
-      //   });
-
-      //   setIsWishListed(false);
-      // } else {
-      //   showWarningToast({
-      //     title: t("general.toast.title.warning"),
-      //     description: resp.message,
-      //     dismissText: t("general.toast.dismissText"),
-      //   });
-      // }
+        router.refresh();
+      } else {
+        showWarningToast({
+          title: t("general.toast.title.warning"),
+          description: resp.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+      }
     } catch (err) {
       showErrorToast({
         title: t("general.toast.title.error"),
@@ -106,10 +74,10 @@ const WishlistProductCard = ({
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, accessToken, item._id, t]);
+  }, [locale, accessToken, product._id, t]);
 
   const handleWishListedItemState = () =>
-    isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
+    isWishListed ? handleRemoveWishListItem() : () => ({});
 
   const handleAddToCart = async () => {
     setIsAddToCartLoading(true);
@@ -171,11 +139,11 @@ const WishlistProductCard = ({
       </button>
 
       {/* Discount Badge */}
-      {item?.discountRate > 0 && (
+      {product?.discountRate > 0 && (
         <div className="absolute top-4 left-4 z-10">
           <div className="bg-gradient-to-r from-red-500 to-red-600 text-white-50 px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
             <div className="flex items-center gap-1">
-              <span>-{item.discountRate}%</span>
+              <span>-{product.discountRate}%</span>
               <div className="w-2 h-2 bg-white-50/60 rounded-full animate-pulse"></div>
             </div>
           </div>
@@ -189,8 +157,8 @@ const WishlistProductCard = ({
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white-50/30 to-transparent -translate-x-full animate-[shimmer_3s_infinite] z-10"></div>
 
           <ImageWithFallback
-            src={item?.mainImage}
-            alt={isArabic ? item?.name?.ar : item?.name?.en}
+            src={product?.mainImage}
+            alt={isArabic ? product?.name?.ar : product?.name?.en}
             className={`object-contain transition-all duration-700 ${
               isHovered ? "scale-110 filter brightness-105" : "scale-100"
             } ${isAddToCartLoading ? "scale-110 blur-[1px]" : ""}`}
@@ -214,7 +182,7 @@ const WishlistProductCard = ({
               : "text-gray-900"
           } ${isAddToCartLoading ? "opacity-70" : ""}`}
         >
-          {isArabic ? item?.name?.ar : item?.name?.en}
+          {isArabic ? product?.name?.ar : product?.name?.en}
         </h3>
 
         {/* Rating Section */}
@@ -228,14 +196,14 @@ const WishlistProductCard = ({
               <Star
                 key={i}
                 className={`w-4 h-4 transition-all duration-300 ${
-                  i < Math.floor(item?.ratings || 0)
+                  i < Math.floor(product?.ratings || 0)
                     ? "text-yellow-400 fill-yellow-400 drop-shadow-sm"
-                    : i < (item?.ratings || 0)
+                    : i < (product?.ratings || 0)
                     ? "text-yellow-400 fill-yellow-400 opacity-50"
                     : "text-gray-200 fill-gray-200"
                 } ${
                   isHovered &&
-                  i < Math.floor(item?.ratings || 0) &&
+                  i < Math.floor(product?.ratings || 0) &&
                   !isAddToCartLoading
                     ? "scale-110"
                     : ""
@@ -244,7 +212,7 @@ const WishlistProductCard = ({
             ))}
           </div>
           <span className="text-sm font-medium text-gray-700">
-            {item?.ratings || 0}
+            {product?.ratings || 0}
           </span>
         </div>
 
@@ -254,29 +222,29 @@ const WishlistProductCard = ({
             isAddToCartLoading ? "opacity-70" : ""
           }`}
         >
-          {item?.discountRate > 0 ? (
+          {product?.discountRate > 0 ? (
             <div className="flex items-center gap-3">
               <div className="flex items-baseline gap-1">
                 <span className="text-2xl font-bold text-green-600 drop-shadow-sm">
-                  {item?.currency}
+                  {product?.currency}
                   {formatPrice(discountedPrice)}
                 </span>
               </div>
               <div className="flex items-center gap-1">
                 <span className="text-lg text-gray-400 line-through font-medium">
-                  {item?.currency}
-                  {formatPrice(item?.price)}
+                  {product?.currency}
+                  {formatPrice(product?.price)}
                 </span>
                 <span className="text-sm font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full animate-pulse">
-                  Save {item?.currency}
-                  {formatPrice(item?.price - discountedPrice)}
+                  Save {product?.currency}
+                  {formatPrice(product?.price - discountedPrice)}
                 </span>
               </div>
             </div>
           ) : (
             <div className="text-2xl font-bold text-gray-900">
-              {item?.currency}
-              {formatPrice(item?.price)}
+              {product?.currency}
+              {formatPrice(product?.price)}
             </div>
           )}
         </div>

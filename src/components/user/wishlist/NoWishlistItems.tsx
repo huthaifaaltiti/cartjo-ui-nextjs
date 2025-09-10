@@ -9,7 +9,7 @@ const NoWishlistItems = () => {
   const t = useTranslations();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
+    <div className="w-full min-h-[70vh] h-full flex flex-col items-center justify-center px-4 text-center">
       <Image
         src={assetsPaths.image.webp.list_of_outstanding_tasks}
         alt="Empty wishlist"

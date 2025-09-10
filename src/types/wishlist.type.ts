@@ -5,6 +5,7 @@ export interface Wishlist {
   _id: string;
   user: string;
   products: Product[];
+  productsCount: number;
   deletedAt: null | Date;
   restoredAt: null | Date;
   deletedBy: null | User | string;

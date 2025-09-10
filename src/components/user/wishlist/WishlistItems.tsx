@@ -1,28 +1,89 @@
-import { memo } from "react";
-import { useLocale } from "next-intl";
-import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
-import { Product } from "@/types/product.type";
-import { isArabicLocale } from "@/config/locales.config";
-import WishlistProductCard from "./WishlistProductCard";
+"use client";
 
-const WishlistItems = ({ wishlistItems }: { wishlistItems: Product[] }) => {
-  const locale = useLocale();
-  const isArabic = isArabicLocale(locale);
+import { memo, useEffect, useMemo } from "react";
+import { useWishlistQuery } from "@/hooks/react-query/useWishlistQuery";
+import { Product } from "@/types/product.type";
+import { useWishlist } from "@/contexts/Wishlist.context";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import WishlistProductCard from "./WishlistProductCard";
+import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
+import NoWishlistItems from "./NoWishlistItems";
+import ErrorMessage from "@/components/shared/ErrorMessage";
+import { useTranslations } from "next-intl";
+import PageLoader from "@/components/shared/PageLoader";
+
+const WishlistItems = () => {
+  const t = useTranslations();
+  const { setWishlistItemsCount } = useWishlist();
+  const { accessToken, status } = useAuthContext();
+
+  // Fetch data directly using the hook.
+  // The initial data will be read from the dehydrated cache.
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    isError,
+    error,
+  } = useWishlistQuery({ search: "" });
+
+  const wishlistProducts = useMemo(() => {
+    const allProducts =
+      (data?.pages?.flatMap(
+        (page) => page?.data?.products || []
+      ) as Product[]) || [];
+    return allProducts;
+  }, [data]);
+
+  useEffect(() => {
+    const totalWishlistItemsCount = data?.pages[0]?.data?.productsCount ?? 0;
+    setWishlistItemsCount(totalWishlistItemsCount);
+  }, [wishlistProducts.length, setWishlistItemsCount]);
+
+  // loading session
+  if (status === "loading") {
+    return <PageLoader />;
+  }
+
+  // user is not authenticated
+  if (status === "unauthenticated" || !accessToken) {
+    return <div>Please log in to view your wishlist.</div>;
+  }
+
+  // loading wishlist items
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full min-h-[50vh] h-full flex items-center justify-center">
+        <ErrorMessage
+          message={error?.message || t("routes.wishlist.errors.failedLoadData")}
+        />
+      </div>
+    );
+  }
+
+  if (wishlistProducts.length === 0) {
+    return <NoWishlistItems />;
+  }
 
   return (
-    <div className="w-full">
-      <MaxWidthWrapper className="w-full h-full px-0 md:px-0">
-        <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 mt-5 auto-rows-fr">
-          {wishlistItems?.map((item, itemIndex) => (
-            <WishlistProductCard
-              key={`wishlist-product_${item._id || itemIndex}`}
-              item={item}
-              isArabic={isArabic}
-            />
-          ))}
-        </div>
-      </MaxWidthWrapper>
-    </div>
+    <>
+      <InfiniteScrollList
+        isLoading={isLoading}
+        isFetchingNextPage={isFetchingNextPage}
+        hasNextPage={hasNextPage}
+        error={error}
+        list={wishlistProducts}
+        fetchNextPage={fetchNextPage}
+        ListItemCard={WishlistProductCard}
+        cardProps={{}}
+      />
+    </>
   );
 };
 
