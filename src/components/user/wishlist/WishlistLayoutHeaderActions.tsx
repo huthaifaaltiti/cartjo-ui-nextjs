@@ -4,14 +4,12 @@ import { memo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
-import assetsPath from "@public/assets/assets.json";
-import Image from "next/image";
 import { useWishlist } from "@/contexts/Wishlist.context";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { showSuccessToast } from "@/components/shared/CustomToast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { ShoppingCart } from "lucide-react";
+import { PackageMinus, Box } from "lucide-react";
 
 const WishlistLayoutHeaderActions: React.FC = () => {
   const router = useRouter();
@@ -23,7 +21,6 @@ const WishlistLayoutHeaderActions: React.FC = () => {
 
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  // const [isSendingToCart, setIsSendingToCart] = useState<boolean>(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const handleSendItemsToCart = (): void => {};
@@ -78,32 +75,15 @@ const WishlistLayoutHeaderActions: React.FC = () => {
 
   return (
     <>
-      <div className="flex items-center gap-3">
-        {/* Wishlist item count indicator */}
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <span>
-            {t(
-              "routes.wishlist.components.WishlistLayoutHeaderActions.itemCount",
-              {
-                count: wishlistItemsCount,
-              }
-            )}
-          </span>
-        </div>
-
+      <div className="flex items-center gap-5">
         {/* Clear wishlist button */}
         <Button
-          variant="outline"
+          variant="default"
           onClick={handleDeleteClick}
           disabled={wishlistItemsCount === 0 || isDeleting}
-          className={`inline-flex items-center gap-2 px-4 py-2 shadow-none rounded-lg text-sm font-medium transition-all duration-200 ease-in-out border border-transparent`}
+          className={`inline-flex items-center gap-2 px-0 py-0 shadow-none rounded-lg text-sm font-medium duration-200 ease-in-out border border-transparent hover:text-primary-500 transition-all`}
         >
-          <Image
-            src={assetsPath.image.svg.heart_minus}
-            alt="heart_minus"
-            width={20}
-            height={20}
-          />
+          <PackageMinus className="w-4 h-4" />
 
           <span>
             {isDeleting
@@ -118,13 +98,12 @@ const WishlistLayoutHeaderActions: React.FC = () => {
 
         {/* send all items to wishlist button */}
         <Button
-          variant="outline"
+          variant="default"
           onClick={handleSendItemsToCart}
-          //  disabled={wishlistItemsCount === 0 || isSendingToCart}
           disabled={wishlistItemsCount === 0 || false}
-          className={`inline-flex items-center gap-2 px-4 py-2 shadow-none rounded-lg text-sm font-medium transition-all duration-200 ease-in-out border border-transparent`}
+          className={`inline-flex items-center gap-2 px-0 py-0 shadow-none rounded-lg text-sm font-medium duration-200 ease-in-out border border-transparent hover:text-primary-500 transition-all`}
         >
-          <ShoppingCart className="w-4 h-4" />
+          <Box className="w-4 h-4" />
 
           {/* isSendingToCart */}
           <span>
