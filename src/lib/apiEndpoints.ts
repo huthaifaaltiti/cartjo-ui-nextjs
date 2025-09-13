@@ -92,6 +92,11 @@ export const API_ENDPOINTS = {
       REMOVE_ALL: `${BASE_URL}/api/v1/wish-list/remove-all`,
     },
   },
+  HOME: {
+    PRODUCTS: {
+      CATEGORIES_PICKS: `${BASE_URL}/api/v1/product/categories-picks`,
+    },
+  },
   LOGGED_USER: {
     WISHLIST: {
       ONE: `${BASE_URL}/api/v1/wish-list`,

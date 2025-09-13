@@ -1,6 +1,8 @@
+import { PRODUCTS_COUNT_PER_SELECTED_CATEGORY } from "@/config/home.config";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { fetchActiveBanners } from "@/hooks/react-query/useBannersQuery";
 import { fetchActiveCategories } from "@/hooks/react-query/useCategoriesQuery";
+import { fetchCategoriesPicks } from "@/hooks/react-query/useProductsQuery";
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { Locale } from "@/types/locale";
 
@@ -35,4 +37,22 @@ export const getActiveShowcasesQueryOptions = (limit: number) => ({
   queryFn: () => fetchActiveShowcases(String(limit)),
   staleTime: STALE_TIME,
   gcTime: GC_TIME,
+});
+
+export const getCategoriesPicksQueryOptions = (
+  categoryId: string,
+  locale: string | Locale,
+  token: string
+) => ({
+  queryKey: ["categoriesPicks", locale, categoryId],
+  queryFn: () =>
+    fetchCategoriesPicks({
+      token,
+      lang: locale,
+      limit: PRODUCTS_COUNT_PER_SELECTED_CATEGORY,
+      categoryId,
+    }),
+  staleTime: STALE_TIME,
+  gcTime: GC_TIME,
+  enabled: !!token,
 });

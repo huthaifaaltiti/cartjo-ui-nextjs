@@ -281,6 +281,15 @@
         },
         "MainSearchBar": {
           "placeholder": "Search for products, categories, or anything.."
+        },
+        "SelectedCategoriesItemsHeader": {
+          "header": "Curated picks from our store",
+          "ctaBtnText": "View Categories"
+        },
+        "SelectedCategoriesItemsContent": {
+          "err": "Failed to load products",
+          "noDataHeader": "No products found for this category",
+          "noDataMsg": "Check back later for new category's products"
         }
       }
     },

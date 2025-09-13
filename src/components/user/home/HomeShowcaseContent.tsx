@@ -6,7 +6,6 @@ import { isArabicLocale } from "@/config/locales.config";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { useActiveShowcasesQuery } from "@/hooks/react-query/useShowcasesQuery";
 import ShowcaseSection from "./ShowcaseSection";
-import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
 import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
@@ -84,8 +83,8 @@ const HomeShowcaseContent = () => {
 
   if (showData) {
     return (
-      <div className="w-full min-h-screen h-full bg-gradient-to-b from-gray-100 to-white-50">
-        <MaxWidthWrapper className="w-full max-w-max py-10 flex flex-col gap-8">
+      <div className="w-full h-full bg-gradient-to-b from-gray-100 to-white-50">
+        <div className="w-full max-w-max py-10 flex flex-col gap-8">
           {activeShowcasesList?.map((actSho, i) => {
             const layoutType = showcaseLayouts[i];
 
@@ -135,7 +134,7 @@ const HomeShowcaseContent = () => {
               </ShowcaseSection>
             );
           })}
-        </MaxWidthWrapper>
+        </div>
       </div>
     );
   }

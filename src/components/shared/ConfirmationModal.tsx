@@ -1,8 +1,9 @@
 import { memo, useState, useEffect } from "react";
 import { AlertTriangle, X, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import LoadingDots from "./loaders/LoadingDots";
+import { isArabicLocale } from "@/config/locales.config";
 
 interface ConfirmationModalProps {
   txt: string;
@@ -40,6 +41,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   autoFocus = true,
 }) => {
   const t = useTranslations();
+  const locale = useLocale();
+  const isArabic = isArabicLocale(locale);
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -142,7 +145,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           variant="ghost"
           onClick={handleCancel}
           disabled={isLoading}
-          className="absolute top-4 right-4 p-1 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className={`absolute top-4 ${
+            isArabic ? "left-4" : "right-4"
+          } p-1 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
           aria-label="Close modal"
           type="button"
         >
@@ -151,7 +156,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 
         <div className="p-6">
           {/* Header with icon */}
-          <div className="flex items-start space-x-4 mb-4">
+          <div className="flex items-start gap-4 mb-4">
             {showIcon && (
               <div
                 className={`flex-shrink-0 w-12 h-12 rounded-full ${styles.iconBg} flex items-center justify-center`}
@@ -183,7 +188,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           )}
 
           {/* Action buttons */}
-          <div className="flex flex-col-reverse sm:flex-row sm:justify-end space-y-2 space-y-reverse sm:space-y-0 sm:space-x-3">
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 space-y-reverse sm:space-y-0 sm:space-x-3">
             <Button
               onClick={handleCancel}
               disabled={isLoading}

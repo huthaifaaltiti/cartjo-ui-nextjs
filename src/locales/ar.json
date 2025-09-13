@@ -276,6 +276,15 @@
         },
         "MainSearchBar": {
           "placeholder": "ابحث عن منتجات أو تصنيفات أيّة أشياء أخرى.."
+        },
+        "SelectedCategoriesItemsHeader": {
+          "header": "اختيارات من متجرنا",
+          "ctaBtnText": "تصفَّح فئآتنا"
+        },
+        "SelectedCategoriesItemsContent": {
+          "err": "فشل في تحميل المنتجات",
+          "noDataHeader": "لم يتم العثور على منتجات لهذه الفئة",
+          "noDataMsg": "تحقق لاحقًا لعرض منتجات جديدة لهذه الفئة"
         }
       }
     },
