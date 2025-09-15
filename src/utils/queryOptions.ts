@@ -39,6 +39,9 @@ export const getActiveShowcasesQueryOptions = (limit: number) => ({
   gcTime: GC_TIME,
 });
 
+/**
+ * Query options for Categories Picks (public data, always enabled)
+ */
 export const getCategoriesPicksQueryOptions = (
   categoryId: string,
   locale: string | Locale,
@@ -54,5 +57,5 @@ export const getCategoriesPicksQueryOptions = (
     }),
   staleTime: STALE_TIME,
   gcTime: GC_TIME,
-  enabled: !!token,
+  enabled: true,
 });
