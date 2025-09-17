@@ -1565,6 +1565,14 @@
           "sendingToCart": "Sending Items To Cart..."
         }
       }
+    },
+    "categories": {
+      "failedLoadData": "Failed to load categories",
+      "components": {
+        "CategoriesPageHeader": {
+          "header": "Discover our categories"
+        }
+      }
     }
   }
 }
