@@ -1,11 +1,17 @@
 import { PRODUCTS_COUNT_PER_SELECTED_CATEGORY } from "@/config/home.config";
+import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { fetchActiveBanners } from "@/hooks/react-query/useBannersQuery";
 import { fetchActiveCategories } from "@/hooks/react-query/useCategoriesQuery";
-import { fetchCategory } from "@/hooks/react-query/useCategoryQuery";
+import {
+  fetchCategory,
+  fetchCategoryProducts,
+} from "@/hooks/react-query/useCategoryQuery";
 import { fetchCategoriesPicks } from "@/hooks/react-query/useProductsQuery";
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { Locale } from "@/types/locale";
+import { Product } from "@/types/product.type";
+import { DataListResponse } from "@/types/service-response.type";
 
 /**
  * Query options for banners (public data, always enabled)
@@ -74,3 +80,40 @@ export const getCategoryQueryOptions = (
   gcTime: GC_TIME,
   enabled: !!categoryId,
 });
+
+export const getCategoryProductsQueryOptions = (
+  locale: string,
+  categoryId: string
+) => {
+  const getNextPageParam = (lastPage: DataListResponse<Product>) => {
+    if (!lastPage?.data?.length) return undefined;
+
+    const lastProduct = lastPage.data[lastPage.data.length - 1];
+    return lastProduct?._id || undefined;
+  };
+
+  return {
+    queryKey: ["publicCategoryProducts", categoryId, locale],
+    /* From: { pageParam }: { pageParam: string } To: { pageParam }: { pageParam: unknown } => The issue is that React Query's prefetchInfiniteQuery expects the queryFn to accept the full query context object, not just the destructured pageParam
+    1. Changed the pageParam type from string | undefined to unknown - This matches React Query's expected type for infinite queries
+    2. Simplified the type guard - Since pageParam is unknown, we just need to check if it's a string
+    */
+    queryFn: async ({ pageParam }: { pageParam: unknown }) => {
+      if (!categoryId) {
+        throw new Error("No category id found");
+      }
+
+      return fetchCategoryProducts({
+        lang: locale,
+        categoryId,
+        limit: PAGINATION_LIMITS.PUBLIC_CATEGORY_PRODUCTS_ITEMS,
+        lastId: typeof pageParam === "string" ? pageParam : undefined,
+      });
+    },
+    getNextPageParam,
+    initialPageParam: undefined,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    enabled: !!categoryId,
+  };
+};

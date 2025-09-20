@@ -107,5 +107,6 @@ export const API_ENDPOINTS = {
   },
   CATEGORY: {
     ONE: `${BASE_URL}/api/v1/category`,
+    PRODUCTS: `${BASE_URL}/api/v1/product/all`,
   },
 };

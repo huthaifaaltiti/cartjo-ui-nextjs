@@ -1575,8 +1575,12 @@
           "noData": "No subcategories available",
           "checkLater": "Check later for sub-categories"
         },
-        "CategoryProductsGrid": {
-          
+        "CategoryItems": {
+          "failed": "Oops! Failed to load category items!",
+          "noData": "No subcategories available"
+        },
+        "NoCategoryItems": {
+          "empty": "Oops! No items found for this category. Start searching for other ones!"
         }
       }
     }
