@@ -1,7 +1,7 @@
-import SubCategoriesGrid from "@/components/user/category/SubCategoriesGrid";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getCategoryQueryOptions } from "@/utils/queryOptions";
 import { getQueryClient } from "@/utils/queryUtils";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import CategorySubCategoriesGrid from "@/components/user/category/CategorySubCategoriesGrid";
 
 interface PageProps {
   params?: {
@@ -21,7 +21,7 @@ export default async function CategoryPage({ searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <SubCategoriesGrid categoryId={categoryId} />
+      <CategorySubCategoriesGrid categoryId={categoryId} />
     </HydrationBoundary>
   );
 }

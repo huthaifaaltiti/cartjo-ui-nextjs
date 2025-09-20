@@ -10,7 +10,7 @@ import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 
-const SubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
+const CategoryProductsGrid = ({ categoryId }: { categoryId: string }) => {
   const t = useTranslations();
   const locale = useLocale();
   const isAr = isArabicLocale(locale);
@@ -56,7 +56,7 @@ const SubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
         <ErrorMessage
           message={
             error?.message ||
-            t("routes.categories.components.SubCategoriesGrid.failed")
+            t("routes.categories.components.CategoryProductsGrid.failed")
           }
         />
       </div>
@@ -67,9 +67,9 @@ const SubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
     return (
       <div className={containerClass}>
         <NoData
-          title={t("routes.categories.components.SubCategoriesGrid.noData")}
+          title={t("routes.categories.components.CategoryProductsGrid.noData")}
           description={t(
-            "routes.categories.components.SubCategoriesGrid.checkLater"
+            "routes.categories.components.CategoryProductsGrid.checkLater"
           )}
         />
       </div>
@@ -80,7 +80,7 @@ const SubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
     return (
       <div className={containerClass}>
         <h1 className="sm:text-md md:text-lg lg:text-2xl text-text-primary-400 font-bold">
-          {t("routes.categories.components.SubCategoriesGrid.header")}
+          {t("routes.categories.components.CategoryProductsGrid.header")}
         </h1>
 
         <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -112,4 +112,4 @@ const SubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
   return null;
 };
 
-export default memo(SubCategoriesGrid);
+export default memo(CategoryProductsGrid);

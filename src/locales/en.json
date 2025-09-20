@@ -1569,11 +1569,14 @@
     "categories": {
       "failed": "Failed to load categories",
       "components": {
-        "SubCategoriesGrid": {
+        "CategorySubCategoriesGrid": {
           "header": "Explore Subcategories and Find What Suits You Best 🤗",
           "failed": "Oops! Failed to load subcategories!",
           "noData": "No subcategories available",
           "checkLater": "Check later for sub-categories"
+        },
+        "CategoryProductsGrid": {
+          
         }
       }
     }
