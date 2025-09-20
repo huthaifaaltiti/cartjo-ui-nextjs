@@ -1,11 +1,10 @@
 "use client";
 
 import { memo } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-
+import { useLocale } from "@/contexts/LocaleContext";
 import { isArabicLocale } from "@/config/locales.config";
-
 import {
   Select,
   SelectContent,
@@ -13,20 +12,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useLocale } from "@/contexts/LocaleContext";
 
 const LanguageSelector: React.FC = () => {
   const { locale } = useLocale();
   const isAr = isArabicLocale(locale);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const t = useTranslations("components.LanguageSelector");
 
   const handleLangChange = (value: string) => {
     const newLocale = value;
-    const path = pathname?.split("/")?.slice(2)?.join("/");
+    const pathSegments = pathname.split("/").filter(Boolean);
+    const newPath = pathSegments.slice(1).join("/"); // removes the existing locale from the path
 
-    router.push(`/${newLocale}/${path}`);
+    const currentSearchParams = searchParams.toString();
+
+    const newUrl = `/${newLocale}/${newPath}${
+      currentSearchParams ? `?${currentSearchParams}` : ""
+    }`;
+
+    router.push(newUrl);
   };
 
   return (
