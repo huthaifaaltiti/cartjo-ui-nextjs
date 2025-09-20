@@ -1567,10 +1567,13 @@
       }
     },
     "categories": {
-      "failedLoadData": "Failed to load categories",
+      "failed": "Failed to load categories",
       "components": {
-        "CategoriesPageHeader": {
-          "header": "Discover our categories"
+        "SubCategoriesGrid": {
+          "header": "Explore Subcategories and Find What Suits You Best 🤗",
+          "failed": "Oops! Failed to load subcategories!",
+          "noData": "No subcategories available",
+          "checkLater": "Check later for sub-categories"
         }
       }
     }

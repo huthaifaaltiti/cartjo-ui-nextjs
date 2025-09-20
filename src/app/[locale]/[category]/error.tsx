@@ -11,7 +11,7 @@ export default function Error({ error, reset }: ErrorPageProps) {
     <ErrorPage
       error={error}
       reset={reset}
-      title={error?.message || t("routes.categories.errors.failedLoadData")}
+      title={error?.message || t("routes.categories.errors.failed")}
       showReLogin={true}
     />
   );

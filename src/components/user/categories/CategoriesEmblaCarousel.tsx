@@ -1,9 +1,10 @@
 "use client";
 
 import React, { memo, useEffect, useMemo } from "react";
+import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
 import { useLocale, useTranslations } from "next-intl";
+import Autoplay from "embla-carousel-autoplay";
 import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { isArabicLocale } from "@/config/locales.config";
 import { Category } from "@/types/category.type";
@@ -103,7 +104,14 @@ const CategoriesEmblaCarousel = () => {
                 key={category?._id + index || `category-${index}`}
                 className={styles.embla__slide}
               >
-                <CategoryCard category={category} />
+                <Link
+                  href={{
+                    pathname: `/${locale}/${category?.slug || category?.name}`,
+                    query: { c_id: `${category?._id}` },
+                  }}
+                >
+                  <CategoryCard category={category} />
+                </Link>
               </div>
             ))}
           </div>
