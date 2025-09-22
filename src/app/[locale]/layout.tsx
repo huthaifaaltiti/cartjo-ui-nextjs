@@ -2,14 +2,11 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Inter, Noto_Kufi_Arabic } from "next/font/google";
 import { Toaster } from "sonner";
-
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
-
 import "../globals.css";
-
 import { isArabicLocale } from "@/config/locales.config";
-
 import { LocaleProvider } from "@/contexts/LocaleContext";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
@@ -36,7 +33,7 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const isArabic = isArabicLocale(locale);
+  const isArabic: boolean = isArabicLocale(locale);
   const dir = isArabic ? "rtl" : "ltr";
   const layoutFont = isArabic ? notoKufiArabic.className : inter.className;
 
@@ -58,7 +55,7 @@ export default async function LocaleLayout({
                     expand={true}
                     closeButton={false}
                   />
-                  {children}
+                  <NuqsAdapter>{children}</NuqsAdapter>
                 </HomeEffectsContextProvider>
               </SessionWrapper>
             </LocaleProvider>

@@ -35,6 +35,8 @@ interface FetchCategoryProductsParams {
   categoryId: string;
   limit?: number;
   lastId?: string;
+  priceFrom?: number;
+  priceTo?: number;
 }
 
 export const fetchCategoryProducts = async ({
@@ -42,6 +44,8 @@ export const fetchCategoryProducts = async ({
   categoryId,
   limit = PAGINATION_LIMITS.PUBLIC_CATEGORY_PRODUCTS_ITEMS,
   lastId,
+  priceFrom,
+  priceTo,
 }: FetchCategoryProductsParams): Promise<DataListResponse<Product>> => {
   const url = new URL(`${API_ENDPOINTS.CATEGORY.PRODUCTS}`);
 
@@ -49,6 +53,10 @@ export const fetchCategoryProducts = async ({
   if (categoryId) url.searchParams.append("categoryId", categoryId);
   if (limit) url.searchParams.append("limit", String(limit));
   if (lastId) url.searchParams.append("lastId", lastId);
+  if (priceFrom !== undefined && priceFrom > 0)
+    url.searchParams.append("priceFrom", String(priceFrom));
+  if (priceTo !== undefined && priceTo > 0)
+    url.searchParams.append("priceTo", String(priceTo));
 
   const res = await fetch(url.toString(), {});
 
@@ -77,11 +85,21 @@ export const useCategoryQuery = (categoryId?: string) => {
 //   return useInfiniteQuery(getCategoryProductsQueryOptions(locale, categoryId));
 // };
 
-export const useCategoryProductsQuery = (categoryId: string) => {
+export const useCategoryProductsQuery = (
+  categoryId: string,
+  priceFrom?: number,
+  priceTo?: number
+) => {
   const { locale } = useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Product>>({
-    queryKey: ["publicCategoryProducts", categoryId, locale],
+    queryKey: [
+      "publicCategoryProducts",
+      categoryId,
+      locale,
+      priceFrom,
+      priceTo,
+    ],
     queryFn: ({ pageParam }) => {
       if (!categoryId) {
         throw new Error("No category id found");
@@ -93,6 +111,8 @@ export const useCategoryProductsQuery = (categoryId: string) => {
         limit: PAGINATION_LIMITS.PUBLIC_CATEGORY_PRODUCTS_ITEMS,
         lastId:
           pageParam && typeof pageParam === "string" ? pageParam : undefined,
+        priceFrom,
+        priceTo,
       });
     },
     getNextPageParam: (lastPage) => {

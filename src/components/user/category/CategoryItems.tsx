@@ -1,7 +1,8 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
+import { useQueryState } from "nuqs";
 import { Product } from "@/types/product.type";
 import { useCategoryProductsQuery } from "@/hooks/react-query/useCategoryQuery";
 import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
@@ -9,9 +10,22 @@ import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoCategoryItems from "./NoCategoryItems";
 import CategoryProductCard from "./CategoryProductCard";
 import CategoryItemsLoading from "./CategoryItemsLoading";
+import PriceRange from "../used-filters/PriceRange";
 
 const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   const t = useTranslations();
+
+  const [priceFrom, setPriceFrom] = useQueryState<number>("priceFrom", {
+    defaultValue: 0,
+    parse: (value) => Number(value),
+    serialize: (value) => String(value),
+  });
+
+  const [priceTo, setPriceTo] = useQueryState<number>("priceTo", {
+    defaultValue: 0,
+    parse: (value) => Number(value),
+    serialize: (value) => String(value),
+  });
 
   const {
     data,
@@ -23,14 +37,23 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
     fetchNextPage,
     isError,
     error,
-  } = useCategoryProductsQuery(categoryId);
+    refetch,
+  } = useCategoryProductsQuery(categoryId, priceFrom, priceTo);
 
   const categoryProducts = useMemo(() => {
-    const allProducts =
-      (data?.pages?.flatMap((page) => page?.data || []) as Product[]) ?? [];
-
-    return allProducts;
+    return (
+      (data?.pages?.flatMap((page) => page?.data || []) as Product[]) ?? []
+    );
   }, [data]);
+
+  const handleApplyPriceFilter = useCallback(
+    (from: number, to: number) => {
+      setPriceFrom(from);
+      setPriceTo(to);
+      refetch();
+    },
+    [refetch, setPriceFrom, setPriceTo]
+  );
 
   const showLoader =
     (!isLoading &&
@@ -70,7 +93,23 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   if (showNoData) {
     return (
       <div className={containerClass}>
-        <NoCategoryItems />;
+        <div className="w-full flex flex-col gap-4 mt-5">
+          {/* Filters */}
+          <div className="w-full flex items-center gap-4 border-y border-grey-50/20 py-1">
+            <PriceRange
+              setPriceFrom={setPriceFrom}
+              setPriceTo={setPriceTo}
+              onApplyFilter={handleApplyPriceFilter}
+              initialFrom={priceFrom}
+              initialTo={priceTo}
+            />
+          </div>
+
+          {/* items */}
+          <div className="w-full">
+            <NoCategoryItems />;
+          </div>
+        </div>
       </div>
     );
   }
@@ -78,16 +117,32 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   if (showData) {
     return (
       <div className={containerClass}>
-        <InfiniteScrollList
-          isLoading={isLoading}
-          isFetchingNextPage={isFetchingNextPage}
-          hasNextPage={hasNextPage}
-          error={error}
-          list={categoryProducts}
-          fetchNextPage={fetchNextPage}
-          ListItemCard={CategoryProductCard}
-          cardProps={{}}
-        />
+        <div className="w-full flex flex-col gap-4 mt-5">
+          {/* Filters */}
+          <div className="w-full flex items-center gap-4 border-y border-grey-50/20 py-1">
+            <PriceRange
+              setPriceFrom={setPriceFrom}
+              setPriceTo={setPriceTo}
+              onApplyFilter={handleApplyPriceFilter}
+              initialFrom={priceFrom}
+              initialTo={priceTo}
+            />
+          </div>
+
+          {/* items */}
+          <div className="w-full">
+            <InfiniteScrollList
+              isLoading={isLoading}
+              isFetchingNextPage={isFetchingNextPage}
+              hasNextPage={hasNextPage}
+              error={error}
+              list={categoryProducts}
+              fetchNextPage={fetchNextPage}
+              ListItemCard={CategoryProductCard}
+              cardProps={{}}
+            />
+          </div>
+        </div>
       </div>
     );
   }
