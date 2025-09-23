@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import assetsPaths from "@public/assets/assets.json";
+import ReturnBackButton from "@/components/shared/ReturnBackButton";
 
 const NoCategoryItems = () => {
   const t = useTranslations();
@@ -34,6 +35,8 @@ const NoCategoryItems = () => {
             {t("general.actions.returnToHomePage")}
           </Button>
         </Link>
+
+        <ReturnBackButton />
       </div>
     </div>
   );
