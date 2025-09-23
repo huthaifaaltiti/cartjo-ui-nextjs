@@ -13,26 +13,35 @@ import CategoryItems from "@/components/user/category/CategoryItems";
 import { LoggedUserWishlistProvider } from "@/contexts/LoggedUserWishList.context";
 
 interface PageProps {
-  params: {
-    locale: Locale | string;
-    category: string;
-  };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ locale: Locale | string; category: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function CategoryPage({
   params,
   searchParams,
 }: PageProps) {
-  const { locale } = params;
+  const { locale } = await params;
+  const { c_id } = await searchParams;
+  /* 
+  Ah 👍 this is a Next.js App Router gotcha.
+  The error:
 
-  const categoryId = searchParams?.c_id as string;
+    Error: Route "/[locale]/[category]" used `params.locale`. `params` should be awaited before using its properties.
+    Error: Route "/[locale]/[category]" used `searchParams.c_id`. `searchParams` should be awaited before using its properties.
+
+
+    happens because in Next.js 15+, params and searchParams in a server component page are now async APIs, not plain objects.
+    They need to be awaited before accessing.
+  */
+  const categoryId = c_id as string;
 
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery<DataResponse<Category>>(
-    getCategoryQueryOptions("en", categoryId)
+    getCategoryQueryOptions(locale, categoryId)
   );
+
   await queryClient.prefetchInfiniteQuery<DataListResponse<Product>>(
     getCategoryProductsQueryOptions(locale, categoryId)
   );
