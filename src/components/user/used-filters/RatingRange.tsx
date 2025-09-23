@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useState, useCallback, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { Star } from "lucide-react";
 import {
   Popover,
@@ -22,6 +23,8 @@ const RatingRange = ({
   onApplyFilter,
   initialFrom = 0,
 }: RatingRangeProps) => {
+  const t = useTranslations();
+
   const defaultRange = { from: 0, to: 5 };
 
   const [fromValue, setFromValue] = useState(initialFrom);
@@ -51,7 +54,9 @@ const RatingRange = ({
             className="flex items-center gap-2 h-8 px-3"
           >
             <Star className="w-4 h-4 text-secondary-900" />
-            <span className="text-sm text-secondary-900">Rating</span>
+            <span className="text-sm text-secondary-900">
+              {t("components.filters.RatingRange.rating")}
+            </span>
           </Button>
         </PopoverTrigger>
 
@@ -59,22 +64,24 @@ const RatingRange = ({
           <div className="w-full flex flex-col items-center gap-4">
             {/* From slider */}
             <div className="w-full flex justify-between items-center gap-4 mb-3">
-                <Label className="text-normal font-normal">Minimum Rating</Label>
-                <span className="flex items-center gap-1">
-                  <span className="w-auto text-normal text-gray-600">
-                    {fromValue.toFixed(1)}
-                  </span>
-                  <Star className="w-5 h-5 text-secondary-900" />
+              <Label className="text-normal font-normal">
+                {t("components.filters.RatingRange.minRate")}
+              </Label>
+              <span className="flex items-center gap-1">
+                <span className="w-auto text-normal text-gray-600">
+                  {fromValue.toFixed(1)}
                 </span>
-              </div>
-              <Slider
-                value={[fromValue]}
-                onValueChange={(val) => setFromValue(val[0])}
-                max={5}
-                min={0}
-                step={0.1}
-                className="w-full bg-grey-50/20"
-              />
+                <Star className="w-5 h-5 text-secondary-900" />
+              </span>
+            </div>
+            <Slider
+              value={[fromValue]}
+              onValueChange={(val) => setFromValue(val[0])}
+              max={5}
+              min={0}
+              step={0.1}
+              className="w-full bg-grey-50/20"
+            />
           </div>
 
           <div className="flex gap-2 pt-2">
@@ -84,7 +91,7 @@ const RatingRange = ({
               size="sm"
               className="w-1/2 h-8 px-3"
             >
-              Apply
+              {t("components.filters.actions.apply")}
             </Button>
             <Button
               onClick={handleClearFilter}
@@ -92,7 +99,7 @@ const RatingRange = ({
               size="sm"
               className="w-1/2 h-8 px-3"
             >
-              Clear
+              {t("components.filters.actions.clear")}
             </Button>
           </div>
         </PopoverContent>

@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useState, useCallback, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { CircleDollarSign } from "lucide-react";
 import {
   Popover,
@@ -10,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Currency } from "@/enums/currency.enum";
 
 interface PriceRangeProps {
   setPriceFrom: (value: number) => void;
@@ -26,6 +28,8 @@ const PriceRange = ({
   initialFrom = 0,
   initialTo = 1000,
 }: PriceRangeProps) => {
+  const t = useTranslations();
+
   const [customFrom, setCustomFrom] = useState<number>(initialFrom);
   const [customTo, setCustomTo] = useState<number>(initialTo);
 
@@ -65,7 +69,11 @@ const PriceRange = ({
         <PopoverContent className="w-60 p-3 space-y-2">
           <div className="w-full flex gap-2">
             <div className="w-1/2 flex flex-col gap-1">
-              <Label className="text-xs text-gray-600">From (JOD)</Label>
+              <Label className="text-xs text-gray-600">
+                {t("components.filters.PriceRange.from", {
+                  currency: Currency.JOD,
+                })}
+              </Label>
               <Input
                 type="number"
                 value={customFrom}
@@ -78,7 +86,11 @@ const PriceRange = ({
             </div>
 
             <div className="w-1/2 flex flex-col gap-1">
-              <Label className="text-xs text-gray-600">To (JOD)</Label>
+              <Label className="text-xs text-gray-600">
+                {t("components.filters.PriceRange.to", {
+                  currency: Currency.JOD,
+                })}
+              </Label>
               <Input
                 type="number"
                 value={customTo}
@@ -99,7 +111,7 @@ const PriceRange = ({
               size="sm"
               className="w-1/2 h-8 px-3"
             >
-              Go
+              {t("components.filters.actions.apply")}
             </Button>
             <Button
               onClick={handleClearFilter}
@@ -107,7 +119,7 @@ const PriceRange = ({
               size="sm"
               className="w-1/2 h-8 px-3"
             >
-              Clear
+              {t("components.filters.actions.clear")}
             </Button>
           </div>
         </PopoverContent>

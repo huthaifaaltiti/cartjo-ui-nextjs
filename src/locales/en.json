@@ -148,6 +148,21 @@
       "failedLoad": "Failed to load banners",
       "noData": "No active banners found",
       "checkLater": "Check back later for new banners"
+    },
+    "filters": {
+      "actions": {
+        "apply": "Apply",
+        "clear": "Clear"
+      },
+      "PriceRange": {
+        "price": "Price",
+        "from": "From ({currency})",
+        "to": "To ({currency})"
+      },
+      "RatingRange": {
+        "rating": "Rating",
+        "minRate": "Minimum Rating"
+      }
     }
   },
   "routes": {

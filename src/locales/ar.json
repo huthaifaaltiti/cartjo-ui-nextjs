@@ -143,6 +143,26 @@
       "failedLoad": "فشل تحميل التصنيفات الرئيسية",
       "noData": "لم يتم العثور على تصنيفات رئيسية",
       "checkLater": "تحقق مرة أخرى لاحقًا للحصول على فئات جديدة"
+    },
+    "BannersCarouselClient": {
+      "failedLoad": "فشل في تحميل البنرات",
+      "noData": "لم يتم العثور على أي بنرات نشطة",
+      "checkLater": "تحقق لاحقًا لعرض بنرات جديدة"
+    },
+    "filters": {
+      "actions": {
+        "apply": "تطبيق",
+        "clear": "مسح"
+      },
+      "PriceRange": {
+        "price": "السعر",
+        "from": "من ({currency})",
+        "to": "إلى ({currency})"
+      },
+      "RatingRange": {
+        "rating": "التقييم",
+        "minRate": "أدنى تقييم"
+      }
     }
   },
   "routes": {
