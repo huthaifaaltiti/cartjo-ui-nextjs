@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { useGeneralContext } from "@/contexts/General.context";
 
 interface RatingRangeProps {
   setRatingFrom: (value: number) => void;
@@ -24,6 +25,7 @@ const RatingRange = ({
   initialFrom = 0,
 }: RatingRangeProps) => {
   const t = useTranslations();
+  const { dir } = useGeneralContext();
 
   const defaultRange = { from: 0, to: 5 };
 
@@ -75,6 +77,7 @@ const RatingRange = ({
               </span>
             </div>
             <Slider
+              dir={dir}
               value={[fromValue]}
               onValueChange={(val) => setFromValue(val[0])}
               max={5}
