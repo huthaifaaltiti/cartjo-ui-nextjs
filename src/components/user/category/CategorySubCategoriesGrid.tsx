@@ -6,9 +6,9 @@ import { useTranslations } from "use-intl";
 import { isArabicLocale } from "@/config/locales.config";
 import { useCategoryQuery } from "@/hooks/react-query/useCategoryQuery";
 import { SubCategory } from "@/types/subCategory";
-import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
+import SubCategoryCard from "./SubCategoryCard";
 
 const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
   const t = useTranslations();
@@ -67,7 +67,9 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
     return (
       <div className={containerClass}>
         <NoData
-          title={t("routes.categories.components.CategorySubCategoriesGrid.noData")}
+          title={t(
+            "routes.categories.components.CategorySubCategoriesGrid.noData"
+          )}
           description={t(
             "routes.categories.components.CategorySubCategoriesGrid.checkLater"
           )}
@@ -89,19 +91,12 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
             const image = isAr ? sc?.media?.ar?.url : sc?.media?.en?.url;
 
             return (
-              <div
+              <SubCategoryCard
                 key={sc._id}
-                className="group cursor-pointer rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-              >
-                {/* Image */}
-                <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-                  <ImageWithFallback
-                    src={image}
-                    alt={name}
-                    className="object-contain w-3/4 h-3/4 transition-transform duration-500 group-hover:scale-110"
-                  />
-                </div>
-              </div>
+                id={sc._id}
+                name={name}
+                image={image}
+              />
             );
           })}
         </div>
