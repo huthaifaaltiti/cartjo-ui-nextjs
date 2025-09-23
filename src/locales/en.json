@@ -155,12 +155,12 @@
         "clear": "Clear"
       },
       "PriceRange": {
-        "price": "By Price",
+        "price": "Filter by Price",
         "from": "From ({currency})",
         "to": "To ({currency})"
       },
       "RatingRange": {
-        "rating": "By Rating",
+        "rating": "Filter by Rating",
         "minRate": "Minimum Rating"
       },
       "DateRange": {
