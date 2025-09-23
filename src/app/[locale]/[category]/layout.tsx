@@ -9,7 +9,7 @@ export default async function PageLayout({
   return (
     <>
       <TopBar />
-      <MaxWidthWrapper className="w-full  min-h-[70vh]">
+      <MaxWidthWrapper className="w-full min-h-[70vh]">
         <div className="w-full">{children}</div>
       </MaxWidthWrapper>
     </>

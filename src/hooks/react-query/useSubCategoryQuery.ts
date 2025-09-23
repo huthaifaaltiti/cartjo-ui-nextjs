@@ -8,31 +8,32 @@ import { useAuthContext } from "../useAuthContext";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { Product } from "@/types/product.type";
 
-interface FetchCategoryParams {
+interface FetchSubCategoryParams {
   lang?: Locale | string;
-  categoryId: string;
+  subCategoryId: string;
 }
 
-export const fetchCategory = async ({
+export const fetchSubCategory = async ({
   lang = "en",
-  categoryId,
-}: FetchCategoryParams): Promise<DataResponse<Category>> => {
-  const url = new URL(`${API_ENDPOINTS.CATEGORY.ONE}/${categoryId}`);
+  subCategoryId,
+}: FetchSubCategoryParams): Promise<DataResponse<Category>> => {
+  const url = new URL(`${API_ENDPOINTS.SUB_CATEGORY.ONE}/${subCategoryId}`);
 
   if (lang) url.searchParams.append("lang", lang);
 
   const res = await fetch(url.toString(), {});
 
-  if (!res.ok) throw new Error("Could not retrieve category");
+  if (!res.ok) throw new Error("Could not retrieve sub-category");
 
   const resObj = await res.json();
 
   return resObj;
 };
 
-interface FetchCategoryProductsParams {
+interface FetchSubCategoryProductsParams {
   lang?: string | Locale;
   categoryId: string;
+  subCategoryId: string;
   limit?: number;
   lastId?: string;
   priceFrom?: number;
@@ -43,10 +44,11 @@ interface FetchCategoryProductsParams {
   beforeNumOfDays?: number;
 }
 
-export const fetchCategoryProducts = async ({
+export const fetchSubCategoryProducts = async ({
   lang = "en",
   categoryId,
-  limit = PAGINATION_LIMITS.PUBLIC_CATEGORY_PRODUCTS_ITEMS,
+  subCategoryId,
+  limit = PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS,
   lastId,
   priceFrom,
   priceTo,
@@ -54,11 +56,12 @@ export const fetchCategoryProducts = async ({
   createdFrom,
   createdTo,
   beforeNumOfDays,
-}: FetchCategoryProductsParams): Promise<DataListResponse<Product>> => {
-  const url = new URL(`${API_ENDPOINTS.CATEGORY.PRODUCTS}`);
+}: FetchSubCategoryProductsParams): Promise<DataListResponse<Product>> => {
+  const url = new URL(`${API_ENDPOINTS.SUB_CATEGORY.PRODUCTS}`);
 
   if (lang) url.searchParams.append("lang", lang);
   if (categoryId) url.searchParams.append("categoryId", categoryId);
+  if (subCategoryId) url.searchParams.append("subCategoryId", subCategoryId);
   if (limit) url.searchParams.append("limit", String(limit));
   if (lastId) url.searchParams.append("lastId", lastId);
   if (priceFrom !== undefined && priceFrom > 0)
@@ -76,33 +79,29 @@ export const fetchCategoryProducts = async ({
 
   const res = await fetch(url.toString(), {});
 
-  if (!res.ok) throw new Error("Could not retrieve category's products");
+  if (!res.ok) throw new Error("Could not retrieve sub-category's products");
 
   const resObj = await res.json();
 
   return resObj;
 };
 
-export const useCategoryQuery = (categoryId?: string) => {
+export const useSubCategoryQuery = (subCategoryId?: string) => {
   const { locale } = useAuthContext();
 
   return useQuery({
-    queryKey: ["publicCategory", locale, categoryId],
-    queryFn: () => fetchCategory({ lang: locale, categoryId: categoryId! }),
+    queryKey: ["publicSubCategory", locale, subCategoryId],
+    queryFn: () =>
+      fetchSubCategory({ lang: locale, subCategoryId: subCategoryId! }),
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
-    enabled: !!categoryId, // only run if id exists
+    enabled: !!subCategoryId,
   });
 };
 
-// export const useCategoryProductsQuery = (categoryId: string) => {
-//   const { locale } = useAuthContext();
-
-//   return useInfiniteQuery(getCategoryProductsQueryOptions(locale, categoryId));
-// };
-
-export const useCategoryProductsQuery = (
+export const useSubCategoryProductsQuery = (
   categoryId: string,
+  subCategoryId: string,
   priceFrom?: number,
   priceTo?: number,
   ratingFrom?: number,
@@ -114,8 +113,9 @@ export const useCategoryProductsQuery = (
 
   return useInfiniteQuery<DataListResponse<Product>>({
     queryKey: [
-      "publicCategoryProducts",
+      "publicSubCategoryProducts",
       categoryId,
+      subCategoryId,
       locale,
       priceFrom,
       priceTo,
@@ -129,10 +129,11 @@ export const useCategoryProductsQuery = (
         throw new Error("No category id found");
       }
 
-      return fetchCategoryProducts({
+      return fetchSubCategoryProducts({
         lang: locale,
         categoryId,
-        limit: PAGINATION_LIMITS.PUBLIC_CATEGORY_PRODUCTS_ITEMS,
+        subCategoryId,
+        limit: PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS,
         lastId:
           pageParam && typeof pageParam === "string" ? pageParam : undefined,
         priceFrom,
@@ -152,6 +153,6 @@ export const useCategoryProductsQuery = (
     initialPageParam: undefined,
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
-    enabled: !!categoryId,
+    enabled: !!categoryId && !!subCategoryId,
   });
 };

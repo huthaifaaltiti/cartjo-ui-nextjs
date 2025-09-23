@@ -1,5 +1,3 @@
-"use client";
-
 import { memo } from "react";
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
 
@@ -7,19 +5,12 @@ interface SubCategoryCardProps {
   id: string;
   name: string;
   image: string;
-  onClick?: (id: string) => void;
 }
 
-const SubCategoryCard = ({
-  id,
-  name,
-  image,
-  onClick,
-}: SubCategoryCardProps) => {
+const SubCategoryCard = ({ id, name, image }: SubCategoryCardProps) => {
   return (
     <div
       key={id}
-      onClick={() => onClick?.(id)}
       className="group cursor-pointer rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
     >
       <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">

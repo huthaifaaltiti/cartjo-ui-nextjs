@@ -9,6 +9,7 @@ import {
 } from "@/hooks/react-query/useCategoryQuery";
 import { fetchCategoriesPicks } from "@/hooks/react-query/useProductsQuery";
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
+import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { Locale } from "@/types/locale";
 import { Product } from "@/types/product.type";
 import { DataListResponse } from "@/types/service-response.type";
@@ -115,5 +116,40 @@ export const getCategoryProductsQueryOptions = (
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
     enabled: !!categoryId,
+  };
+};
+
+export const getSubCategoryProductsQueryOptions = (
+  locale: string,
+  categoryId: string,
+  subCategoryId: string
+) => {
+  const getNextPageParam = (lastPage: DataListResponse<Product>) => {
+    if (!lastPage?.data?.length) return undefined;
+
+    const lastProduct = lastPage.data[lastPage.data.length - 1];
+    return lastProduct?._id || undefined;
+  };
+
+  return {
+    queryKey: ["publicSubCategoryProducts", categoryId, locale, subCategoryId],
+    queryFn: async ({ pageParam }: { pageParam: unknown }) => {
+      if (!categoryId || !subCategoryId) {
+        throw new Error("No category or subCategory id found");
+      }
+
+      return fetchSubCategoryProducts({
+        lang: locale,
+        categoryId,
+        subCategoryId,
+        limit: PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS,
+        lastId: typeof pageParam === "string" ? pageParam : undefined,
+      });
+    },
+    getNextPageParam,
+    initialPageParam: undefined,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    enabled: !!categoryId && !!subCategoryId,
   };
 };

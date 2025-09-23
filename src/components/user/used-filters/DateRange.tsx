@@ -177,7 +177,7 @@ const DateRange = ({
                   {t("components.filters.DateRange.fromDate")}
                 </Label>
                 <Input
-                dir={dir}
+                  dir={dir}
                   id="fromDate"
                   type="date"
                   value={formatDateForInput(fromDate)}
@@ -191,7 +191,7 @@ const DateRange = ({
                   {t("components.filters.DateRange.toDate")}
                 </Label>
                 <Input
-                dir={dir}
+                  dir={dir}
                   id="toDate"
                   type="date"
                   value={formatDateForInput(toDate)}
@@ -211,7 +211,7 @@ const DateRange = ({
                 {t("components.filters.DateRange.daysBeforeToday")}
               </Label>
               <Input
-              dir={dir}
+                dir={dir}
                 id="daysBefore"
                 type="number"
                 min="1"

@@ -49,7 +49,8 @@
       "proceed": "Proceed",
       "activate": "Activate",
       "deActivate": "De Activate",
-      "returnToHomePage": "Return To Home Page"
+      "returnToHomePage": "Return To Home Page",
+      "returnBack": "Return Back"
     },
     "others": {
       "unknown": "Unknown",
@@ -1597,6 +1598,36 @@
           "deleteError": "Error happened while deleting wishlist items",
           "sendToCart": "Send All Items To Cart",
           "sendingToCart": "Sending Items To Cart..."
+        }
+      }
+    },
+    "categories": {
+      "failed": "Failed to load categories",
+      "components": {
+        "CategorySubCategoriesGrid": {
+          "header": "Explore Subcategories and Find What Suits You Best 🤗",
+          "failed": "Oops! Failed to load subcategories!",
+          "noData": "No subcategories available",
+          "checkLater": "Check later for sub-categories"
+        },
+        "CategoryItems": {
+          "failed": "Oops! Failed to load category items!",
+          "noData": "No subcategories available"
+        },
+        "NoCategoryItems": {
+          "empty": "Oops! No items found for this category. Start searching for other ones!"
+        }
+      }
+    },
+    "subCategory": {
+      "failed": "Failed to load sub-category's data",
+      "components": {
+        "SubCategoryItems": {
+          "failed": "Oops! Failed to load sub-category's items!",
+          "noData": "No subcategories data available"
+        },
+        "NoCategoryItems": {
+          "empty": "Oops! No items found for this sub-category. Start searching for other ones!"
         }
       }
     }

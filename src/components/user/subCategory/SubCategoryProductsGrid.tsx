@@ -1,19 +1,16 @@
 "use client";
 
 import { memo, useMemo } from "react";
-import Link from "next/link";
 import { useLocale } from "next-intl";
-import { usePathname } from "next/navigation";
 import { useTranslations } from "use-intl";
 import { isArabicLocale } from "@/config/locales.config";
 import { useCategoryQuery } from "@/hooks/react-query/useCategoryQuery";
 import { SubCategory } from "@/types/subCategory";
+import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
-import SubCategoryCard from "./SubCategoryCard";
 
-const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
-  const pathname = usePathname();
+const CategoryProductsGrid = ({ categoryId }: { categoryId: string }) => {
   const t = useTranslations();
   const locale = useLocale();
   const isAr = isArabicLocale(locale);
@@ -34,23 +31,7 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
     !showLoader && !showError && subCategoriesList.length === 0;
   const showData = !showLoader && !showError && subCategoriesList.length > 0;
 
-  const containerClass = "w-full pt-3";
-
-  const getSubCategoryUrl = (subCategory: SubCategory) => {
-    const subCategorySlug = subCategory?.slug;
-    const subCategoryName = subCategory?.name?.en;
-
-    const urlSegment =
-      subCategorySlug || subCategoryName?.toLowerCase().replace(/\s+/g, "-");
-
-    return {
-      pathname: `${pathname}/${urlSegment}`,
-      query: {
-        sc_id: subCategory._id,
-        c_id: categoryId,
-      },
-    };
-  };
+  const containerClass = "w-full border-t border-grey-50/20 pt-3";
 
   if (showLoader) {
     return (
@@ -75,7 +56,7 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
         <ErrorMessage
           message={
             error?.message ||
-            t("routes.categories.components.CategorySubCategoriesGrid.failed")
+            t("routes.categories.components.CategoryProductsGrid.failed")
           }
         />
       </div>
@@ -86,11 +67,9 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
     return (
       <div className={containerClass}>
         <NoData
-          title={t(
-            "routes.categories.components.CategorySubCategoriesGrid.noData"
-          )}
+          title={t("routes.categories.components.CategoryProductsGrid.noData")}
           description={t(
-            "routes.categories.components.CategorySubCategoriesGrid.checkLater"
+            "routes.categories.components.CategoryProductsGrid.checkLater"
           )}
         />
       </div>
@@ -101,7 +80,7 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
     return (
       <div className={containerClass}>
         <h1 className="sm:text-md md:text-lg lg:text-2xl text-text-primary-400 font-bold">
-          {t("routes.categories.components.CategorySubCategoriesGrid.header")}
+          {t("routes.categories.components.CategoryProductsGrid.header")}
         </h1>
 
         <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -110,13 +89,19 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
             const image = isAr ? sc?.media?.ar?.url : sc?.media?.en?.url;
 
             return (
-              <Link
-                href={getSubCategoryUrl(sc)}
+              <div
                 key={sc._id}
-                className="transition-transform hover:scale-105"
+                className="group cursor-pointer rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
               >
-                <SubCategoryCard id={sc._id} name={name} image={image} />
-              </Link>
+                {/* Image */}
+                <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+                  <ImageWithFallback
+                    src={image}
+                    alt={name}
+                    className="object-contain w-3/4 h-3/4 transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+              </div>
             );
           })}
         </div>
@@ -127,4 +112,4 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
   return null;
 };
 
-export default memo(CategorySubCategoriesGrid);
+export default memo(CategoryProductsGrid);
