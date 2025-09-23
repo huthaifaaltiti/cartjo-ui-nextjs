@@ -37,6 +37,7 @@ interface FetchCategoryProductsParams {
   lastId?: string;
   priceFrom?: number;
   priceTo?: number;
+  ratingFrom?: number;
 }
 
 export const fetchCategoryProducts = async ({
@@ -46,6 +47,7 @@ export const fetchCategoryProducts = async ({
   lastId,
   priceFrom,
   priceTo,
+  ratingFrom
 }: FetchCategoryProductsParams): Promise<DataListResponse<Product>> => {
   const url = new URL(`${API_ENDPOINTS.CATEGORY.PRODUCTS}`);
 
@@ -57,6 +59,8 @@ export const fetchCategoryProducts = async ({
     url.searchParams.append("priceFrom", String(priceFrom));
   if (priceTo !== undefined && priceTo > 0)
     url.searchParams.append("priceTo", String(priceTo));
+  if (ratingFrom !== undefined && ratingFrom > 0)
+    url.searchParams.append("ratingFrom", String(ratingFrom));
 
   const res = await fetch(url.toString(), {});
 
@@ -88,7 +92,8 @@ export const useCategoryQuery = (categoryId?: string) => {
 export const useCategoryProductsQuery = (
   categoryId: string,
   priceFrom?: number,
-  priceTo?: number
+  priceTo?: number,
+  ratingFrom?: number
 ) => {
   const { locale } = useAuthContext();
 
@@ -99,6 +104,7 @@ export const useCategoryProductsQuery = (
       locale,
       priceFrom,
       priceTo,
+      ratingFrom
     ],
     queryFn: ({ pageParam }) => {
       if (!categoryId) {
@@ -113,6 +119,7 @@ export const useCategoryProductsQuery = (
           pageParam && typeof pageParam === "string" ? pageParam : undefined,
         priceFrom,
         priceTo,
+        ratingFrom
       });
     },
     getNextPageParam: (lastPage) => {

@@ -13,49 +13,33 @@ import { Slider } from "@/components/ui/slider";
 
 interface RatingRangeProps {
   setRatingFrom: (value: number) => void;
-  setRatingTo: (value: number) => void;
-  onApplyFilter?: (from: number, to: number) => void;
+  onApplyFilter?: (from: number) => void;
   initialFrom?: number;
-  initialTo?: number;
 }
 
 const RatingRange = ({
   setRatingFrom,
-  setRatingTo,
   onApplyFilter,
   initialFrom = 0,
-  initialTo = 5,
 }: RatingRangeProps) => {
-  const defaultRange: [number, number] = [0, 5];
-  const [ratingRange, setRatingRange] = useState<number[]>([
-    initialFrom,
-    initialTo,
-  ]);
+  const defaultRange = { from: 0, to: 5 };
 
-  console.log({ ratingRange });
+  const [fromValue, setFromValue] = useState(initialFrom);
 
-  // sync props → local state
   useEffect(() => {
-    setRatingRange([initialFrom, initialTo]);
-  }, [initialFrom, initialTo]);
-
-  const handleRangeChange = useCallback((values: number[]) => {
-    setRatingRange(values);
-  }, []);
+    setFromValue(initialFrom);
+  }, [initialFrom]);
 
   const handleApplyFilter = useCallback(() => {
-    const [from, to] = ratingRange;
-    setRatingFrom(from);
-    setRatingTo(to);
-    onApplyFilter?.(from, to);
-  }, [ratingRange, setRatingFrom, setRatingTo, onApplyFilter]);
+    setRatingFrom(fromValue);
+    onApplyFilter?.(fromValue);
+  }, [fromValue, setRatingFrom, onApplyFilter]);
 
   const handleClearFilter = useCallback(() => {
-    setRatingRange(defaultRange);
-    setRatingFrom(defaultRange[0]);
-    setRatingTo(defaultRange[1]);
-    onApplyFilter?.(defaultRange[0], defaultRange[1]);
-  }, [setRatingFrom, setRatingTo, onApplyFilter]);
+    setFromValue(defaultRange.from);
+    setRatingFrom(defaultRange.from);
+    onApplyFilter?.(defaultRange.from);
+  }, [setRatingFrom, onApplyFilter]);
 
   return (
     <div className="w-auto flex items-center gap-2">
@@ -71,30 +55,26 @@ const RatingRange = ({
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-80 p-4 space-y-4">
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <Label className="text-sm font-medium">Rating Range</Label>
-              <span className="text-xs text-gray-600">
-                {ratingRange[0].toFixed(1)} – {ratingRange[1].toFixed(1)} stars
-              </span>
-            </div>
-
-            <div className="px-2">
+        <PopoverContent className="w-80 p-4 space-y-6">
+          <div className="w-full flex flex-col items-center gap-4">
+            {/* From slider */}
+            <div className="w-full flex justify-between items-center gap-4 mb-3">
+                <Label className="text-normal font-normal">Minimum Rating</Label>
+                <span className="flex items-center gap-1">
+                  <span className="w-auto text-normal text-gray-600">
+                    {fromValue.toFixed(1)}
+                  </span>
+                  <Star className="w-5 h-5 text-secondary-900" />
+                </span>
+              </div>
               <Slider
-                value={ratingRange}
-                onValueChange={handleRangeChange}
+                value={[fromValue]}
+                onValueChange={(val) => setFromValue(val[0])}
                 max={5}
-                min={0.0}
+                min={0}
                 step={0.1}
                 className="w-full bg-grey-50/20"
               />
-            </div>
-
-            <div className="flex justify-between text-xs text-gray-500">
-              <span>0 stars</span>
-              <span>5 stars</span>
-            </div>
           </div>
 
           <div className="flex gap-2 pt-2">

@@ -34,12 +34,6 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
     serialize: (value) => String(value),
   });
 
-  const [ratingTo, setRatingTo] = useQueryState<number>("ratingTo", {
-    defaultValue: 0,
-    parse: (value) => Number(value),
-    serialize: (value) => String(value),
-  });
-
   const {
     data,
     isLoading,
@@ -51,7 +45,7 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
     isError,
     error,
     refetch,
-  } = useCategoryProductsQuery(categoryId, priceFrom, priceTo);
+  } = useCategoryProductsQuery(categoryId, priceFrom, priceTo, ratingFrom);
 
   const categoryProducts = useMemo(() => {
     return (
@@ -69,12 +63,11 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   );
 
   const handleApplyRangeFilter = useCallback(
-    (from: number, to: number) => {
+    (from: number) => {
       setRatingFrom(from);
-      setRatingTo(to);
       refetch();
     },
-    [refetch, setRatingFrom, setRatingTo]
+    [refetch, setRatingFrom]
   );
 
   const showLoader =
@@ -125,6 +118,11 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
               initialFrom={priceFrom}
               initialTo={priceTo}
             />
+            <RatingRange
+              setRatingFrom={setRatingFrom}
+              onApplyFilter={handleApplyRangeFilter}
+              initialFrom={ratingFrom}
+            />
           </div>
 
           {/* items */}
@@ -149,13 +147,10 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
               initialFrom={priceFrom}
               initialTo={priceTo}
             />
-
             <RatingRange
               setRatingFrom={setRatingFrom}
-              setRatingTo={setRatingTo}
               onApplyFilter={handleApplyRangeFilter}
               initialFrom={ratingFrom}
-              initialTo={ratingTo}
             />
           </div>
 
