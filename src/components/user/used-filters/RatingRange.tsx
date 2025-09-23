@@ -30,9 +30,18 @@ const RatingRange = ({
   const defaultRange = { from: 0, to: 5 };
 
   const [fromValue, setFromValue] = useState(initialFrom);
+  const [isActiveFilter, setIsActiveFilter] = useState<boolean>(false);
 
   useEffect(() => {
     setFromValue(initialFrom);
+  }, [initialFrom]);
+
+  useEffect(() => {
+    if (initialFrom) {
+      setIsActiveFilter(true);
+    } else {
+      setIsActiveFilter(false);
+    }
   }, [initialFrom]);
 
   const handleApplyFilter = useCallback(() => {
@@ -53,7 +62,9 @@ const RatingRange = ({
           <Button
             variant="outline"
             size="sm"
-            className="flex items-center gap-2 h-8 px-3"
+            className={`flex items-center gap-2 h-8 px-3 ${
+              isActiveFilter ? "border-[2px] border-primary-500" : ""
+            }`}
           >
             <Star className="w-4 h-4 text-secondary-900" />
             <span className="text-sm text-secondary-900">

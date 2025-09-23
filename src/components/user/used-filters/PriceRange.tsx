@@ -36,10 +36,19 @@ const PriceRange = ({
 
   const [customFrom, setCustomFrom] = useState<number>(initialFrom);
   const [customTo, setCustomTo] = useState<number>(initialTo);
+  const [isActiveFilter, setIsActiveFilter] = useState<boolean>(false);
 
   useEffect(() => {
     setCustomFrom(initialFrom);
     setCustomTo(initialTo);
+  }, [initialFrom, initialTo]);
+
+  useEffect(() => {
+    if (initialFrom || initialTo) {
+      setIsActiveFilter(true);
+    } else {
+      setIsActiveFilter(false);
+    }
   }, [initialFrom, initialTo]);
 
   const handleApplyFilter = useCallback(() => {
@@ -63,7 +72,9 @@ const PriceRange = ({
           <Button
             variant="outline"
             size="sm"
-            className="flex items-center gap-2 h-8 px-3"
+            className={`flex items-center gap-2 h-8 px-3 ${
+              isActiveFilter ? "border-[2px] border-primary-500" : ""
+            }`}
           >
             <CircleDollarSign className="w-4 h-4 text-secondary-900" />
             <span className="text-sm text-secondary-900">
@@ -76,8 +87,10 @@ const PriceRange = ({
           <div className="w-full flex gap-2">
             <div className="w-1/2 flex flex-col gap-1">
               <Label className="text-xs text-gray-600 mb-1">
-                {t("components.filters.PriceRange.from", {currency: isArabic ? Currency.JOD.labelAr : Currency.JOD.labelEn,
-                  
+                {t("components.filters.PriceRange.from", {
+                  currency: isArabic
+                    ? Currency.JOD.labelAr
+                    : Currency.JOD.labelEn,
                 })}
               </Label>
               <Input
@@ -94,7 +107,9 @@ const PriceRange = ({
             <div className="w-1/2 flex flex-col gap-1">
               <Label className="text-xs text-gray-600 mb-1">
                 {t("components.filters.PriceRange.to", {
-                  currency: isArabic ? Currency.JOD.labelAr : Currency.JOD.labelEn,
+                  currency: isArabic
+                    ? Currency.JOD.labelAr
+                    : Currency.JOD.labelEn,
                 })}
               </Label>
               <Input
