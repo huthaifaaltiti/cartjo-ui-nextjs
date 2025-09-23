@@ -1,25 +1,27 @@
 "use client";
 
 import { memo } from "react";
-import { Category } from "@/types/category.type";
+import { useTranslations } from "next-intl";
+import { getCategoriesPicksQueryOptions } from "@/utils/queryOptions";
 import { useQueries } from "@tanstack/react-query";
+import { Category } from "@/types/category.type";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import ShowcaseProductVertCard from "./ShowcaseProductVertCard";
-import { isArabicLocale } from "@/config/locales.config";
-import { getCategoriesPicksQueryOptions } from "@/utils/queryOptions";
 import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
-import { useTranslations } from "next-intl";
 import NoData from "@/components/shared/NoData";
+import { useGeneralContext } from "@/contexts/General.context";
+import SelectedCategoriesItemsContentHeader from "./SelectedCategoriesItemsContentHeader";
 
 const SelectedCategoriesItemsContent = ({
   randomCategories,
 }: {
   randomCategories: Category[];
 }) => {
-  const { accessToken, locale } = useAuthContext();
-  const isArabic = isArabicLocale(locale);
   const t = useTranslations();
+
+  const { accessToken, locale } = useAuthContext();
+  const { isArabic } = useGeneralContext();
 
   const results = useQueries({
     queries: randomCategories.map((category) =>
@@ -49,14 +51,23 @@ const SelectedCategoriesItemsContent = ({
           Array.isArray(data?.data) &&
           data.data.length > 0;
 
-        // skip rendering block if no data
         if (hasNoData) return null;
 
         return (
           <div key={category._id} className="pb-4">
-            <h3 className="text-lg font-semibold mb-2">
-              {isArabic ? category.name.ar : category.name.en}
-            </h3>
+            <SelectedCategoriesItemsContentHeader
+              category={category}
+              isArabic={isArabic}
+              locale={locale}
+              ctaText={t(
+                "routes.home.components.SelectedCategoriesItemsHeader.ctaBtnText",
+                {
+                  categoryName: isArabic
+                    ? category?.name?.ar
+                    : category?.name?.en,
+                }
+              )}
+            />
 
             {showLoader && (
               <div className={containerClass}>

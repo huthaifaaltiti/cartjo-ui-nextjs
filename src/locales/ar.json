@@ -299,7 +299,7 @@
         },
         "SelectedCategoriesItemsHeader": {
           "header": "اختيارات من متجرنا",
-          "ctaBtnText": "تصفَّح فئآتنا"
+          "ctaBtnText": "تصفَّح المزيد من عناصر {categoryName}"
         },
         "SelectedCategoriesItemsContent": {
           "err": "فشل في تحميل المنتجات",

@@ -299,7 +299,7 @@
         },
         "SelectedCategoriesItemsHeader": {
           "header": "Curated picks from our store",
-          "ctaBtnText": "View Categories"
+          "ctaBtnText": "View More of {categoryName} Items"
         },
         "SelectedCategoriesItemsContent": {
           "err": "Failed to load products",
