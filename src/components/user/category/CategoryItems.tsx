@@ -12,6 +12,7 @@ import CategoryProductCard from "./CategoryProductCard";
 import CategoryItemsLoading from "./CategoryItemsLoading";
 import PriceRange from "../used-filters/PriceRange";
 import RatingRange from "../used-filters/RatingRange";
+import DateRange from "../used-filters/DateRange";
 
 const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   const t = useTranslations();
@@ -21,18 +22,34 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
     parse: (value) => Number(value),
     serialize: (value) => String(value),
   });
-
   const [priceTo, setPriceTo] = useQueryState<number>("priceTo", {
     defaultValue: 0,
     parse: (value) => Number(value),
     serialize: (value) => String(value),
   });
-
   const [ratingFrom, setRatingFrom] = useQueryState<number>("ratingFrom", {
     defaultValue: 0,
     parse: (value) => Number(value),
     serialize: (value) => String(value),
   });
+  const [createdFrom, setCreatedFrom] = useQueryState<string>("createdFrom", {
+    defaultValue: "",
+    parse: (value) => value || "",
+    serialize: (value) => value,
+  });
+  const [createdTo, setCreatedTo] = useQueryState<string>("createdTo", {
+    defaultValue: "",
+    parse: (value) => value || "",
+    serialize: (value) => value,
+  });
+  const [beforeNumOfDays, setBeforeNumOfDays] = useQueryState<number>(
+    "beforeNumOfDays",
+    {
+      defaultValue: 0,
+      parse: (value) => Number(value),
+      serialize: (value) => String(value),
+    }
+  );
 
   const {
     data,
@@ -45,7 +62,15 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
     isError,
     error,
     refetch,
-  } = useCategoryProductsQuery(categoryId, priceFrom, priceTo, ratingFrom);
+  } = useCategoryProductsQuery(
+    categoryId,
+    priceFrom,
+    priceTo,
+    ratingFrom,
+    createdFrom,
+    createdTo,
+    beforeNumOfDays
+  );
 
   const categoryProducts = useMemo(() => {
     return (
@@ -68,6 +93,27 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
       refetch();
     },
     [refetch, setRatingFrom]
+  );
+
+  const handleApplyDateFilter = useCallback(
+    (
+      filterType: "dateRange" | "daysBefore",
+      createdFromValue?: string,
+      createdToValue?: string,
+      beforeNumOfDaysValue?: number
+    ) => {
+      if (filterType === "dateRange") {
+        setCreatedFrom(createdFromValue || "");
+        setCreatedTo(createdToValue || "");
+        setBeforeNumOfDays(0);
+      } else {
+        setBeforeNumOfDays(beforeNumOfDaysValue || 0);
+        setCreatedFrom("");
+        setCreatedTo("");
+      }
+      refetch();
+    },
+    [refetch, setCreatedFrom, setCreatedTo, setBeforeNumOfDays]
   );
 
   const showLoader =
@@ -123,6 +169,15 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
               onApplyFilter={handleApplyRangeFilter}
               initialFrom={ratingFrom}
             />
+            <DateRange
+              setCreatedFrom={setCreatedFrom}
+              setCreatedTo={setCreatedTo}
+              setBeforeNumOfDays={setBeforeNumOfDays}
+              onApplyFilter={handleApplyDateFilter}
+              initialCreatedFrom={createdFrom}
+              initialCreatedTo={createdTo}
+              initialBeforeNumOfDays={beforeNumOfDays}
+            />
           </div>
 
           {/* items */}
@@ -151,6 +206,15 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
               setRatingFrom={setRatingFrom}
               onApplyFilter={handleApplyRangeFilter}
               initialFrom={ratingFrom}
+            />
+            <DateRange
+              setCreatedFrom={setCreatedFrom}
+              setCreatedTo={setCreatedTo}
+              setBeforeNumOfDays={setBeforeNumOfDays}
+              onApplyFilter={handleApplyDateFilter}
+              initialCreatedFrom={createdFrom}
+              initialCreatedTo={createdTo}
+              initialBeforeNumOfDays={beforeNumOfDays}
             />
           </div>
 

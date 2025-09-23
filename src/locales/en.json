@@ -155,13 +155,29 @@
         "clear": "Clear"
       },
       "PriceRange": {
-        "price": "Price",
+        "price": "By Price",
         "from": "From ({currency})",
         "to": "To ({currency})"
       },
       "RatingRange": {
-        "rating": "Rating",
+        "rating": "By Rating",
         "minRate": "Minimum Rating"
+      },
+      "DateRange": {
+        "dateFilter": "Filter by Date",
+        "filterType": "How would you like to filter by date?",
+        "selectDateRange": "Choose specific date range",
+        "selectDaysBefore": "Show items from the last few days",
+        "fromDate": "Start Date",
+        "toDate": "End Date",
+        "daysBeforeToday": "Number of Days",
+        "enterDays": "Enter number of days (e.g., 7 for last week)",
+        "daysBeforeHelper": "This will show items created in the last {days} days (since {date})",
+        "dateRangeHelper": "Select the period you want to see items from",
+        "exampleText": "Example: 30 days = last month's items",
+        "lastWeek": "Week",
+        "lastMonth": "Month",
+        "lastQuarter": "3 Months"
       }
     }
   },

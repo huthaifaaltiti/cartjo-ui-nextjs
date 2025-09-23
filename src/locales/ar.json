@@ -155,13 +155,29 @@
         "clear": "مسح"
       },
       "PriceRange": {
-        "price": "السعر",
+        "price": "تصفية حسب السعر",
         "from": "من ({currency})",
         "to": "إلى ({currency})"
       },
       "RatingRange": {
-        "rating": "التقييم",
+        "rating": "تصفية حسب التقييم",
         "minRate": "أدنى تقييم"
+      },
+      "DateRange": {
+        "dateFilter": "تصفية حسب التاريخ",
+        "filterType": "كيف تريد التصفية حسب التاريخ؟",
+        "selectDateRange": "اختيار فترة زمنية محددة",
+        "selectDaysBefore": "عرض العناصر من الأيام الماضية",
+        "fromDate": "من تاريخ",
+        "toDate": "إلى تاريخ",
+        "daysBeforeToday": "عدد الأيام",
+        "enterDays": "أدخل عدد الأيام (مثال: 7 للأسبوع الماضي)",
+        "daysBeforeHelper": "سيتم عرض العناصر المُنشأة في آخر {days} أيام (منذ {date})",
+        "dateRangeHelper": "اختر الفترة التي تريد رؤية العناصر منها",
+        "exampleText": "مثال: 30 يوماً = عناصر الشهر الماضي",
+        "lastWeek": "أسبوع",
+        "lastMonth": "شهر",
+        "lastQuarter": "3 أشهر"
       }
     }
   },

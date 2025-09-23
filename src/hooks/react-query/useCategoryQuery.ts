@@ -38,6 +38,9 @@ interface FetchCategoryProductsParams {
   priceFrom?: number;
   priceTo?: number;
   ratingFrom?: number;
+  createdFrom?: string;
+  createdTo?: string;
+  beforeNumOfDays?: number;
 }
 
 export const fetchCategoryProducts = async ({
@@ -47,10 +50,14 @@ export const fetchCategoryProducts = async ({
   lastId,
   priceFrom,
   priceTo,
-  ratingFrom
+  ratingFrom,
+  createdFrom,
+  createdTo,
+  beforeNumOfDays,
 }: FetchCategoryProductsParams): Promise<DataListResponse<Product>> => {
   const url = new URL(`${API_ENDPOINTS.CATEGORY.PRODUCTS}`);
 
+  console.log({ createdFrom }, { createdTo }, { beforeNumOfDays });
   if (lang) url.searchParams.append("lang", lang);
   if (categoryId) url.searchParams.append("categoryId", categoryId);
   if (limit) url.searchParams.append("limit", String(limit));
@@ -61,6 +68,12 @@ export const fetchCategoryProducts = async ({
     url.searchParams.append("priceTo", String(priceTo));
   if (ratingFrom !== undefined && ratingFrom > 0)
     url.searchParams.append("ratingFrom", String(ratingFrom));
+  if (createdFrom !== undefined && createdFrom)
+    url.searchParams.append("createdFrom", String(createdFrom));
+  if (createdTo !== undefined && createdTo)
+    url.searchParams.append("createdTo", String(createdTo));
+  if (beforeNumOfDays !== undefined && beforeNumOfDays > 0)
+    url.searchParams.append("beforeNumOfDays", String(beforeNumOfDays));
 
   const res = await fetch(url.toString(), {});
 
@@ -93,7 +106,10 @@ export const useCategoryProductsQuery = (
   categoryId: string,
   priceFrom?: number,
   priceTo?: number,
-  ratingFrom?: number
+  ratingFrom?: number,
+  createdFrom?: string,
+  createdTo?: string,
+  beforeNumOfDays?: number
 ) => {
   const { locale } = useAuthContext();
 
@@ -104,7 +120,10 @@ export const useCategoryProductsQuery = (
       locale,
       priceFrom,
       priceTo,
-      ratingFrom
+      ratingFrom,
+      createdFrom,
+      createdTo,
+      beforeNumOfDays,
     ],
     queryFn: ({ pageParam }) => {
       if (!categoryId) {
@@ -119,7 +138,10 @@ export const useCategoryProductsQuery = (
           pageParam && typeof pageParam === "string" ? pageParam : undefined,
         priceFrom,
         priceTo,
-        ratingFrom
+        ratingFrom,
+        createdFrom,
+        createdTo,
+        beforeNumOfDays,
       });
     },
     getNextPageParam: (lastPage) => {
