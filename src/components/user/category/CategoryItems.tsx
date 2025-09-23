@@ -11,6 +11,7 @@ import NoCategoryItems from "./NoCategoryItems";
 import CategoryProductCard from "./CategoryProductCard";
 import CategoryItemsLoading from "./CategoryItemsLoading";
 import PriceRange from "../used-filters/PriceRange";
+import RatingRange from "../used-filters/RatingRange";
 
 const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   const t = useTranslations();
@@ -22,6 +23,18 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   });
 
   const [priceTo, setPriceTo] = useQueryState<number>("priceTo", {
+    defaultValue: 0,
+    parse: (value) => Number(value),
+    serialize: (value) => String(value),
+  });
+
+  const [ratingFrom, setRatingFrom] = useQueryState<number>("ratingFrom", {
+    defaultValue: 0,
+    parse: (value) => Number(value),
+    serialize: (value) => String(value),
+  });
+
+  const [ratingTo, setRatingTo] = useQueryState<number>("ratingTo", {
     defaultValue: 0,
     parse: (value) => Number(value),
     serialize: (value) => String(value),
@@ -53,6 +66,15 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
       refetch();
     },
     [refetch, setPriceFrom, setPriceTo]
+  );
+
+  const handleApplyRangeFilter = useCallback(
+    (from: number, to: number) => {
+      setRatingFrom(from);
+      setRatingTo(to);
+      refetch();
+    },
+    [refetch, setRatingFrom, setRatingTo]
   );
 
   const showLoader =
@@ -126,6 +148,14 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
               onApplyFilter={handleApplyPriceFilter}
               initialFrom={priceFrom}
               initialTo={priceTo}
+            />
+
+            <RatingRange
+              setRatingFrom={setRatingFrom}
+              setRatingTo={setRatingTo}
+              onApplyFilter={handleApplyRangeFilter}
+              initialFrom={ratingFrom}
+              initialTo={ratingTo}
             />
           </div>
 
