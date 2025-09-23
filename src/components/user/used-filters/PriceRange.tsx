@@ -11,7 +11,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Currency } from "@/enums/currency.enum";
+
+import { useGeneralContext } from "@/contexts/General.context";
+import { Currency } from "@/constants/currency.constant";
 
 interface PriceRangeProps {
   setPriceFrom: (value: number) => void;
@@ -29,6 +31,8 @@ const PriceRange = ({
   initialTo = 1000,
 }: PriceRangeProps) => {
   const t = useTranslations();
+
+  const { isArabic } = useGeneralContext()
 
   const [customFrom, setCustomFrom] = useState<number>(initialFrom);
   const [customTo, setCustomTo] = useState<number>(initialTo);
@@ -62,16 +66,18 @@ const PriceRange = ({
             className="flex items-center gap-2 h-8 px-3"
           >
             <CircleDollarSign className="w-4 h-4 text-secondary-900" />
-            <span className="text-sm text-secondary-900">Price</span>
+            <span className="text-sm text-secondary-900">
+              {t("components.filters.PriceRange.price")}
+            </span>
           </Button>
         </PopoverTrigger>
 
         <PopoverContent className="w-60 p-3 space-y-2">
           <div className="w-full flex gap-2">
             <div className="w-1/2 flex flex-col gap-1">
-              <Label className="text-xs text-gray-600">
-                {t("components.filters.PriceRange.from", {
-                  currency: Currency.JOD,
+              <Label className="text-xs text-gray-600 mb-1">
+                {t("components.filters.PriceRange.from", {currency: isArabic ? Currency.JOD.labelAr : Currency.JOD.labelEn,
+                  
                 })}
               </Label>
               <Input
@@ -86,9 +92,9 @@ const PriceRange = ({
             </div>
 
             <div className="w-1/2 flex flex-col gap-1">
-              <Label className="text-xs text-gray-600">
+              <Label className="text-xs text-gray-600 mb-1">
                 {t("components.filters.PriceRange.to", {
-                  currency: Currency.JOD,
+                  currency: isArabic ? Currency.JOD.labelAr : Currency.JOD.labelEn,
                 })}
               </Label>
               <Input
