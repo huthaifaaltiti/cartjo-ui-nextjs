@@ -1599,24 +1599,6 @@
           "sendingToCart": "Sending Items To Cart..."
         }
       }
-    },
-    "categories": {
-      "failed": "Failed to load categories",
-      "components": {
-        "CategorySubCategoriesGrid": {
-          "header": "Explore Subcategories and Find What Suits You Best 🤗",
-          "failed": "Oops! Failed to load subcategories!",
-          "noData": "No subcategories available",
-          "checkLater": "Check later for sub-categories"
-        },
-        "CategoryItems": {
-          "failed": "Oops! Failed to load category items!",
-          "noData": "No subcategories available"
-        },
-        "NoCategoryItems": {
-          "empty": "Oops! No items found for this category. Start searching for other ones!"
-        }
-      }
     }
   }
 }
