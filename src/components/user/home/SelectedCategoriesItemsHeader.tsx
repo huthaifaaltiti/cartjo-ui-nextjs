@@ -5,17 +5,16 @@ const SelectedCategoriesItemsHeader = () => {
   const t = useTranslations();
 
   return (
-    <div className="w-full h-auto">
-      <div className="w-full flex items-center justify-between">
-        <div className="flex items-start gap-3">
-          <div>
-            <h3 className="text-xl text-text-primary-300 font-bold">
-              {t("routes.home.components.SelectedCategoriesItemsHeader.header")}
-            </h3>
-          </div>
-        </div>
+    <section className="w-full mb-8">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-2xl md:text-3xl font-bold text-text-primary-300">
+          {t("routes.home.components.SelectedCategoriesItemsHeader.title")}
+        </h2>
+        <p className="text-sm md:text-base text-text-primary-200 opacity-80">
+          {t("routes.home.components.SelectedCategoriesItemsHeader.subtitle")}
+        </p>
       </div>
-    </div>
+    </section>
   );
 };
 

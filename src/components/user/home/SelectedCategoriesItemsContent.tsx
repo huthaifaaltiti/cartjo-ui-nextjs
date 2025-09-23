@@ -60,7 +60,7 @@ const SelectedCategoriesItemsContent = ({
               isArabic={isArabic}
               locale={locale}
               ctaText={t(
-                "routes.home.components.SelectedCategoriesItemsHeader.ctaBtnText",
+                "routes.home.components.SelectedCategoriesItemsContentHeader.ctaBtnText",
                 {
                   categoryName: isArabic
                     ? category?.name?.ar

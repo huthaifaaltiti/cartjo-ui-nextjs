@@ -298,7 +298,10 @@
           "placeholder": "Search for products, categories, or anything.."
         },
         "SelectedCategoriesItemsHeader": {
-          "header": "Curated picks from our store",
+          "title": "Featured Products",
+          "subtitle": "Discover handpicked items from various categories"
+        },
+        "SelectedCategoriesItemsContentHeader": {
           "ctaBtnText": "View More of {categoryName} Items"
         },
         "SelectedCategoriesItemsContent": {

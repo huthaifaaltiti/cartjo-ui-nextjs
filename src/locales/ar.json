@@ -298,7 +298,10 @@
           "placeholder": "ابحث عن منتجات أو تصنيفات أيّة أشياء أخرى.."
         },
         "SelectedCategoriesItemsHeader": {
-          "header": "اختيارات من متجرنا",
+          "title": "المنتجات المميزة",
+          "subtitle": "اكتشف منتجات مختارة بعناية من فئات متنوعة"
+        },
+        "SelectedCategoriesItemsContentHeader": {
           "ctaBtnText": "تصفَّح المزيد من عناصر {categoryName}"
         },
         "SelectedCategoriesItemsContent": {
