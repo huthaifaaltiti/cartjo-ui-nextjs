@@ -18,6 +18,9 @@ const SubCategoryCard = ({ id, name, image }: SubCategoryCardProps) => {
           src={image}
           alt={name}
           className="object-contain w-3/4 h-3/4 transition-transform duration-500 group-hover:scale-110"
+          // loading="lazy"
+          priority={true}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
     </div>

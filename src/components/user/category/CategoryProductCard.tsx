@@ -198,6 +198,9 @@ const CategoryProductCard = ({ item: product }: { item: Product }) => {
                   ? "drop-shadow(0 10px 20px rgba(0,0,0,0.1))"
                   : "none",
             }}
+            priority={true}
+            // loading="lazy"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
       </div>
