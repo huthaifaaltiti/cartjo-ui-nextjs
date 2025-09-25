@@ -34,3 +34,8 @@ export type Actor = {
   lastName: string;
   email: string;
 };
+
+export interface FetchError extends Error {
+  status?: number;
+  details?: any;
+}

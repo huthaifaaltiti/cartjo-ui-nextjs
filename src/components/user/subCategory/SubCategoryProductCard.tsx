@@ -14,8 +14,18 @@ import {
 import { LoadingProductWishList } from "@/components/shared/loaders/LoadingProduct";
 import { isArabicLocale } from "@/config/locales.config";
 import { useLoggedUserWishlist } from "@/contexts/LoggedUserWishList.context";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
-const CategoryProductCard = ({ item: product }: { item: Product }) => {
+interface Props {
+  item: Product;
+}
+
+const CategoryProductCard = ({
+  item: product,
+}: Props) => {
+  const pathname = usePathname();
+
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
@@ -132,6 +142,20 @@ const CategoryProductCard = ({ item: product }: { item: Product }) => {
     }
   };
 
+  const getProductUrl = () => {
+    const slug = product?.slug;
+    const name = product?.name?.en;
+
+    const urlSegment = slug || name?.toLowerCase().replace(/\s+/g, "-");
+
+    return {
+      pathname: `${pathname}/${urlSegment}`,
+      query: {
+        p_id: product?._id,
+      },
+    };
+  };
+
   return (
     <div
       className={`w-full group relative overflow-hidden bg-white-50 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 ease-out transform hover:-translate-y-2 ${
@@ -180,30 +204,35 @@ const CategoryProductCard = ({ item: product }: { item: Product }) => {
         </div>
       )}
 
-      {/* Product Image Container */}
-      <div className="relative p-6 pb-4">
-        <div className="aspect-square w-full rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 group-hover:shadow-inner transition-all duration-500 relative">
-          {/* Image Loading Shimmer */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white-50/30 to-transparent -translate-x-full animate-[shimmer_3s_infinite] z-10"></div>
+      <Link
+        href={getProductUrl()}
+        className="transition-transform hover:scale-105"
+      >
+        {/* Product Image Container */}
+        <div className="relative p-6 pb-4">
+          <div className="aspect-square w-full rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 group-hover:shadow-inner transition-all duration-500 relative">
+            {/* Image Loading Shimmer */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white-50/30 to-transparent -translate-x-full animate-[shimmer_3s_infinite] z-10"></div>
 
-          <ImageWithFallback
-            src={product?.mainImage}
-            alt={isArabic ? product?.name?.ar : product?.name?.en}
-            className={`object-contain transition-all duration-700 ${
-              isHovered ? "scale-110 filter brightness-105" : "scale-100"
-            } ${isAddToCartLoading ? "scale-110 blur-[1px]" : ""}`}
-            style={{
-              filter:
-                isHovered && !isAddToCartLoading
-                  ? "drop-shadow(0 10px 20px rgba(0,0,0,0.1))"
-                  : "none",
-            }}
-            priority={true}
-            // loading="lazy"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+            <ImageWithFallback
+              src={product?.mainImage}
+              alt={isArabic ? product?.name?.ar : product?.name?.en}
+              className={`object-contain transition-all duration-700 ${
+                isHovered ? "scale-110 filter brightness-105" : "scale-100"
+              } ${isAddToCartLoading ? "scale-110 blur-[1px]" : ""}`}
+              style={{
+                filter:
+                  isHovered && !isAddToCartLoading
+                    ? "drop-shadow(0 10px 20px rgba(0,0,0,0.1))"
+                    : "none",
+              }}
+              priority={true}
+              // loading="lazy"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </div>
         </div>
-      </div>
+      </Link>
 
       {/* Content Section */}
       <div className="px-6 pb-6 space-y-4">

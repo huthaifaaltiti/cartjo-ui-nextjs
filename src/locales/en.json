@@ -1630,6 +1630,16 @@
           "empty": "Oops! No items found for this sub-category. Start searching for other ones!"
         }
       }
+    },
+    "product": {
+      "errors": {
+        "failed": "Failed to load product's data"
+      },
+      "components": {
+        "ProductDetailsPage": {
+          "failed": "Failed to load product's data"
+        }
+      }
     }
   }
 }

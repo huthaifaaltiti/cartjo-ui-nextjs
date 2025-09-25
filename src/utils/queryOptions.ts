@@ -7,9 +7,11 @@ import {
   fetchCategory,
   fetchCategoryProducts,
 } from "@/hooks/react-query/useCategoryQuery";
+import { fetchProduct } from "@/hooks/react-query/useProductQuery";
 import { fetchCategoriesPicks } from "@/hooks/react-query/useProductsQuery";
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
+import { FetchError } from "@/types/common";
 import { Locale } from "@/types/locale";
 import { Product } from "@/types/product.type";
 import { DataListResponse } from "@/types/service-response.type";
@@ -153,3 +155,20 @@ export const getSubCategoryProductsQueryOptions = (
     enabled: !!categoryId && !!subCategoryId,
   };
 };
+
+export const getProductQueryOptions = (
+  locale: string | Locale,
+  productId: string
+) => ({
+  queryKey: ["publicProduct", locale, productId],
+  queryFn: () => fetchProduct({ lang: locale, productId }),
+  staleTime: STALE_TIME,
+  gcTime: GC_TIME,
+  enabled: !!productId,
+  retry: (failureCount: number, error: Error) => {
+    const err = error as FetchError;
+    if (err?.status === 404) return false;
+    return failureCount < 2; // Only retry up to 2 times for other errors
+  },
+  retryDelay: (attemptIndex: number) => Math.min(1000 * 2 ** attemptIndex, 30000),
+});
