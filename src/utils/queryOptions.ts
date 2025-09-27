@@ -9,6 +9,7 @@ import {
 } from "@/hooks/react-query/useCategoryQuery";
 import { fetchProduct } from "@/hooks/react-query/useProductQuery";
 import { fetchCategoriesPicks } from "@/hooks/react-query/useProductsQuery";
+import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { FetchError } from "@/types/common";
@@ -170,5 +171,37 @@ export const getProductQueryOptions = (
     if (err?.status === 404) return false;
     return failureCount < 2; // Only retry up to 2 times for other errors
   },
-  retryDelay: (attemptIndex: number) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  retryDelay: (attemptIndex: number) =>
+    Math.min(1000 * 2 ** attemptIndex, 30000),
 });
+
+export const getSearchProductsQueryOptions = (
+  locale: string,
+  querySearch: string
+) => {
+  const getNextPageParam = (lastPage: DataListResponse<Product>) => {
+    if (!lastPage?.data?.length) return undefined;
+
+    const lastProduct = lastPage.data[lastPage.data.length - 1];
+    return lastProduct?._id || undefined;
+  };
+
+  return {
+    queryKey: ["publicSearchProducts", locale, querySearch],
+    queryFn: async ({ pageParam }: { pageParam: unknown }) => {
+      if (!querySearch) throw new Error("No query search is found");
+
+      return fetchSearchProducts({
+        querySearch,
+        lang: locale,
+        limit: PAGINATION_LIMITS.PUBLIC_SEARCH_PRODUCTS_ITEMS,
+        lastId: typeof pageParam === "string" ? pageParam : undefined,
+      });
+    },
+    getNextPageParam,
+    initialPageParam: undefined,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    enabled: !!querySearch,
+  };
+};

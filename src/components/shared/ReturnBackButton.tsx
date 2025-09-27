@@ -10,7 +10,7 @@ export default function ReturnBackButton() {
 
   return (
     <Button
-      className="w-auto py-3 text-white-500 bg-primary-500 border font-semibold hover:bg-primary-700 transition-colors rounded-lg"
+      className="h-12 w-auto py-3 text-white-500 bg-primary-500 border font-semibold hover:bg-primary-700 transition-colors rounded-lg"
       type="button"
       onClick={() => router.back()}
     >

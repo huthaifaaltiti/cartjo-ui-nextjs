@@ -153,7 +153,8 @@
     "filters": {
       "actions": {
         "apply": "Apply",
-        "clear": "Clear"
+        "clear": "Clear",
+        "clearAll": "Clear All Filters"
       },
       "PriceRange": {
         "price": "Filter by Price",
@@ -1638,6 +1639,29 @@
       "components": {
         "ProductDetailsPage": {
           "failed": "Failed to load product's data"
+        }
+      }
+    },
+    "search": {
+      "errors": {
+        "failed": "Failed to load search data"
+      },
+      "components": {
+        "NoSearch": {
+          "noSearchTextTitle": "We could not find your search items",
+          "noSearchTextDesc": "Might an error occurred! Please try again later, or search by a proper text using search box.",
+          "tryAgain": "Try Again",
+          "newSearch": "New Search",
+          "searchTipsTitle": "Search Tips",
+          "tip1": "Check your spelling and try again",
+          "tip2": "Use different keywords or shorter terms",
+          "tip3": "Try more general search terms"
+        },
+        "NoSearchItemsFound": {
+          "empty": "Oops! No items found for this search. Start searching for other things!"
+        },
+        "SearchItems": {
+          "failed": "Failed to load your search data"
         }
       }
     }

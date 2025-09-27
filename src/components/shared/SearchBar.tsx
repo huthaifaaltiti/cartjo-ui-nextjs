@@ -5,12 +5,14 @@ type SearchBarProps = {
   searchQuery: string;
   className?: string;
   setSearchQuery: (searchQuery: string) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const SearchBar = ({
   placeholder = "Search something..",
   searchQuery,
   setSearchQuery,
+  onKeyDown,
   className,
 }: SearchBarProps) => {
   const defaultClassName =
@@ -24,6 +26,7 @@ const SearchBar = ({
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder={placeholder}
         className={className ? className : defaultClassName}
+        onKeyDown={onKeyDown}
       />
     </div>
   );

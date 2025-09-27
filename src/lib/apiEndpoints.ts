@@ -116,4 +116,8 @@ export const API_ENDPOINTS = {
   PRODUCT: {
     ONE: `${BASE_URL}/api/v1/product`,
   },
+  SEARCH: {
+    ROOT: `${BASE_URL}/api/v1/search`,
+    PRODUCTS: `${BASE_URL}/api/v1/search/products`,
+  },
 };
