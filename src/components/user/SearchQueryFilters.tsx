@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import DateRange from "./used-filters/DateRange";
 import RatingRange from "./used-filters/RatingRange";
 import PriceRange from "./used-filters/PriceRange";
+import assets from "@public/assets/assets.json";
 
 interface FiltersProps {
   priceFrom: number;
@@ -82,8 +83,14 @@ const SearchQueryFilters = ({
         variant="outline"
         size="sm"
         onClick={onClearFilters}
-        className="text-text-primary-100 hover:text-text-primary-200 transition-all"
+        className="flex items-center gap-2 text-text-primary-100 hover:text-text-primary-100 transition-all"
       >
+        <img
+          src={assets.image.svg.clear_filters_grey}
+          alt="clear filters"
+          className="w-4 h-4"
+        />
+
         {t("components.filters.actions.clearAll")}
       </Button>
     </div>
