@@ -1,11 +1,15 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { getProductQueryOptions } from "@/utils/queryOptions";
+import {
+  getProductQueryOptions,
+  getSearchProductCommentsQueryOptions,
+} from "@/utils/queryOptions";
 import { getQueryClient } from "@/utils/queryUtils";
 import { Product } from "@/types/product.type";
 import { Locale } from "@/types/locale";
 import { LoggedUserWishlistProvider } from "@/contexts/LoggedUserWishList.context";
 import ProductDetailsPage from "@/components/user/product/ProductDetailsPage";
-import { DataResponse } from "@/types/service-response.type";
+import { DataListResponse, DataResponse } from "@/types/service-response.type";
+import { Comment } from "@/types/comment.type";
 
 interface PageProps {
   params: Promise<{
@@ -26,6 +30,10 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
 
   await queryClient.prefetchQuery<DataResponse<Product>>(
     getProductQueryOptions(locale, productId)
+  );
+
+  await queryClient.prefetchInfiniteQuery<DataListResponse<Comment>>(
+    getSearchProductCommentsQueryOptions(locale, productId)
   );
 
   const dehydratedState = dehydrate(queryClient);

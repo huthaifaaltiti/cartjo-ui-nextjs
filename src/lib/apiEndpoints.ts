@@ -115,6 +115,7 @@ export const API_ENDPOINTS = {
   },
   PRODUCT: {
     ONE: `${BASE_URL}/api/v1/product`,
+    COMMENTS: `${BASE_URL}/api/v1/comment/all`,
   },
   SEARCH: {
     ROOT: `${BASE_URL}/api/v1/search`,

@@ -9,6 +9,7 @@ import ProductDetailsContent from "./ProductDetailsContent";
 import NoProductFound from "./NoProductFound";
 import { getQueryUIState } from "@/utils/uiStateHelpers";
 import { Product } from "@/types/product.type";
+import ProductComments from "./ProductComments";
 
 const ProductDetailsPage = ({ productId }: { productId: string }) => {
   const t = useTranslations();
@@ -94,6 +95,7 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
     return (
       <div className={containerClass}>
         <ProductDetailsContent product={product!} />
+        <ProductComments/>
       </div>
     );
   }

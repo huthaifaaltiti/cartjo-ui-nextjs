@@ -7,11 +7,12 @@ import {
   fetchCategory,
   fetchCategoryProducts,
 } from "@/hooks/react-query/useCategoryQuery";
-import { fetchProduct } from "@/hooks/react-query/useProductQuery";
+import { fetchProduct, fetchProductComments } from "@/hooks/react-query/useProductQuery";
 import { fetchCategoriesPicks } from "@/hooks/react-query/useProductsQuery";
 import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
+import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
 import { Locale } from "@/types/locale";
 import { Product } from "@/types/product.type";
@@ -203,5 +204,36 @@ export const getSearchProductsQueryOptions = (
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
     enabled: !!querySearch,
+  };
+};
+
+export const getSearchProductCommentsQueryOptions = (
+  locale: string,
+  productId: string
+) => {
+  const getNextPageParam = (lastPage: DataListResponse<Comment>) => {
+    if (!lastPage?.data?.length) return undefined;
+
+    const lastProduct = lastPage.data[lastPage.data.length - 1];
+    return lastProduct?._id || undefined;
+  };
+
+  return {
+    queryKey: ["publicSearchProductComments", locale, productId],
+    queryFn: async ({ pageParam }: { pageParam: unknown }) => {
+      if (!productId) throw new Error("No productId is found");
+
+      return fetchProductComments({
+        lang: locale,
+        limit: PAGINATION_LIMITS.PUBLIC_PRODUCT_COMMENTS_ITEMS,
+        lastId: typeof pageParam === "string" ? pageParam : undefined,
+        productId
+      });
+    },
+    getNextPageParam,
+    initialPageParam: undefined,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    enabled: !!productId,
   };
 };
