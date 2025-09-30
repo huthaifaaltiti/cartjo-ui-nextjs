@@ -2,7 +2,6 @@
 
 import { memo, useCallback, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import FoundItemsCount from "./FoundItemsCount";
@@ -16,6 +15,8 @@ type Props<T, P extends object = Record<string, unknown>> = {
   fetchNextPage?: () => void;
   ListItemCard: React.ComponentType<{ item: T } & P>;
   cardProps?: P;
+  layout?: "grid" | "list";
+  showNumFoundItems?: boolean;
 };
 
 function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
@@ -27,6 +28,8 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
   fetchNextPage,
   ListItemCard,
   cardProps,
+  layout = "grid",
+  showNumFoundItems = true
 }: Props<T, P>) {
   const t = useTranslations();
 
@@ -66,11 +69,19 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <FoundItemsCount isLoading={isLoading} count={list.length} />
-      </div>
+      {showNumFoundItems && (
+        <div className="flex justify-between items-center">
+          <FoundItemsCount isLoading={isLoading} count={list.length} />
+        </div>
+      )}
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={
+          layout === "grid"
+            ? "grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+            : "flex flex-col gap-4"
+        }
+      >
         {list.map((item, index) => (
           <ListItemCard key={index} item={item} {...(cardProps as P)} />
         ))}
