@@ -1,10 +1,14 @@
 import { Actor } from "./common";
 
+interface Commenter extends Actor {
+  role: string;
+}
+
 export interface Comment {
   _id: string;
   content: string;
   rating: number | null;
-  userId: null | Actor;
+  userId: null | Commenter;
   productId: string;
   isDeleted: boolean;
   isUpdated: boolean;

@@ -44,16 +44,6 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
     alert(`Searching for: ${query}`);
   };
 
-  //   const showLoader =
-  //     (!isLoading && !isFetching && !isFetched && !isError && !data?.isSuccess) ||
-  //     isLoading ||
-  //     isFetching;
-  //   const showError = isFetched && isError;
-  //   const showNoData =
-  //   (!showLoader && !showError && !product) ||
-  //   (error && (error as FetchError).status === 404);
-  //   const showData = !showLoader && !showError && product;
-
   const containerClass = "w-full min-h-40 flex items-center justify-center";
 
   if (showLoader) {
@@ -94,8 +84,10 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
   if (showData) {
     return (
       <div className={containerClass}>
-        <ProductDetailsContent product={product!} />
-        <ProductComments/>
+        <div className="w-full flex flex-col gap-3">
+          <ProductDetailsContent product={product!} />
+          <ProductComments productId={product?._id!} />
+        </div>
       </div>
     );
   }

@@ -55,6 +55,7 @@
     "others": {
       "unknown": "Unknown",
       "created": "Created",
+      "edited": "Edited",
       "createdBy": "Created by",
       "updated": "Updated",
       "from": "From",
@@ -71,6 +72,11 @@
     "date": {
       "startDate": "Start Date",
       "endDate": "End Date"
+    },
+    "account": {
+      "status": {
+        "verifiedAccount": "Verified Account"
+      }
     }
   },
   "errors": {
@@ -1639,6 +1645,21 @@
       "components": {
         "ProductDetailsPage": {
           "failed": "Failed to load product's data"
+        },
+        "ProdCommentsHeader": {
+          "customerReviews": "Customer Reviews",
+          "rating": "rating",
+          "ratings": "ratings"
+        },
+        "ProdCommentsErr": {
+          "failedLoadComments": "Failed to Load Comments"
+        },
+        "NoProdComments": {
+          "noReviews": "No Reviews Yet",
+          "shareThoughts": "Be the first to share your thoughts about this product"
+        },
+        "ProductCommentCard": {
+          "verifiedPurchase": "Verified Purchase"
         }
       }
     },

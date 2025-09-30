@@ -55,6 +55,7 @@
     "others": {
       "unknown": "غير معروف",
       "created": "تم الإنشاء",
+      "edited": "تم التعديل",
       "createdBy": "تم الإنشاء بواسطة",
       "updated": "تم التحديث",
       "from": "من",
@@ -71,6 +72,11 @@
     "date": {
       "startDate": "تاريخ البداية",
       "endDate": "تاريخ النهاية"
+    },
+    "account": {
+      "status": {
+        "verifiedAccount": "حساب موثق"
+      }
     }
   },
   "errors": {
@@ -1641,6 +1647,31 @@
         },
         "NoCategoryItems": {
           "empty": "عذرًا! لم يتم العثور على أي عناصر في هذا التصنيف الفرعي. ابدأ بالبحث عن غيره!"
+        }
+      }
+    },
+    "product": {
+      "errors": {
+        "failed": "فشل تحميل بيانات المنتج"
+      },
+      "components": {
+        "ProductDetailsPage": {
+          "failed": "فشل تحميل بيانات المنتج"
+        },
+        "ProdCommentsHeader": {
+          "customerReviews": "مراجعات العملاء",
+          "rating": "التقييم",
+          "ratings": "التقييمات"
+        },
+        "ProdCommentsErr": {
+          "failedLoadComments": "فشل تحميل التعليقات"
+        },
+        "NoProdComments": {
+          "noReviews": "لا توجد مراجعات بعد",
+          "shareThoughts": "كن أول من يشارك رأيه حول هذا المنتج"
+        },
+        "ProductCommentCard": {
+          "verifiedPurchase": "شراء موثق"
         }
       }
     },
