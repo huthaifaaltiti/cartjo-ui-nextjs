@@ -187,6 +187,9 @@
         "lastMonth": "شهر",
         "lastQuarter": "3 أشهر"
       }
+    },
+    "SearchSuggestions": {
+      "popularSearches": "عمليات البحث الشائعة"
     }
   },
   "routes": {
