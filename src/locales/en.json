@@ -50,7 +50,10 @@
       "activate": "Activate",
       "deActivate": "De Activate",
       "returnToHomePage": "Return To Home Page",
-      "returnBack": "Return Back"
+      "returnBack": "Return Back",
+      "save": "Save",
+      "saving": "Saving",
+      "cancel": "Cancel"
     },
     "others": {
       "unknown": "Unknown",
@@ -67,7 +70,10 @@
       "button_link": "Button Link",
       "created_by": "Created By",
       "key": "Key",
-      "priority": "Priority"
+      "priority": "Priority",
+      "characters": "Characters",
+      "star": "star",
+      "stars": "stars"
     },
     "date": {
       "startDate": "Start Date",
@@ -190,6 +196,10 @@
     },
     "SearchSuggestions": {
       "popularSearches": "Popular Searches"
+    },
+    "UserAvatarByName": {
+      "fN": "UnKnown",
+      "lN": "User"
     }
   },
   "routes": {
@@ -1662,7 +1672,28 @@
           "shareThoughts": "Be the first to share your thoughts about this product"
         },
         "ProductCommentCard": {
-          "verifiedPurchase": "Verified Purchase"
+          "verifiedPurchase": "Verified Purchase",
+          "confirmDeleteTitle": "Delete Confirmation",
+          "confirmDeleteMessage": "Are you sure that you want to delete your comment? Your comment will be removed after confirming.",
+          "confirmDelete": "Delete Comment",
+          "cancel": "Cancel",
+          "deleting": "Deleting...",
+          "deleteError": "Error happened while deleting comment"
+        },
+        "AddComment": {
+          "writeReview": "Write a Review",
+          "yourRating": "Your Rating",
+          "yourComment": "Your Comment",
+          "shareThoughts": "Share your thoughts about this product..",
+          "submit": "Submit Review",
+          "submitting": "Submitting...",
+          "enterComment": "Please enter a comment",
+          "submitCommentFailed": "Failed to submit comment"
+        },
+        "EditComment": {
+          "rating": "Rating",
+          "clearRating": "Clear Rating",
+          "editPlaceholder": "Share your thoughts about this product"
         }
       }
     },

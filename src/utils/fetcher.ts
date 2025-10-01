@@ -1,4 +1,6 @@
 import { FetchError } from "@/types/common";
+import { handleUnauthorizedResponse } from "./handleUnauthorizedResponse";
+import { Locale } from "@/types/locale";
 
 /**
  * General fetch wrapper
@@ -10,20 +12,25 @@ import { FetchError } from "@/types/common";
 
 export async function fetcher<T = any>(
   url: string | URL,
-  options?: RequestInit
+  options?: RequestInit,
+  lang?: string | Locale
 ): Promise<T> {
   const resp = await fetch(url, options);
 
+  handleUnauthorizedResponse(resp, lang || "en");
+
   let respObj: any = null;
 
-  try {
-    respObj = await resp.json();
-  } catch (e) {
-    // ignore JSON parse errors
-  }
+  respObj = await resp.json();
+
+  // try {
+  //   respObj = await resp.json();
+  // } catch (e: unknown) {
+  //   // ignore JSON parse errors
+  // }
 
   if (!resp.ok) {
-    const err: FetchError = new Error(respObj?.message || 'Request failed');
+    const err: FetchError = new Error(respObj?.message || "Request failed");
     err.status = resp.status;
     err.details = respObj;
     throw err;

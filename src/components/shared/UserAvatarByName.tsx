@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { useTranslations } from "next-intl";
 
 type AvatarProps = {
   firstName: string;
@@ -13,7 +14,12 @@ const UserAvatarByName = ({
   bgClassName = "bg-gradient-to-br from-blue-500 to-purple-600",
   textClassName = "text-white-50",
 }: AvatarProps) => {
-  const initials = `${firstName[0] ?? ""}${lastName[0] ?? ""}`;
+  const t = useTranslations();
+
+  const fN = t("components.UserAvatarByName.fN");
+  const lN = t("components.UserAvatarByName.lN");
+
+  const initials = `${firstName[0] ?? fN[0]}${lastName[0] ?? lN[0]}`;
 
   return (
     <div

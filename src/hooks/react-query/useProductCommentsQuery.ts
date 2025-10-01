@@ -27,8 +27,6 @@ export const fetchProductComments = async ({
   if (limit) url.searchParams.append("limit", limit.toString());
   if (lastId) url.searchParams.append("lastId", lastId);
 
-  console.log({ url });
-
   return fetcher<DataListResponse<Comment>>(url, {});
 };
 

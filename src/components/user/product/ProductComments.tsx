@@ -2,11 +2,13 @@ import { memo, useMemo } from "react";
 import { useProductCommentsQuery } from "@/hooks/react-query/useProductCommentsQuery";
 import { getQueryUIState } from "@/utils/uiStateHelpers";
 import ProductCommentCard from "./ProductCommentCard";
-import ProductCommentLoading from "./ProductCommentLoading";
+import ProductCommentsLoading from "./ProductCommentsLoading";
 import ProdCommentsHeader from "./ProdCommentsHeader";
 import ProdCommentsErr from "./ProdCommentsErr";
 import NoProdComments from "./NoProdComments";
 import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
+import AddComment from "./AddComment";
+import ProductAddCommentLoading from "./ProductAddCommentLoading";
 
 const ProductComments = ({ productId }: { productId: string }) => {
   const {
@@ -19,11 +21,12 @@ const ProductComments = ({ productId }: { productId: string }) => {
     isFetched,
     isError,
     error,
+    refetch,
   } = useProductCommentsQuery(productId, "en");
 
   const comments = useMemo(() => {
     const pages = data?.pages || [];
-    return pages.flatMap((page: any) => page?.data || []);
+    return pages.flatMap((page) => page?.data || []);
   }, [data]);
 
   const { showLoader, showError, showNoData, showData } = getQueryUIState({
@@ -46,7 +49,8 @@ const ProductComments = ({ productId }: { productId: string }) => {
       <div className={containerClass}>
         <ProdCommentsHeader />
         <div className={scrollContainerClass}>
-          <ProductCommentLoading />
+          <ProductAddCommentLoading />
+          <ProductCommentsLoading />
         </div>
       </div>
     );
@@ -56,7 +60,7 @@ const ProductComments = ({ productId }: { productId: string }) => {
     return (
       <div className={containerClass}>
         <div className={scrollContainerClass}>
-          <ProdCommentsErr msg={error?.message!} />
+          <ProdCommentsErr msg={error!.message} />
         </div>
       </div>
     );
@@ -87,6 +91,8 @@ const ProductComments = ({ productId }: { productId: string }) => {
           ratingCount={ratingCount}
         />
 
+        <AddComment productId={productId} refetch={refetch} />
+
         <div className={scrollContainerClass}>
           <InfiniteScrollList
             isLoading={isLoading}
@@ -96,7 +102,9 @@ const ProductComments = ({ productId }: { productId: string }) => {
             list={comments}
             fetchNextPage={fetchNextPage}
             ListItemCard={ProductCommentCard}
-            cardProps={{}}
+            cardProps={{
+              refetch,
+            }}
             layout="list"
             showNumFoundItems={false}
           />

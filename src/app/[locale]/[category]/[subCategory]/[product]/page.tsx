@@ -10,6 +10,7 @@ import { LoggedUserWishlistProvider } from "@/contexts/LoggedUserWishList.contex
 import ProductDetailsPage from "@/components/user/product/ProductDetailsPage";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
 import { Comment } from "@/types/comment.type";
+import { PublicProductContextProvider } from "@/contexts/PublicProduct.context";
 
 interface PageProps {
   params: Promise<{
@@ -41,7 +42,9 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydratedState}>
       <LoggedUserWishlistProvider>
-        <ProductDetailsPage productId={productId} />
+        <PublicProductContextProvider>
+          <ProductDetailsPage productId={productId} />
+        </PublicProductContextProvider>
       </LoggedUserWishlistProvider>
     </HydrationBoundary>
   );
