@@ -50,7 +50,10 @@
       "activate": "تفعيل",
       "deActivate": "إلغاء التفعيل",
       "returnToHomePage": "العودة للمنزل",
-      "returnBack": "العودة للخلف"
+      "returnBack": "العودة للخلف",
+      "save": "حفظ",
+      "saving": "جارٍ الحفظ",
+      "cancel": "إلغاء"
     },
     "others": {
       "unknown": "غير معروف",
@@ -190,6 +193,10 @@
     },
     "SearchSuggestions": {
       "popularSearches": "عمليات البحث الشائعة"
+    },
+    "UserAvatarByName": {
+      "fN": "مجهول",
+      "lN": "مستخدم"
     }
   },
   "routes": {
@@ -1674,7 +1681,28 @@
           "shareThoughts": "كن أول من يشارك رأيه حول هذا المنتج"
         },
         "ProductCommentCard": {
-          "verifiedPurchase": "شراء موثق"
+          "verifiedPurchase": "شراء موثق",
+          "confirmDeleteTitle": "تأكيد الحذف",
+          "confirmDeleteMessage": "هل أنت متأكد أنك تريد حذف تعليقك؟ سيتم إزالة تعليقك بعد التأكيد.",
+          "confirmDelete": "حذف التعليق",
+          "cancel": "إلغاء",
+          "deleting": "جارٍ الحذف...",
+          "deleteError": "حدث خطأ أثناء حذف التعليق"
+        },
+        "AddComment": {
+          "writeReview": "اكتب مراجعة",
+          "yourRating": "تقييمك",
+          "yourComment": "تعليقك",
+          "shareThoughts": "شارك أفكارك حول هذا المنتج..",
+          "submit": "إرسال المراجعة",
+          "submitting": "جارٍ الإرسال...",
+          "enterComment": "يرجى إدخال تعليق",
+          "submitCommentFailed": "فشل في إرسال التعليق"
+        },
+        "EditComment": {
+          "rating": "التقييم",
+          "clearRating": "مسح التقييم",
+          "editPlaceholder": "شارك أفكارك حول هذا المنتج"
         }
       }
     },
