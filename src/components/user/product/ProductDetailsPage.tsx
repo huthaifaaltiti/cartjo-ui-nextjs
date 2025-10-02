@@ -86,7 +86,7 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
       <div className={containerClass}>
         <div className="w-full flex flex-col gap-3">
           <ProductDetailsContent product={product!} />
-          <ProductComments productId={product?._id!} />
+          <ProductComments productId={product!._id} />
         </div>
       </div>
     );

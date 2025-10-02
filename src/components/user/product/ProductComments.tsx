@@ -71,6 +71,7 @@ const ProductComments = ({ productId }: { productId: string }) => {
       <div className={containerClass}>
         <ProdCommentsHeader />
         <div className={scrollContainerClass}>
+          <AddComment productId={productId} refetch={refetch} />
           <NoProdComments />
         </div>
       </div>
