@@ -7,11 +7,15 @@ import {
   fetchCategory,
   fetchCategoryProducts,
 } from "@/hooks/react-query/useCategoryQuery";
-import { fetchProduct, fetchProductComments } from "@/hooks/react-query/useProductQuery";
+import {
+  fetchProduct,
+  fetchProductComments,
+} from "@/hooks/react-query/useProductQuery";
 import { fetchCategoriesPicks } from "@/hooks/react-query/useProductsQuery";
 import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
+import { fetchSuggestedProducts } from "@/hooks/react-query/useSuggestedProductQuery";
 import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
 import { Locale } from "@/types/locale";
@@ -227,7 +231,7 @@ export const getSearchProductCommentsQueryOptions = (
         lang: locale,
         limit: PAGINATION_LIMITS.PUBLIC_PRODUCT_COMMENTS_ITEMS,
         lastId: typeof pageParam === "string" ? pageParam : undefined,
-        productId
+        productId,
       });
     },
     getNextPageParam,
@@ -237,3 +241,20 @@ export const getSearchProductCommentsQueryOptions = (
     enabled: !!productId,
   };
 };
+
+export const getSuggestedProductsQueryOptions = (
+  locale: Locale | string,
+  limit: number
+) => ({
+  queryKey: ["suggestedPublicCategory", locale, limit],
+  queryFn: () => fetchSuggestedProducts({ lang: locale, limit }),
+  staleTime: STALE_TIME,
+  gcTime: GC_TIME,
+  enabled: true,
+  // retry: (failureCount, error) => {
+  //   const err = error as FetchError;
+  //   if (err?.status === 404) return false;
+  //   return failureCount < 2; // Only retry up to 2 times for other errors
+  // },
+  // retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+});

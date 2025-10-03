@@ -37,9 +37,14 @@
         "inactive": "Inactive",
         "deleted": "Deleted",
         "inStock": "In Stock",
+        "outOfStock": "Out of Stock",
         "lowStock": "Low Stock",
-        "outOfStock": "outOfInStock"
+        "stockItemsCount": "Only {count} left in stock"
       }
+    },
+    "cart": {
+      "addToCart": "Add to Cart",
+      "removeFromCart": "Remove from Cart"
     },
     "actions": {
       "delete": "Delete",
@@ -53,7 +58,10 @@
       "returnBack": "Return Back",
       "save": "Save",
       "saving": "Saving",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "goBack": "Go Back",
+      "tryAgain": "Try Again",
+      "search": "Search"
     },
     "others": {
       "unknown": "Unknown",
@@ -1694,6 +1702,21 @@
           "rating": "Rating",
           "clearRating": "Clear Rating",
           "editPlaceholder": "Share your thoughts about this product"
+        },
+        "NoProductFound": {
+          "title": "Product Not Found",
+          "desc": "We couldn't find the product you're looking for. It might have been moved, discontinued, or the link might be broken.",
+          "prodId": "Product ID",
+          "searchFor": "Search for Something Else"
+        },
+        "RecommendedProducts": {
+          "failed": "Failed to load suggested products",
+          "title": "You Might Also Like",
+          "subTitle": "Check out these popular products from our collection"
+        },
+        "RecProductsData": {
+          "title": "You Might Also Like",
+          "subTitle": "Check out these popular products from our collection"
         }
       }
     },

@@ -2,6 +2,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import {
   getProductQueryOptions,
   getSearchProductCommentsQueryOptions,
+  getSuggestedProductsQueryOptions,
 } from "@/utils/queryOptions";
 import { getQueryClient } from "@/utils/queryUtils";
 import { Product } from "@/types/product.type";
@@ -28,6 +29,10 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   const productId = p_id as string;
 
   const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery<DataListResponse<Product>>(
+    getSuggestedProductsQueryOptions(locale, 5)
+  );
 
   await queryClient.prefetchQuery<DataResponse<Product>>(
     getProductQueryOptions(locale, productId)

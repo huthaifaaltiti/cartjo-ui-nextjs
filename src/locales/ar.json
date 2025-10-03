@@ -38,8 +38,13 @@
         "deleted": "محذوف",
         "inStock": "متوفر",
         "lowStock": "مخزون منخفض",
-        "outOfStock": "غير متوفر"
+        "outOfStock": "غير متوفر",
+        "stockItemsCount": "متبقي فقط {count} في المخزون"
       }
+    },
+    "cart": {
+      "addToCart": "أضف إلى السلة",
+      "removeFromCart": "أزل من السلة"
     },
     "actions": {
       "delete": "حذف",
@@ -53,7 +58,10 @@
       "returnBack": "العودة للخلف",
       "save": "حفظ",
       "saving": "جارٍ الحفظ",
-      "cancel": "إلغاء"
+      "cancel": "إلغاء",
+      "goBack": "الرجوع",
+      "tryAgain": "حاول مرة أخرى",
+      "search": "بحث"
     },
     "others": {
       "unknown": "غير معروف",
@@ -1703,6 +1711,21 @@
           "rating": "التقييم",
           "clearRating": "مسح التقييم",
           "editPlaceholder": "شارك أفكارك حول هذا المنتج"
+        },
+        "NoProductFound": {
+          "title": "المنتج غير موجود",
+          "desc": "لم نتمكن من العثور على المنتج الذي تبحث عنه. قد يكون قد تم نقله أو إيقافه أو أن الرابط غير صالح.",
+          "prodId": "معرّف المنتج",
+          "searchFor": "ابحث عن شيء آخر"
+        },
+        "RecommendedProducts": {
+          "failed": "فشل في تحميل المنتجات المقترحة",
+          "title": "قد يعجبك أيضًا",
+          "subTitle": "اطلع على هذه المنتجات الشائعة من مجموعتنا"
+        },
+        "RecProductsData": {
+          "title": "قد يعجبك أيضًا",
+          "subTitle": "اطلع على هذه المنتجات الشائعة من مجموعتنا"
         }
       }
     },
