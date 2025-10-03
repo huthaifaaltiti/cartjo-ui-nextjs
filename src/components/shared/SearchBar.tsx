@@ -5,7 +5,7 @@ type SearchBarProps = {
   searchQuery: string;
   className?: string;
   setSearchQuery: (searchQuery: string) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const SearchBar = ({
