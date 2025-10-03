@@ -91,6 +91,10 @@
       "status": {
         "verifiedAccount": "Verified Account"
       }
+    },
+    "status": {
+      "online": "Online",
+      "offline": "Offline"
     }
   },
   "errors": {
@@ -208,6 +212,10 @@
     "UserAvatarByName": {
       "fN": "UnKnown",
       "lN": "User"
+    },
+    "HelpSection": {
+      "title": "Need Help Finding Something?",
+      "subTitle": "Our customer support team is here to help you find exactly what you're looking for. Get personalized recommendations and assistance."
     }
   },
   "routes": {
@@ -1740,6 +1748,90 @@
         },
         "SearchItems": {
           "failed": "Failed to load your search data"
+        }
+      }
+    },
+    "support": {
+      "errors": {
+        "failedLoadData": "Failed to load our support data, try again later!"
+      },
+      "components": {
+        "heroSection": {
+          "title": "How can we help you?",
+          "subTitle": "Search our knowledge base or get in touch with our support team",
+          "searchPlaceholder": "Search for help..."
+        },
+        "contactSection": {
+          "title": "Contact Support",
+          "contactMethods": {
+            "email": {
+              "title": "Email Support",
+              "availability": "Response within 4 hours"
+            },
+            "phone": {
+              "title": "Phone Support",
+              "availability": "Mon-Fri, 9AM-6PM EST"
+            }
+          }
+        },
+        "SupportFAQ": {
+          "title": "Frequently Asked Questions",
+          "categories": {
+            "all": "All Topics",
+            "orders": "Orders",
+            "shipping": "Shipping",
+            "returnAndRefunds": "Returns & Refunds",
+            "payment": "Payment",
+            "account": "Account"
+          },
+          "faqs": {
+            "trackOrder": {
+              "q": "How do I track my order?",
+              "a": "You can track your order by logging into your account and visiting the 'Orders' section. Click on the order you want to track to see real-time updates."
+            },
+            "returnPolicy": {
+              "q": "What is your return policy?",
+              "a": "We offer a 30-day return policy for most items. Products must be unused and in original packaging. Free return shipping for defective items."
+            },
+            "shippingTime": {
+              "q": "How long does shipping take?",
+              "a": "Standard shipping takes 3-5 business days. Express shipping is available for 1-2 day delivery. International orders typically arrive within 7-14 days."
+            },
+            "paymentMethods": {
+              "q": "What payment methods do you accept?",
+              "a": "We accept all major credit cards (Visa, Mastercard, Amex), PayPal, Apple Pay, and Google Pay. All transactions are secure and encrypted."
+            },
+            "updateAccount": {
+              "q": "How do I change my account information?",
+              "a": "Log into your account and navigate to Settings. From there you can update your email, password, shipping addresses, and payment methods."
+            },
+            "internationalShipping": {
+              "q": "Do you ship internationally?",
+              "a": "Yes, we ship to over 50 countries worldwide. International shipping costs and delivery times vary by destination."
+            },
+            "cancelOrder": {
+              "q": "How do I cancel an order?",
+              "a": "Orders can be cancelled within 1 hour of placement. Go to your order history, select the order, and click 'Cancel Order'. After 1 hour, please contact support."
+            },
+            "damagedItem": {
+              "q": "What if I receive a damaged item?",
+              "a": "We're sorry to hear that! Please contact us within 48 hours with photos of the damaged item. We'll send a replacement or issue a full refund immediately."
+            }
+          },
+          "noResults": "No results found. Try a different search term or contact support."
+        },
+        "SupportQuickLicks": {
+          "title": "Quick Links",
+          "links": {
+            "trackOrder": "Track Your Order",
+            "returns": "Start a Return",
+            "shippingInfo": "Shipping Information",
+            "account": "Manage Account",
+            "sizeGuide": "Size Guide",
+            "warranty": "Warranty Information",
+            "giftCards": "Gift Cards",
+            "terms": "Terms & Conditions"
+          }
         }
       }
     }
