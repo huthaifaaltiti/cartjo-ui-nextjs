@@ -16,33 +16,6 @@ interface FetchProductProps {
   productId: string;
 }
 
-// export const fetchProduct = async ({
-//   token,
-//   lang = "en",
-//   productId,
-// }: FetchProductProps): Promise<DataResponse<Product>> => {
-//   const url = new URL(`${API_ENDPOINTS.PRODUCT.ONE}/${productId}`);
-
-//   if (lang) url.searchParams.append("lang", lang.toString());
-
-//   const resp = await fetch(url, {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-
-//   const respObj = await resp.json();
-
-//   if (!resp.ok) {
-//     const err: any = new Error(respObj?.message || "Request failed");
-//     err.status = resp.status;
-//     err.details = respObj;
-//     throw err;
-//   }
-
-//   return respObj;
-// };
-
 export const fetchProduct = async ({
   token,
   lang = "en",

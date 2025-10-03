@@ -215,7 +215,11 @@
     },
     "HelpSection": {
       "title": "Need Help Finding Something?",
-      "subTitle": "Our customer support team is here to help you find exactly what you're looking for. Get personalized recommendations and assistance."
+      "subTitle": "Our customer support team is here to help you find exactly what you're looking for. Get personalized recommendations and assistance.",
+      "labels": {
+        "contactSupport": "Contact Support",
+        "browseCategories": "Browse Categories"
+      }
     }
   },
   "routes": {

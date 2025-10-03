@@ -10,6 +10,7 @@ import NoProductFound from "./NoProductFound";
 import { getQueryUIState } from "@/utils/uiStateHelpers";
 import { Product } from "@/types/product.type";
 import ProductComments from "./ProductComments";
+import RecommendedProducts from "./recommended-products/RecommendedProducts";
 
 const ProductDetailsPage = ({ productId }: { productId: string }) => {
   const t = useTranslations();
@@ -71,7 +72,7 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
     return (
       <div className={containerClass}>
         <NoProductFound
-          productId="68c53c9c31b0c4af10b3139c"
+          productId={productId}
           onGoBack={handleGoBack}
           onRetry={handleRetry}
           onSearchSimilar={handleSearchSimilar}
@@ -87,6 +88,9 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
         <div className="w-full flex flex-col gap-3">
           <ProductDetailsContent product={product!} />
           <ProductComments productId={product!._id} />
+          <div className="w-full border-t border-gray-200/50 py-8">
+            <RecommendedProducts />
+          </div>
         </div>
       </div>
     );
