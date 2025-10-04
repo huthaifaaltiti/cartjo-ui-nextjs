@@ -1,3 +1,5 @@
+"use client";
+
 import { memo } from "react";
 import UserLayoutSection from "../UserLayoutSection";
 import { useTranslations } from "next-intl";

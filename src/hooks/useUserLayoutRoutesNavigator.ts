@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "@/i18n/navigation";
 import {
   Bell,
   CreditCard,
@@ -21,6 +24,7 @@ export enum UserRouteType {
 
 export function useUserLayoutRoutesNavigator(type: UserRouteType) {
   const t = useTranslations();
+  const pathname = usePathname();
 
   const userLayoutRoutesNavigator = {
     [UserRouteType.QUICK_ACTIONS]: [
@@ -29,14 +33,14 @@ export function useUserLayoutRoutesNavigator(type: UserRouteType) {
         label: t(
           "routes.user.layout.components.UserQuickActions.quickActions.orders"
         ),
-        path: "/orders",
+        path: "/user/orders",
       },
       {
         icon: Undo2,
         label: t(
           "routes.user.layout.components.UserQuickActions.quickActions.returns"
         ),
-        path: "/returns",
+        path: "/user/returns",
       },
       {
         icon: Heart,
@@ -50,28 +54,28 @@ export function useUserLayoutRoutesNavigator(type: UserRouteType) {
       {
         icon: User,
         label: t("routes.user.layout.components.UserAccountMenu.items.profile"),
-        path: "/account/profile",
+        path: "/user/profile",
       },
       {
         icon: MapPin,
         label: t(
           "routes.user.layout.components.UserAccountMenu.items.addresses"
         ),
-        path: "/account/addresses",
+        path: "/user/account/addresses",
       },
       {
         icon: HandCoins,
         label: t(
           "routes.user.layout.components.UserAccountMenu.items.payments"
         ),
-        path: "/account/payments",
+        path: "/user/account/payments",
       },
       {
         icon: CreditCard,
         label: t(
           "routes.user.layout.components.UserAccountMenu.items.digitalCards"
         ),
-        path: "/account/digital-cards",
+        path: "/user/account/digital-cards",
       },
     ],
     [UserRouteType.OTHERS]: [
@@ -80,24 +84,31 @@ export function useUserLayoutRoutesNavigator(type: UserRouteType) {
         label: t(
           "routes.user.layout.components.UserOthersActions.items.notifications"
         ),
-        path: "/notifications",
+        path: "/user/notifications",
       },
       {
         icon: Settings,
         label: t(
           "routes.user.layout.components.UserOthersActions.items.securitySettings"
         ),
-        path: "/security-settings",
+        path: "/user/security-settings",
       },
     ],
     [UserRouteType.SIGNOUT]: [
       {
         icon: Power,
         label: t("routes.user.layout.components.UserLogout.label"),
-        path: "/logout",
+        path: "#",
       },
     ],
   };
 
-  return userLayoutRoutesNavigator[type] ?? [];
+  const routesWithMatch = (userLayoutRoutesNavigator[type] ?? []).map(
+    (item) => ({
+      ...item,
+      isContainsPathname: pathname.includes(item.path),
+    })
+  );
+
+  return routesWithMatch;
 }

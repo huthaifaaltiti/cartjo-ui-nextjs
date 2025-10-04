@@ -5,6 +5,7 @@ export type UserLayoutSectionItem = {
   icon: React.ElementType;
   label: string;
   path: string;
+  isContainsPathname?: boolean;
 };
 
 interface UserLayoutSectionProps {
@@ -17,23 +18,40 @@ const UserLayoutSection = ({ header, items }: UserLayoutSectionProps) => {
 
   return (
     <div className="w-full">
-      <h3 className="mx-4 my-1 text-xs text-text-primary-100 font-semibold uppercase">
-        {header}
-      </h3>
+      {header && (
+        <h3 className="mx-4 my-1 text-xs text-text-primary-100 font-semibold uppercase">
+          {header}
+        </h3>
+      )}
 
-      <div className={"w-full bg-secondary-300 rounded-xl p-4 "}>
-        <ul>
+      <div className="w-full bg-secondary-300 rounded-xl p-4">
+        <ul className="space-y-1">
           {items.map((item, i) => {
             const Icon = item.icon;
+            const isActive = item.isContainsPathname;
 
             return (
               <Link
                 key={i}
                 href={item.path}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#fefeff]/90 transition-all group"
+                className={`flex items-center gap-3 p-2 rounded-lg transition-all group cursor-pointer
+                  ${isActive ? "bg-[#fefeff]" : "hover:bg-[#fefeff]/90"}
+                `}
               >
-                <Icon className="w-4 h-4 text-primary-600 group-hover:text-primary-700" />
-                <span className="font-normal text-md text-text-primary-200">
+                <Icon
+                  className={`w-4 h-4 transition-colors ${
+                    isActive
+                      ? "text-primary-700"
+                      : "text-primary-600 group-hover:text-primary-700"
+                  }`}
+                />
+                <span
+                  className={`font-normal text-md transition-colors ${
+                    isActive
+                      ? "text-primary-700 font-semibold"
+                      : "text-text-primary-200"
+                  }`}
+                >
                   {item.label}
                 </span>
               </Link>
