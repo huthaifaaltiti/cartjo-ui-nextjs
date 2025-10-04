@@ -1873,6 +1873,16 @@
               "payments": "طرق الدفع",
               "digitalCards": "البطاقات الرقمية"
             }
+          },
+          "UserOthersActions": {
+            "header": "أخرى",
+            "items": {
+              "notifications": "الإشعارات",
+              "securitySettings": "إعدادات الأمان"
+            }
+          },
+          "UserLogout": {
+            "label": "تسجيل الخروج"
           }
         }
       }

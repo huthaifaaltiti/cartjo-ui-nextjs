@@ -1864,6 +1864,16 @@
               "payments": "Payments",
               "digitalCards": "Digital Cards"
             }
+          },
+          "UserOthersActions": {
+            "header": "Others",
+            "items": {
+              "notifications": "Notifications",
+              "securitySettings": "Security Settings"
+            }
+          },
+          "UserLogout": {
+            "label": "Sign out"
           }
         }
       }
