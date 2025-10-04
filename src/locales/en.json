@@ -1838,6 +1838,19 @@
           }
         }
       }
+    },
+    "user": {
+      "errors": {
+        "failedLoadData": "Failed to load your details, please try again later!"
+      },
+      "layout": {
+        "components": {
+          "UserInfoRow": {
+            "failed": "Failed to load user information. Please try again.",
+            "noData": "No user data available."
+          }
+        }
+      }
     }
   }
 }

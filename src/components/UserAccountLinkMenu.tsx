@@ -33,12 +33,15 @@ const UserAccountLinkMenu = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-40">
-        <DropdownMenuItem onClick={() => router.push("/account")}>
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => router.push("/user")}
+        >
           <UserRoundPen className="w-4 h-4" />
           {t("routes.home.components.UserAccountLinkMenu.myAccount")}
         </DropdownMenuItem>
 
-        <DropdownMenuItem onClick={handleLogout}>
+        <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
           <LogOutIcon className="w-4 h-4" />
           {t("routes.home.components.UserAccountLinkMenu.logout")}
         </DropdownMenuItem>
