@@ -1848,6 +1848,13 @@
           "UserInfoRow": {
             "failed": "Failed to load user information. Please try again.",
             "noData": "No user data available."
+          },
+          "UserQuickActions": {
+            "quickActions": {
+              "orders": "Orders",
+              "returns": "Returns",
+              "wishlist": "Wishlist"
+            }
           }
         }
       }
