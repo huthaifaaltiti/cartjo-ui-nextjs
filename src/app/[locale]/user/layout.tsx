@@ -15,14 +15,11 @@ export default async function UserPageLayout({
       <MaxWidthWrapper className="flex-1 flex flex-col">
         <div className="flex-1 flex flex-col md:flex-row gap-6 py-6 items-stretch">
           <aside className="w-full md:w-80 flex-shrink-0 self-stretch">
-            <div className="h-full flex flex-col gap-3">
+            <div className="h-full flex flex-col gap-4">
               <InfoCard>
                 <UserInfoRow />
               </InfoCard>
-
-              <InfoCard>
-                <UserQuickActions />
-              </InfoCard>
+              <UserQuickActions />
             </div>
           </aside>
 
