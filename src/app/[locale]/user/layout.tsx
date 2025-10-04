@@ -32,7 +32,7 @@ export default async function UserPageLayout({
           </aside>
 
           <main className="flex-1 min-w-0">
-            <div className="bg-white rounded-lg shadow-sm p-6">{children}</div>
+            <div className="rounded-lg shadow-none">{children}</div>
           </main>
         </div>
       </MaxWidthWrapper>

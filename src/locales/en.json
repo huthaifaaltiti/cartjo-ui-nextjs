@@ -1875,6 +1875,13 @@
           "UserLogout": {
             "label": "Sign out"
           }
+        },
+        "routes": {
+          "profile": {
+            "errors": {
+              "failedLoadData": "Failed to load your profile data"
+            }
+          }
         }
       }
     }

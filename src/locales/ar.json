@@ -1884,6 +1884,13 @@
           "UserLogout": {
             "label": "تسجيل الخروج"
           }
+        },
+        "routes": {
+          "profile": {
+            "errors": {
+              "failedLoadData": "فشل في تحميل بيانات ملفك الشخصي"
+            }
+          }
         }
       }
     }
