@@ -1864,6 +1864,15 @@
               "returns": "المرتجعات",
               "wishlist": "قائمة الرغبات"
             }
+          },
+          "UserAccountMenu": {
+            "header": "حسابي",
+            "items": {
+              "profile": "الملف الشخصي",
+              "addresses": "العناوين",
+              "payments": "طرق الدفع",
+              "digitalCards": "البطاقات الرقمية"
+            }
           }
         }
       }

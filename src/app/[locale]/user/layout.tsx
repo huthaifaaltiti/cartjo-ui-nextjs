@@ -1,6 +1,7 @@
 import TopBar from "@/components/TopBar";
 import InfoCard from "@/components/shared/InfoCard";
 import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
+import UserAccountMenu from "@/components/user/user/layout/user-account/UserAccountMenu";
 import UserInfoRow from "@/components/user/user/layout/user-info/UserInfoRow";
 import UserQuickActions from "@/components/user/user/layout/user-quick-actions/UserQuickActions";
 
@@ -20,6 +21,7 @@ export default async function UserPageLayout({
                 <UserInfoRow />
               </InfoCard>
               <UserQuickActions />
+              <UserAccountMenu />
             </div>
           </aside>
 

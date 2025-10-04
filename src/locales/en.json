@@ -1855,6 +1855,15 @@
               "returns": "Returns",
               "wishlist": "Wishlist"
             }
+          },
+          "UserAccountMenu": {
+            "header": "My Account",
+            "items": {
+              "profile": "Profile",
+              "addresses": "Addresses",
+              "payments": "Payments",
+              "digitalCards": "Digital Cards"
+            }
           }
         }
       }
