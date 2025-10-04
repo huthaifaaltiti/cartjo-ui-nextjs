@@ -1,40 +1,19 @@
 import { memo } from "react";
-import UserLayoutSection, { UserLayoutSectionItem } from "../UserLayoutSection";
+import UserLayoutSection from "../UserLayoutSection";
 import { useTranslations } from "next-intl";
-import { CreditCard, HandCoins, MapPin, User } from "lucide-react";
+import {
+  UserRouteType,
+  useUserLayoutRoutesNavigator,
+} from "@/hooks/useUserLayoutRoutesNavigator";
 
 const UserAccountMenu = () => {
   const t = useTranslations();
-
-  const quickActions: UserLayoutSectionItem[] = [
-    {
-      icon: User,
-      label: t("routes.user.layout.components.UserAccountMenu.items.profile"),
-      path: "/orders",
-    },
-    {
-      icon: MapPin,
-      label: t("routes.user.layout.components.UserAccountMenu.items.addresses"),
-      path: "/returns",
-    },
-    {
-      icon: HandCoins,
-      label: t("routes.user.layout.components.UserAccountMenu.items.payments"),
-      path: "/returns",
-    },
-    {
-      icon: CreditCard,
-      label: t(
-        "routes.user.layout.components.UserAccountMenu.items.digitalCards"
-      ),
-      path: "/wishlist",
-    },
-  ];
+  const items = useUserLayoutRoutesNavigator(UserRouteType.USER_ACCOUNT);
 
   return (
     <UserLayoutSection
       header={t("routes.user.layout.components.UserAccountMenu.header")}
-      items={quickActions}
+      items={items}
     />
   );
 };

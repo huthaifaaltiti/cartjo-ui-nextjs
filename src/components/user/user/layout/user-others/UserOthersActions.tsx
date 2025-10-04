@@ -1,32 +1,19 @@
 import { memo } from "react";
 import { useTranslations } from "next-intl";
-import { Bell, Settings } from "lucide-react";
-import UserLayoutSection, { UserLayoutSectionItem } from "../UserLayoutSection";
+import UserLayoutSection from "../UserLayoutSection";
+import {
+  UserRouteType,
+  useUserLayoutRoutesNavigator,
+} from "@/hooks/useUserLayoutRoutesNavigator";
 
 const UserOthersActions = () => {
   const t = useTranslations();
-
-  const quickActions: UserLayoutSectionItem[] = [
-    {
-      icon: Bell,
-      label: t(
-        "routes.user.layout.components.UserOthersActions.items.notifications"
-      ),
-      path: "/notifications",
-    },
-    {
-      icon: Settings,
-      label: t(
-        "routes.user.layout.components.UserOthersActions.items.securitySettings"
-      ),
-      path: "/security-settings",
-    },
-  ];
+  const items = useUserLayoutRoutesNavigator(UserRouteType.OTHERS);
 
   return (
     <UserLayoutSection
       header={t("routes.user.layout.components.UserOthersActions.header")}
-      items={quickActions}
+      items={items}
     />
   );
 };

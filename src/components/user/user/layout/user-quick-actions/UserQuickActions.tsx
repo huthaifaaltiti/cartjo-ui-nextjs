@@ -1,36 +1,14 @@
 import { memo } from "react";
-import { useTranslations } from "next-intl";
-import { Heart, ShoppingBag, Undo2 } from "lucide-react";
-import UserLayoutSection, { UserLayoutSectionItem } from "../UserLayoutSection";
+import UserLayoutSection from "../UserLayoutSection";
+import {
+  UserRouteType,
+  useUserLayoutRoutesNavigator,
+} from "@/hooks/useUserLayoutRoutesNavigator";
 
 const UserQuickActions = () => {
-  const t = useTranslations();
+  const items = useUserLayoutRoutesNavigator(UserRouteType.QUICK_ACTIONS);
 
-  const quickActions: UserLayoutSectionItem[] = [
-    {
-      icon: ShoppingBag,
-      label: t(
-        "routes.user.layout.components.UserQuickActions.quickActions.orders"
-      ),
-      path: "/orders",
-    },
-    {
-      icon: Undo2,
-      label: t(
-        "routes.user.layout.components.UserQuickActions.quickActions.returns"
-      ),
-      path: "/returns",
-    },
-    {
-      icon: Heart,
-      label: t(
-        "routes.user.layout.components.UserQuickActions.quickActions.wishlist"
-      ),
-      path: "/wishlist",
-    },
-  ];
-
-  return <UserLayoutSection items={quickActions} />;
+  return <UserLayoutSection items={items} />;
 };
 
 export default memo(UserQuickActions);

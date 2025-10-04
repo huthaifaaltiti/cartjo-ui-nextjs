@@ -13,6 +13,8 @@ interface UserLayoutSectionProps {
 }
 
 const UserLayoutSection = ({ header, items }: UserLayoutSectionProps) => {
+  if (items.length === 0) return null;
+
   return (
     <div className="w-full">
       <h3 className="mx-4 my-1 text-xs text-text-primary-100 font-semibold uppercase">
