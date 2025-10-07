@@ -1,10 +1,15 @@
+import { Gender } from "@/enums/gender.enum";
+
 export interface User {
   _id: string;
   firstName: string;
   lastName: string;
   username: string;
+  nationality: string;
   usernameUpdatedAt: string | null;
   email: string;
+  birthDate: string;
+  gender: Gender;
   countryCode: string;
   phoneNumber: string;
   isPhoneVerified: boolean;

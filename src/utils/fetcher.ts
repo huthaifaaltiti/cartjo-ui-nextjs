@@ -17,7 +17,7 @@ export async function fetcher<T = any>(
 ): Promise<T> {
   const resp = await fetch(url, options);
 
-  handleUnauthorizedResponse(resp, lang || "en");
+  // handleUnauthorizedResponse(resp, lang || "en");
 
   let respObj: any = null;
 

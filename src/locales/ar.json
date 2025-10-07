@@ -1889,6 +1889,102 @@
           "profile": {
             "errors": {
               "failedLoadData": "فشل في تحميل بيانات ملفك الشخصي"
+            },
+            "components": {
+              "UserProfileHeader": {
+                "title": "الملف الشخصي",
+                "description": "عرض وتحديث معلوماتك الشخصية ومعلومات الاتصال"
+              },
+              "UserProfileContactInfo": {
+                "title": "معلومات الاتصال"
+              },
+              "UserProfileContactInfoContent": {
+                "dataSet": {
+                  "phoneNumber": {
+                    "label": "رقم الهاتف",
+                    "placeholder": "رقم الهاتف",
+                    "desc": "رقم الهاتف"
+                  },
+                  "email": {
+                    "label": "البريد الإلكتروني",
+                    "placeholder": "البريد الإلكتروني",
+                    "desc": "البريد الإلكتروني"
+                  }
+                },
+                "actions": {
+                  "proceed": "تسجيل"
+                },
+                "validations": {
+                  "phoneNumber": {
+                    "pattern": "يجب أن يبدأ رقم الهاتف بـ 77 أو 78 أو 79 وأن يكون مكونًا من 9 أرقام"
+                  },
+                  "email": {
+                    "invalid": "يرجى إدخال بريد إلكتروني صالح"
+                  }
+                },
+                "api": {
+                  "registrationFailed": "فشل التسجيل"
+                }
+              },
+              "UserProfilePersonalInfo": {
+                "title": "المعلومات الشخصية"
+              },
+              "UserProfilePersonalInfoContent": {
+                "dataSet": {
+                  "firstName": {
+                    "label": "الاسم الأول",
+                    "placeholder": "الاسم الأول",
+                    "desc": "الاسم الأول"
+                  },
+                  "lastName": {
+                    "label": "اسم العائلة",
+                    "placeholder": "اسم العائلة",
+                    "desc": "اسم العائلة"
+                  },
+                  "nationality": {
+                    "label": "الجنسية",
+                    "placeholder": "الجنسية",
+                    "desc": "الجنسية"
+                  },
+                  "birthDate": {
+                    "label": "تاريخ الميلاد",
+                    "placeholder": "اختر تاريخ ميلادك",
+                    "desc": "تاريخ الميلاد"
+                  },
+                  "gender": {
+                    "label": "الجنس",
+                    "placeholder": "اختر الجنس",
+                    "options": {
+                      "male": "ذكر",
+                      "female": "أنثى"
+                    }
+                  }
+                },
+                "actions": {
+                  "proceed": "تسجيل"
+                },
+                "validations": {
+                  "firstName": {
+                    "min": "يجب أن يكون الاسم الأول مكونًا من حرفين على الأقل"
+                  },
+                  "lastName": {
+                    "min": "يجب أن يكون اسم العائلة مكونًا من حرفين على الأقل"
+                  },
+                  "nationality": {
+                    "required": "اختر جنسيتك"
+                  },
+                  "birthDate": {
+                    "required": "تاريخ الميلاد مطلوب",
+                    "future": "لا يمكن أن يكون تاريخ الميلاد في المستقبل"
+                  },
+                  "gender": {
+                    "required": "الجنس مطلوب"
+                  }
+                },
+                "api": {
+                  "registrationFailed": "فشل التسجيل"
+                }
+              }
             }
           }
         }

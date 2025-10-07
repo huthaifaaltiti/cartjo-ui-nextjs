@@ -1,6 +1,7 @@
 import { Session } from "next-auth";
 
 export type ExtendedSession = Session & {
+  accessToken: string;
   user: {
     id?: string | null;
     phoneNumber?: string | null;

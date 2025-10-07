@@ -1880,6 +1880,102 @@
           "profile": {
             "errors": {
               "failedLoadData": "Failed to load your profile data"
+            },
+            "components": {
+              "UserProfileHeader": {
+                "title": "Profile",
+                "description": "View & Update Your Personal and Contact Information"
+              },
+              "UserProfileContactInfo": {
+                "title": "Contact Information"
+              },
+              "UserProfileContactInfoContent": {
+                "dataSet": {
+                  "phoneNumber": {
+                    "label": "Phone number",
+                    "placeholder": "Phone number",
+                    "desc": "Phone number"
+                  },
+                  "email": {
+                    "label": "Email",
+                    "placeholder": "Email",
+                    "desc": "Email"
+                  }
+                },
+                "actions": {
+                  "proceed": "Register"
+                },
+                "validations": {
+                  "phoneNumber": {
+                    "pattern": "Phone number must start with 77, 78, or 79 and be 9 digits long"
+                  },
+                  "email": {
+                    "invalid": "Please enter a valid email address"
+                  }
+                },
+                "api": {
+                  "registrationFailed": "Registration failed"
+                }
+              },
+              "UserProfilePersonalInfo": {
+                "title": "Personal Information"
+              },
+              "UserProfilePersonalInfoContent": {
+                "dataSet": {
+                  "firstName": {
+                    "label": "First name",
+                    "placeholder": "First name",
+                    "desc": "First name"
+                  },
+                  "lastName": {
+                    "label": "Last name",
+                    "placeholder": "Last name",
+                    "desc": "Last name"
+                  },
+                  "nationality": {
+                    "label": "Nationality",
+                    "placeholder": "Nationality",
+                    "desc": "Nationality"
+                  },
+                  "birthDate": {
+                    "label": "Date of Birth",
+                    "placeholder": "Select your birth date",
+                    "desc": "Birth date"
+                  },
+                  "gender": {
+                    "label": "Gender",
+                    "placeholder": "Select gender",
+                    "options": {
+                      "male": "Male",
+                      "female": "Female"
+                    }
+                  }
+                },
+                "actions": {
+                  "proceed": "Register"
+                },
+                "validations": {
+                  "firstName": {
+                    "min": "First name must be at least 2 characters long"
+                  },
+                  "lastName": {
+                    "min": "Last name must be at least 2 characters long"
+                  },
+                  "nationality": {
+                    "required": "Select your nationality"
+                  },
+                  "birthDate": {
+                    "required": "Birth date is required",
+                    "future": "Birth date cannot be in the future"
+                  },
+                  "gender": {
+                    "required": "Gender is required"
+                  }
+                },
+                "api": {
+                  "registrationFailed": "Registration failed"
+                }
+              }
             }
           }
         }

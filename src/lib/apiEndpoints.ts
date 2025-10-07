@@ -125,4 +125,8 @@ export const API_ENDPOINTS = {
     ROOT: `${BASE_URL}/api/v1/search`,
     PRODUCTS: `${BASE_URL}/api/v1/search/products`,
   },
+  USER: {
+    PROFILE: `${BASE_URL}/api/v1/user`,
+    NATIONALITY_STATIC_LIST: `${BASE_URL}/api/v1/nationality/all-static`,
+  },
 };

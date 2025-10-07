@@ -7,6 +7,7 @@ import {
   fetchCategory,
   fetchCategoryProducts,
 } from "@/hooks/react-query/useCategoryQuery";
+import { fetchStaticNationalist } from "@/hooks/react-query/useNationalityQuery";
 import {
   fetchProduct,
   fetchProductComments,
@@ -16,6 +17,7 @@ import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { fetchSuggestedProducts } from "@/hooks/react-query/useSuggestedProductQuery";
+import { fetchMyProfile } from "@/hooks/react-query/useUserProfileQuery";
 import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
 import { Locale } from "@/types/locale";
@@ -257,4 +259,36 @@ export const getSuggestedProductsQueryOptions = (
   //   return failureCount < 2; // Only retry up to 2 times for other errors
   // },
   // retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+});
+
+export const getUserProfileQueryOptions = (
+  locale: Locale | string,
+  userId: string,
+  token: string
+) => ({
+  queryKey: ["userProfileData", locale, userId],
+  queryFn: () =>
+    fetchMyProfile({
+      token,
+      lang: locale,
+      userId,
+    }),
+  staleTime: STALE_TIME,
+  gcTime: GC_TIME,
+  enabled: !!userId,
+});
+
+export const getStaticNationalityListQueryOptions = (
+  locale: Locale | string,
+  token: string
+) => ({
+  queryKey: ["staticNationalityList", locale],
+  queryFn: () =>
+    fetchStaticNationalist({
+      token,
+      lang: locale,
+    }),
+  staleTime: STALE_TIME,
+  gcTime: GC_TIME,
+  enabled: true,
 });
