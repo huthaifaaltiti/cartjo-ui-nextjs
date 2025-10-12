@@ -1,4 +1,4 @@
-# Introduction
+## Introduction
 
 We, **CartJO** for e-commerce solutions, **CartJO for E-Commerce Technologies**, a Jordanian company headquartered in **Amman, Jordan** ("We," "Us," "Our"), respect the privacy of all our users and are committed to protecting the **Personal Data** collected through the website [**www.cartjo.com**](https://www.google.com/search?q=https://www.cartjo.com), the websites of our affiliates, and the associated mobile application.
 
