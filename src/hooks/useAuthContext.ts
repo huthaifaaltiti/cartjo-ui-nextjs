@@ -7,11 +7,13 @@ export const useAuthContext = () => {
   const { data: session, status } = useSession();
   const locale: Locale | string = useLocale();
   const accessToken: string | null = (session as CustomSession)?.accessToken;
+  const userId: string | undefined = (session as CustomSession)?.user?.id;
 
   return {
     session: session as CustomSession | null,
     locale,
     accessToken,
+    userId,
     status,
   };
 };

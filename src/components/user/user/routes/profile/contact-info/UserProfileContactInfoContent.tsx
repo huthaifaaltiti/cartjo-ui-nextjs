@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { z } from "zod";
 import {
   Form,
@@ -16,10 +16,12 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@/types/user";
+import { useUserProfileContext } from "@/contexts/UserProfileContext";
 
 const UserProfileContactInfoContent = ({ user }: { user: User | null }) => {
   const t = useTranslations();
   const { isArabic } = useGeneralContext();
+  const { setContactForm } = useUserProfileContext();
 
   const formSchema = z.object({
     phoneNumber: z.string().regex(/^7[789]\d{7}$/, {
@@ -41,6 +43,15 @@ const UserProfileContactInfoContent = ({ user }: { user: User | null }) => {
       email: user?.email || "",
     },
   });
+
+  const { trigger, getValues } = form;
+
+  useEffect(() => {
+    setContactForm({
+      trigger: trigger,
+      getValues: getValues,
+    });
+  }, [form, setContactForm]);
 
   return (
     <Form {...form}>

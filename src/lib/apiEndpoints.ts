@@ -128,5 +128,6 @@ export const API_ENDPOINTS = {
   USER: {
     PROFILE: `${BASE_URL}/api/v1/user`,
     NATIONALITY_STATIC_LIST: `${BASE_URL}/api/v1/nationality/all-static`,
+    UPDATE_PROFILE: `${BASE_URL}/api/v1/user/update`,
   },
 };

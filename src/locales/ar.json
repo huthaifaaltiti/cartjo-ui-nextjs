@@ -1984,6 +1984,10 @@
                 "api": {
                   "registrationFailed": "فشل التسجيل"
                 }
+              },
+              "UserProfileSubmitBtn": {
+                "submit": "تعديل الملف الشخصي",
+                "loading": "جاري تعديل الملف الشخصي.."
               }
             }
           }

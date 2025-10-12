@@ -7,6 +7,8 @@ import UserProfileContactInfo from "./contact-info/UserProfileContactInfo";
 import UserProfileContactInfoLoading from "./contact-info/UserProfileContactInfoLoading";
 import UserProfilePersonalInfo from "./personal-info/UserProfilePersonalInfo";
 import UserProfilePersonalInfoLoading from "./personal-info/UserProfilePersonalInfoLoading";
+import { UserProfileContextProvider } from "@/contexts/UserProfileContext";
+import UserProfileSubmitBtn from "./UserProfileSubmitBtn";
 
 const UserProfileContent = ({
   userId,
@@ -50,8 +52,11 @@ const UserProfileContent = ({
   if (showData) {
     return (
       <div className={`${containerClass} flex flex-col gap-5`}>
-        <UserProfileContactInfo user={user!} />
-        <UserProfilePersonalInfo user={user!} />
+        <UserProfileContextProvider>
+          <UserProfileContactInfo user={user!} />
+          <UserProfilePersonalInfo user={user!} />
+          <UserProfileSubmitBtn />
+        </UserProfileContextProvider>
       </div>
     );
   }

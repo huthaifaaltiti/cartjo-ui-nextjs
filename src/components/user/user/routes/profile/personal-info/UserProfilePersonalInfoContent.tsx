@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { z } from "zod";
 import {
   Form,
@@ -25,11 +25,14 @@ import {
 } from "@/components/ui/select";
 import { STATIC_NATIONALITIES } from "@/constants/nationalities";
 import { useStaticNationalityListQuery } from "@/hooks/react-query/useNationalityQuery";
+import { useUserProfileContext } from "@/contexts/UserProfileContext";
+import { Gender } from "@/enums/gender.enum";
 
 const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
   const t = useTranslations();
   const { isArabic } = useGeneralContext();
   const { data } = useStaticNationalityListQuery();
+  const { setPersonalForm } = useUserProfileContext();
 
   const staticNationalityList = useMemo(
     () => data?.data ?? STATIC_NATIONALITIES,
@@ -74,6 +77,15 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
       gender: user?.gender || "",
     },
   });
+
+  const { trigger, getValues } = form;
+
+  useEffect(() => {
+    setPersonalForm({
+      trigger: trigger,
+      getValues: getValues,
+    });
+  }, [form, setPersonalForm]);
 
   return (
     <Form {...form}>
@@ -206,12 +218,12 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
                         />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="male">
+                        <SelectItem value={Gender.MALE}>
                           {t(
                             "routes.user.layout.routes.profile.components.UserProfilePersonalInfoContent.dataSet.gender.options.male"
                           )}
                         </SelectItem>
-                        <SelectItem value="female">
+                        <SelectItem value={Gender.FEMALE}>
                           {t(
                             "routes.user.layout.routes.profile.components.UserProfilePersonalInfoContent.dataSet.gender.options.female"
                           )}
