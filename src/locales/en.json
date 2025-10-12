@@ -1979,6 +1979,15 @@
               "UserProfileSubmitBtn": {
                 "submit": "Update Profile",
                 "loading": "Updating Profile.."
+              },
+              "UserProfileContent": {
+                "errors": {
+                  "failed": "Failed to load your personal data"
+                },
+                "noData": {
+                  "title": "No data found",
+                  "desc": "Try to reload your page, or contact the system admin."
+                }
               }
             }
           }

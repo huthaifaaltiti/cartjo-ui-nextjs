@@ -9,12 +9,17 @@ import UserProfilePersonalInfo from "./personal-info/UserProfilePersonalInfo";
 import UserProfilePersonalInfoLoading from "./personal-info/UserProfilePersonalInfoLoading";
 import { UserProfileContextProvider } from "@/contexts/UserProfileContext";
 import UserProfileSubmitBtn from "./UserProfileSubmitBtn";
+import ErrorMessage from "@/components/shared/ErrorMessage";
+import { useTranslations } from "next-intl";
+import UserProfileSubmitBtnLoading from "./UserProfileSubmitBtnLoading";
+import NoData from "@/components/shared/NoData";
 
 const UserProfileContent = ({
   userId,
 }: {
   userId: string | null | undefined;
 }) => {
+  const t = useTranslations();
   const { data, isLoading, isFetching, isFetched, isError, error } =
     useUserProfileQuery(userId);
 
@@ -37,16 +42,35 @@ const UserProfileContent = ({
       <div className={`${containerClass} flex flex-col gap-5`}>
         <UserProfileContactInfoLoading />
         <UserProfilePersonalInfoLoading />
+        <UserProfileSubmitBtnLoading />
       </div>
     );
   }
 
   if (showError) {
-    return <div className="w-full flex items-center mt-3">showError</div>;
+    return (
+      <div className={containerClass}>
+        <ErrorMessage
+          message={
+            error?.message ||
+            t(
+              "routes.user.layout.routes.profile.components.UserProfileContent.errors.failed"
+            )
+          }
+        />
+      </div>
+    );
   }
 
   if (showNoData) {
-    return <div className="w-full flex items-center mt-3">no data</div>;
+    return (
+      <div className={containerClass}>
+        <NoData
+          title={t("routes.user.layout.routes.profile.components.UserProfileContent.noData.title")}
+          description={t("routes.user.layout.routes.profile.components.UserProfileContent.noData.desc")}
+        />
+      </div>
+    );
   }
 
   if (showData) {

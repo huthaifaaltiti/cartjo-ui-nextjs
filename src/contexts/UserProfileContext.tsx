@@ -49,7 +49,7 @@ export const UserProfileContextProvider = ({
   const t = useTranslations();
   const { accessToken, userId, locale } = useAuthContext();
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(true);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [contactForm, setContactForm] = useState<
     { trigger: () => Promise<boolean>; getValues: () => any } | undefined
   >(undefined);
