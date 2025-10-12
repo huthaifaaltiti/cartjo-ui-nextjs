@@ -5,13 +5,14 @@ import { Toaster } from "sonner";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
-import "../globals.css";
 import { isArabicLocale } from "@/config/locales.config";
 import { LocaleProvider } from "@/contexts/LocaleContext";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
 import { HomeEffectsContextProvider } from "@/contexts/HomeEffectsContext";
 import { GeneralContextProvider } from "@/contexts/General.context";
+import "../globals.css";
+import "../../styles/prose.css"
 
 const inter = Inter({ subsets: ["latin"] });
 

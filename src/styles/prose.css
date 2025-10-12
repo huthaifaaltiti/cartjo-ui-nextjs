@@ -1,0 +1,67 @@
+.prose {
+  max-width: none;
+  color: #1f2937;
+}
+
+.prose h1 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #313131;
+}
+
+.prose h2 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #3d3d3e;
+}
+
+.prose h3 {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #3d3d3e;
+}
+
+.prose p {
+  font-size: 0.7rem;
+  color: #555556;
+}
+
+.prose a {
+  color: #634C9F;
+  text-decoration: underline;
+  font-size: 0.7rem;
+}
+
+.prose ul,
+.prose ol {
+  margin-left: 1.5rem;
+  font-size: 0.7rem;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose strong {
+  color: #252525;
+}
+
+.prose img {
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+}
+
+/* RTL / LTR support */
+.prose.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.prose.ltr {
+  direction: ltr;
+  text-align: left;
+}
