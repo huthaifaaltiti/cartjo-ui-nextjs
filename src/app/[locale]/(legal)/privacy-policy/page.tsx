@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { marked } from "marked";
+import PrivacyPolicyHeader from "@/components/user/privacy-policy/PrivacyPolicyHeader";
 
 type PrivacyPolicyPageProps = {
   params: {
@@ -10,9 +11,15 @@ type PrivacyPolicyPageProps = {
 
 const PrivacyPolicyPage = ({ params }: PrivacyPolicyPageProps) => {
   const { locale } = params;
-  const lang = locale === "ar" ? "ar" : "en"; 
+  const lang = locale === "ar" ? "ar" : "en";
 
-  const filePath = path.join(process.cwd(), "src", "content", "policies", `privacy-policy-${lang}.md`);
+  const filePath = path.join(
+    process.cwd(),
+    "src",
+    "content",
+    "policies",
+    `privacy-policy-${lang}.md`
+  );
 
   if (!fs.existsSync(filePath)) {
     throw new Error(`Privacy policy file not found for locale: ${lang}`);
@@ -27,6 +34,7 @@ const PrivacyPolicyPage = ({ params }: PrivacyPolicyPageProps) => {
         lang === "ar" ? "rtl text-right" : "ltr text-left"
       }`}
     >
+      <PrivacyPolicyHeader />
       <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
     </div>
   );
