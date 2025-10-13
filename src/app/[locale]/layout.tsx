@@ -11,8 +11,9 @@ import ReactQueryProvider from "@/components/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
 import { HomeEffectsContextProvider } from "@/contexts/HomeEffectsContext";
 import { GeneralContextProvider } from "@/contexts/General.context";
+import Footer from "@/components/Footer";
 import "../globals.css";
-import "../../styles/prose.css"
+import "../../styles/prose.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -58,7 +59,10 @@ export default async function LocaleLayout({
                     closeButton={false}
                   />
                   <NuqsAdapter>
-                    <GeneralContextProvider>{children}</GeneralContextProvider>
+                    <GeneralContextProvider>
+                      {children}
+                      <Footer />
+                    </GeneralContextProvider>
                   </NuqsAdapter>
                 </HomeEffectsContextProvider>
               </SessionWrapper>
