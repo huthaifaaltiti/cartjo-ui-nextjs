@@ -1995,12 +1995,12 @@
       }
     },
     "privacyPolicy": {
-      "components": {
-        "PrivacyPolicyHeader": {
-          "title": "Privacy Policy",
-          "lastUpdated": "Last updated: Oct 12, 2025"
-        }
-      }
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: Oct 12, 2025"
+    },
+    "termsOfUse": {
+      "title": "Terms Of Use",
+      "lastUpdated": "Last updated: Oct 12, 2025"
     }
   }
 }
