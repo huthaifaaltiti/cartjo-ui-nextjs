@@ -1,4 +1,6 @@
 import LegalPageRenderer from "@/components/user/legal/LegalPageRenderer";
+import { generateLocalizedMetadata } from "@/utils/generateMetadata";
+
 
 type TermsOfUsePageProps = {
   params: {
@@ -20,8 +22,16 @@ const TermsOfUsePage = ({ params }: TermsOfUsePageProps) => {
 
 export default TermsOfUsePage;
 
-export const metadata = {
-  title: "Terms of Use | CartJO",
-  description:
-    "Learn how CartJO protects your personal data and privacy while using our e-commerce platform.",
-};
+export async function generateMetadata({ params }: TermsOfUsePageProps) {
+  const { locale } = params;
+
+  return generateLocalizedMetadata({
+    locale,
+    titleAr: "شروط الاستخدام | كارت جو",
+    titleEn: "Terms of Use | CartJO",
+    descAr:
+      "راجع شروط وأحكام استخدام منصة كارت جو وتعرف على حقوقك ومسؤولياتك أثناء التسوق.",
+    descEn:
+      "Review the terms and conditions of using the CartJO platform and understand your rights and responsibilities while shopping.",
+  });
+}

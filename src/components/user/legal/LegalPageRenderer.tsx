@@ -27,6 +27,7 @@ const LegalPageRenderer = ({
     process.cwd(),
     "src",
     "content",
+    "legal",
     folderName,
     `${fileName}-${lang}.md`
   );
