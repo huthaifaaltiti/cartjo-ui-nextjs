@@ -1,7 +1,4 @@
-import fs from "fs";
-import path from "path";
-import { marked } from "marked";
-import PrivacyPolicyHeader from "@/components/user/privacy-policy/PrivacyPolicyHeader";
+import LegalPageRenderer from "@/components/user/legal/LegalPageRenderer";
 
 type PrivacyPolicyPageProps = {
   params: {
@@ -10,33 +7,14 @@ type PrivacyPolicyPageProps = {
 };
 
 const PrivacyPolicyPage = ({ params }: PrivacyPolicyPageProps) => {
-  const { locale } = params;
-  const lang = locale === "ar" ? "ar" : "en";
-
-  const filePath = path.join(
-    process.cwd(),
-    "src",
-    "content",
-    "policies",
-    `privacy-policy-${lang}.md`
-  );
-
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`Privacy policy file not found for locale: ${lang}`);
-  }
-
-  const fileContent = fs.readFileSync(filePath, "utf8");
-  const htmlContent = marked(fileContent);
-
   return (
-    <div
-      className={`container mx-auto px-6 py-10 prose prose-lg max-w-none ${
-        lang === "ar" ? "rtl text-right" : "ltr text-left"
-      }`}
-    >
-      <PrivacyPolicyHeader />
-      <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-    </div>
+    <LegalPageRenderer
+      locale={params.locale}
+      folderName="policies"
+      fileName="privacy-policy"
+      titleKey="routes.privacyPolicy.components.PrivacyPolicyHeader.title"
+      dateKey="routes.privacyPolicy.components.PrivacyPolicyHeader.lastUpdated"
+    />
   );
 };
 
