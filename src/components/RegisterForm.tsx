@@ -28,6 +28,7 @@ import {
   showSuccessToast,
   showWarningToast,
 } from "./shared/CustomToast";
+import Link from "next/link";
 
 const RegisterForm = () => {
   const t = useTranslations();
@@ -327,11 +328,13 @@ const RegisterForm = () => {
           }`}
         >
           {t("routes.auth.components.AuthTabs.components.register.note")}{" "}
-          <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
-            {t(
-              "routes.auth.components.AuthTabs.components.register.privacyPolicy"
-            )}
-          </span>
+          <Link href={"/privacy-policy"} target="_blank">
+            <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
+              {t(
+                "routes.auth.components.AuthTabs.components.register.privacyPolicy"
+              )}
+            </span>
+          </Link>
         </p>
 
         <div

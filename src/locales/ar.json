@@ -2004,12 +2004,8 @@
       }
     },
     "privacyPolicy": {
-      "components": {
-        "PrivacyPolicyHeader": {
-          "title": "سياسة الخصوصية",
-          "lastUpdated": "آخر تحديث: ١٢ أكتوبر، ٢٠٢٥"
-        }
-      }
+      "title": "سياسة الخصوصية",
+      "lastUpdated": "آخر تحديث: ١٢ أكتوبر، ٢٠٢٥"
     },
     "termsOfUse": {
       "title": "شروط الاستخدام",
