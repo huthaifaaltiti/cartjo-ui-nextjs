@@ -1,7 +1,7 @@
 import MaxWidthWrapper from "./shared/MaxWidthWrapper";
-import FooterBot from "./user/general/footer/FooterBot";
-import FooterMid from "./user/general/footer/FooterMid";
-import FooterTop from "./user/general/footer/FooterTop";
+import FooterBot from "./user/general/footer/bot/FooterBot";
+import FooterMid from "./user/general/footer/mid/FooterMid";
+import FooterTop from "./user/general/footer/top/FooterTop";
 
 const Footer = () => {
   return (
