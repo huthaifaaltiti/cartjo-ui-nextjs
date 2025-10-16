@@ -4,15 +4,11 @@ import { memo, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-
-import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-
 import { apiRequest } from "@/utils/apiRequest";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -29,13 +25,35 @@ import {
   showWarningToast,
 } from "./shared/CustomToast";
 import Link from "next/link";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { useGeneralContext } from "@/contexts/General.context";
 
 const RegisterForm = () => {
   const t = useTranslations();
-  const locale = useLocale();
-  const isArabic = isArabicLocale(locale);
+  const { isArabic, dir, locale } = useGeneralContext();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const preferredLangs = [
+    {
+      label: t(
+        "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.langs.ar"
+      ),
+      val: "ar",
+    },
+    {
+      label: t(
+        "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.langs.en"
+      ),
+      val: "en",
+    },
+  ];
 
   const formSchema = z.object({
     firstName: z.string().min(2, {
@@ -63,6 +81,7 @@ const RegisterForm = () => {
         "routes.auth.components.AuthTabs.components.register.validations.password.min"
       ),
     }),
+    preferredLang: z.enum(["ar", "en"]),
     termsAccepted: z.literal(true, {
       errorMap: () => ({
         message: t(
@@ -81,6 +100,7 @@ const RegisterForm = () => {
       phoneNumber: "",
       email: "",
       password: "",
+      preferredLang: "ar",
       termsAccepted: true,
       marketingEmails: false,
     },
@@ -273,7 +293,7 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        <div className="w-full flex items-center justify-between gap-5">
+        <div className="w-full">
           <div className="w-full">
             <FormField
               control={form.control}
@@ -320,6 +340,44 @@ const RegisterForm = () => {
               )}
             />
           </div>
+          <div className="w-full mt-5">
+            <FormField
+              control={form.control}
+              name="preferredLang"
+              render={({ field }) => (
+                <FormItem dir={dir}>
+                  <FormLabel className="text-sm font-normal">
+                    {t(
+                      "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.label"
+                    )}
+                  </FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl dir={dir}>
+                      <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
+                        <SelectValue
+                          placeholder={t(
+                            "routes.dashboard.routes.products.components.CreateProductForm.fields.currency.placeholder"
+                          )}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {preferredLangs.map((lang, i) => (
+                        <SelectItem
+                          key={`lang_${i}`}
+                          value={lang.val}
+                          className="cursor-pointer capitalize"
+                        >
+                          {lang.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <p
@@ -347,7 +405,7 @@ const RegisterForm = () => {
             name="marketingEmails"
             render={({ field }) => (
               <FormItem
-                dir={isArabic ? "rtl" : "ltr"}
+                dir={dir}
                 className="flex items-center space-x-2 rtl:space-x-reverse"
               >
                 <FormControl className="h-4 mt-2">
@@ -376,7 +434,7 @@ const RegisterForm = () => {
             name="termsAccepted"
             render={({ field }) => (
               <FormItem
-                dir={isArabic ? "rtl" : "ltr"}
+                dir={dir}
                 className="flex items-center justify-center space-x-2 rtl:space-x-reverse"
               >
                 <FormControl className="h-4 mt-2">

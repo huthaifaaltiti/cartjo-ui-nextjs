@@ -316,6 +316,15 @@
                   "placeholder": "كلمة المرور",
                   "desc": "كلمة المرور"
                 },
+                "preferredLang": {
+                  "label": "اللغة المفضلة",
+                  "placeholder": "اختر اللغة المفضلة",
+                  "desc": "اللغة المفضلة",
+                  "langs": {
+                    "en": "الإنجليزية",
+                    "ar": "العربية"
+                  }
+                },
                 "termsAccepted": {
                   "label": "الشروط مقبولة",
                   "placeholder": "الشروط مقبولة",

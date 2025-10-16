@@ -319,6 +319,15 @@
                   "placeholder": "Password",
                   "desc": "Password"
                 },
+                "preferredLang": {
+                  "label": "Preferred Language",
+                  "placeholder": "Preferred Language",
+                  "desc": "Preferred Language",
+                  "langs":{
+                    "en":"English",
+                    "ar":"Arabic"
+                  }
+                },
                 "termsAccepted": {
                   "label": "Terms accepted",
                   "placeholder": "Terms accepted",
