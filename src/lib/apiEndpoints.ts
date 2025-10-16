@@ -130,4 +130,7 @@ export const API_ENDPOINTS = {
     NATIONALITY_STATIC_LIST: `${BASE_URL}/api/v1/nationality/all-static`,
     UPDATE_PROFILE: `${BASE_URL}/api/v1/user/update`,
   },
+  VERIFY_EMAIL: {
+    VERIFY: `${BASE_URL}/api/v1/authentication/verify-email`,
+  },
 };

@@ -323,9 +323,9 @@
                   "label": "Preferred Language",
                   "placeholder": "Preferred Language",
                   "desc": "Preferred Language",
-                  "langs":{
-                    "en":"English",
-                    "ar":"Arabic"
+                  "langs": {
+                    "en": "English",
+                    "ar": "Arabic"
                   }
                 },
                 "termsAccepted": {
@@ -2037,6 +2037,35 @@
     "warrantyPolicy": {
       "title": "Warranty Policy",
       "lastUpdated": "Last updated: Oct 12, 2025"
+    },
+    "verifyEmail": {
+      "errors": {
+        "failed": "An error occurred while generation route!"
+      },
+      "components": {
+        "VerifyEmailContent": {
+          "logoSubtitle": "Your Shopping Destination",
+          "verifyingEmail": "Verifying Your Email",
+          "verifyingEmailDesc": "Please wait while we confirm your email address...",
+          "emailVerifiedTitle": "Email Verified! 🎉",
+          "emailVerifiedDesc": "Your account is now active!",
+          "emailVerifiedExtra": "You can now access all features of CartJO",
+          "redirectingToLogin": "Redirecting to login in",
+          "seconds": "seconds",
+          "continueToLogin": "Continue to Login",
+          "verificationFailedTitle": "Verification Failed",
+          "commonReasons": "Common reasons:",
+          "linkExpired": "• Verification link has expired (valid for 48 hours)",
+          "linkUsed": "• Link has already been used",
+          "invalidLink": "• Invalid or corrupted link",
+          "requestNewLink": "Request New Link",
+          "contactSupport": "Contact Support",
+          "noToken": "No verification token found. Please check your email link.",
+          "successMessageDefault": "Your email has been verified successfully!",
+          "errorMessageDefault": "Verification failed. The link may be invalid or expired.",
+          "errorOccurred": "An error occurred while verifying your email. Please try again."
+        }
+      }
     }
   }
 }
