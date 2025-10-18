@@ -132,5 +132,6 @@ export const API_ENDPOINTS = {
   },
   VERIFY_EMAIL: {
     VERIFY: `${BASE_URL}/api/v1/authentication/verify-email`,
+    REVERIFY: `${BASE_URL}/api/v1/authentication/resend-verification-email`,
   },
 };

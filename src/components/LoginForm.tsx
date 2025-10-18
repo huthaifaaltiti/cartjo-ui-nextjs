@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -8,11 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
-
+import { signIn, useSession } from "next-auth/react";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { isArabicLocale } from "@/config/locales.config";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -29,14 +27,37 @@ import {
   showSuccessToast,
   showWarningToast,
 } from "./shared/CustomToast";
+import { useQueryState } from "nuqs";
+import { useVerifyEmail } from "@/contexts/VerifyEmailContext";
 
 const LoginForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
   const router = useRouter();
+  const { data: sessionData, status } = useSession();
+  const { reVerify } = useVerifyEmail();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const [resend] = useQueryState("resend", {
+    defaultValue: false,
+    parse: (value) => Boolean(value),
+  });
+  const [redirectTo] = useQueryState("redirectTo", {
+    defaultValue: "",
+    parse: (value) => String(value),
+  });
+
+  useEffect(() => {
+    if (status === "authenticated" && resend && sessionData?.user?.email) {
+      reVerify(sessionData.user.email, locale)
+        .then(() => {
+          if (redirectTo) router.push(redirectTo);
+        })
+        .catch((err) => console.error("Auto resend failed", err));
+    }
+  }, [status, resend, sessionData, locale, router, redirectTo, reVerify]);
 
   const formSchema = z.object({
     identifier: z
@@ -141,7 +162,7 @@ const LoginForm = () => {
         });
 
         if (result?.ok) {
-          router.push("/");
+          resend && redirectTo ? router.push(redirectTo) : router.push("/");
         } else {
           showErrorToast({
             title: t("general.toast.title.error"),

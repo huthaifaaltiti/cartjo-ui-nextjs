@@ -8,6 +8,7 @@ import { createContext, ReactNode, useContext } from "react";
 
 type VerifyEmailContextType = {
   verify: (token: string, lang: Locale | string) => Promise<BaseResponse>;
+  reVerify: (email: string, lang: Locale | string) => Promise<BaseResponse>;
 };
 
 const VerifyEmailContext = createContext<undefined | VerifyEmailContextType>(
@@ -37,10 +38,24 @@ export const VerifyEmailContextProvider = ({
     });
   };
 
+  const reVerify = async (
+    email: string,
+    lang: Locale | string = "en"
+  ): Promise<BaseResponse> => {
+    const url = new URL(`${API_ENDPOINTS.VERIFY_EMAIL.REVERIFY}`);
+
+    return fetcher(url.toString(), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, lang }),
+    });
+  };
+
   return (
     <VerifyEmailContext.Provider
       value={{
         verify,
+        reVerify
       }}
     >
       {children}

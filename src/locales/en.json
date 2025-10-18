@@ -2064,6 +2064,13 @@
           "successMessageDefault": "Your email has been verified successfully!",
           "errorMessageDefault": "Verification failed. The link may be invalid or expired.",
           "errorOccurred": "An error occurred while verifying your email. Please try again."
+        },
+        "RequestNewLinkBtn": {
+          "mustLoginTitle": "Login Required",
+          "mustLoginDesc": "Please log in first to request a new verification link.",
+          "sending": "Sending...",
+          "linkSent": "Verification Link Sent!",
+          "requestNewLink": "Request New Link"
         }
       }
     }
