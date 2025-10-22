@@ -365,8 +365,16 @@
               "api": {
                 "registrationFailed": "Registration failed"
               }
+            },
+            "ForgotPasswordLink": {
+              "label": "Forgot Password?"
             }
           }
+        }
+      },
+      "routes": {
+        "forgotPassword": {
+
         }
       }
     },

@@ -29,6 +29,7 @@ import {
 } from "./shared/CustomToast";
 import { useQueryState } from "nuqs";
 import { useVerifyEmail } from "@/contexts/VerifyEmailContext";
+import ForgotPasswordLink from "./user/auth/forgot-password/ForgotPasswordLink";
 
 const LoginForm = () => {
   const t = useTranslations();
@@ -162,7 +163,11 @@ const LoginForm = () => {
         });
 
         if (result?.ok) {
-          resend && redirectTo ? router.push(redirectTo) : router.push("/");
+          if (resend && redirectTo) {
+            router.push(redirectTo);
+          } else {
+            router.push("/");
+          }
         } else {
           showErrorToast({
             title: t("general.toast.title.error"),
@@ -192,6 +197,7 @@ const LoginForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* identifier */}
         <FormField
           control={form.control}
           name="identifier"
@@ -227,47 +233,52 @@ const LoginForm = () => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
-              <FormLabel className="text-sm text-text-primary-400 font-normal">
-                {t(
-                  "routes.auth.components.AuthTabs.components.login.dataSet.password.label"
-                )}
-              </FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    className={`placeholder:text-xs text-xs  ${
-                      isArabic
-                        ? "placeholder:text-right pl-10"
-                        : "placeholder:text-left pr-10"
-                    }`}
-                    placeholder={t(
-                      "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder"
-                    )}
-                    {...field}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    className={`absolute inset-y-0 ${
-                      isArabic ? "left-2" : "right-2"
-                    } flex items-center text-gray-500`}
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </FormControl>
+        <div className="w-full flex flex-col gap-3">
+          {/* password */}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
+                <FormLabel className="text-sm text-text-primary-400 font-normal">
+                  {t(
+                    "routes.auth.components.AuthTabs.components.login.dataSet.password.label"
+                  )}
+                </FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      className={`placeholder:text-xs text-xs  ${
+                        isArabic
+                          ? "placeholder:text-right pl-10"
+                          : "placeholder:text-left pr-10"
+                      }`}
+                      placeholder={t(
+                        "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder"
+                      )}
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className={`absolute inset-y-0 ${
+                        isArabic ? "left-2" : "right-2"
+                      } flex items-center text-gray-500`}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <ForgotPasswordLink locale={locale} />
+        </div>
 
         <Button
           className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 transition-all"

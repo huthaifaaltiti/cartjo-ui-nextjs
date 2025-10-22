@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { useTranslations } from "next-intl";
 import LoginForm from "./LoginForm";
+import ForgotPassword from "./user/auth/forgot-password/ForgotPasswordLink";
 
 const Login = () => {
   const t = useTranslations();
