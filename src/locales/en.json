@@ -361,7 +361,7 @@
                   "invalid": "Please enter a valid email address"
                 },
                 "password": {
-                  "min": "Password must be at least 6 characters long"
+                  "min": "Password must be at least 8 characters long"
                 },
                 "termsAccepted": {
                   "required": "You must accept the terms and conditions"
