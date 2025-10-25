@@ -4,8 +4,14 @@ export const API_ENDPOINTS = {
   AUTH: {
     REGISTER: `${BASE_URL}/api/v1/authentication/register`,
     LOGIN: `${BASE_URL}/api/v1/authorization/login`,
-    FORGOT_PASSWORD: `${BASE_URL}/api/v1/authorization/forgot-password`,
+    FORGOT_PASSWORD: {
+      ROOT: `${BASE_URL}/api/v1/authentication/forgot-password`,
+      SEND_IDENTIFIER: "send-identifier",
+      VERIFY_CODE: "verify-reset-password-code",
+      RESET_PASSWORD: "reset-password",
+    },
   },
+  AUTHORIZATION: { LOGIN: `${BASE_URL}/api/v1/authorization/login` },
   DASHBOARD: {
     LOCATIONS: {
       BULK_UPLOAD_LOCATIONS: `${BASE_URL}/api/v1/location/bulk-upload`,

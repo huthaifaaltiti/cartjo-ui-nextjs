@@ -75,8 +75,8 @@ const CounterDown = ({
       <span className={`${sizeClasses} font-bold ${colorClasses}`}>
         {countdown}
       </span>
-      <span className="text-gray-500 text-sm">
-        {t("components.CounterDown.seconds")}
+      <span className="text-gray-500 text-xs">
+        {t(`components.CounterDown.${countdown !== 1 ? "seconds" : "second"}`)}
       </span>
     </div>
   );

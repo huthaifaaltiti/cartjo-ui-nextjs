@@ -45,6 +45,10 @@ const LoginForm = () => {
     defaultValue: false,
     parse: (value) => Boolean(value),
   });
+  const [identifier] = useQueryState("identifier", {
+    defaultValue: "",
+    parse: (value) => String(value),
+  });
   const [redirectTo] = useQueryState("redirectTo", {
     defaultValue: "",
     parse: (value) => String(value),
@@ -94,7 +98,7 @@ const LoginForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      identifier: "",
+      identifier: identifier ?? "",
       password: "",
     },
   });

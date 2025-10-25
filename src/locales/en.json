@@ -246,7 +246,8 @@
       }
     },
     "CounterDown": {
-      "seconds": "seconds"
+      "seconds": "seconds",
+      "second": "second"
     }
   },
   "routes": {
@@ -394,8 +395,43 @@
                   "description": "Create a secure password"
                 }
               },
-              "title":"Password Recovery",
-              "desc":"Follow the steps to reset your password securely"
+              "title": "Password Recovery",
+              "desc": "Follow the steps to reset your password securely"
+            },
+            "IdentifyAccount": {
+              "noIdentifier": "Please enter your identifier; email, or phone number, or username",
+              "header": "Forgot Password?",
+              "desc": "Enter your email, phone number, or username to receive a verification code.",
+              "input": {
+                "label": "Email, Phone, or Username",
+                "placeholder": "Enter your email, phone, or username"
+              },
+              "submit": "Send Verification Code"
+            },
+            "VerifyCode": {
+              "title": "Verify Your Identity",
+              "description": "We have sent a 6-digit code to the email that is connected with {identifier}. Check your inbox and enter the verification code to reset your password.",
+              "inputLabel": "Verification Code",
+              "placeholder": "000000",
+              "noCode": "Please enter the 6-digit verification code",
+              "resend": "Did not receive the code? Resend",
+              "back": "Back",
+              "verifyCode": "Verify Code",
+              "loading": "Verifying..."
+            },
+            "CreateNewPassword": {
+              "title": "Create New Password",
+              "description": "Choose a strong password to secure your account",
+              "newPasswordLabel": "New Password",
+              "newPasswordPlaceholder": "Enter new password",
+              "confirmPasswordLabel": "Confirm Password",
+              "confirmPasswordPlaceholder": "Confirm new password",
+              "passwordNotMeetRules": "Password does not meet all rules",
+              "passwordsDoNotMatch": "Passwords do not match",
+              "passwordsMatch": "Passwords match",
+              "backButton": "Back",
+              "resetButton": "Reset Password",
+              "redirectingMessage": "Redirecting to login page."
             }
           }
         }
