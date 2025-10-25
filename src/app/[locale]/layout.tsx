@@ -14,6 +14,7 @@ import { GeneralContextProvider } from "@/contexts/General.context";
 import Footer from "@/components/Footer";
 import "../globals.css";
 import "../../styles/prose.css";
+import ReduxProvider from "../../redux/ReduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -60,7 +61,7 @@ export default async function LocaleLayout({
                   />
                   <NuqsAdapter>
                     <GeneralContextProvider>
-                      {children}
+                      <ReduxProvider>{children}</ReduxProvider>
                       <Footer />
                     </GeneralContextProvider>
                   </NuqsAdapter>

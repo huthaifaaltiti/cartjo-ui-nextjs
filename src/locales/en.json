@@ -81,7 +81,8 @@
       "priority": "Priority",
       "characters": "Characters",
       "star": "star",
-      "stars": "stars"
+      "stars": "stars",
+      "logoTitle": "CartJO"
     },
     "date": {
       "startDate": "Start Date",
@@ -243,6 +244,9 @@
           "checkLater": "Check later for more active data"
         }
       }
+    },
+    "CounterDown": {
+      "seconds": "seconds"
     }
   },
   "routes": {
@@ -373,9 +377,7 @@
         }
       },
       "routes": {
-        "forgotPassword": {
-
-        }
+        "forgotPassword": {}
       }
     },
     "home": {

@@ -78,7 +78,9 @@
       "button_link": "رابط الزر",
       "created_by": "أنشأه",
       "key": "مفتاح",
-      "priority": "أولوية"
+      "priority": "أولوية",
+      "logoTitle": "كارت جو",
+      "stars": "نجوم"
     },
     "date": {
       "startDate": "تاريخ البداية",
@@ -365,6 +367,9 @@
             }
           }
         }
+      },
+      "routes": {
+        "forgotPassword": {}
       }
     },
     "home": {
