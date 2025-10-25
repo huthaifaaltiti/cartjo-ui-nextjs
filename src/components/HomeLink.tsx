@@ -4,9 +4,13 @@ import { memo } from "react";
 import { House } from "lucide-react";
 import Link from "next/link";
 import { useGeneralContext } from "@/contexts/General.context";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const HomeLink: React.FC = () => {
   const { isArabic } = useGeneralContext();
+  const { locale, dir } = useSelector((state: RootState) => state.general);
+  console.log({locale, dir})
 
   return (
     <div
