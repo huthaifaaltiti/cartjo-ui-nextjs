@@ -377,7 +377,28 @@
         }
       },
       "routes": {
-        "forgotPassword": {}
+        "forgotPassword": {
+          "components": {
+            "ForgotPasswordStepper": {
+              "steps": {
+                "_1": {
+                  "title": "Identify Account",
+                  "desc": "Enter your credentials"
+                },
+                "_2": {
+                  "title": "Verify Code",
+                  "desc": "Check your email or phone"
+                },
+                "_3": {
+                  "title": "New Password",
+                  "description": "Create a secure password"
+                }
+              },
+              "title":"Password Recovery",
+              "desc":"Follow the steps to reset your password securely"
+            }
+          }
+        }
       }
     },
     "home": {

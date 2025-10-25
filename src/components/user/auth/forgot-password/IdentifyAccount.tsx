@@ -1,41 +1,73 @@
+"use client";
+
 import { KeyRound, Mail, Phone, User } from "lucide-react";
-import { memo, useState } from "react";
+import { memo, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import {
+  setErrors,
+  setIdentifier,
+} from "@/redux/slices/auth/forgotPassword";
+import { sendIdentifier } from "@/redux/slices/auth/forgotPassword/actions";
 
 const IdentifyAccount = () => {
-  const [identifierType, setIdentifierType] = useState<string>("email");
-  const [identifier, setIdentifier] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const { identifier, identifierType, errors, isLoading } = useSelector(
+    (state: RootState) => state.forgotPassword
+  );
 
-  const detectIdentifierType = (value) => {
-    if (value.includes("@")) return "email";
-    if (/^\+?[\d\s-()]+$/.test(value)) return "phone";
-    return "username";
-  };
+  const handleIdentifierChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(setIdentifier(e.target.value));
+    },
+    [dispatch]
+  );
 
-  const handleIdentifierChange = (e) => {
-    const value = e.target.value;
-    setIdentifier(value);
-    if (value) {
-      setIdentifierType(detectIdentifierType(value));
+  const handleNext = useCallback(async () => {
+    if (!identifier.trim()) {
+      dispatch(
+        setErrors({
+          identifier: "Please enter your email, phone number, or username",
+        })
+      );
+      return;
     }
-  };
+
+    dispatch(setErrors({}));
+
+    try {
+      await dispatch(sendIdentifier({ identifier })).unwrap();
+      // ✅ Success case is already handled in slice (step increment, etc.)
+    } catch (err: any) {
+      dispatch(
+        setErrors({
+          general:
+            err?.message ||
+            "Unable to send verification code. Please try again later.",
+        })
+      );
+    }
+  }, [identifier, dispatch]);
 
   return (
-    <div className="space-y-6 max-w-md mx-auto">
+    <div className="max-w-md mx-auto space-y-6">
+      {/* Header */}
       <div className="text-center space-y-2">
-        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
           <KeyRound className="w-8 h-8 text-blue-600" />
         </div>
-        <h2 className="text-2xl font-bold">Forgot Password?</h2>
-        <p className="text-gray-600">
+        <h2 className="text-2xl font-bold text-gray-900">Forgot Password?</h2>
+        <p className="text-gray-600 text-sm">
           Enter your email, phone number, or username to receive a verification
-          code
+          code.
         </p>
       </div>
 
+      {/* Input */}
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Email, Phone or Username
+            Email, Phone, or Username
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -53,24 +85,32 @@ const IdentifyAccount = () => {
               type="text"
               value={identifier}
               onChange={handleIdentifierChange}
-              placeholder="Enter your email, phone or username"
-              className={`w-full pl-10 pr-4 py-3 border ${
+              placeholder="Enter your email, phone, or username"
+              className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
                 errors.identifier ? "border-red-500" : "border-gray-300"
-              } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all`}
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 text-gray-900`}
             />
           </div>
           {errors.identifier && (
             <p className="mt-1 text-sm text-red-600">{errors.identifier}</p>
           )}
+          {errors.general && (
+            <p className="mt-1 text-sm text-red-600">{errors.general}</p>
+          )}
         </div>
 
+        {/* Submit Button */}
         <button
           onClick={handleNext}
           disabled={isLoading}
-          className="w-full bg-blue-600 text-white-50 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+          className={`w-full py-3 rounded-lg font-medium flex items-center justify-center transition-all duration-200 ${
+            isLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 text-white"
+          }`}
         >
           {isLoading ? (
-            <div className="w-5 h-5 border-2 border-white-50 border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
           ) : (
             "Send Verification Code"
           )}
