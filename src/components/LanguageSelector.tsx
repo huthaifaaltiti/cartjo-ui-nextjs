@@ -2,9 +2,7 @@
 
 import { memo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
-import { useLocale } from "@/contexts/LocaleContext";
-import { isArabicLocale } from "@/config/locales.config";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Select,
   SelectContent,
@@ -12,10 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { setLocale } from "@/redux/slices/general";
+import { Locale } from "@/types/locale";
 
 const LanguageSelector: React.FC = () => {
-  const { locale } = useLocale();
-  const isAr = isArabicLocale(locale);
+  const { isArabic } = useSelector((state: RootState) => state.general);
+  const dispatch = useDispatch<AppDispatch>();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -25,6 +27,8 @@ const LanguageSelector: React.FC = () => {
     const newLocale = value;
     const pathSegments = pathname.split("/").filter(Boolean);
     const newPath = pathSegments.slice(1).join("/"); // removes the existing locale from the path
+
+    dispatch(setLocale(newLocale as Locale));
 
     const currentSearchParams = searchParams.toString();
 
@@ -38,7 +42,7 @@ const LanguageSelector: React.FC = () => {
   return (
     <Select onValueChange={handleLangChange}>
       <SelectTrigger className="w-[100px] text-text-primary-100 text-sm shadow-none">
-        <SelectValue placeholder={isAr ? t("arabic") : t("english")} />
+        <SelectValue placeholder={isArabic ? t("arabic") : t("english")} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="en">{t("english")}</SelectItem>
