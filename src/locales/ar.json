@@ -20,6 +20,9 @@
         "error": "خطأ",
         "warning": "تحذير"
       },
+      "description": {
+        "loginRequired": "يرجى تسجيل الدخول"
+      },
       "dismissText": "إخفاء"
     },
     "authorization": {
@@ -242,6 +245,15 @@
           "checkLater": "تحقق لاحقًا للحصول على المزيد من البيانات النشطة"
         }
       }
+    },
+    "CounterDown": {
+      "seconds": "ثوانٍ",
+      "second": "ثانية",
+      "redirectingToLogin": "جارٍ إعادة التوجيه إلى صفحة تسجيل الدخول..."
+    },
+    "AuthRedirect": {
+      "title": "يرجى تسجيل الدخول لعرض هذا المحتوى المحمي.",
+      "desc": "جارٍ إعادة التوجيه إلى صفحة تسجيل الدخول بعد..."
     }
   },
   "routes": {
@@ -2106,6 +2118,41 @@
           "sending": "جارٍ الإرسال...",
           "linkSent": "تم إرسال رابط التحقق!",
           "requestNewLink": "طلب رابط تحقق جديد"
+        }
+      }
+    },
+    "cart": {
+      "header": "عربة التسوق",
+      "errors": {
+        "failedLoadData": "فشل تحميل عناصر العربة"
+      },
+      "components": {
+        "NoCartItems": {
+          "cartIsEmpty": "عربة التسوق فارغة! هل ترغب في شراء شيء؟",
+          "adviceStartAddingItems": "ابدأ بإضافة المنتجات التي تحبها إلى عربة التسوق عن طريق النقر على أيقونة العربة",
+          "discoverProducts": "اكتشف المنتجات"
+        },
+        "CartProductCard": {
+          "removeFromCartLabel": "إزالة من العربة",
+          "removingFromCartLabel": "جارٍ الإزالة من العربة...",
+          "removedFromCartLabel": "تمت الإزالة من العربة"
+        },
+        "CartLayoutHeaderActions": {
+          "emptyCart": "تفريغ العربة",
+          "itemCount": "عدد العناصر ({count})",
+          "noItemsToRemove": "لا توجد عناصر لإزالتها",
+          "clearAllItems": "مسح جميع العناصر",
+          "confirmDeleteTitle": "تأكيد الحذف",
+          "confirmWishlistItemsTitle": "عناصر العربة إلى قائمة الرغبات",
+          "confirmDeleteMessage": "هل أنت متأكد من رغبتك في حذف جميع عناصر العربة؟ سيتم حذف بيانات العربة بعد التأكيد.",
+          "confirmWishlistItemsMessage": "هل أنت متأكد من رغبتك في إرسال جميع عناصر العربة إلى قائمة الرغبات؟ سيتم إرسال بيانات العربة وحذفها بعد التأكيد.",
+          "confirmDelete": "حذف جميع العناصر",
+          "confirmWishlist": "إرسال جميع العناصر إلى قائمة الرغبات",
+          "cancel": "إلغاء",
+          "deleting": "جارٍ حذف العناصر...",
+          "deleteError": "حدث خطأ أثناء حذف عناصر العربة",
+          "sendToCart": "إرسال جميع العناصر إلى قائمة الرغبات",
+          "sendingToCart": "جارٍ إرسال العناصر إلى العربة..."
         }
       }
     }

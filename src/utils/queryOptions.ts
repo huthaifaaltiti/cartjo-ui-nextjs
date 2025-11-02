@@ -2,6 +2,7 @@ import { PRODUCTS_COUNT_PER_SELECTED_CATEGORY } from "@/config/home.config";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { fetchActiveBanners } from "@/hooks/react-query/useBannersQuery";
+import { fetchCartItems } from "@/hooks/react-query/useCartQuery";
 import { fetchActiveCategories } from "@/hooks/react-query/useCategoriesQuery";
 import {
   fetchCategory,
@@ -18,11 +19,12 @@ import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { fetchSuggestedProducts } from "@/hooks/react-query/useSuggestedProductQuery";
 import { fetchMyProfile } from "@/hooks/react-query/useUserProfileQuery";
+import { Cart } from "@/types/cart.type";
 import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
 import { Locale } from "@/types/locale";
 import { Product } from "@/types/product.type";
-import { DataListResponse } from "@/types/service-response.type";
+import { DataListResponse, DataResponse } from "@/types/service-response.type";
 
 /**
  * Query options for banners (public data, always enabled)
@@ -292,3 +294,26 @@ export const getStaticNationalityListQueryOptions = (
   gcTime: GC_TIME,
   enabled: true,
 });
+
+export const getCartQueryOptions = (token: string) => {
+  const getNextPageParam = (lastPage: DataResponse<Cart>) => {
+    if (!lastPage?.data?.items?.length) return undefined;
+
+    const lastProduct = lastPage.data.items.at(-1);
+    return lastProduct?._id ?? undefined;
+  };
+
+  return {
+    queryKey: ["cartItems", token],
+    queryFn: () =>
+      fetchCartItems({
+        token,
+        lang: "en",
+        limit: PAGINATION_LIMITS.CART_ITEMS,
+      }),
+    getNextPageParam,
+    initialPageParam: undefined,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+  };
+};

@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 
-export const LoadingProductWishList = ({ color }: { color?: string }) => {
+const LoadingProductButton = ({ color }: { color?: string }) => {
   return (
     <Loader2
       className={`w-5 h-5 ${
@@ -9,3 +9,5 @@ export const LoadingProductWishList = ({ color }: { color?: string }) => {
     />
   );
 };
+
+export default LoadingProductButton;

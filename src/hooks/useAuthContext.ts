@@ -8,6 +8,8 @@ export const useAuthContext = () => {
   const locale: Locale | string = useLocale();
   const accessToken: string | null = (session as CustomSession)?.accessToken;
   const userId: string | undefined = (session as CustomSession)?.user?.id;
+  const isAuthenticated: boolean = status === "unauthenticated" || !!accessToken;
+  const isSessionLoading: boolean = status === "loading";
 
   return {
     session: session as CustomSession | null,
@@ -15,5 +17,7 @@ export const useAuthContext = () => {
     accessToken,
     userId,
     status,
+    isAuthenticated,
+    isSessionLoading
   };
 };

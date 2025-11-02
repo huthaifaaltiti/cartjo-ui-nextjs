@@ -12,6 +12,11 @@ import {
 } from "@/components/shared/CustomToast";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useLoggedUserWishlist } from "@/contexts/LoggedUserWishList.context";
+import { DataResponse } from "@/types/service-response.type";
+import { Cart } from "@/types/cart.type";
+import { addItemToServer } from "@/redux/slices/cart/actions";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 
 const ShowcaseProductRowCard = ({
   item,
@@ -20,6 +25,8 @@ const ShowcaseProductRowCard = ({
   item: Product;
   isArabic: boolean;
 }) => {
+    const dispatch = useDispatch<AppDispatch>();
+
   const locale = useLocale();
   const t = useTranslations();
 
@@ -27,6 +34,7 @@ const ShowcaseProductRowCard = ({
   const [isHovered, setIsHovered] = useState(false);
   const [isWishListLoading, setIsWishListLoading] = useState(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
+    const [showCounter, setShowCounter] = useState(false);
 
   const { accessToken } = useAuthContext();
 
@@ -111,22 +119,42 @@ const ShowcaseProductRowCard = ({
   const handleWishListedItemState = () =>
     isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
 
-  const handleAddToCart = async () => {
-    setIsAddToCartLoading(true);
-
-    try {
-      // Simulate add to cart API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      showSuccessToast({
-        title: t("general.toast.title.success"),
-        description: "Product added to cart successfully!",
+  const handleAddToCart = async (): Promise<DataResponse<Cart> | undefined> => {
+    if (!accessToken) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("general.toast.description.loginRequired"),
         dismissText: t("general.toast.dismissText"),
       });
-    } catch (err) {
+
+      setShowCounter(true);
+
+      return;
+    }
+
+    try {
+      setIsAddToCartLoading(true);
+
+      const response = await dispatch(
+        addItemToServer({
+          productId: item?._id!,
+          quantity: 1,
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (response.isSuccess) {
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+          description: response?.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+      }
+    } catch (error) {
       showErrorToast({
         title: t("general.toast.title.error"),
-        description: (err as Error)?.message,
+        description: (error as Error)?.message || "Failed to remove item.",
         dismissText: t("general.toast.dismissText"),
       });
     } finally {

@@ -7,8 +7,8 @@ import { AppDispatch, RootState } from "@/redux/store";
 import {
   setErrors,
   setIdentifier,
-} from "@/redux/slices/auth/forgotPassword";
-import { sendIdentifier } from "@/redux/slices/auth/forgotPassword/actions";
+} from "@/redux/slices/authorization/forgotPassword";
+import { sendIdentifier } from "@/redux/slices/authorization/forgotPassword/actions";
 
 const IdentifyAccount = () => {
   const dispatch = useDispatch<AppDispatch>();

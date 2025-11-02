@@ -2,7 +2,6 @@
 
 import React, { memo, useState, useCallback, useEffect } from "react";
 import Image, { ImageProps } from "next/image";
-
 import { DEFAULT_FALLBACK_IMAGE } from "@/config/media.config";
 
 type ImageWithFallbackProps = Omit<ImageProps, "fill"> & {
@@ -14,7 +13,7 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   src,
   fallbackSrc = DEFAULT_FALLBACK_IMAGE,
   alt = "image",
-  useFill = true, // default to fill
+  useFill = true,
   ...rest
 }) => {
   const [imgSrc, setImgSrc] = useState(src);
@@ -38,7 +37,7 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
         src={imgSrc}
         alt={alt}
         onError={handleError}
-        fill={useFill} // ✅ automatically uses fill
+        fill={useFill} 
       />
     </div>
   );

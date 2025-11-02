@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { showWarningToast } from "@/components/shared/CustomToast";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { reVerifyEmail } from "@/redux/slices/auth/verifyEmail/actions";
+import { reVerifyEmail } from "@/redux/slices/authorization/verifyEmail/actions";
 
 const RequestNewLinkBtn = () => {
   const t = useTranslations();

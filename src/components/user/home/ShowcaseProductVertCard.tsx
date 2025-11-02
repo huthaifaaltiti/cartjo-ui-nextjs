@@ -12,7 +12,12 @@ import {
   showWarningToast,
 } from "@/components/shared/CustomToast";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { LoadingProductWishList } from "@/components/shared/loaders/LoadingProduct";
+import LoadingProductButton from "@/components/shared/loaders/LoadingProduct";
+import { addItemToServer } from "@/redux/slices/cart/actions";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { BaseResponse, DataResponse } from "@/types/service-response.type";
+import { Cart } from "@/types/cart.type";
 
 const ShowcaseProductVertCard = ({
   item,
@@ -23,10 +28,12 @@ const ShowcaseProductVertCard = ({
 }) => {
   const locale = useLocale();
   const t = useTranslations();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [isWishListed, setIsWishListed] = useState(item?.isWishListed || false);
   const [isHovered, setIsHovered] = useState(false);
   const [isWishListing, setIsWishListing] = useState(false);
+  const [showCounter, setShowCounter] = useState(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
 
   const { accessToken } = useAuthContext();
@@ -75,6 +82,50 @@ const ShowcaseProductVertCard = ({
     }
   }, [locale, accessToken, item._id, t, addItem]);
 
+  const handleAddToCart = async (): Promise<DataResponse<Cart> | undefined> => {
+    if (!accessToken) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("general.toast.description.loginRequired"),
+        dismissText: t("general.toast.dismissText"),
+      });
+
+      setShowCounter(true);
+
+      return;
+    }
+
+    try {
+      setIsAddToCartLoading(true);
+
+      const response = await dispatch(
+        addItemToServer({
+          productId: item?._id!,
+          quantity: 1,
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (response.isSuccess) {
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+             description: response?.message,
+
+          dismissText: t("general.toast.dismissText"),
+        });
+      }
+    } catch (error) {
+      showErrorToast({
+        title: t("general.toast.title.error"),
+        description: (error as Error)?.message || "Failed to remove item.",
+        dismissText: t("general.toast.dismissText"),
+      });
+    } finally {
+      setIsAddToCartLoading(false);
+    }
+  };
+
   const handleRemoveWishListItem = useCallback(async () => {
     setIsWishListing(true);
 
@@ -110,29 +161,6 @@ const ShowcaseProductVertCard = ({
   const handleWishListedItemState = () =>
     isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
 
-  const handleAddToCart = async () => {
-    setIsAddToCartLoading(true);
-
-    try {
-      // Simulate add to cart API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      showSuccessToast({
-        title: t("general.toast.title.success"),
-        description: "Product added to cart successfully!",
-        dismissText: t("general.toast.dismissText"),
-      });
-    } catch (err) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (err as Error)?.message,
-        dismissText: t("general.toast.dismissText"),
-      });
-    } finally {
-      setIsAddToCartLoading(false);
-    }
-  };
-
   return (
     <div
       className={`w-full group relative overflow-hidden bg-white-50 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 ease-out transform hover:-translate-y-2 ${
@@ -157,7 +185,7 @@ const ShowcaseProductVertCard = ({
         } hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 group/wishList`}
       >
         {isWishListing ? (
-          <LoadingProductWishList />
+          <LoadingProductButton />
         ) : (
           <Heart
             className={`w-5 h-5 transition-all duration-300 ${
@@ -303,7 +331,7 @@ const ShowcaseProductVertCard = ({
             }`}
           >
             {isAddToCartLoading ? (
-              <LoadingProductWishList color="#fff" />
+              <LoadingProductButton color="#fff" />
             ) : (
               <ShoppingCart className="w-5 h-5" />
             )}
@@ -315,31 +343,10 @@ const ShowcaseProductVertCard = ({
         </button>
       </div>
 
-      {/* Hover Glow Effect */}
-      {/* <div
-        className={`absolute inset-0 rounded-2xl transition-all duration-500 pointer-events-none ${
-          isHovered && !( isAddToCartLoading)
-            ? "bg-gradient-to-br from-primary-50/20 via-transparent to-purple-50/10"
-            : ""
-        }`}
-      /> */}
-
       {/* Loading Pulse Effect */}
       {isAddToCartLoading && (
         <div className="absolute inset-0 z-10 rounded-2xl bg-gradient-to-br from-primary-50/20 to-blue-50/20 animate-pulse pointer-events-none"></div>
       )}
-
-      {/* Custom CSS for shimmer animation */}
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-      `}</style>
     </div>
   );
 };

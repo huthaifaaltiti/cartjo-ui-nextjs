@@ -1,3 +1,4 @@
+import { isArabicLocale } from "@/config/locales.config";
 import { Locale } from "@/types/locale";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -22,7 +23,7 @@ const generalSlice = createSlice({
     resetGeneralState: () => ({ ...initialState }),
     setLocale: (state, action: PayloadAction<Locale>) => {
       state.locale = action.payload;
-      state.isArabic = action.payload === "ar";
+      state.isArabic = isArabicLocale(state.locale);
       state.dir = action.payload === "ar" ? "rtl" : "ltr";
     },
   },

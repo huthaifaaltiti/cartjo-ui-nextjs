@@ -1,12 +1,16 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import verifyEmailReducer from "./slices/auth/verifyEmail";
-import forgotPasswordReducer from "./slices/auth/forgotPassword";
+import verifyEmailReducer from "./slices/authorization/verifyEmail";
+import forgotPasswordReducer from "./slices/authorization/forgotPassword";
 import generalReducer from "./slices/general";
+import cartReducer from "./slices/cart";
+import authenticationReducer from "./slices/authentication";
 
 const allReducers = combineReducers({
   general: generalReducer,
   verifyEmail: verifyEmailReducer,
   forgotPassword: forgotPasswordReducer,
+  cart: cartReducer,
+  authentication: authenticationReducer,
 });
 
 export default allReducers;

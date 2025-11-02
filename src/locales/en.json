@@ -20,6 +20,9 @@
         "error": "Error",
         "warning": "Warning"
       },
+      "description": {
+        "loginRequired": "Login required!"
+      },
       "dismissText": "Dismiss"
     },
     "authorization": {
@@ -246,7 +249,13 @@
       }
     },
     "CounterDown": {
-      "seconds": "seconds"
+      "seconds": "seconds",
+      "second": "second",
+      "redirectingToLogin": "Redirecting to login page.."
+    },
+    "AuthRedirect": {
+      "title": "Please log in to view this protected content.",
+      "desc": " Redirecting to login route after..."
     }
   },
   "routes": {
@@ -394,8 +403,8 @@
                   "description": "Create a secure password"
                 }
               },
-              "title":"Password Recovery",
-              "desc":"Follow the steps to reset your password securely"
+              "title": "Password Recovery",
+              "desc": "Follow the steps to reset your password securely"
             }
           }
         }
@@ -2102,6 +2111,41 @@
           "sending": "Sending...",
           "linkSent": "Verification Link Sent!",
           "requestNewLink": "Request New Link"
+        }
+      }
+    },
+    "cart": {
+      "header": "Cart",
+      "errors": {
+        "failedLoadData": "Failed to load cart items"
+      },
+      "components": {
+        "NoCartItems": {
+          "cartIsEmpty": "Your Cart is empty! Ready to buy one?",
+          "adviceStartAddingItems": "Start adding items you love to your Cart by tapping on the cart icon",
+          "discoverProducts": "Discover Products"
+        },
+        "CartProductCard": {
+          "removeFromCartLabel": "Remove from cart",
+          "removingFromCartLabel": "Removing from cart...",
+          "removedFromCartLabel": "Removed from cart"
+        },
+        "CartLayoutHeaderActions": {
+          "emptyCart": "Empty Cart",
+          "itemCount": "Item Count ({count})",
+          "noItemsToRemove": "No items to remove",
+          "clearAllItems": "Clear all items",
+          "confirmDeleteTitle": "Delete Confirmation",
+          "confirmWishlistItemsTitle": "Wishlist Cart Items",
+          "confirmDeleteMessage": "Are you sure that you want to delete all Cart items? Your Cart data will be removed after confirming.",
+          "confirmWishlistItemsMessage": "Are you sure that you want to send all Cart items to your wishlist? Your Cart data will be sent and deleted after confirming.",
+          "confirmDelete": "Delete all items",
+          "confirmWishlist": "Wishlist all items",
+          "cancel": "Cancel",
+          "deleting": "Deleting Items...",
+          "deleteError": "Error happened while deleting Cart items",
+          "sendToCart": "Send All Items To Wishlist",
+          "sendingToCart": "Sending Items To Cart..."
         }
       }
     }

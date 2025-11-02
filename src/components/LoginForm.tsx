@@ -51,12 +51,14 @@ const LoginForm = () => {
   });
 
   useEffect(() => {
-    if (status === "authenticated" && resend && sessionData?.user?.email) {
-      reVerify(sessionData.user.email, locale)
-        .then(() => {
-          if (redirectTo) router.push(redirectTo);
-        })
-        .catch((err) => console.error("Auto resend failed", err));
+    if (status === "authenticated") {
+      if (resend && sessionData?.user?.email) {
+        reVerify(sessionData.user.email, locale)
+          .then(() => redirectTo && router.push(redirectTo))
+          .catch(console.error);
+      } else if (redirectTo) {
+        router.push(redirectTo);
+      }
     }
   }, [status, resend, sessionData, locale, router, redirectTo, reVerify]);
 

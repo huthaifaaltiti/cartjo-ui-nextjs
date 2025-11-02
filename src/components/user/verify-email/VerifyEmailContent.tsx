@@ -10,11 +10,11 @@ import RequestNewLinkBtn from "./RequestNewLinkBtn";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { verifyEmail } from "@/redux/slices/auth/verifyEmail/actions";
+import { verifyEmail } from "@/redux/slices/authorization/verifyEmail/actions";
 import {
   resetVerifyEmailState,
   setVerifyEmailStatus,
-} from "@/redux/slices/auth/verifyEmail";
+} from "@/redux/slices/authorization/verifyEmail";
 import { useGeneralContext } from "@/contexts/General.context";
 import CounterDown from "@/components/shared/CounterDown";
 
