@@ -226,8 +226,6 @@ const EditCategoryForm = ({ category }: Props) => {
 
   const getFormItemClassName = () => (isArabic ? "text-right" : "text-left");
 
-  console.log(form.watch());
-
   return (
     <div className="space-y-6">
       <Form {...form}>

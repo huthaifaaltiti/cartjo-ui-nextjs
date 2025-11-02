@@ -11,10 +11,16 @@ import {
 import { sendIdentifier } from "@/redux/slices/authorization/forgotPassword/actions";
 
 const IdentifyAccount = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { identifier, identifierType, errors, isLoading } = useSelector(
-    (state: RootState) => state.forgotPassword
+  const t = useTranslations(
+    "routes.auth.routes.forgotPassword.components.IdentifyAccount"
   );
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    identifier,
+    identifierType,
+    errors: { sendIdentifier: sendIdentifierErr, identifier: identifierErr },
+    isLoading,
+  } = useSelector((state: RootState) => state.forgotPassword);
 
   const handleIdentifierChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +33,7 @@ const IdentifyAccount = () => {
     if (!identifier.trim()) {
       dispatch(
         setErrors({
-          identifier: "Please enter your email, phone number, or username",
+          identifier: t("noIdentifier"),
         })
       );
       return;
@@ -35,39 +41,26 @@ const IdentifyAccount = () => {
 
     dispatch(setErrors({}));
 
-    try {
-      await dispatch(sendIdentifier({ identifier })).unwrap();
-      // ✅ Success case is already handled in slice (step increment, etc.)
-    } catch (err: any) {
-      dispatch(
-        setErrors({
-          general:
-            err?.message ||
-            "Unable to send verification code. Please try again later.",
-        })
-      );
-    }
+    await dispatch(sendIdentifier({ identifier }));
   }, [identifier, dispatch]);
 
   return (
     <div className="max-w-md mx-auto space-y-6">
+      
       {/* Header */}
       <div className="text-center space-y-2">
         <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
           <KeyRound className="w-8 h-8 text-blue-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900">Forgot Password?</h2>
-        <p className="text-gray-600 text-sm">
-          Enter your email, phone number, or username to receive a verification
-          code.
-        </p>
+        <h2 className="text-2xl font-bold text-gray-900">{t("header")}</h2>
+        <p className="text-gray-600 text-sm">{t("desc")}</p>
       </div>
 
       {/* Input */}
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Email, Phone, or Username
+            {t("input.label")}
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -85,17 +78,19 @@ const IdentifyAccount = () => {
               type="text"
               value={identifier}
               onChange={handleIdentifierChange}
-              placeholder="Enter your email, phone, or username"
+              placeholder={t("input.placeholder")}
               className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
-                errors.identifier ? "border-red-500" : "border-gray-300"
+                identifierErr || sendIdentifierErr
+                  ? "border-red-500"
+                  : "border-gray-300"
               } focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 text-gray-900`}
             />
           </div>
-          {errors.identifier && (
-            <p className="mt-1 text-sm text-red-600">{errors.identifier}</p>
+          {identifierErr && (
+            <p className="mt-1 text-sm text-red-600">{identifierErr}</p>
           )}
-          {errors.general && (
-            <p className="mt-1 text-sm text-red-600">{errors.general}</p>
+          {sendIdentifierErr && (
+            <p className="mt-1 text-sm text-red-600">{sendIdentifierErr}</p>
           )}
         </div>
 
@@ -106,13 +101,13 @@ const IdentifyAccount = () => {
           className={`w-full py-3 rounded-lg font-medium flex items-center justify-center transition-all duration-200 ${
             isLoading
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700 text-white"
+              : "bg-blue-600 hover:bg-blue-700 text-white-50"
           }`}
         >
           {isLoading ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-white-50 border-t-transparent rounded-full animate-spin" />
           ) : (
-            "Send Verification Code"
+            t("submit")
           )}
         </button>
       </div>

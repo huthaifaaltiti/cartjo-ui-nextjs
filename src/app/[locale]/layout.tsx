@@ -15,6 +15,9 @@ import Footer from "@/components/Footer";
 import "../globals.css";
 import "../../styles/prose.css";
 import ReduxProvider from "../../redux/ReduxProvider";
+import { store } from "@/redux/store";
+import { setDirection, setLocale } from "@/redux/slices/general";
+import { Locale } from "@/types/locale";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,6 +47,9 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
+  store.dispatch(setLocale(locale as Locale));
+  store.dispatch(setDirection(dir));
 
   return (
     <html dir={dir} lang={locale}>

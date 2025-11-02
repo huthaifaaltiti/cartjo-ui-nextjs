@@ -66,6 +66,7 @@ interface StepperProps {
   finishHint: string;
   isPrevBtnDisabled: boolean;
   isNextBtnDisabled: boolean;
+  hideBtns?: boolean;
 }
 
 export function Stepper({
@@ -77,6 +78,7 @@ export function Stepper({
   finishHint,
   isNextBtnDisabled,
   isPrevBtnDisabled,
+  hideBtns = false,
 }: StepperProps) {
   return (
     <div className="w-full max-w-3xl mx-auto">
@@ -95,21 +97,23 @@ export function Stepper({
           </React.Fragment>
         ))}
       </div>
-      <div className="flex justify-between">
-        <Button
-          variant="outline"
-          onClick={() => onStepChange(currentStep - 1)}
-          disabled={currentStep === 0 || isPrevBtnDisabled}
-        >
-          {prevBtnLabel}
-        </Button>
-        <Button
-          onClick={() => onStepChange(currentStep + 1)}
-          disabled={currentStep === steps.length - 1 || isNextBtnDisabled}
-        >
-          {currentStep === steps.length - 1 ? finishHint : nextBtnLabel}
-        </Button>
-      </div>
+      {!hideBtns && (
+        <div className="flex justify-between">
+          <Button
+            variant="outline"
+            onClick={() => onStepChange(currentStep - 1)}
+            disabled={currentStep === 0 || isPrevBtnDisabled}
+          >
+            {prevBtnLabel}
+          </Button>
+          <Button
+            onClick={() => onStepChange(currentStep + 1)}
+            disabled={currentStep === steps.length - 1 || isNextBtnDisabled}
+          >
+            {currentStep === steps.length - 1 ? finishHint : nextBtnLabel}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

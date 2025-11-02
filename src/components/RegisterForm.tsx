@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,12 +33,15 @@ import {
   SelectValue,
 } from "./ui/select";
 import { useGeneralContext } from "@/contexts/General.context";
+import PasswordRules from "./user/PasswordRules";
 
 const RegisterForm = () => {
   const t = useTranslations();
   const { isArabic, dir, locale } = useGeneralContext();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [showRules, setShowRules] = useState(false);
 
   const preferredLangs = [
     {
@@ -161,8 +164,21 @@ const RegisterForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (!isPasswordValid) return;
+
     registerMutation.mutate(values);
   };
+
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "password") {
+        const passwordValue = value?.password || "";
+        setShowRules(passwordValue.length > 0);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   return (
     <Form {...form}>
@@ -318,6 +334,11 @@ const RegisterForm = () => {
                           "routes.auth.components.AuthTabs.components.register.dataSet.password.placeholder"
                         )}
                         {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          // re-trigger PasswordRules validation on input change
+                          setIsPasswordValid(false);
+                        }}
                       />
                       <button
                         type="button"
@@ -336,6 +357,13 @@ const RegisterForm = () => {
                     </div>
                   </FormControl>
                   <FormMessage />
+
+                  {showRules && (
+                    <PasswordRules
+                      password={form.watch("password")}
+                      onValidChange={setIsPasswordValid}
+                    />
+                  )}
                 </FormItem>
               )}
             />
