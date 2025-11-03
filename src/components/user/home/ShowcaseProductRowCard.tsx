@@ -17,6 +17,7 @@ import { Cart } from "@/types/cart.type";
 import { addItemToServer } from "@/redux/slices/cart/actions";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
+import { addWishlistItem, removeWishlistItem } from "@/redux/slices/wishlist/actions";
 
 const ShowcaseProductRowCard = ({
   item,
@@ -25,18 +26,16 @@ const ShowcaseProductRowCard = ({
   item: Product;
   isArabic: boolean;
 }) => {
-    const dispatch = useDispatch<AppDispatch>();
-
+  const dispatch = useDispatch<AppDispatch>();
   const locale = useLocale();
+  const { accessToken } = useAuthContext();
   const t = useTranslations();
 
   const [isWishListed, setIsWishListed] = useState(item?.isWishListed || false);
   const [isHovered, setIsHovered] = useState(false);
   const [isWishListLoading, setIsWishListLoading] = useState(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
-    const [showCounter, setShowCounter] = useState(false);
-
-  const { accessToken } = useAuthContext();
+  const [showCounter, setShowCounter] = useState(false);
 
   const { addItem, removeItem } = useLoggedUserWishlist();
 
@@ -52,69 +51,90 @@ const ShowcaseProductRowCard = ({
   };
 
   const handleAddWishListItem = useCallback(async () => {
-    setIsWishListLoading(true);
-     console.log('ShowcaseProductRowCard item', item)
+    if (!accessToken) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("general.toast.description.loginRequired"),
+        dismissText: t("general.toast.dismissText"),
+      });
+
+      return;
+    }
 
     try {
-      const resp = await addItem(accessToken, locale, item?._id);
+      setIsWishListLoading(true);
 
-      if (resp.isSuccess) {
+      const response = await dispatch(
+        addWishlistItem({
+          product: item,
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (response.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
-          description: resp.message,
+          description: response.message,
           dismissText: t("general.toast.dismissText"),
         });
 
+        console.log("setIsWishListed");
+
         setIsWishListed(true);
-      } else {
-        showWarningToast({
-          title: t("general.toast.title.warning"),
-          description: resp.message,
-          dismissText: t("general.toast.dismissText"),
-        });
       }
-    } catch (err) {
+    } catch (error) {
       showErrorToast({
         title: t("general.toast.title.error"),
-        description: (err as Error)?.message,
+        description: (error as Error)?.message || "Failed to remove item.",
         dismissText: t("general.toast.dismissText"),
       });
     } finally {
       setIsWishListLoading(false);
     }
-  }, [locale, accessToken, item._id, t, addItem]);
+  }, [locale, accessToken, item, t]);
 
   const handleRemoveWishListItem = useCallback(async () => {
-    setIsWishListLoading(true);
+    if (!accessToken) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("general.toast.description.loginRequired"),
+        dismissText: t("general.toast.dismissText"),
+      });
+
+      return;
+    }
 
     try {
-      const resp = await removeItem(accessToken, locale, item?._id);
+      setIsWishListLoading(true);
 
-      if (resp.isSuccess) {
+      const response = await dispatch(
+        removeWishlistItem({
+          productId: item?._id,
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (response.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
-          description: resp.message,
+          description: response.message,
           dismissText: t("general.toast.dismissText"),
         });
 
         setIsWishListed(false);
-      } else {
-        showWarningToast({
-          title: t("general.toast.title.warning"),
-          description: resp.message,
-          dismissText: t("general.toast.dismissText"),
-        });
       }
-    } catch (err) {
+    } catch (error) {
       showErrorToast({
         title: t("general.toast.title.error"),
-        description: (err as Error)?.message,
+        description: (error as Error)?.message || "Failed to remove item.",
         dismissText: t("general.toast.dismissText"),
       });
     } finally {
       setIsWishListLoading(false);
     }
-  }, [locale, accessToken, item._id, t, removeItem]);
+  }, [locale, accessToken, item, t]);
 
   const handleWishListedItemState = () =>
     isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();

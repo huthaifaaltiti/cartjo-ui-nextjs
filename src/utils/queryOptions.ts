@@ -19,6 +19,7 @@ import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { fetchSuggestedProducts } from "@/hooks/react-query/useSuggestedProductQuery";
 import { fetchMyProfile } from "@/hooks/react-query/useUserProfileQuery";
+import { fetchWishlistItems } from "@/hooks/react-query/useWishlistQuery";
 import { Cart } from "@/types/cart.type";
 import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
@@ -310,6 +311,29 @@ export const getCartQueryOptions = (token: string) => {
         token,
         lang: "en",
         limit: PAGINATION_LIMITS.CART_ITEMS,
+      }),
+    getNextPageParam,
+    initialPageParam: undefined,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+  };
+};
+
+export const getWishlistQueryOptions = (token: string) => {
+  const getNextPageParam = (lastPage: DataResponse<Cart>) => {
+    if (!lastPage?.data?.items?.length) return undefined;
+
+    const lastProduct = lastPage.data.items.at(-1);
+    return lastProduct?._id ?? undefined;
+  };
+
+  return {
+    queryKey: ["wishlistItems", ""],
+    queryFn: () =>
+      fetchWishlistItems({
+        token,
+        lang: "en",
+        limit: PAGINATION_LIMITS.WISHLIST_ITEMS,
       }),
     getNextPageParam,
     initialPageParam: undefined,

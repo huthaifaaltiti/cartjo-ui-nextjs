@@ -110,6 +110,8 @@ export const API_ENDPOINTS = {
       ADD: `${BASE_URL}/api/v1/wish-list/add`,
       REMOVE: `${BASE_URL}/api/v1/wish-list/remove`,
       REMOVE_ALL: `${BASE_URL}/api/v1/wish-list/remove-all`,
+      SEND_TO_CART: `${BASE_URL}/api/v1/wish-list/send-to-cart`,
+      SEND_ALL_TO_CART: `${BASE_URL}/api/v1/wish-list/send-all-to-cart`,
     },
     CART: {
       ONE: `${BASE_URL}/api/v1/cart`,

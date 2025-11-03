@@ -12,26 +12,29 @@ import {
   showSuccessToast,
   showWarningToast,
 } from "@/components/shared/CustomToast";
-import { LoadingProductWishList } from "@/components/shared/loaders/LoadingProduct";
-import { useWishlist } from "@/contexts/Wishlist.context";
 import { isArabicLocale } from "@/config/locales.config";
+import LoadingProductButton from "@/components/shared/loaders/LoadingProduct";
+import {
+  removeWishlistItem,
+  sendWishlistItemToCart,
+} from "@/redux/slices/wishlist/actions";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 
 const WishlistProductCard = ({ item: product }: { item: Product }) => {
-  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
+  const { accessToken } = useAuthContext();
 
   const [isWishListed, setIsWishListed] = useState(
     product?.isWishListed || false
   );
   const [isHovered, setIsHovered] = useState(false);
   const [isWishListing, setIsWishListing] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
-
-  const { accessToken } = useAuthContext();
-
-  const { removeWishlistItem } = useWishlist();
 
   const discountedPrice = product?.discountRate
     ? product.price - (product.discountRate / 100) * product.price
@@ -45,62 +48,86 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
   };
 
   const handleRemoveWishListItem = useCallback(async () => {
-    setIsWishListing(true);
+    if (!accessToken) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("general.toast.description.loginRequired"),
+        dismissText: t("general.toast.dismissText"),
+      });
+
+      return;
+    }
 
     try {
-      const resp = await removeWishlistItem(accessToken, locale, product?._id);
-      if (resp.isSuccess) {
+      setIsLoading(true);
+      const response = await dispatch(
+        removeWishlistItem({
+          productId: product?._id,
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (response.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
-          description: resp.message,
-          dismissText: t("general.toast.dismissText"),
-        });
-        setIsWishListed(false);
-
-        router.refresh();
-      } else {
-        showWarningToast({
-          title: t("general.toast.title.warning"),
-          description: resp.message,
+          description: response.message,
           dismissText: t("general.toast.dismissText"),
         });
       }
-    } catch (err) {
+    } catch (error) {
       showErrorToast({
         title: t("general.toast.title.error"),
-        description: (err as Error)?.message,
+        description: (error as Error)?.message || "Failed to remove item.",
         dismissText: t("general.toast.dismissText"),
       });
     } finally {
-      setIsWishListing(false);
+      setIsLoading(false);
     }
   }, [locale, accessToken, product._id, t]);
 
   const handleWishListedItemState = () =>
     isWishListed ? handleRemoveWishListItem() : () => ({});
 
-  const handleAddToCart = async () => {
-    setIsAddToCartLoading(true);
-
-    try {
-      // Simulate add to cart API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      showSuccessToast({
-        title: t("general.toast.title.success"),
-        description: "Product added to cart successfully!",
+  const handleSendWishListItemToCart = useCallback(async () => {
+    if (!accessToken) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("general.toast.description.loginRequired"),
         dismissText: t("general.toast.dismissText"),
       });
-    } catch (err) {
+
+      return;
+    }
+
+    try {
+      setIsAddToCartLoading(true);
+
+      const response = await dispatch(
+        sendWishlistItemToCart({
+          productId: product?._id,
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (response.isSuccess) {
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+          description: response.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+      }
+    } catch (error) {
       showErrorToast({
         title: t("general.toast.title.error"),
-        description: (err as Error)?.message,
+        description: (error as Error)?.message || "Failed to remove item.",
         dismissText: t("general.toast.dismissText"),
       });
     } finally {
       setIsAddToCartLoading(false);
     }
-  };
+  }, [locale, accessToken, product._id, t]);
 
   return (
     <div
@@ -126,7 +153,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
         } hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 group/wishList`}
       >
         {isWishListing ? (
-          <LoadingProductWishList />
+          <LoadingProductButton />
         ) : (
           <Heart
             className={`w-5 h-5 transition-all duration-300 ${
@@ -251,7 +278,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
 
         {/* Add to Cart Button */}
         <button
-          onClick={handleAddToCart}
+          onClick={handleSendWishListItemToCart}
           disabled={isAddToCartLoading}
           className={`w-full h-14 group/btn relative overflow-hidden font-semibold py-3.5 px-3 rounded-xl transition-all duration-300 transform shadow-lg flex items-center justify-center gap-3 disabled:cursor-not-allowed ${
             isAddToCartLoading
@@ -272,7 +299,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
             }`}
           >
             {isAddToCartLoading ? (
-              <LoadingProductWishList color="#fff" />
+              <LoadingProductButton color="#fff" />
             ) : (
               <ShoppingCart className="w-5 h-5" />
             )}

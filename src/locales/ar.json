@@ -1740,18 +1740,21 @@
           "discoverProducts": "استكشف المنتجات"
         },
         "WishlistLayoutHeaderActions": {
-          "emptyWishlist": "إفراغ قائمة الأمنيات",
+          "emptyWishlist": "قائمة الرغبات فارغة",
           "itemCount": "عدد العناصر ({count})",
-          "noItemsToRemove": "لا توجد عناصر لحذفها",
-          "clearAllItems": "احذف كل العناصر",
+          "noItemsToRemove": "لا توجد عناصر لإزالتها",
+          "clearAllItems": "مسح جميع العناصر",
           "confirmDeleteTitle": "تأكيد الحذف",
-          "confirmDeleteMessage": "هل أنت متأكد أنك تريد حذف جميع عناصر قائمة الأمنيات؟ ستتم إزالة بيانات قائمتك بعد التأكيد.",
-          "confirmDelete": "احذف جميع العناصر",
+          "confirmDeleteMessage": "هل أنت متأكد أنك تريد حذف جميع عناصر قائمة الرغبات؟ سيتم حذف بيانات قائمة الرغبات بعد التأكيد.",
+          "confirmCartItemsMessage": "هل أنت متأكد أنك تريد إرسال جميع عناصر قائمة الرغبات إلى السلة؟ سيتم إرسال البيانات وحذفها بعد التأكيد.",
+          "confirmCartItemsTitle": "إرسال جميع العناصر إلى السلة",
+          "confirmDelete": "حذف جميع العناصر",
+          "confirmCart": "إرسال جميع العناصر",
           "cancel": "إلغاء",
-          "deleting": "جارٍ حذف العناصر...",
-          "deleteError": "حدث خطأ أثناء حذف عناصر قائمة الأمنيات",
-          "sendToCart": "أرسل جميع العناصر إلى سلة التسوق",
-          "sendingToCart": "جارٍ إرسال العناصر إلى سلة التسوق..."
+          "deleting": "جاري حذف العناصر...",
+          "deleteError": "حدث خطأ أثناء حذف عناصر قائمة الرغبات",
+          "sendToCart": "إرسال العناصر إلى السلة",
+          "sendingToCart": "جاري إرسال العناصر إلى السلة..."
         }
       }
     },

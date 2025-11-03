@@ -1739,11 +1739,14 @@
           "clearAllItems": "Clear all items",
           "confirmDeleteTitle": "Delete Confirmation",
           "confirmDeleteMessage": "Are you sure that you want to delete all wishlist items? Your wishlist data will be removed after confirming.",
+          "confirmCartItemsMessage": "Are you sure you want to send all wishlist items to your cart? Your wishlist data will be sent and deleted after confirming.",
+          "confirmCartItemsTitle": "Send all items to cart all",
           "confirmDelete": "Delete all items",
+          "confirmCart": "Wishlist all items",
           "cancel": "Cancel",
           "deleting": "Deleting Items...",
           "deleteError": "Error happened while deleting wishlist items",
-          "sendToCart": "Send All Items To Cart",
+          "sendToCart": "Send Items to Cart",
           "sendingToCart": "Sending Items To Cart..."
         }
       }

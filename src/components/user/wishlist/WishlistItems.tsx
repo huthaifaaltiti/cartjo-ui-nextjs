@@ -1,9 +1,8 @@
 "use client";
 
-import { memo, useEffect, useMemo } from "react";
+import { memo, useEffect } from "react";
 import { useWishlistQuery } from "@/hooks/react-query/useWishlistQuery";
 import { Product } from "@/types/product.type";
-import { useWishlist } from "@/contexts/Wishlist.context";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import WishlistProductCard from "./WishlistProductCard";
 import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
@@ -11,14 +10,19 @@ import NoWishlistItems from "./NoWishlistItems";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import { useTranslations } from "next-intl";
 import PageLoader from "@/components/shared/PageLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { setWishlistItems } from "@/redux/slices/wishlist";
+import AuthRedirect from "@/components/shared/AuthRedirect";
 
 const WishlistItems = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { items: wishlistItems } = useSelector(
+    (state: RootState) => state.wishlist
+  );
   const t = useTranslations();
-  const { setWishlistItemsCount } = useWishlist();
-  const { accessToken, status } = useAuthContext();
+  const { isSessionLoading, isAuthenticated } = useAuthContext();
 
-  // Fetch data directly using the hook.
-  // The initial data will be read from the dehydrated cache.
   const {
     data,
     isLoading,
@@ -30,39 +34,32 @@ const WishlistItems = () => {
     refetch,
   } = useWishlistQuery({ search: "" });
 
-  const wishlistProducts = useMemo(() => {
-    const allProducts =
-      (data?.pages?.flatMap(
-        (page) => page?.data?.products || []
-      ) as Product[]) || [];
-    return allProducts;
-  }, [data]);
+  const showData = (wishlistItems as Product[]).length !== 0;
+  const showNoData =
+    !wishlistItems || (wishlistItems as Product[]).length === 0;
+  const showError = isError;
+  const showLoader = isLoading || isSessionLoading;
 
   useEffect(() => {
-    const totalWishlistItemsCount = data?.pages[0]?.data?.productsCount ?? 0;
-    setWishlistItemsCount(totalWishlistItemsCount);
-  }, [wishlistProducts.length, setWishlistItemsCount]);
+    const fetchedItems =
+      data?.pages?.flatMap((page) => page?.data?.products || []) ?? [];
+
+    if (fetchedItems.length > 0) {
+      dispatch(setWishlistItems(fetchedItems));
+    }
+  }, [data, dispatch]);
 
   useEffect(() => {
     refetch();
   }, [refetch]);
 
-  // loading session
-  if (status === "loading") {
-    return <PageLoader />;
+  if (showLoader) return <PageLoader />;
+
+  if (!isAuthenticated) {
+    return <AuthRedirect redirectLocation={"/wishlist"} />;
   }
 
-  // user is not authenticated
-  if (status === "unauthenticated" || !accessToken) {
-    return <div>Please log in to view your wishlist.</div>;
-  }
-
-  // loading wishlist items
-  if (isLoading) {
-    return <PageLoader />;
-  }
-
-  if (isError) {
+  if (showError) {
     return (
       <div className="w-full min-h-[50vh] h-full flex items-center justify-center">
         <ErrorMessage
@@ -72,24 +69,24 @@ const WishlistItems = () => {
     );
   }
 
-  if (wishlistProducts.length === 0) {
-    return <NoWishlistItems />;
-  }
+  if (showNoData) return <NoWishlistItems />;
 
-  return (
-    <>
+  if (showData) {
+    return (
       <InfiniteScrollList
         isLoading={isLoading}
         isFetchingNextPage={isFetchingNextPage}
         hasNextPage={hasNextPage}
         error={error}
-        list={wishlistProducts}
+        list={wishlistItems}
         fetchNextPage={fetchNextPage}
         ListItemCard={WishlistProductCard}
         cardProps={{}}
       />
-    </>
-  );
+    );
+  }
+
+  return null;
 };
 
 export default memo(WishlistItems);

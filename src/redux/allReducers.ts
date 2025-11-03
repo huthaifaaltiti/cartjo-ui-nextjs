@@ -4,6 +4,7 @@ import forgotPasswordReducer from "./slices/authorization/forgotPassword";
 import generalReducer from "./slices/general";
 import cartReducer from "./slices/cart";
 import authenticationReducer from "./slices/authentication";
+import wishlistReducer from "./slices/wishlist";
 
 const allReducers = combineReducers({
   general: generalReducer,
@@ -11,6 +12,7 @@ const allReducers = combineReducers({
   forgotPassword: forgotPasswordReducer,
   cart: cartReducer,
   authentication: authenticationReducer,
+  wishlist: wishlistReducer,
 });
 
 export default allReducers;

@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
+import { memo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Star, Plus, Minus, Trash } from "lucide-react";
 import { useAuthContext } from "@/hooks/useAuthContext";
@@ -18,7 +18,6 @@ import {
   addItemToServer,
   removeItemFromServer,
 } from "@/redux/slices/cart/actions";
-import { useRouter } from "next/navigation";
 import CounterDown from "@/components/shared/CounterDown";
 import { DEFAULT_FALLBACK_IMAGE } from "@/config/media.config";
 
