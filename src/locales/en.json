@@ -2168,6 +2168,12 @@
           "removingFromCartLabel": "Removing from cart...",
           "removedFromCartLabel": "Removed from cart"
         },
+        "CartOrderStatus": {
+          "title": "Order Summary",
+          "subtotal": "Subtotal",
+          "total": "Total",
+          "proceed": "Proceed to checkout"
+        },
         "CartLayoutHeaderActions": {
           "emptyCart": "Empty Cart",
           "itemCount": "Item Count ({count})",

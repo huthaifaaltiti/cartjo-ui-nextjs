@@ -2175,6 +2175,12 @@
           "removingFromCartLabel": "جارٍ الإزالة من العربة...",
           "removedFromCartLabel": "تمت الإزالة من العربة"
         },
+        "CartOrderStatus": {
+          "title": "ملخص الطلب",
+          "subtotal": "المجموع الفرعي",
+          "total": "المجموع",
+          "proceed": "متابعة إلى صفحة الدفع"
+        },
         "CartLayoutHeaderActions": {
           "emptyCart": "تفريغ العربة",
           "itemCount": "عدد العناصر ({count})",
