@@ -83,7 +83,8 @@
       "key": "مفتاح",
       "priority": "أولوية",
       "logoTitle": "كارت جو",
-      "stars": "نجوم"
+      "stars": "نجوم",
+      "home": "المنزل"
     },
     "date": {
       "startDate": "تاريخ البداية",
@@ -123,11 +124,9 @@
     }
   },
   "components": {
-    "TopBar": {
-      "deliver": "نحن نوصل إليك يومياً من",
-      "fromTime": "7:00",
-      "to": "إلى",
-      "toTime": "23:00"
+    "TopBarDeliveryMessage": {
+      "deliver": "نحن نصل إليك يومياً",
+      "fromTo": "من الساعة {fromTime} حتّى {toTime}"
     },
     "LanguageSelector": {
       "english": "English",

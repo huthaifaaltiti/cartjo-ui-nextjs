@@ -85,7 +85,8 @@
       "characters": "Characters",
       "star": "star",
       "stars": "stars",
-      "logoTitle": "CartJO"
+      "logoTitle": "CartJO",
+      "home": "Home"
     },
     "date": {
       "startDate": "Start Date",
@@ -125,11 +126,9 @@
     }
   },
   "components": {
-    "TopBar": {
-      "deliver": "We deliver to you every day from",
-      "fromTime": "7:00",
-      "to": "to",
-      "toTime": "23:00"
+    "TopBarDeliveryMessage": {
+      "deliver": "We deliver to you every day",
+      "fromTo": "from {fromTime} to {toTime}"
     },
     "LanguageSelector": {
       "english": "English",

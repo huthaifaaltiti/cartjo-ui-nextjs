@@ -3,25 +3,22 @@
 import { memo } from "react";
 import { House } from "lucide-react";
 import Link from "next/link";
-import { useGeneralContext } from "@/contexts/General.context";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 const HomeLink: React.FC = () => {
-  const { isArabic } = useGeneralContext();
-  const { locale, dir } = useSelector((state: RootState) => state.general);
-  console.log({locale, dir})
+  const { isArabic } = useSelector((state: RootState) => state.general);
 
   return (
     <div
-      className={`flex items-center ${
+      className={`flex items-center border-0 ${
         isArabic
-          ? "border-l border-gray-200 pl-3"
-          : "border-r border-gray-200 pr-3"
+          ? "sm:border-l sm:border-gray-200 sm:pl-3"
+          : "sm:border-r sm:border-gray-200 sm:pr-3"
       }`}
     >
       <Link href="/" aria-label="Go to homepage">
-        <House className="w-6 h-6 text-primary-500 hover:text-primary-600 cursor-pointer transition-colors duration-200" />
+        <House className="w-7 h-7 sm:w-6 sm:h-6  text-primary-500 hover:text-primary-600 cursor-pointer transition-colors duration-200" />
       </Link>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import {
   Select,
   SelectContent,
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setLocale } from "@/redux/slices/general";
 import { Locale } from "@/types/locale";
+import { Locale as LocaleEnum } from "@/enums/locale.enum";
 
 const LanguageSelector: React.FC = () => {
   const { isArabic } = useSelector((state: RootState) => state.general);
@@ -39,14 +40,21 @@ const LanguageSelector: React.FC = () => {
     router.push(newUrl);
   };
 
+  const selectClass: string =
+    "w-full cursor-pointer py-1 px-2 flex items-center justify-center";
+
   return (
     <Select onValueChange={handleLangChange}>
-      <SelectTrigger className="w-[100px] text-text-primary-100 text-sm shadow-none">
+      <SelectTrigger className="min-w-24 w-auto max-w-28 text-text-primary-100 text-sm shadow-none">
         <SelectValue placeholder={isArabic ? t("arabic") : t("english")} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="en">{t("english")}</SelectItem>
-        <SelectItem value="ar">{t("arabic")}</SelectItem>
+        <SelectItem className={selectClass} value={LocaleEnum.EN}>
+          {t("english")}
+        </SelectItem>
+        <SelectItem className={selectClass} value={LocaleEnum.AR}>
+          {t("arabic")}
+        </SelectItem>
       </SelectContent>
     </Select>
   );
