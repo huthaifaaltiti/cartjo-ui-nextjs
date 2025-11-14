@@ -24,10 +24,40 @@ const notoKufiArabic = Noto_Kufi_Arabic({
   variable: "--font-noto-kufi",
 });
 
-export const metadata: Metadata = {
-  title: "Digital Library JO",
-  description: "An e-commerce application based in Jordan",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
+  const { locale } = params;
+  const isArabic = isArabicLocale(locale);
+
+  return {
+    title: isArabic
+      ? "كارت جو | التسوق عبر الإنترنت في الأردن"
+      : "CartJO | Online Shopping at Jordan",
+    description: isArabic
+      ? "تطبيق تجارة إلكترونية مقره الأردن"
+      : "An e-commerce application based in Jordan",
+
+    openGraph: {
+      title: isArabic ? "كارت جو" : "CartJO",
+      description: isArabic
+        ? "تطبيق تجارة إلكترونية مقره الأردن"
+        : "An e-commerce application based in Jordan",
+      locale: isArabic ? "ar_JO" : "en_US",
+      type: "website",
+    },
+
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        ar: "/ar",
+        en: "/en",
+      },
+    },
+  };
+}
 
 export default async function LocaleLayout({
   children,
