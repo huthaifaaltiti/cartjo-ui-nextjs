@@ -2171,6 +2171,7 @@
           "title": "Order Summary",
           "subtotal": "Subtotal",
           "total": "Total",
+          "processing": "Processing...",
           "proceed": "Proceed to checkout"
         },
         "CartLayoutHeaderActions": {
@@ -2189,6 +2190,43 @@
           "deleteError": "Error happened while deleting Cart items",
           "sendToCart": "Send All Items To Wishlist",
           "sendingToCart": "Sending Items To Cart..."
+        }
+      }
+    },
+    "checkout": {
+      "header": "Checkout",
+      "errors": {
+        "failedLoadData": "Failed to checkout order details"
+      },
+      "components": {
+        "PaymentForm": {
+          "paymentDetails": "Payment Details",
+          "securePurchase": "Complete your purchase securely",
+          "cardNumber": "Card Number",
+          "cardNumberPlaceholder": "1234 5678 9012 3456",
+          "expiryDate": "Expiry Date",
+          "expiryPlaceholder": "MM/YY",
+          "cvv": "CVV",
+          "cvvPlaceholder": "123",
+          "cardHolder": "Cardholder Name",
+          "cardHolderPlaceholder": "JOHN DOE",
+          "securePayment": "Secure Payment",
+          "secureDescription": "Your payment information is encrypted and secure",
+          "processing": "Processing...",
+          "loading": "Loading...",
+          "pay": "Pay",
+          "sslEncrypted": "SSL Encrypted",
+          "pciCompliant": "PCI Compliant",
+          "errors": {
+            "paymentFailed": "Payment failed.",
+            "checkoutErr": "Checkout error."
+          }
+        },
+        "OrderSummary": {
+          "orderSummary": "Order Summary",
+          "subtotal": "Subtotal",
+          "total": "Total",
+          "billingTo": "Billing to"
         }
       }
     }

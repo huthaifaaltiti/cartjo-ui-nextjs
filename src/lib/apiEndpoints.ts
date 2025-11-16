@@ -150,4 +150,9 @@ export const API_ENDPOINTS = {
     VERIFY: `${BASE_URL}/api/v1/authentication/verify-email`,
     REVERIFY: `${BASE_URL}/api/v1/authentication/resend-verification-email`,
   },
+  CHECKOUT: {
+    PROCESS_PAYMENT: `${BASE_URL}/api/v1/payment/process`,
+    VERIFY_PAYMENT: `${BASE_URL}/api/v1/payment/verify`,
+    SUBMIT_PAYMENT: `${BASE_URL}/api/v1/payment/checkout`
+  }
 };

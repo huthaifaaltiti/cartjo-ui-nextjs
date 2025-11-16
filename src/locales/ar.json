@@ -2178,6 +2178,7 @@
           "title": "ملخص الطلب",
           "subtotal": "المجموع الفرعي",
           "total": "المجموع",
+          "processing": "جاري معالجة البيانات...",
           "proceed": "متابعة إلى صفحة الدفع"
         },
         "CartLayoutHeaderActions": {
@@ -2196,6 +2197,43 @@
           "deleteError": "حدث خطأ أثناء حذف عناصر العربة",
           "sendToCart": "إرسال جميع العناصر إلى قائمة الرغبات",
           "sendingToCart": "جارٍ إرسال العناصر إلى العربة..."
+        }
+      }
+    },
+    "checkout": {
+      "header": "إتمام الطلب",
+      "errors": {
+        "failedLoadData": "فشل في تحميل تفاصيل الطلب"
+      },
+      "components": {
+        "PaymentForm": {
+          "paymentDetails": "تفاصيل الدفع",
+          "securePurchase": "أكمل عملية الشراء بأمان",
+          "cardNumber": "رقم البطاقة",
+          "cardNumberPlaceholder": "1234 5678 9012 3456",
+          "expiryDate": "تاريخ الانتهاء",
+          "expiryPlaceholder": "MM/YY",
+          "cvv": "CVV",
+          "cvvPlaceholder": "123",
+          "cardHolder": "اسم حامل البطاقة",
+          "cardHolderPlaceholder": "JOHN DOE",
+          "securePayment": "دفع آمن",
+          "secureDescription": "معلومات الدفع الخاصة بك مشفرة وآمنة",
+          "processing": "جارٍ المعالجة...",
+          "loading": "جارٍ التحميل...",
+          "pay": "ادفع",
+          "sslEncrypted": "مشفر باستخدام SSL",
+          "pciCompliant": "متوافق مع PCI",
+          "errors": {
+            "paymentFailed": "فشلت عملية الدفع.",
+            "checkoutErr": "خطأ في عملية الدفع."
+          }
+        },
+        "OrderSummary": {
+          "orderSummary": "ملخص الطلب",
+          "subtotal": "الإجمالي الفرعي",
+          "total": "المجموع",
+          "billingTo": "الفوترة إلى"
         }
       }
     }
