@@ -255,6 +255,17 @@
     "AuthRedirect": {
       "title": "Please log in to view this protected content.",
       "desc": " Redirecting to login route after..."
+    },
+    "LocationPicker": {
+      "searchPlaceholder": "Search for place..",
+      "useMyLocation": "Use My Location",
+      "gettingLocation": "Getting location...",
+      "geoNotSupported": "Geolocation is not supported by your browser",
+      "geoPermissionDenied": "Please allow location access in your browser settings.",
+      "geoUnavailable": "Location information is unavailable.",
+      "geoTimeout": "Location request timed out.",
+      "geoUnknown": "An unknown error occurred.",
+      "geoFailed": "Could not get your location."
     }
   },
   "routes": {
@@ -2227,6 +2238,30 @@
           "subtotal": "Subtotal",
           "total": "Total",
           "billingTo": "Billing to"
+        },
+        "ShippingAddressForm": {
+          "title": "Shipping Address",
+          "fullName": "Full Name",
+          "phone": "Phone Number",
+          "country": "Country",
+          "city": "City",
+          "town": "Town / Area",
+          "street": "Street",
+          "building": "Building (Optional)",
+          "extraInfo": "Additional Information (Optional)",
+          "location": "Map Location",
+          "continueToPayment": "Continue to Payment",
+          "selected": "Selected",
+          "errors": {
+            "fullNameRequired": "Full Name is required",
+            "phoneRequired": "Phone Number is required",
+            "phoneInvalid": "Phone Number is invalid",
+            "countryRequired": "Country is required",
+            "cityRequired": "City is required",
+            "townRequired": "Town / Area is required",
+            "streetRequired": "Street is required",
+            "mapLocationRequired": "Location is required"
+          }
         }
       }
     }

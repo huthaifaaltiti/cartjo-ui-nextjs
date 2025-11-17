@@ -15,6 +15,7 @@ import Footer from "@/components/Footer";
 import "../globals.css";
 import "../../styles/prose.css";
 import ReduxProvider from "../../redux/ReduxProvider";
+import "leaflet/dist/leaflet.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

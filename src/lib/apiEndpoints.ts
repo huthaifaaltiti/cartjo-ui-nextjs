@@ -153,6 +153,7 @@ export const API_ENDPOINTS = {
   CHECKOUT: {
     PROCESS_PAYMENT: `${BASE_URL}/api/v1/payment/process`,
     VERIFY_PAYMENT: `${BASE_URL}/api/v1/payment/verify`,
-    SUBMIT_PAYMENT: `${BASE_URL}/api/v1/payment/checkout`
+    SUBMIT_PAYMENT: `${BASE_URL}/api/v1/payment/checkout`,
+    CHECKOUT_PAYMENT: `${BASE_URL}/api/v1/payment/checkout`
   }
 };
