@@ -6,11 +6,11 @@ import {
   setErrors,
   setStep,
   setVerificationCode,
-} from "@/redux/slices/auth/forgotPassword";
+} from "@/redux/slices/authorization/forgotPassword";
 import {
   sendIdentifier,
   verifyResetPasswordCode,
-} from "@/redux/slices/auth/forgotPassword/actions";
+} from "@/redux/slices/authorization/forgotPassword/actions";
 import { AppDispatch, RootState } from "@/redux/store";
 import { CheckCircle2, Mail } from "lucide-react";
 import { useTranslations } from "next-intl";

@@ -3,18 +3,18 @@
 import { Lock, CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { memo, useCallback, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setNewPassword,
-  setConfirmPassword,
-  setErrors,
-  setStep,
-} from "@/redux/slices/auth/forgotPassword";
 import { AppDispatch, RootState } from "@/redux/store";
-import { resetPassword } from "@/redux/slices/auth/forgotPassword/actions";
 import { useGeneralContext } from "@/contexts/General.context";
 import PasswordRules from "../../PasswordRules";
 import CounterDown from "@/components/shared/CounterDown";
 import { useTranslations } from "next-intl";
+import {
+  setConfirmPassword,
+  setErrors,
+  setNewPassword,
+  setStep,
+} from "@/redux/slices/authorization/forgotPassword";
+import { resetPassword } from "@/redux/slices/authorization/forgotPassword/actions";
 
 const CreateNewPassword = () => {
   const t = useTranslations(

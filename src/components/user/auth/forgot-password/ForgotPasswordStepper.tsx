@@ -6,9 +6,9 @@ import IdentifyAccount from "./IdentifyAccount";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import VerifyCode from "./VerifyCode";
-import { setStep } from "@/redux/slices/auth/forgotPassword";
 import { useTranslations } from "next-intl";
 import CreateNewPassword from "./CreateNewPassword";
+import { setStep } from "@/redux/slices/authorization/forgotPassword";
 
 const ForgotPasswordStepper = () => {
   const t = useTranslations(

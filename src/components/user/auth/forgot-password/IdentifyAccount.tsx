@@ -9,6 +9,7 @@ import {
   setIdentifier,
 } from "@/redux/slices/authorization/forgotPassword";
 import { sendIdentifier } from "@/redux/slices/authorization/forgotPassword/actions";
+import { useTranslations } from "next-intl";
 
 const IdentifyAccount = () => {
   const t = useTranslations(
