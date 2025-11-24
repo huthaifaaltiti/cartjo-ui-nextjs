@@ -1,10 +1,10 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import PriceRange from "@/components/user/used-filters/PriceRange";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import PaymentMethodFilter from "@/components/user/used-filters/PaymentMethodFilter";
-
+import DateRange from "@/components/user/used-filters/DateRange";
 
 interface Props {
   setAmountMin: (value: number) => void;
@@ -15,6 +15,15 @@ interface Props {
 
   paymentMethod: PaymentMethods | null;
   setPaymentMethod: (v: PaymentMethods | null) => void;
+
+  createdBefore: string;
+  setCreatedAfter: (val: string) => void;
+  createdAfter: string;
+  setCreatedBefore: (val: string) => void;
+  onApplyDateFilter: (
+    createdBeforeValue?: string,
+    createdAfterValue?: string
+  ) => void;
 }
 
 const OrdersListFilters = ({
@@ -22,8 +31,15 @@ const OrdersListFilters = ({
   amountMax,
   setAmountMin,
   setAmountMax,
+
   paymentMethod,
   setPaymentMethod,
+
+  createdAfter,
+  createdBefore,
+  setCreatedAfter,
+  setCreatedBefore,
+  onApplyDateFilter,
 }: Props) => {
   const handleApplyPriceFilter = (from: number, to: number) => {
     setAmountMin(from);
@@ -43,6 +59,14 @@ const OrdersListFilters = ({
       <PaymentMethodFilter
         paymentMethod={paymentMethod}
         setPaymentMethod={setPaymentMethod}
+      />
+
+      <DateRange
+        setCreatedFrom={setCreatedBefore}
+        setCreatedTo={setCreatedAfter}
+        onApplyFilter={onApplyDateFilter}
+        initialCreatedFrom={createdBefore}
+        initialCreatedTo={createdAfter}
       />
     </div>
   );

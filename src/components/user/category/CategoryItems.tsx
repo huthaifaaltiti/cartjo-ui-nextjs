@@ -12,7 +12,7 @@ import CategoryProductCard from "./CategoryProductCard";
 import CategoryItemsLoading from "./CategoryItemsLoading";
 import PriceRange from "../used-filters/PriceRange";
 import RatingRange from "../used-filters/RatingRange";
-import DateRange from "../used-filters/DateRange";
+import DateRangeWithDaysNum from "../used-filters/DateRangeWithDaysNum";
 
 const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   const t = useTranslations();
@@ -169,7 +169,7 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
               onApplyFilter={handleApplyRangeFilter}
               initialFrom={ratingFrom}
             />
-            <DateRange
+            <DateRangeWithDaysNum
               setCreatedFrom={setCreatedFrom}
               setCreatedTo={setCreatedTo}
               setBeforeNumOfDays={setBeforeNumOfDays}
@@ -207,7 +207,7 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
               onApplyFilter={handleApplyRangeFilter}
               initialFrom={ratingFrom}
             />
-            <DateRange
+            <DateRangeWithDaysNum
               setCreatedFrom={setCreatedFrom}
               setCreatedTo={setCreatedTo}
               setBeforeNumOfDays={setBeforeNumOfDays}

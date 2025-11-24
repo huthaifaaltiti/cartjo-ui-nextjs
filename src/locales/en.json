@@ -228,6 +228,12 @@
         "minRate": "Minimum Rating"
       },
       "DateRange": {
+        "title": "Filter by Date",
+        "desc": "Select start and end dates",
+        "fromDate": "Start Date",
+        "toDate": "End Date"
+      },
+      "DateRangeWithDaysNum": {
         "dateFilter": "Filter by Date",
         "filterType": "How would you like to filter by date?",
         "selectDateRange": "Choose specific date range",

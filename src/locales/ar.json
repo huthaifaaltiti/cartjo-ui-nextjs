@@ -226,6 +226,12 @@
         "minRate": "أدنى تقييم"
       },
       "DateRange": {
+        "title": "تصفية حسب التاريخ",
+        "desc": "حدد تاريخ البداية والنهاية",
+        "fromDate": "تاريخ البداية",
+        "toDate": "تاريخ النهاية"
+      },
+      "DateRangeWithDaysNum": {
         "dateFilter": "تصفية حسب التاريخ",
         "filterType": "كيف تريد التصفية حسب التاريخ؟",
         "selectDateRange": "اختيار فترة زمنية محددة",

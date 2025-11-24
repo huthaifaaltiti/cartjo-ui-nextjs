@@ -12,7 +12,7 @@ import SubCategoryProductCard from "./SubCategoryProductCard";
 import SubCategoryItemsLoading from "./SubCategoryItemsLoading";
 import PriceRange from "../used-filters/PriceRange";
 import RatingRange from "../used-filters/RatingRange";
-import DateRange from "../used-filters/DateRange";
+import DateRangeWithDaysNum from "../used-filters/DateRangeWithDaysNum";
 
 const SubCategoryItems = ({
   categoryId,
@@ -177,7 +177,7 @@ const SubCategoryItems = ({
               onApplyFilter={handleApplyRangeFilter}
               initialFrom={ratingFrom}
             />
-            <DateRange
+            <DateRangeWithDaysNum
               setCreatedFrom={setCreatedFrom}
               setCreatedTo={setCreatedTo}
               setBeforeNumOfDays={setBeforeNumOfDays}
@@ -215,7 +215,7 @@ const SubCategoryItems = ({
               onApplyFilter={handleApplyRangeFilter}
               initialFrom={ratingFrom}
             />
-            <DateRange
+            <DateRangeWithDaysNum
               setCreatedFrom={setCreatedFrom}
               setCreatedTo={setCreatedTo}
               setBeforeNumOfDays={setBeforeNumOfDays}

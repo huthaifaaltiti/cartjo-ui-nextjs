@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import DateRange from "./used-filters/DateRange";
+import DateRangeWithDaysNum from "./used-filters/DateRangeWithDaysNum";
 import RatingRange from "./used-filters/RatingRange";
 import PriceRange from "./used-filters/PriceRange";
 import assets from "@public/assets/assets.json";
@@ -67,7 +67,7 @@ const SearchQueryFilters = ({
           onApplyFilter={onApplyRangeFilter}
           initialFrom={ratingFrom}
         />
-        <DateRange
+        <DateRangeWithDaysNum
           setCreatedFrom={setCreatedFrom}
           setCreatedTo={setCreatedTo}
           setBeforeNumOfDays={setBeforeNumOfDays}

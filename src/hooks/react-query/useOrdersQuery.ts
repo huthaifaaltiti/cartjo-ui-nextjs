@@ -18,6 +18,8 @@ interface FetchOrdersParams {
   amountMin?: number;
   amountMax?: number;
   paymentMethod?: PaymentMethods;
+  createdAfter?: string;
+  createdBefore?: string;
 }
 
 export const fetchOrders = async ({
@@ -28,17 +30,27 @@ export const fetchOrders = async ({
   search,
   amountMin,
   amountMax,
-  paymentMethod
+  paymentMethod,
+  createdAfter,
+  createdBefore,
 }: FetchOrdersParams): Promise<DataListResponse<Order>> => {
   const url = new URL(API_ENDPOINTS.ORDER.GetAll);
 
   url.searchParams.append("limit", limit.toString());
   url.searchParams.append("lang", lang);
+
   if (amountMin !== undefined && amountMin > 0)
     url.searchParams.append("amountMin", String(amountMin));
   if (amountMax !== undefined && amountMax > 0)
     url.searchParams.append("amountMax", String(amountMax));
-  if (paymentMethod) url.searchParams.append("paymentMethod", String(paymentMethod));
+
+  if (paymentMethod)
+    url.searchParams.append("paymentMethod", String(paymentMethod));
+
+  if (createdBefore !== undefined && createdBefore)
+    url.searchParams.append("createdBefore", String(createdBefore));
+  if (createdAfter !== undefined && createdAfter)
+    url.searchParams.append("createdAfter", String(createdAfter));
 
   if (lastId) url.searchParams.append("lastId", lastId);
   if (search) url.searchParams.append("search", search);
@@ -59,20 +71,32 @@ export const useOrdersQuery = ({
   queryKey,
   amountMin,
   amountMax,
-  paymentMethod
+  paymentMethod,
+  createdAfter,
+  createdBefore,
 }: {
   searchQuery: string;
   queryKey: string;
   amountMin?: number;
   amountMax?: number;
   paymentMethod?: PaymentMethods;
+  createdAfter?: string;
+  createdBefore?: string;
 }) => {
   const { data: session } = useSession();
   const locale = useLocale();
   const accessToken = (session as CustomSession)?.accessToken;
 
   return useInfiniteQuery<DataListResponse<Order>>({
-    queryKey: [queryKey, searchQuery, amountMin, amountMax, paymentMethod],
+    queryKey: [
+      queryKey,
+      searchQuery,
+      amountMin,
+      amountMax,
+      paymentMethod,
+      createdAfter,
+      createdBefore,
+    ],
     queryFn: ({ pageParam }) => {
       if (!accessToken) throw new Error("No access token found");
 
@@ -84,7 +108,9 @@ export const useOrdersQuery = ({
         search: searchQuery,
         amountMin,
         amountMax,
-        paymentMethod
+        paymentMethod,
+        createdAfter,
+        createdBefore,
       });
     },
 

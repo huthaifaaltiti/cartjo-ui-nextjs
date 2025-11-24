@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
 import { useOrdersQuery } from "@/hooks/react-query/useOrdersQuery";
@@ -41,9 +41,28 @@ const OrdersList = () => {
     useQueryState<PaymentMethods | null>("paymentMethod", {
       defaultValue: null,
       parse: (value) =>
-        value === PaymentMethods.Cash || value === PaymentMethods.Card ? (value as PaymentMethods) : null,
+        value === PaymentMethods.Cash || value === PaymentMethods.Card
+          ? (value as PaymentMethods)
+          : null,
       serialize: (value) => (value ? String(value) : ""),
     });
+
+  const [createdBefore, setCreatedBefore] = useQueryState<string>(
+    "createdBefore",
+    {
+      defaultValue: "",
+      parse: (value) => value || "",
+      serialize: (value) => value,
+    }
+  );
+  const [createdAfter, setCreatedAfter] = useQueryState<string>(
+    "createdAfter",
+    {
+      defaultValue: "",
+      parse: (value) => value || "",
+      serialize: (value) => value,
+    }
+  );
 
   const {
     data,
@@ -59,6 +78,8 @@ const OrdersList = () => {
     amountMin,
     amountMax,
     paymentMethod,
+    createdAfter,
+    createdBefore,
   });
 
   useEffect(() => {
@@ -70,6 +91,14 @@ const OrdersList = () => {
       dispatch(setOrdersItems([]));
     }
   }, [data, dispatch]);
+
+  const handleApplyDateFilter = useCallback(
+    (createdFromValue?: string, createdToValue?: string) => {
+      setCreatedAfter(createdFromValue || "");
+      setCreatedBefore(createdToValue || "");
+    },
+    [createdAfter, createdBefore, setCreatedAfter, setCreatedBefore]
+  );
 
   const showLoader = isLoading || isSessionLoading;
   const showError = isError;
@@ -100,6 +129,11 @@ const OrdersList = () => {
           setAmountMax={setAmountMax}
           paymentMethod={paymentMethod}
           setPaymentMethod={setPaymentMethod}
+          createdBefore={createdBefore}
+          setCreatedBefore={setCreatedBefore}
+          createdAfter={createdAfter}
+          setCreatedAfter={setCreatedAfter}
+          onApplyDateFilter={handleApplyDateFilter}
         />
         <div className="w-full min-h-[50vh] flex items-center justify-center">
           <p className="text-gray-500 text-lg">No orders found</p>
@@ -117,6 +151,11 @@ const OrdersList = () => {
           setAmountMax={setAmountMax}
           paymentMethod={paymentMethod}
           setPaymentMethod={setPaymentMethod}
+          createdBefore={createdBefore}
+          setCreatedBefore={setCreatedBefore}
+          createdAfter={createdAfter}
+          setCreatedAfter={setCreatedAfter}
+          onApplyDateFilter={handleApplyDateFilter}
         />
         <InfiniteScrollList
           isLoading={isLoading}
