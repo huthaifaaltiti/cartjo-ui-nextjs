@@ -25,9 +25,7 @@ const SearchOrders = () => {
   }, [id, dispatch]);
 
   useEffect(() => {
-    if (searchQuery && searchQuery !== id) {
-      setId(searchQuery);
-    }
+    setId(searchQuery);
   }, [searchQuery, id, setId]);
 
   return (
