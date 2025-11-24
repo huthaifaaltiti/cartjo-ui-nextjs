@@ -210,6 +210,14 @@
         "clear": "Clear",
         "clearAll": "Clear All Filters"
       },
+      "PaymentMethodFilter": {
+        "title": "Payment Method",
+        "select": "Select Method",
+        "type": {
+          "card": "Card",
+          "cash": "Cash"
+        }
+      },
       "PriceRange": {
         "price": "Filter by Price",
         "from": "From ({currency})",
@@ -1724,7 +1732,9 @@
             "failedLoadData": "Failed to Load orders"
           },
           "components": {
-            "SearchBar": { "placeholder": "Search for orders" },
+            "SearchBar": {
+              "placeholder": "Search for transaction ID, email, merchant reference, or user ID"
+            },
             "OrderCard": {
               "status": {
                 "pending": "Pending",

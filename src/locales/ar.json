@@ -208,6 +208,14 @@
         "clear": "مسح",
         "clearAll": "مسح جميع الفلاتر"
       },
+      "PaymentMethodFilter": {
+        "title": "طريقة الدفع",
+        "select": "اختر الطريقة",
+        "type": {
+          "card": "بطاقة",
+          "cash": "نقداً"
+        }
+      },
       "PriceRange": {
         "price": "تصفية حسب السعر",
         "from": "من ({currency})",
@@ -1720,7 +1728,9 @@
             "failedLoadData": "فشل في تحميل الطلبات"
           },
           "components": {
-            "SearchBar": { "placeholder": "ابحث عن الطلبات" },
+            "SearchBar": {
+              "placeholder": "ابحث عن رقم المعاملة، البريد الإلكتروني، رقم المرجع، أو رقم المستخدم"
+            },
             "OrderCard": {
               "status": {
                 "pending": "قيد الانتظار",
