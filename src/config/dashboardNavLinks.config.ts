@@ -9,6 +9,7 @@ import {
   Flag,
   LayoutPanelTop,
   Cog,
+  ListOrdered,
 } from "lucide-react";
 
 export const dashboardNavLinks = [
@@ -71,5 +72,11 @@ export const dashboardNavLinks = [
       "routes.dashboard.components.DashboardControlNavLinks.navItems.showcases",
     href: "/dashboard/showcases",
     icon: LayoutPanelTop,
+  },
+  {
+    labelKey:
+      "routes.dashboard.components.DashboardControlNavLinks.navItems.orders",
+    href: "/dashboard/orders",
+    icon: ListOrdered,
   },
 ];

@@ -84,7 +84,10 @@
       "priority": "أولوية",
       "logoTitle": "كارت جو",
       "stars": "نجوم",
-      "home": "المنزل"
+      "home": "الرئيسية",
+      "timeline": "الجدول الزمني",
+      "updatedBy": "تم التحديث بواسطة",
+      "notFound": "غير موجود"
     },
     "date": {
       "startDate": "تاريخ البداية",
@@ -98,6 +101,30 @@
     "status": {
       "online": "نشط",
       "offline": "غير نشط"
+    },
+    "info": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف"
+    },
+    "receipt": {
+      "order": {
+        "header": "فاتورة طلب CartJO",
+        "info": {
+          "transactionId": "رقم المعاملة",
+          "paymentMethod": "طريقة الدفع",
+          "status": "حالة الدفع",
+          "customer": "معلومات العميل",
+          "shippingAddress": "عنوان الشحن",
+          "note": "ملاحظة"
+        },
+        "items": "عناصر الطلب",
+        "total": "إجمالي الفاتورة",
+        "thanks": "شكراً على شرائك!"
+      }
+    },
+    "buttons": {
+      "downloadReceiptPDF": "تنزيل الإيصال (PDF)"
     }
   },
   "errors": {
@@ -1685,6 +1712,50 @@
           "errors": {
             "failedLoadData": "فشل في تحميل إعدادات التلميحات"
           }
+        },
+        "orders": {
+          "title": "إدارة الطلبات",
+          "desc": "إدارة بيانات الطلبات",
+          "errors": {
+            "failedLoadData": "فشل في تحميل الطلبات"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "ابحث عن الطلبات" },
+            "OrderCard": {
+              "status": {
+                "pending": "قيد الانتظار",
+                "failed": "فشل",
+                "paid": "مدفوع"
+              },
+              "transactionId": "رقم العملية",
+              "reference": "المرجع",
+              "paymentMethod": "طريقة الدفع",
+              "item": "عنصر",
+              "items": "العناصر",
+              "shippingAddress": "عنوان الشحن",
+              "orderItems": "عناصر الطلب"
+            },
+            "OrderCardActions": {
+              "viewDetails": "عرض التفاصيل"
+            },
+            "OrderDetailedCard": {
+              "orderDetails": "تفاصيل الطلب",
+              "notFound": "الطلب الذي تبحث عنه غير موجود أو تم حذفه.",
+              "status": {
+                "pending": "قيد الانتظار",
+                "failed": "فشل",
+                "paid": "مدفوع"
+              },
+              "transactionId": "رقم العملية",
+              "reference": "المرجع",
+              "paymentMethod": "طريقة الدفع",
+              "item": "عنصر",
+              "items": "العناصر",
+              "shippingAddress": "عنوان الشحن",
+              "orderItems": "عناصر الطلب",
+              "customerInfo": "معلومات العميل"
+            }
+          }
         }
       },
       "components": {
@@ -1712,7 +1783,8 @@
             "logo": "الشعار",
             "banner": "اللافتات",
             "typeHintConfigs": "تلميحات النوع",
-            "showcases": "قوائم العروض"
+            "showcases": "قوائم العروض",
+            "orders": "الطلبات"
           }
         },
         "DashboardLocationCard": {

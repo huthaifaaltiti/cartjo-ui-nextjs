@@ -86,7 +86,10 @@
       "star": "star",
       "stars": "stars",
       "logoTitle": "CartJO",
-      "home": "Home"
+      "home": "Home",
+      "timeline": "Timeline",
+      "updatedBy": "Updated By",
+      "notFound": "Not Found"
     },
     "date": {
       "startDate": "Start Date",
@@ -100,6 +103,30 @@
     "status": {
       "online": "Online",
       "offline": "Offline"
+    },
+    "info": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "receipt": {
+      "order": {
+        "header": "CartJO Order Receipt",
+        "info": {
+          "transactionId": "Transaction ID",
+          "paymentMethod": "Payment Method",
+          "status": "Payment Status",
+          "customer": "Customer Information",
+          "shippingAddress": "Shipping Address",
+          "note": "Note"
+        },
+        "items": "Order Items",
+        "total": "Total Receipt Amount",
+        "thanks": "Thank you for your purchase!"
+      }
+    },
+    "buttons": {
+      "downloadReceiptPDF": "Download Receipt (PDF)"
     }
   },
   "errors": {
@@ -1689,6 +1716,50 @@
           "errors": {
             "failedLoadData": "Failed to Load type-hint configs"
           }
+        },
+        "orders": {
+          "title": "Orders Management",
+          "desc": "Manage orders data",
+          "errors": {
+            "failedLoadData": "Failed to Load orders"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for orders" },
+            "OrderCard": {
+              "status": {
+                "pending": "Pending",
+                "failed": "Failed",
+                "paid": "Paid"
+              },
+              "transactionId": "Transaction ID",
+              "reference": "Reference",
+              "paymentMethod": "Payment Method",
+              "item": "Item",
+              "items": "Items",
+              "shippingAddress": "Shipping Address",
+              "orderItems": "Order Items"
+            },
+            "OrderCardActions": {
+              "viewDetails": "View Details"
+            },
+            "OrderDetailedCard": {
+              "orderDetails": "Order Details",
+              "notFound": "The order you're looking for doesn't exist or has been removed.",
+              "status": {
+                "pending": "Pending",
+                "failed": "Failed",
+                "paid": "Paid"
+              },
+              "transactionId": "Transaction ID",
+              "reference": "Reference",
+              "paymentMethod": "Payment Method",
+              "item": "Item",
+              "items": "Items",
+              "shippingAddress": "Shipping Address",
+              "orderItems": "Order Items",
+              "customerInfo": "Customer Information"
+            }
+          }
         }
       },
       "components": {
@@ -1716,7 +1787,8 @@
             "logo": "Logo",
             "banner": "Banners",
             "typeHintConfigs": "Type-Hint Configs",
-            "showcases": "Showcases"
+            "showcases": "Showcases",
+            "orders": "Orders"
           }
         },
         "DashboardLocationCard": {

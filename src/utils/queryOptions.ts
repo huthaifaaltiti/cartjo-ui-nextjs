@@ -9,6 +9,7 @@ import {
   fetchCategoryProducts,
 } from "@/hooks/react-query/useCategoryQuery";
 import { fetchStaticNationalist } from "@/hooks/react-query/useNationalityQuery";
+import { fetchOrders } from "@/hooks/react-query/useOrdersQuery";
 import {
   fetchProduct,
   fetchProductComments,
@@ -334,6 +335,29 @@ export const getWishlistQueryOptions = (token: string) => {
         token,
         lang: "en",
         limit: PAGINATION_LIMITS.WISHLIST_ITEMS,
+      }),
+    getNextPageParam,
+    initialPageParam: undefined,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+  };
+};
+
+export const getOrdersQueryOptions = (token: string) => {
+  const getNextPageParam = (lastPage: DataResponse<Cart>) => {
+    if (!lastPage?.data?.items?.length) return undefined;
+
+    const lastProduct = lastPage.data.items.at(-1);
+    return lastProduct?._id ?? undefined;
+  };
+
+  return {
+    queryKey: ["orders"],
+    queryFn: () =>
+      fetchOrders({
+        token,
+        lang: "en",
+        limit: PAGINATION_LIMITS.ORDERS,
       }),
     getNextPageParam,
     initialPageParam: undefined,

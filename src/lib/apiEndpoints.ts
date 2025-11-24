@@ -154,6 +154,15 @@ export const API_ENDPOINTS = {
     PROCESS_PAYMENT: `${BASE_URL}/api/v1/payment/process`,
     VERIFY_PAYMENT: `${BASE_URL}/api/v1/payment/verify`,
     SUBMIT_PAYMENT: `${BASE_URL}/api/v1/payment/checkout`,
-    CHECKOUT_PAYMENT: `${BASE_URL}/api/v1/payment/checkout`
-  }
+    CHECKOUT_PAYMENT: `${BASE_URL}/api/v1/payment/checkout`,
+  },
+  ORDER: {
+    Root: `${BASE_URL}/api/v1/order`,
+    ChangePaymentStatus: `${BASE_URL}/api/v1/order/:id/change-payment-status`,
+    Delete: `${BASE_URL}/api/v1/order/delete/:id`,
+    UnDelete: `${BASE_URL}/api/v1/order/un-delete/:id`,
+    GetAll: `${BASE_URL}/api/v1/order/all`,
+    Create: `${BASE_URL}/api/v1/order/create`,
+    GetOne: `${BASE_URL}/api/v1/order/:id`,
+  },
 };
