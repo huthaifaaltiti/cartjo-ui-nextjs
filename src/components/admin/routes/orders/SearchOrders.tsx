@@ -1,16 +1,34 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import SearchBar from "@/components/shared/SearchBar";
+import { useQueryState } from "nuqs";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { RootState, AppDispatch } from "@/redux/store";
 import { setOrdersSearchQuery } from "@/redux/slices/orders";
+import SearchBar from "@/components/shared/SearchBar";
 
 const SearchOrders = () => {
   const t = useTranslations();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { searchQuery } = useSelector((state: RootState) => state.orders);
+
+  const [id, setId] = useQueryState("id", {
+    defaultValue: "",
+    parse: (value) => String(value),
+  });
+
+  useEffect(() => {
+    if (id) {
+      dispatch(setOrdersSearchQuery(id));
+    }
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (searchQuery && searchQuery !== id) {
+      setId(searchQuery);
+    }
+  }, [searchQuery, id, setId]);
 
   return (
     <div className="w-full px-2 md:px-0">
@@ -18,7 +36,7 @@ const SearchOrders = () => {
         placeholder={t(
           "routes.dashboard.routes.orders.components.SearchBar.placeholder"
         )}
-        searchQuery={searchQuery}
+        searchQuery={searchQuery || id}
         setSearchQuery={(val) => dispatch(setOrdersSearchQuery(val))}
       />
     </div>
