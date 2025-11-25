@@ -70,6 +70,7 @@ const LogoCard = ({
             alt={logo.altText || logo.name}
             width={40}
             height={40}
+            useFill={false}
             className="object-cover w-full h-full"
           />
         </div>
