@@ -164,5 +164,6 @@ export const API_ENDPOINTS = {
     GetAll: `${BASE_URL}/api/v1/order/all`,
     Create: `${BASE_URL}/api/v1/order/create`,
     GetOne: `${BASE_URL}/api/v1/order/:id`,
+    Export: `${BASE_URL}/api/v1/order/export`,
   },
 };

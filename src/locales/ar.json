@@ -216,6 +216,15 @@
           "cash": "نقداً"
         }
       },
+      "PaymentStatusFilter": {
+        "title": "حالة الدفع",
+        "select": "اختر الحالة",
+        "type": {
+          "paid": "مدفوع",
+          "pending": "قيد الانتظار",
+          "failed": "فشل الدفع"
+        }
+      },
       "PriceRange": {
         "price": "تصفية حسب السعر",
         "from": "من ({currency})",
@@ -1770,6 +1779,14 @@
               "shippingAddress": "عنوان الشحن",
               "orderItems": "عناصر الطلب",
               "customerInfo": "معلومات العميل"
+            },
+            "ExportOrders": {
+              "title": "تصدير البيانات",
+              "selectDates": "اختر نطاق التاريخ",
+              "excel": "تصدير Excel",
+              "pdf": "تصدير PDF",
+              "exporting": "جارٍ التصدير...",
+              "disabledTooltip": "يرجى اختيار نطاق التاريخ أولاً"
             }
           }
         }

@@ -218,6 +218,15 @@
           "cash": "Cash"
         }
       },
+      "PaymentStatusFilter": {
+        "title": "Payment Status",
+        "select": "Select Status",
+        "type": {
+          "paid": "Paid",
+          "pending": "Pending",
+          "failed": "Failed"
+        }
+      },
       "PriceRange": {
         "price": "Filter by Price",
         "from": "From ({currency})",
@@ -1774,6 +1783,14 @@
               "shippingAddress": "Shipping Address",
               "orderItems": "Order Items",
               "customerInfo": "Customer Information"
+            },
+            "ExportOrders": {
+              "title": "Export Data",
+              "selectDates": "Select Date Range",
+              "excel": "Export Excel",
+              "pdf": "Export PDF",
+              "exporting": "Exporting...",
+              "disabledTooltip": "Please select a date range first"
             }
           }
         }

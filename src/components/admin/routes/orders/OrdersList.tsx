@@ -14,6 +14,7 @@ import { setOrdersItems } from "@/redux/slices/orders";
 import OrdersListFilters from "./OrdersListFilters";
 import { useQueryState } from "nuqs";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
+import { PaymentStatus } from "@/enums/paymentStatus.enum";
 
 const OrdersList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,6 +48,20 @@ const OrdersList = () => {
       serialize: (value) => (value ? String(value) : ""),
     });
 
+  const [paymentStatus, setPaymentStatus] = useQueryState<PaymentStatus | null>(
+    "paymentStatus",
+    {
+      defaultValue: null,
+      parse: (value) =>
+        value === PaymentStatus.FAILED ||
+        value === PaymentStatus.PAID ||
+        value === PaymentStatus.PENDING
+          ? (value as PaymentStatus)
+          : null,
+      serialize: (value) => (value ? String(value) : ""),
+    }
+  );
+
   const [createdBefore, setCreatedBefore] = useQueryState<string>(
     "createdBefore",
     {
@@ -78,6 +93,7 @@ const OrdersList = () => {
     amountMin,
     amountMax,
     paymentMethod,
+    paymentStatus,
     createdAfter,
     createdBefore,
   });
@@ -129,6 +145,8 @@ const OrdersList = () => {
           setAmountMax={setAmountMax}
           paymentMethod={paymentMethod}
           setPaymentMethod={setPaymentMethod}
+          paymentStatus={paymentStatus}
+          setPaymentStatus={setPaymentStatus}
           createdBefore={createdBefore}
           setCreatedBefore={setCreatedBefore}
           createdAfter={createdAfter}
@@ -144,19 +162,23 @@ const OrdersList = () => {
   if (showData) {
     return (
       <>
-        <OrdersListFilters
-          amountMin={amountMin}
-          amountMax={amountMax}
-          setAmountMin={setAmountMin}
-          setAmountMax={setAmountMax}
-          paymentMethod={paymentMethod}
-          setPaymentMethod={setPaymentMethod}
-          createdBefore={createdBefore}
-          setCreatedBefore={setCreatedBefore}
-          createdAfter={createdAfter}
-          setCreatedAfter={setCreatedAfter}
-          onApplyDateFilter={handleApplyDateFilter}
-        />
+        <div className="w-full flex">
+          <OrdersListFilters
+            amountMin={amountMin}
+            amountMax={amountMax}
+            setAmountMin={setAmountMin}
+            setAmountMax={setAmountMax}
+            paymentMethod={paymentMethod}
+            setPaymentMethod={setPaymentMethod}
+            paymentStatus={paymentStatus}
+            setPaymentStatus={setPaymentStatus}
+            createdBefore={createdBefore}
+            setCreatedBefore={setCreatedBefore}
+            createdAfter={createdAfter}
+            setCreatedAfter={setCreatedAfter}
+            onApplyDateFilter={handleApplyDateFilter}
+          />
+        </div>
         <InfiniteScrollList
           isLoading={isLoading}
           isFetchingNextPage={isFetchingNextPage}

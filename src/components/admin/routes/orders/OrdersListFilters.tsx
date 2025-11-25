@@ -7,6 +7,9 @@ import PaymentMethodFilter from "@/components/user/used-filters/PaymentMethodFil
 import DateRange from "@/components/user/used-filters/DateRange";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import ExportOrders from "./ExportOrders";
+import { PaymentStatus } from "@/enums/paymentStatus.enum";
+import PaymentStatusFilter from "@/components/user/used-filters/PaymentStatusFilter";
 
 interface Props {
   setAmountMin: (value: number) => void;
@@ -17,6 +20,9 @@ interface Props {
 
   paymentMethod: PaymentMethods | null;
   setPaymentMethod: (v: PaymentMethods | null) => void;
+
+  paymentStatus: PaymentStatus | null;
+  setPaymentStatus: (v: PaymentStatus | null) => void;
 
   createdBefore: string;
   setCreatedAfter: (val: string) => void;
@@ -37,6 +43,9 @@ const OrdersListFilters = ({
   paymentMethod,
   setPaymentMethod,
 
+  paymentStatus,
+  setPaymentStatus,
+
   createdAfter,
   createdBefore,
   setCreatedAfter,
@@ -56,6 +65,8 @@ const OrdersListFilters = ({
 
     setPaymentMethod(null);
 
+    setPaymentStatus(null);
+
     setCreatedBefore("");
     setCreatedAfter("");
 
@@ -65,6 +76,7 @@ const OrdersListFilters = ({
     setAmountMin,
     setAmountMax,
     setPaymentMethod,
+    setPaymentStatus,
     setCreatedBefore,
     setCreatedAfter,
     onApplyDateFilter,
@@ -85,6 +97,11 @@ const OrdersListFilters = ({
         setPaymentMethod={setPaymentMethod}
       />
 
+      <PaymentStatusFilter
+        paymentStatus={paymentStatus}
+        setPaymentStatus={setPaymentStatus}
+      />
+
       <DateRange
         setCreatedFrom={setCreatedBefore}
         setCreatedTo={setCreatedAfter}
@@ -101,6 +118,8 @@ const OrdersListFilters = ({
       >
         {t("components.filters.actions.clear")}
       </Button>
+
+      <ExportOrders />
     </div>
   );
 };

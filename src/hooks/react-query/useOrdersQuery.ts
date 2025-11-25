@@ -8,6 +8,7 @@ import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { DataListResponse } from "@/types/service-response.type";
 import { Order } from "@/types/order.type";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
+import { PaymentStatus } from "@/enums/paymentStatus.enum";
 
 interface FetchOrdersParams {
   token: string;
@@ -18,6 +19,7 @@ interface FetchOrdersParams {
   amountMin?: number;
   amountMax?: number;
   paymentMethod?: PaymentMethods;
+  paymentStatus?: PaymentStatus;
   createdAfter?: string;
   createdBefore?: string;
 }
@@ -31,6 +33,7 @@ export const fetchOrders = async ({
   amountMin,
   amountMax,
   paymentMethod,
+  paymentStatus,
   createdAfter,
   createdBefore,
 }: FetchOrdersParams): Promise<DataListResponse<Order>> => {
@@ -46,6 +49,9 @@ export const fetchOrders = async ({
 
   if (paymentMethod)
     url.searchParams.append("paymentMethod", String(paymentMethod));
+
+  if (paymentStatus)
+    url.searchParams.append("paymentStatus", String(paymentStatus));
 
   if (createdBefore !== undefined && createdBefore)
     url.searchParams.append("createdBefore", String(createdBefore));
@@ -72,6 +78,7 @@ export const useOrdersQuery = ({
   amountMin,
   amountMax,
   paymentMethod,
+  paymentStatus,
   createdAfter,
   createdBefore,
 }: {
@@ -80,6 +87,7 @@ export const useOrdersQuery = ({
   amountMin?: number;
   amountMax?: number;
   paymentMethod?: PaymentMethods;
+  paymentStatus?: PaymentStatus;
   createdAfter?: string;
   createdBefore?: string;
 }) => {
@@ -94,6 +102,7 @@ export const useOrdersQuery = ({
       amountMin,
       amountMax,
       paymentMethod,
+      paymentStatus,
       createdAfter,
       createdBefore,
     ],
@@ -109,6 +118,7 @@ export const useOrdersQuery = ({
         amountMin,
         amountMax,
         paymentMethod,
+        paymentStatus,
         createdAfter,
         createdBefore,
       });
