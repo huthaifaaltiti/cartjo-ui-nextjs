@@ -12,6 +12,7 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useTranslations } from "next-intl";
+import { ExportFormats } from "@/enums/exportFormats.enum";
 
 const ExportOrders = () => {
   const t = useTranslations();
@@ -19,14 +20,13 @@ const ExportOrders = () => {
 
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-
-  const [exportingFormat, setExportingFormat] = useState<
-    "excel" | "pdf" | null
-  >(null);
+  const [exportingFormat, setExportingFormat] = useState<ExportFormats | null>(
+    null
+  );
 
   const disabledExport = !startDate || !endDate || exportingFormat !== null;
 
-  const handleExport = async (format: "excel" | "pdf") => {
+  const handleExport = async (format: ExportFormats) => {
     if (disabledExport) return;
 
     try {
@@ -91,10 +91,10 @@ const ExportOrders = () => {
                 size="sm"
                 variant="outline"
                 className="h-8"
-                onClick={() => handleExport("excel")}
+                onClick={() => handleExport(ExportFormats.EXCEL)}
                 disabled={disabledExport}
               >
-                {exportingFormat === "excel"
+                {exportingFormat === ExportFormats.EXCEL
                   ? t(
                       "routes.dashboard.routes.orders.components.ExportOrders.exporting"
                     )
@@ -105,10 +105,10 @@ const ExportOrders = () => {
                 size="sm"
                 variant="outline"
                 className="h-8"
-                onClick={() => handleExport("pdf")}
+                onClick={() => handleExport(ExportFormats.PDF)}
                 disabled={disabledExport}
               >
-                {exportingFormat === "pdf"
+                {exportingFormat === ExportFormats.PDF
                   ? t(
                       "routes.dashboard.routes.orders.components.ExportOrders.exporting"
                     )
