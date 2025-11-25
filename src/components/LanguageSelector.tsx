@@ -15,6 +15,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { setLocale } from "@/redux/slices/general";
 import { Locale } from "@/types/locale";
 import { Locale as LocaleEnum } from "@/enums/locale.enum";
+import { Languages } from "lucide-react";
 
 const LanguageSelector: React.FC = () => {
   const { isArabic } = useSelector((state: RootState) => state.general);
@@ -45,7 +46,8 @@ const LanguageSelector: React.FC = () => {
 
   return (
     <Select onValueChange={handleLangChange}>
-      <SelectTrigger className="min-w-24 w-auto max-w-28 text-text-primary-100 text-sm shadow-none">
+      <SelectTrigger className="min-w-24 w-auto max-w-32 text-text-primary-100 text-sm shadow-none flex items-center gap-2">
+        <Languages className="w-4 h-4" />
         <SelectValue placeholder={isArabic ? t("arabic") : t("english")} />
       </SelectTrigger>
       <SelectContent>
