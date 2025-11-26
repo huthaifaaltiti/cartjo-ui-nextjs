@@ -16,6 +16,10 @@ import "../globals.css";
 import "../../styles/prose.css";
 import ReduxProvider from "../../redux/ReduxProvider";
 import "leaflet/dist/leaflet.css";
+import {
+  METADATA_ROUTES_NAMES,
+  routesMetadata,
+} from "@/constants/metadata.constant";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,21 +36,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = params;
   const isArabic = isArabicLocale(locale);
+  const meta = routesMetadata[METADATA_ROUTES_NAMES.HOME];
 
   return {
-    title: isArabic
-      ? "كارت جو | التسوق عبر الإنترنت في الأردن"
-      : "CartJO | Online Shopping at Jordan",
-    description: isArabic
-      ? "تطبيق تجارة إلكترونية مقره الأردن"
-      : "An e-commerce application based in Jordan",
+    title: isArabic ? meta.title.ar : meta.title.en,
+    description: isArabic ? meta.description.ar : meta.description.en,
 
     openGraph: {
-      title: isArabic ? "كارت جو" : "CartJO",
-      description: isArabic
-        ? "تطبيق تجارة إلكترونية مقره الأردن"
-        : "An e-commerce application based in Jordan",
-      locale: isArabic ? "ar_JO" : "en_US",
+      title: isArabic ? meta.title.ar : meta.title.en,
+      description: isArabic ? meta.description.ar : meta.description.en,
+      locale: isArabic ? "ar" : "en",
       type: "website",
     },
 
