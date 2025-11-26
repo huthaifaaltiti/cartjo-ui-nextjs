@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
@@ -30,6 +30,11 @@ import {
 import { useQueryState } from "nuqs";
 import { useVerifyEmail } from "@/contexts/VerifyEmailContext";
 import ForgotPasswordLink from "./user/auth/forgot-password/ForgotPasswordLink";
+import { useGeneralContext } from "@/contexts/General.context";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import LoadingDots from "./shared/loaders/LoadingDots";
+import LoadingButton from "./shared/LoadingButton";
 
 const LoginForm = () => {
   const t = useTranslations();
@@ -38,6 +43,7 @@ const LoginForm = () => {
   const router = useRouter();
   const { data: sessionData, status } = useSession();
   const { reVerify } = useVerifyEmail();
+  const { dir } = useSelector((state: RootState) => state.general);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -202,7 +208,11 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        dir={dir}
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8"
+      >
         {/* identifier */}
         <FormField
           control={form.control}
@@ -227,13 +237,11 @@ const LoginForm = () => {
                   {...field}
                 />
               </FormControl>
-
               <FormDescription className="text-xs text-text-primary-100">
                 {t(
                   "routes.auth.components.AuthTabs.components.login.dataSet.username.desc"
                 )}
               </FormDescription>
-
               <FormMessage />
             </FormItem>
           )}
@@ -255,7 +263,7 @@ const LoginForm = () => {
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      className={`placeholder:text-xs text-xs  ${
+                      className={`placeholder:text-xs text-xs ${
                         isArabic
                           ? "placeholder:text-right pl-10"
                           : "placeholder:text-left pr-10"
@@ -277,7 +285,6 @@ const LoginForm = () => {
                     </button>
                   </div>
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -286,17 +293,18 @@ const LoginForm = () => {
           <ForgotPasswordLink locale={locale} />
         </div>
 
-        <Button
-          className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 transition-all"
+        <LoadingButton
           type="submit"
-          disabled={loginMutation?.isPending}
-        >
-          {loginMutation?.isPending
-            ? t("general.loadingStates.loadingApi")
-            : t(
-                "routes.auth.components.AuthTabs.components.login.actions.proceed"
-              )}
-        </Button>
+          loading={loginMutation?.isPending}
+          withAnimate={true}
+          dir={dir}
+          label={t(
+            "routes.auth.components.AuthTabs.components.login.actions.proceed"
+          )}
+          loadingLabel={t(
+            "routes.auth.components.AuthTabs.components.login.actions.proceed"
+          )}
+        />
       </form>
     </Form>
   );

@@ -11,9 +11,9 @@ interface GeneralState {
 }
 
 const initialState: GeneralState = {
-  locale: "en",
-  isArabic: false,
-  dir: "ltr",
+  locale: "ar",
+  isArabic: true,
+  dir: "rtl",
 };
 
 const generalSlice = createSlice({

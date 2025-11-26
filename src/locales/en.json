@@ -322,11 +322,11 @@
     "auth": {
       "components": {
         "AuthTabs": {
-          "login": "Login",
+          "login": "Log In",
           "register": "Register",
           "components": {
             "login": {
-              "hint": "If you have an account, sign in with your identifier.",
+              "hint": "If you have an account with CartJO, sign in with your identifier.",
               "dataSet": {
                 "username": {
                   "label": "Identifier",
@@ -346,7 +346,7 @@
                 }
               },
               "actions": {
-                "proceed": "Log in"
+                "proceed": "Log In"
               },
               "validations": {
                 "identifier": {
