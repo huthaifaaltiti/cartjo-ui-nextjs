@@ -1,11 +1,9 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo } from "react";
 import { MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
-
 import { useLocations } from "@/hooks/react-query/useLocations";
-
 import LocationSelector from "./LocationSelector";
 import { useHome } from "@/contexts/HomeContext";
 

@@ -9,7 +9,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { apiRequest } from "@/utils/apiRequest";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -35,18 +34,14 @@ import {
 } from "./ui/select";
 import { useGeneralContext } from "@/contexts/General.context";
 import PasswordRules from "./user/PasswordRules";
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
 import TwoColumnFormFields from "./shared/TwoColumnFormFields";
-import { Checkbox } from "./ui/checkbox";
 import GeneralCheckbox from "./shared/GeneralCheckbox";
 import LoadingButton from "./shared/LoadingButton";
-import { fetcher } from "@/utils/fetcher";
 
 const RegisterForm = () => {
   const t = useTranslations();
   const { isArabic, locale } = useGeneralContext();
-  const { dir } = useSelector((state: RootState) => state.general);
+  const dir = isArabic ? "rtl" : "ltr";
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);

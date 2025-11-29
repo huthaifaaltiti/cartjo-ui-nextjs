@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { fetchActiveLogo } from "@/hooks/react-query/useLogosQuery";
-
 import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
 import StaticLogo from "./StaticLogo";
 import CustomImage from "../admin/shared/CustomImage";

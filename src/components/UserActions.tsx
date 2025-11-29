@@ -3,7 +3,7 @@ import UserMenu from "./UserMenu";
 
 const UserActions = () => {
   return (
-    <div className="w-full">
+    <div className="w-auto">
       <UserMenu />
     </div>
   );

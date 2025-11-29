@@ -3,21 +3,24 @@ import MaxWidthWrapper from "./shared/MaxWidthWrapper";
 import UserActions from "./UserActions";
 import DynamicLogo from "./shared/DynamicLogo";
 import MainSearchBar from "./MainSearchBar";
-import DeliverLocation from "./shared/DeliverLocation";
 
-const MAinHeader = () => {
+const MainHeader = () => {
   return (
-    <div className="w-full py-6">
+    <div className="w-full py-4 md:py-6">
       <MaxWidthWrapper>
-        <div className="w-full flex items-center justify-between gap-5">
-          <div className="w-1/4 flex items-center gap-1">
+        <div className="flex w-full flex-col items-center gap-4 md:flex-row md:justify-between">
+          {/* Logo */}
+          <div className="flex items-center justify-center md:justify-start w-full md:w-auto">
             <DynamicLogo />
-            <DeliverLocation />
           </div>
-          <div className="w-2/4">
+
+          {/* Search Bar */}
+          <div className="w-full max-w-xl md:flex-1">
             <MainSearchBar />
           </div>
-          <div className="w-1/4">
+
+          {/* User Actions */}
+          <div className="flex items-center justify-center gap-3 w-full md:w-auto md:justify-center">
             <UserActions />
           </div>
         </div>
@@ -26,4 +29,4 @@ const MAinHeader = () => {
   );
 };
 
-export default memo(MAinHeader);
+export default memo(MainHeader);

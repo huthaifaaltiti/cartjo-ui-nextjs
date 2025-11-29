@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 const NoLoggedUserState = () => {
   const locale = useLocale();
   const t = useTranslations();
-
+  
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <Image

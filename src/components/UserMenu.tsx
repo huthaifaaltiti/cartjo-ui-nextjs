@@ -30,7 +30,7 @@ const UserMenu = () => {
   if (!session) return <UserSignInLink />;
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="w-uto flex items-center gap-1">
       {canManage && <UserDashboardLink />}
 
       <div className="w-auto flex items-center gap-2">

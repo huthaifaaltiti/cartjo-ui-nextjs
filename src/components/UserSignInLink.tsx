@@ -2,16 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
-
 import assets from "../../public/assets/assets.json";
+import { isArabicLocale } from "@/config/locales.config";
 
 const UserSignInLink = () => {
   const locale = useLocale();
   const t = useTranslations();
+  const isArabic = isArabicLocale(locale);
 
   return (
     <Link href={`/${locale}/auth`}>
-      <span className="flex items-center gap-1">
+      <span
+        className={`flex items-center gap-1 ${
+          isArabic ? "flex-row-reverse" : ""
+        }`}
+      >
         <Image
           src={assets.image.svg.enter_dark}
           alt="user icon"

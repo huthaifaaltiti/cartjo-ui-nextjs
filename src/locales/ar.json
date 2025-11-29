@@ -515,7 +515,7 @@
           "dashboard": "لوحة التحكم"
         },
         "MainSearchBar": {
-          "placeholder": "ابحث عن منتجات أو تصنيفات أيّة أشياء أخرى.."
+          "placeholder": "ابحث عن منتجات أو تصنيفات أو أيّة أشياء أخرى.."
         },
         "SelectedCategoriesItemsHeader": {
           "title": "المنتجات المميزة",

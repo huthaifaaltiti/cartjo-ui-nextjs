@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { isArabicLocale } from "@/config/locales.config";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -30,20 +29,18 @@ import {
 import { useQueryState } from "nuqs";
 import { useVerifyEmail } from "@/contexts/VerifyEmailContext";
 import ForgotPasswordLink from "./user/auth/forgot-password/ForgotPasswordLink";
-import { useGeneralContext } from "@/contexts/General.context";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import LoadingDots from "./shared/loaders/LoadingDots";
 import LoadingButton from "./shared/LoadingButton";
 
 const LoginForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
+  const dir = isArabic ? 'rtl' : 'ltr';
+
   const router = useRouter();
+  
   const { data: sessionData, status } = useSession();
   const { reVerify } = useVerifyEmail();
-  const { dir } = useSelector((state: RootState) => state.general);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 

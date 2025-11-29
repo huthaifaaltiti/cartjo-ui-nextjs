@@ -11,19 +11,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, LogOutIcon, User, UserRoundPen } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useGeneralContext } from "@/contexts/General.context";
 
 const UserAccountLinkMenu = () => {
   const router = useRouter();
   const t = useTranslations();
-  const locale = useLocale();
+  const { dir, locale } = useGeneralContext();
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: `/${locale}` });
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu dir={dir}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex items-center gap-1">
           <User className="w-4 h-4" />
