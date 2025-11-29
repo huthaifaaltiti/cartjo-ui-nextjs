@@ -37,7 +37,7 @@ const BannersEmblaCarousel = () => {
   const showNoData = !showLoader && !showError && finalBanners.length === 0;
   const showData = !showLoader && !showError && finalBanners.length > 0;
   const containerClass =
-    "w-full h-[250px] md:h-[350px] lg:h-[450px] flex items-center justify-center border-b";
+    "w-full h-[350px] md:h-[450px] lg:h-[550px] flex items-center justify-center border-b";
 
   const [emblaRef] = useEmblaCarousel(
     {
