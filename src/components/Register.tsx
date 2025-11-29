@@ -8,7 +8,7 @@ const Register: React.FC = () => {
   return (
     <div className="w-full min-h-[70vh] text-text-primary-400 pt-8">
       <div className="flex items-center justify-center">
-        <p className="w-1/2 text-center text-text-primary-200 text-sm ">
+        <p className="text-center text-text-primary-200 text-sm">
           {t("routes.auth.components.AuthTabs.components.register.hint")}
         </p>
       </div>

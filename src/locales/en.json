@@ -323,14 +323,14 @@
       "components": {
         "AuthTabs": {
           "login": "Log In",
-          "register": "Register",
+          "register": "New User?",
           "components": {
             "login": {
               "hint": "If you have an account with CartJO, sign in with your identifier.",
               "dataSet": {
                 "username": {
-                  "label": "Identifier",
-                  "placeholder": "Identifier",
+                  "label": "Account Identifier",
+                  "placeholder": "Account Identifier",
                   "desc": "Username or phone number or email address"
                 },
                 "password": {
@@ -395,7 +395,7 @@
                 "preferredLang": {
                   "label": "Preferred Language",
                   "placeholder": "Preferred Language",
-                  "desc": "Preferred Language",
+                  "desc": "The user's preferred language will be used as the primary option when displaying content.",
                   "langs": {
                     "en": "English",
                     "ar": "Arabic"
@@ -441,6 +441,15 @@
             },
             "ForgotPasswordLink": {
               "label": "Forgot Password?"
+            },
+            "PasswordRules": {
+              "rules": {
+                "charsCount": "The password must be at least eight characters long.",
+                "uppercase": "The password must contain at least one uppercase letter.",
+                "lowercase": "The password must contain at least one lowercase letter.",
+                "number": "The password must contain at least one number.",
+                "special": "The password must contain at least one special character (such as: ! @ # $ % ^ & * . ,)."
+              }
             }
           }
         }

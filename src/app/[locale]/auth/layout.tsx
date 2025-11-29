@@ -40,5 +40,5 @@ export default async function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="w-full h-full">{children}</div>;
+  return <div className="w-full h-full min-h-screen">{children}</div>;
 }

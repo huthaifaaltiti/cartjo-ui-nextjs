@@ -19,9 +19,7 @@ const TwoColumnFormFields: React.FC<TwoColumnFormFieldsProps> = ({
     <div className="w-full flex flex-col gap-2">
       {/* TOP ROW - TWO FIELDS */}
       <div
-        className={`w-full flex items-start justify-between gap-5 ${
-          isArabic ? "flex-row-reverse" : ""
-        }`}
+        className="w-full flex items-start justify-between gap-5"
       >
         <div className="w-full">{leftField}</div>
         <div className="w-full">{rightField}</div>

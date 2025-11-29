@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -34,10 +35,18 @@ import {
 } from "./ui/select";
 import { useGeneralContext } from "@/contexts/General.context";
 import PasswordRules from "./user/PasswordRules";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import TwoColumnFormFields from "./shared/TwoColumnFormFields";
+import { Checkbox } from "./ui/checkbox";
+import GeneralCheckbox from "./shared/GeneralCheckbox";
+import LoadingButton from "./shared/LoadingButton";
+import { fetcher } from "@/utils/fetcher";
 
 const RegisterForm = () => {
   const t = useTranslations();
-  const { isArabic, dir, locale } = useGeneralContext();
+  const { isArabic, locale } = useGeneralContext();
+  const { dir } = useSelector((state: RootState) => state.general);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -182,134 +191,146 @@ const RegisterForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div
-          className={`w-full flex items-center justify-between gap-5 ${
-            isArabic ? "flex-row-reverse" : "flex-row"
-          }`}
-        >
-          <div className="w-1/2">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem className={isArabic ? "text-right" : "text-left"}>
-                  <FormLabel className="text-sm font-normal">
-                    {t(
-                      "routes.auth.components.AuthTabs.components.register.dataSet.firstName.label"
-                    )}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className={`placeholder:text-xs text-xs ${
-                        isArabic
-                          ? "placeholder:text-right text-right"
-                          : "placeholder:text-left text-left"
-                      }`}
-                      placeholder={t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.firstName.placeholder"
-                      )}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="w-1/2">
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem className={isArabic ? "text-right" : "text-left"}>
-                  <FormLabel className="text-sm font-normal">
-                    {t(
-                      "routes.auth.components.AuthTabs.components.register.dataSet.lastName.label"
-                    )}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className={`placeholder:text-xs text-xs ${
-                        isArabic
-                          ? "placeholder:text-right text-right"
-                          : "placeholder:text-left text-left"
-                      }`}
-                      placeholder={t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.lastName.placeholder"
-                      )}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        <div className="w-full flex items-center justify-between gap-5">
-          <div className="w-1/2">
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem className={isArabic ? "text-right" : "text-left"}>
-                  <FormLabel className="text-sm font-normal">
-                    {t(
-                      "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.label"
-                    )}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className={`placeholder:text-xs text-xs ${
-                        isArabic
-                          ? "placeholder:text-right"
-                          : "placeholder:text-left"
-                      }`}
-                      placeholder={t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.placeholder"
-                      )}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="w-1/2">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className={isArabic ? "text-right" : "text-left"}>
-                  <FormLabel className="text-sm font-normal">
-                    {t(
-                      "routes.auth.components.AuthTabs.components.register.dataSet.email.label"
-                    )}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className={`placeholder:text-xs text-xs ${
-                        isArabic
-                          ? "placeholder:text-right"
-                          : "placeholder:text-left"
-                      }`}
-                      placeholder={t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.email.placeholder"
-                      )}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
+      <form
+        dir={dir}
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6"
+      >
+        {/* FirstName & LastName */}
         <div className="w-full">
+          <TwoColumnFormFields
+            isArabic={isArabic}
+            leftField={
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem className={isArabic ? "text-right" : "text-left"}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.auth.components.AuthTabs.components.register.dataSet.firstName.label"
+                      )}
+                    </FormLabel>
+
+                    <FormControl>
+                      <Input
+                        className={`placeholder:text-xs text-xs ${
+                          isArabic
+                            ? "placeholder:text-right text-right"
+                            : "placeholder:text-left text-left"
+                        }`}
+                        placeholder={t(
+                          "routes.auth.components.AuthTabs.components.register.dataSet.firstName.placeholder"
+                        )}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            }
+            rightField={
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem className={isArabic ? "text-right" : "text-left"}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.auth.components.AuthTabs.components.register.dataSet.lastName.label"
+                      )}
+                    </FormLabel>
+
+                    <FormControl>
+                      <Input
+                        className={`placeholder:text-xs text-xs ${
+                          isArabic
+                            ? "placeholder:text-right text-right"
+                            : "placeholder:text-left text-left"
+                        }`}
+                        placeholder={t(
+                          "routes.auth.components.AuthTabs.components.register.dataSet.lastName.placeholder"
+                        )}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            }
+            leftError={form.formState.errors.firstName?.message}
+            rightError={form.formState.errors.lastName?.message}
+          />
+        </div>
+
+        {/* Phone number & email */}
+        <div className="w-full">
+          <TwoColumnFormFields
+            isArabic={isArabic}
+            leftField={
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => (
+                  <FormItem className={isArabic ? "text-right" : "text-left"}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.label"
+                      )}
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className={`placeholder:text-xs text-xs ${
+                          isArabic
+                            ? "placeholder:text-right"
+                            : "placeholder:text-left"
+                        }`}
+                        placeholder={t(
+                          "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.placeholder"
+                        )}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            }
+            rightField={
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className={isArabic ? "text-right" : "text-left"}>
+                    <FormLabel className="text-sm font-normal">
+                      {t(
+                        "routes.auth.components.AuthTabs.components.register.dataSet.email.label"
+                      )}
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className={`placeholder:text-xs text-xs ${
+                          isArabic
+                            ? "placeholder:text-right"
+                            : "placeholder:text-left"
+                        }`}
+                        placeholder={t(
+                          "routes.auth.components.AuthTabs.components.register.dataSet.email.placeholder"
+                        )}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            }
+            leftError={form.formState.errors.phoneNumber?.message}
+            rightError={form.formState.errors.email?.message}
+          />
+        </div>
+
+        {/* Password & PreferredLanguage */}
+        <div className="w-full">
+          {/* password */}
           <div className="w-full">
             <FormField
               control={form.control}
@@ -325,10 +346,10 @@ const RegisterForm = () => {
                     <div className="relative">
                       <Input
                         type={showPassword ? "text" : "password"}
-                        className={`placeholder:text-xs text-xs  ${
+                        className={`placeholder:text-xs text-xs ${
                           isArabic
-                            ? "placeholder:text-right pl-10"
-                            : "placeholder:text-left pr-10"
+                            ? "placeholder:text-right pl-10 text-right"
+                            : "placeholder:text-left pr-10 text-left"
                         }`}
                         placeholder={t(
                           "routes.auth.components.AuthTabs.components.register.dataSet.password.placeholder"
@@ -368,6 +389,8 @@ const RegisterForm = () => {
               )}
             />
           </div>
+
+          {/* preferredLang */}
           <div className="w-full mt-5">
             <FormField
               control={form.control}
@@ -384,7 +407,7 @@ const RegisterForm = () => {
                       <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                         <SelectValue
                           placeholder={t(
-                            "routes.dashboard.routes.products.components.CreateProductForm.fields.currency.placeholder"
+                            "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.placeholder"
                           )}
                         />
                       </SelectTrigger>
@@ -401,6 +424,11 @@ const RegisterForm = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormDescription className="text-xs text-text-primary-100">
+                    {t(
+                      "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.desc"
+                    )}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -408,97 +436,93 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        <p
-          className={`w-full text-text-primary-200 text-sm ${
-            isArabic ? "text-right" : "text-left"
-          }`}
-        >
-          {t("routes.auth.components.AuthTabs.components.register.note")}{" "}
-          <Link href={"/privacy-policy"} target="_blank">
-            <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
-              {t(
-                "routes.auth.components.AuthTabs.components.register.privacyPolicy"
-              )}
-            </span>
-          </Link>
-        </p>
+        {/* Hint */}
+        <div>
+          <p
+            className={`w-full rtl:text-right ltr:text-left  text-text-primary-200 text-sm`}
+          >
+            {t("routes.auth.components.AuthTabs.components.register.note")}{" "}
+            <Link href={"/privacy-policy"} target="_blank">
+              <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
+                {t(
+                  "routes.auth.components.AuthTabs.components.register.privacyPolicy"
+                )}
+              </span>
+            </Link>
+          </p>
+        </div>
 
-        <div
-          className={`w-full flex items-center gap-5 ${
-            isArabic ? "justify-end" : "justify-start"
-          }`}
-        >
-          <FormField
-            control={form.control}
-            name="marketingEmails"
-            render={({ field }) => (
-              <FormItem
-                dir={dir}
-                className="flex items-center space-x-2 rtl:space-x-reverse"
-              >
-                <FormControl className="h-4 mt-2">
-                  <input
-                    type="checkbox"
-                    id="marketingEmails"
-                    checked={field.value}
-                    onChange={field.onChange}
-                    className="w-4 h-4"
-                  />
-                </FormControl>
-                <FormLabel
-                  htmlFor="marketingEmails"
-                  className="text-sm font-normal"
-                >
-                  {t(
-                    "routes.auth.components.AuthTabs.components.register.dataSet.marketingEmails.label"
-                  )}
-                </FormLabel>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="termsAccepted"
-            render={({ field }) => (
-              <FormItem
-                dir={dir}
-                className="flex items-center justify-center space-x-2 rtl:space-x-reverse"
-              >
-                <FormControl className="h-4 mt-2">
-                  <input
-                    type="checkbox"
-                    id="termsAccepted"
-                    checked={field.value}
-                    onChange={field.onChange}
-                    className="w-4 h-4"
-                  />
-                </FormControl>
-                <FormLabel
-                  htmlFor="termsAccepted"
-                  className="text-sm font-normal"
-                >
-                  {t(
-                    "routes.auth.components.AuthTabs.components.register.dataSet.termsAccepted.label"
-                  )}
-                </FormLabel>
-                <FormMessage />
-              </FormItem>
-            )}
+        {/* marketingEmails & termsAccepted */}
+        <div className="w-full">
+          <TwoColumnFormFields
+            isArabic={isArabic}
+            rightField={
+              <FormField
+                control={form.control}
+                name="termsAccepted"
+                render={({ field }) => (
+                  <FormItem dir={dir} className="flex items-center gap-2">
+                    <FormControl>
+                      <GeneralCheckbox
+                        id="termsAccepted"
+                        checked={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="w-auto flex flex-col gap-1">
+                      <FormLabel
+                        htmlFor="termsAccepted"
+                        className="text-sm font-normal"
+                      >
+                        {t(
+                          "routes.auth.components.AuthTabs.components.register.dataSet.termsAccepted.label"
+                        )}
+                      </FormLabel>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            }
+            leftField={
+              <FormField
+                control={form.control}
+                name="marketingEmails"
+                render={({ field }) => (
+                  <FormItem dir={dir} className="flex items-center gap-2">
+                    <FormControl className="h-4 mt-2">
+                      <GeneralCheckbox
+                        id="marketingEmails"
+                        checked={field.value ?? false}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel
+                      htmlFor="marketingEmails"
+                      className="text-sm font-normal"
+                    >
+                      {t(
+                        "routes.auth.components.AuthTabs.components.register.dataSet.marketingEmails.label"
+                      )}
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+            }
+            rightError={form.formState.errors.termsAccepted?.message}
+            leftError={form.formState.errors.marketingEmails?.message}
           />
         </div>
 
-        <Button
-          className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 transition-all"
+        <LoadingButton
           type="submit"
-          disabled={registerMutation?.isPending}
-        >
-          {registerMutation?.isPending
-            ? t("general.loadingStates.loadingApi")
-            : t(
-                "routes.auth.components.AuthTabs.components.register.actions.proceed"
-              )}
-        </Button>
+          loading={registerMutation?.isPending}
+          withAnimate={true}
+          dir={dir}
+          label={t(
+            "routes.auth.components.AuthTabs.components.register.actions.proceed"
+          )}
+          loadingLabel={t("general.loadingStates.loadingApi")}
+        />
       </form>
     </Form>
   );
