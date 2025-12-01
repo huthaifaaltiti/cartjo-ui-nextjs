@@ -1,5 +1,4 @@
 import { memo } from "react";
-
 import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
 import { ShowcasesContextProvider } from "@/contexts/Showcase.context";
 import HomeShowcaseContent from "./HomeShowcaseContent";

@@ -83,7 +83,7 @@ const HomeShowcaseContent = () => {
 
   if (showData) {
     return (
-      <div className="w-full h-full bg-gradient-to-b from-gray-100 to-white-50">
+      <div className="w-full h-full bg-gradient-to-b from-gray-100 to-white-50 bg-red-500">
         <div className="w-full max-w-max py-10 flex flex-col gap-8">
           {activeShowcasesList?.map((actSho, i) => {
             const layoutType = showcaseLayouts[i];
@@ -104,8 +104,8 @@ const HomeShowcaseContent = () => {
               >
                 <div className="w-full">
                   {layoutType === "row" && (
-                    <div className="w-full flex justify-between gap-4">
-                      {actSho?.items?.slice(0, 4).map((item, itemIndex) => (
+                    <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
+                      {actSho?.items?.map((item, itemIndex) => (
                         <ShowcaseProductRowCard
                           key={`Showcase-product_${i}_${itemIndex}`}
                           item={item}
