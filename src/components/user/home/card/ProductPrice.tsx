@@ -34,8 +34,8 @@ export default function ProductPrice({
         </div>
       ) : (
         <div className="text-xl font-bold text-gray-900">
-          {currency}{' '}
-          {formatPrice(price)}
+          <span className="text-sm">{currency}</span>
+          <span>{formatPrice(price)}</span>
         </div>
       )}
     </div>

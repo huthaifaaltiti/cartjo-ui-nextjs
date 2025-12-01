@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
+import LoadingOverlay from "./LoadingOverlay";
 
 interface CardWrapperProps {
   children: ReactNode;
-  isHovered: Boolean;
-  isLoading: Boolean;
+  isHovered?: Boolean;
+  isLoading?: Boolean;
 }
 
 export default function CardWrapper({
@@ -24,6 +25,7 @@ export default function CardWrapper({
         background: "linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)",
       }}
     >
+      {/* {isLoading && <LoadingOverlay />} */}
       {children}
     </div>
   );

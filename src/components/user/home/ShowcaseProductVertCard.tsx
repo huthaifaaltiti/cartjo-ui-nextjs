@@ -40,10 +40,12 @@ const ShowcaseProductVertCard = ({
   const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
 
-  const [isWishListed, setIsWishListed] = useState(item?.isWishListed || false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isWishListing, setIsWishListing] = useState(false);
-  const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
+  const [isWishListed, setIsWishListed] = useState<boolean>(
+    item?.isWishListed || false
+  );
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isWishListing, setIsWishListing] = useState<boolean>(false);
+  const [isAddToCartLoading, setIsAddToCartLoading] = useState<boolean>(false);
 
   const { accessToken } = useAuthContext();
 
@@ -186,8 +188,9 @@ const ShowcaseProductVertCard = ({
   return (
     <CardWrapper
       isHovered={isHovered}
-      isLoading={isAddToCartLoading || isWishListing}
+      // isLoading={isAddToCartLoading || isWishListing}
     >
+      {isWishListed || 'No'}
       <WishlistButton
         isWishListed={isWishListed}
         isLoading={isWishListing}
@@ -220,9 +223,9 @@ const ShowcaseProductVertCard = ({
             <ProductPrice item={item} formatPrice={formatPrice} />
             <ProductRating rating={item.ratings} />
           </div>
-          
+
           <AddToCartButton
-            isLoading={isAddToCartLoading || isWishListing}
+            isLoading={isAddToCartLoading}
             onClick={handleAddToCart}
           />
         </div>

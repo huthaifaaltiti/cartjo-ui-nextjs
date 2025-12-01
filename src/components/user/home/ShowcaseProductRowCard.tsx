@@ -1,8 +1,6 @@
 "use client";
 
 import { memo, useCallback, useState } from "react";
-import { Heart, ShoppingCart, Star, Loader2 } from "lucide-react";
-import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import { Product } from "@/types/product.type";
 import { useLocale, useTranslations } from "next-intl";
 import {
@@ -11,7 +9,6 @@ import {
   showWarningToast,
 } from "@/components/shared/CustomToast";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { useLoggedUserWishlist } from "@/contexts/LoggedUserWishList.context";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import { addItemToServer } from "@/redux/slices/cart/actions";
@@ -44,11 +41,12 @@ const ShowcaseProductRowCard = ({
   const { accessToken } = useAuthContext();
   const t = useTranslations();
 
-  const [isWishListed, setIsWishListed] = useState(item?.isWishListed || false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isWishListLoading, setIsWishListLoading] = useState(false);
-  const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
-  const [showCounter, setShowCounter] = useState(false);
+  const [isWishListed, setIsWishListed] = useState<boolean>(
+    item?.isWishListed || false
+  );
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isWishListLoading, setIsWishListLoading] = useState<boolean>(false);
+  const [isAddToCartLoading, setIsAddToCartLoading] = useState<boolean>(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -154,8 +152,6 @@ const ShowcaseProductRowCard = ({
         dismissText: t("general.toast.dismissText"),
       });
 
-      setShowCounter(true);
-
       return;
     }
 
@@ -192,8 +188,9 @@ const ShowcaseProductRowCard = ({
   return (
     <RowCardWrapper
       isHovered={isHovered}
-      isLoading={isWishListLoading || isAddToCartLoading}
+      // isLoading={isWishListLoading || isAddToCartLoading}
     >
+            {isWishListed || 'No'}
       <WishlistButton
         isWishListed={isWishListed}
         isLoading={isWishListLoading}
@@ -234,7 +231,7 @@ const ShowcaseProductRowCard = ({
           </div>
 
           <AddToCartButton
-            isLoading={isAddToCartLoading || isWishListLoading}
+            isLoading={isAddToCartLoading}
             onClick={handleAddToCart}
           />
         </div>
