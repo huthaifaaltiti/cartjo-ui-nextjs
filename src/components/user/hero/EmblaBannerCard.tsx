@@ -23,8 +23,8 @@ const EmblaBannerCard = ({ banner, isArabic }: EmblaBannerCardProps) => {
             <ImageWithFallback
               src={imageUrl}
               alt={altText}
-              fill={true}
-              className="h-full w-full object-fill"
+              useFill={true}
+              className="h-full w-full object-cover"
             />
           </Link>
         )}
@@ -33,7 +33,7 @@ const EmblaBannerCard = ({ banner, isArabic }: EmblaBannerCardProps) => {
           <ImageWithFallback
             src={imageUrl}
             alt={altText}
-            fill={true}
+            useFill={true}
             className="h-full w-full object-fill"
           />
         )}
