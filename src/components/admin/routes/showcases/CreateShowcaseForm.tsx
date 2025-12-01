@@ -171,23 +171,48 @@ const createFormSchema = (
         }),
       showAllButtonLink: z
         .string()
-        .min(linkMinChars, {
-          message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.minChars",
-            { min: linkMinChars }
-          ),
-        })
-        .max(linkMaxChars, {
-          message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.maxChars",
-            { max: linkMaxChars }
-          ),
-        })
-        .url({
-          message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.invalidUrl"
-          ),
-        }),
+        .optional()
+        .refine(
+          (val) => {
+            if (!val || val.trim() === "") return true; // optional: allow empty
+            return val.length >= linkMinChars;
+          },
+          {
+            message: t(
+              "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.minChars",
+              { min: linkMinChars }
+            ),
+          }
+        )
+        .refine(
+          (val) => {
+            if (!val || val.trim() === "") return true;
+            return val.length <= linkMaxChars;
+          },
+          {
+            message: t(
+              "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.maxChars",
+              { max: linkMaxChars }
+            ),
+          }
+        )
+        .refine(
+          (val) => {
+            if (!val || val.trim() === "") return true;
+
+            try {
+              new URL(val);
+              return true;
+            } catch {
+              return false;
+            }
+          },
+          {
+            message: t(
+              "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.invalidUrl"
+            ),
+          }
+        ),
 
       type: z
         .string()

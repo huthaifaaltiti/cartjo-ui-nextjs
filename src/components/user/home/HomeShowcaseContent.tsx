@@ -88,6 +88,10 @@ const HomeShowcaseContent = () => {
           {activeShowcasesList?.map((actSho, i) => {
             const layoutType = showcaseLayouts[i];
 
+            const uriLink = !actSho?.showAllButtonLink
+              ? actSho?.showAllButtonLink
+              : `/${locale}/search?typeHint=${actSho.type}`;
+
             return (
               <ShowcaseSection
                 key={actSho?._id + i}
@@ -100,7 +104,7 @@ const HomeShowcaseContent = () => {
                     ? actSho?.showAllButtonText?.ar
                     : actSho?.showAllButtonText?.en
                 }
-                uri={actSho?.showAllButtonLink}
+                uri={uriLink}
               >
                 <div className="w-full">
                   {layoutType === "row" && (

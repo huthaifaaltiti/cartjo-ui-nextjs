@@ -21,6 +21,7 @@ interface FetchSearchProductsParams {
   createdFrom?: string;
   createdTo?: string;
   beforeNumOfDays?: number;
+  typeHint?: string;
 }
 
 export const fetchSearchProducts = async ({
@@ -36,6 +37,7 @@ export const fetchSearchProducts = async ({
   createdFrom,
   createdTo,
   beforeNumOfDays,
+  typeHint
 }: FetchSearchProductsParams): Promise<DataListResponse<Product>> => {
   const url = new URL(`${API_ENDPOINTS.SEARCH.PRODUCTS}`);
 
@@ -58,6 +60,8 @@ export const fetchSearchProducts = async ({
   if (beforeNumOfDays !== undefined && beforeNumOfDays > 0)
     url.searchParams.append("beforeNumOfDays", String(beforeNumOfDays));
 
+  if (typeHint) url.searchParams.append("typeHint", typeHint);
+
   const resp = await fetcher<DataListResponse<Product>>(url, {});
 
   return resp;
@@ -72,7 +76,8 @@ export const useSearchProductsQuery = (
   ratingFrom?: number,
   createdFrom?: string,
   createdTo?: string,
-  beforeNumOfDays?: number
+  beforeNumOfDays?: number,
+  typeHint?: string,
 ) => {
   const { locale } = useAuthContext();
 
@@ -89,9 +94,10 @@ export const useSearchProductsQuery = (
       createdFrom,
       createdTo,
       beforeNumOfDays,
+      typeHint
     ],
     queryFn: ({ pageParam }) => {
-      if (!querySearch) throw new Error("No search text is found");
+      if (!querySearch && !typeHint) throw new Error("No search text is found");
 
       return fetchSearchProducts({
         querySearch,
@@ -107,6 +113,7 @@ export const useSearchProductsQuery = (
         createdFrom,
         createdTo,
         beforeNumOfDays,
+        typeHint
       });
     },
     getNextPageParam: (lastPage) => {
@@ -118,6 +125,6 @@ export const useSearchProductsQuery = (
     initialPageParam: undefined,
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
-    enabled: !!querySearch,
+    enabled: !!querySearch || !!typeHint,
   });
 };

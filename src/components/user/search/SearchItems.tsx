@@ -18,7 +18,12 @@ import SearchQueryFilters from "../SearchQueryFilters";
 const SearchItems = () => {
   const t = useTranslations();
 
-  const [q, setQ] = useQueryState<string>("q", {
+  const [q] = useQueryState<string>("q", {
+    defaultValue: "",
+    parse: (value) => String(value),
+    serialize: (value) => String(value),
+  });
+  const [typeHint] = useQueryState<string>("typeHint", {
     defaultValue: "",
     parse: (value) => String(value),
     serialize: (value) => String(value),
@@ -77,7 +82,8 @@ const SearchItems = () => {
     ratingFrom,
     createdFrom,
     createdTo,
-    beforeNumOfDays
+    beforeNumOfDays,
+    typeHint
   );
 
   const searchProducts = useMemo(() => {
@@ -145,7 +151,7 @@ const SearchItems = () => {
   const notFoundItem = error && (error as FetchError).status === 404;
   const isSuccess = data?.pages?.[0]?.isSuccess ?? false;
   const hasData = !!searchProducts?.length;
-  const isEmptySearch = !q?.trim();
+  const isEmptySearch = !q?.trim() && !typeHint.trim();
 
   const showLoader =
     !isEmptySearch &&
