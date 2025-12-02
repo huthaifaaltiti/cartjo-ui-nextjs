@@ -1,6 +1,7 @@
 import { ShoppingCart } from "lucide-react";
 import LoadingProductButton from "@/components/shared/loaders/LoadingProduct";
 import LoadingShimmerEffect from "@/components/shared/LoadingShimmerEffect";
+import { useTranslations } from "next-intl";
 
 interface AddToCartButtonProps {
   isLoading?: boolean;
@@ -11,6 +12,8 @@ export default function AddToCartButton({
   isLoading = false,
   onClick,
 }: AddToCartButtonProps) {
+  const t = useTranslations("components.AddToCartButton");
+
   return (
     <button
       onClick={onClick}
@@ -38,7 +41,7 @@ export default function AddToCartButton({
         <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
       )}
 
-      {isLoading ? "ADDING..." : "ADD TO CART"}
+      {isLoading ? t("adding") : t("add")}
     </button>
   );
 }
