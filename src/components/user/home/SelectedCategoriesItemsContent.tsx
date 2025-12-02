@@ -19,7 +19,6 @@ const SelectedCategoriesItemsContent = ({
   randomCategories: Category[];
 }) => {
   const t = useTranslations();
-
   const { accessToken, locale } = useAuthContext();
   const { isArabic } = useGeneralContext();
 
@@ -37,21 +36,8 @@ const SelectedCategoriesItemsContent = ({
       {randomCategories.map((category, idx) => {
         const { data, isLoading, isFetching, isError, error } = results[idx];
 
-        const showLoader =
-          (!isLoading && !isFetching && !isError && !data?.isSuccess) ||
-          isLoading ||
-          isFetching;
-        const showError = isError;
-        const showNoData =
-          !showLoader && !showError && data?.data?.length === 0;
-        const hasNoData = !showLoader && !showError && data?.data?.length === 0;
-        const showData =
-          !showLoader &&
-          !showError &&
-          Array.isArray(data?.data) &&
-          data.data.length > 0;
-
-        if (hasNoData) return null;
+        // Skip category entirely if no products
+        if (!data?.data || data.data.length === 0) return null;
 
         return (
           <div key={category._id} className="pb-4">
@@ -69,13 +55,11 @@ const SelectedCategoriesItemsContent = ({
               )}
             />
 
-            {showLoader && (
+            {isLoading || isFetching ? (
               <div className={containerClass}>
                 <LoadingDotsFlexible size="1.5rem" color="#634C9F" count={3} />
               </div>
-            )}
-
-            {showError && (
+            ) : isError ? (
               <div className={containerClass}>
                 <ErrorMessage
                   message={
@@ -86,9 +70,7 @@ const SelectedCategoriesItemsContent = ({
                   }
                 />
               </div>
-            )}
-
-            {showNoData && (
+            ) : data.data.length === 0 ? (
               <div className={containerClass}>
                 <NoData
                   title={t(
@@ -99,11 +81,9 @@ const SelectedCategoriesItemsContent = ({
                   )}
                 />
               </div>
-            )}
-
-            {showData && (
-              <ul className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
-                {data?.data?.map((p) => (
+            ) : (
+              <ul className="w-full grid grid-cols-2 max-[300px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
+                {data.data.map((p) => (
                   <li key={p._id}>
                     <ShowcaseProductVertCard item={p} isArabic={isArabic} />
                   </li>
