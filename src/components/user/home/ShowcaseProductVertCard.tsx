@@ -198,7 +198,7 @@ const ShowcaseProductVertCard = ({
       <DiscountBadge discount={item.discountRate} />
 
       <div
-        className="w-full h-[23vh]"
+        className="w-full h-[23vh] sm:h-[22vh] max-[500px]:h-[18vh] max-[400px]:h-[16vh] max-[350px]:h-[14vh]"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

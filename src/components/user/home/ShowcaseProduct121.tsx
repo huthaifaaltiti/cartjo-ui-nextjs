@@ -46,7 +46,7 @@ const ShowcaseProduct121 = ({ items, isArabic }: Props) => {
       <div
         className="
           grid xl:hidden 
-          w-full gap-6 place-items-center
+          w-full gap-6 place-items-center max-[300px]:grid-cols-1
           grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5
         "
       >
