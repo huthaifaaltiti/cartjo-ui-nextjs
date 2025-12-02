@@ -49,10 +49,10 @@ const FooterMidContent = ({ data, isArabic, locale }: Props) => {
   );
 
   return (
-    <div className="container mx-auto grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-10">
+    <div className="container mx-auto grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-10 px-4 sm:px-6 lg:px-8">
       {data.map((item: Category) => (
         <div key={item._id}>
-          <h3 className="font-bold text-md text-text-primary-200 mb-3">
+          <h3 className="font-bold capitalize text-sm sm:text-md lg:text-lg text-text-primary-200 mb-3">
             <Link href={getUrl(item, "category")}>
               {isArabic ? item.name.ar : item.name.en}
             </Link>
@@ -63,7 +63,7 @@ const FooterMidContent = ({ data, isArabic, locale }: Props) => {
               <li key={sub._id}>
                 <Link
                   href={getUrl(sub, "subCategory", item)}
-                  className="text-sm text-text-primary-200 hover:text-primary-500 transition-colors"
+                  className="text-xs capitalize sm:text-sm lg:text-md text-text-primary-200 hover:text-primary-500 transition-colors"
                 >
                   {isArabic ? sub.name.ar : sub.name.en}
                 </Link>
