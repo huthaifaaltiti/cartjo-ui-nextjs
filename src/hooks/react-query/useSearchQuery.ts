@@ -22,6 +22,7 @@ interface FetchSearchProductsParams {
   createdTo?: string;
   beforeNumOfDays?: number;
   typeHint?: string;
+  accessToken?: string;
 }
 
 export const fetchSearchProducts = async ({
@@ -37,7 +38,8 @@ export const fetchSearchProducts = async ({
   createdFrom,
   createdTo,
   beforeNumOfDays,
-  typeHint
+  typeHint,
+  accessToken
 }: FetchSearchProductsParams): Promise<DataListResponse<Product>> => {
   const url = new URL(`${API_ENDPOINTS.SEARCH.PRODUCTS}`);
 
@@ -62,7 +64,15 @@ export const fetchSearchProducts = async ({
 
   if (typeHint) url.searchParams.append("typeHint", typeHint);
 
-  const resp = await fetcher<DataListResponse<Product>>(url, {});
+  const headers: Record<string, string> = {};
+
+  if (accessToken) {
+    headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  const resp = await fetcher<DataListResponse<Product>>(url, {
+    headers,
+  });
 
   return resp;
 };
@@ -79,7 +89,7 @@ export const useSearchProductsQuery = (
   beforeNumOfDays?: number,
   typeHint?: string,
 ) => {
-  const { locale } = useAuthContext();
+  const { locale, accessToken } = useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Product>>({
     queryKey: [
@@ -94,7 +104,8 @@ export const useSearchProductsQuery = (
       createdFrom,
       createdTo,
       beforeNumOfDays,
-      typeHint
+      typeHint,
+      accessToken
     ],
     queryFn: ({ pageParam }) => {
       if (!querySearch && !typeHint) throw new Error("No search text is found");
@@ -113,7 +124,8 @@ export const useSearchProductsQuery = (
         createdFrom,
         createdTo,
         beforeNumOfDays,
-        typeHint
+        typeHint,
+        accessToken
       });
     },
     getNextPageParam: (lastPage) => {
