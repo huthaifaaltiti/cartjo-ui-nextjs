@@ -107,7 +107,7 @@ export const useActiveShowcasesQuery = (itemsNumPerShowcase: number) => {
   const { accessToken, locale, status } = useAuthContext();
 
   return useQuery<DataListResponse<Showcase>>({
-    queryKey: ["activeShowcases", itemsNumPerShowcase],
+    queryKey: ["activeShowcases", itemsNumPerShowcase, accessToken],
     queryFn: () =>
       fetchActiveShowcases(accessToken, locale, itemsNumPerShowcase),
     staleTime: STALE_TIME,
