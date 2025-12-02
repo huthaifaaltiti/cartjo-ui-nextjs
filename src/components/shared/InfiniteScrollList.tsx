@@ -16,8 +16,14 @@ type Props<T, P extends object = Record<string, unknown>> = {
   ListItemCard: React.ComponentType<{ item: T } & P>;
   cardProps?: P;
   layout?: "grid" | "list";
+  gridType?: (typeof GRID_TYPE)[keyof typeof GRID_TYPE];
   showNumFoundItems?: boolean;
 };
+
+export const GRID_TYPE = {
+  WIDE: "wide",
+  NARROW: "narrow",
+} as const;
 
 function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
   isLoading,
@@ -29,7 +35,8 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
   ListItemCard,
   cardProps,
   layout = "grid",
-  showNumFoundItems = true
+  gridType = GRID_TYPE.NARROW,
+  showNumFoundItems = true,
 }: Props<T, P>) {
   const t = useTranslations();
 
@@ -78,7 +85,9 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
       <div
         className={
           layout === "grid"
-            ? "grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+            ? gridType === GRID_TYPE.NARROW
+              ? "w-full grid grid-cols-2 max-[300px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center"
+              : "grid gap-4 md:grid-cols-2 lg:grid-cols-3"
             : "flex flex-col gap-4"
         }
       >

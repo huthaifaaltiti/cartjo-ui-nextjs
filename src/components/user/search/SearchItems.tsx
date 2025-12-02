@@ -6,7 +6,7 @@ import { useQueryState } from "nuqs";
 import { useSearchProductsQuery } from "@/hooks/react-query/useSearchQuery";
 import { Product } from "@/types/product.type";
 import { FetchError } from "@/types/common";
-import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
+import InfiniteScrollList, { GRID_TYPE } from "@/components/shared/InfiniteScrollList";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import SearchProductCard from "./SearchProductCard";
 import MainSearchBar from "@/components/MainSearchBar";
@@ -246,7 +246,7 @@ const SearchItems = () => {
             onApplyDateFilter={handleApplyDateFilter}
             onClearFilters={handleClearFilters}
           />
-
+          
           <InfiniteScrollList
             isLoading={isLoading}
             isFetchingNextPage={isFetchingNextPage}
@@ -256,6 +256,7 @@ const SearchItems = () => {
             fetchNextPage={fetchNextPage}
             ListItemCard={SearchProductCard}
             cardProps={{}}
+            gridType={GRID_TYPE.NARROW}
           />
         </div>
       </div>
