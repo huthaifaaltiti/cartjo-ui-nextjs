@@ -49,7 +49,7 @@ const FooterMidContent = ({ data, isArabic, locale }: Props) => {
   );
 
   return (
-    <div className="container mx-auto grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 py-10 px-4 sm:px-6 lg:px-8">
       {data.map((item: Category) => (
         <div key={item._id}>
           <h3 className="font-bold capitalize text-sm sm:text-md lg:text-lg text-text-primary-200 mb-3">
