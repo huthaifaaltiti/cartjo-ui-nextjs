@@ -24,7 +24,7 @@ const ShowcaseSection = ({
   const isAr = isArabicLocale(locale);
 
   return (
-    <div className="w-full h-auto px-3 sm:px-4 md:px-6 lg:px-8">
+    <div className="w-full h-auto">
       <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
           <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl text-text-primary-400 font-extrabold">
