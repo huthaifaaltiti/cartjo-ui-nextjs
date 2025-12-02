@@ -127,7 +127,7 @@ const DateRangeWithDaysNum = ({
           >
             <Calendar className="w-4 h-4 text-secondary-900" />
             <span className="text-sm text-secondary-900">
-              {t("components.filters.DateRange.dateFilter")}
+              {t("components.filters.DateRangeWithDaysNum.dateFilter")}
             </span>
           </Button>
         </PopoverTrigger>
@@ -136,7 +136,7 @@ const DateRangeWithDaysNum = ({
           {/* Filter Type Selection */}
           <div className="space-y-4">
             <Label className="text-base font-medium">
-              {t("components.filters.DateRange.filterType")}
+              {t("components.filters.DateRangeWithDaysNum.filterType")}
             </Label>
             <RadioGroup
               dir={dir}
@@ -153,7 +153,7 @@ const DateRangeWithDaysNum = ({
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <Calendar className="w-4 h-4" />
-                  {t("components.filters.DateRange.selectDateRange")}
+                  {t("components.filters.DateRangeWithDaysNum.selectDateRange")}
                 </Label>
               </div>
               <div className="flex items-center gap-2">
@@ -163,7 +163,7 @@ const DateRangeWithDaysNum = ({
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <Clock className="w-4 h-4" />
-                  {t("components.filters.DateRange.selectDaysBefore")}
+                  {t("components.filters.DateRangeWithDaysNum.selectDaysBefore")}
                 </Label>
               </div>
             </RadioGroup>
@@ -174,7 +174,7 @@ const DateRangeWithDaysNum = ({
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="fromDate" className="text-sm font-normal">
-                  {t("components.filters.DateRange.fromDate")}
+                  {t("components.filters.DateRangeWithDaysNum.fromDate")}
                 </Label>
                 <Input
                   dir={dir}
@@ -188,7 +188,7 @@ const DateRangeWithDaysNum = ({
               </div>
               <div className="space-y-2">
                 <Label htmlFor="toDate" className="text-sm font-normal">
-                  {t("components.filters.DateRange.toDate")}
+                  {t("components.filters.DateRangeWithDaysNum.toDate")}
                 </Label>
                 <Input
                   dir={dir}
@@ -208,7 +208,7 @@ const DateRangeWithDaysNum = ({
           {filterType === "daysBefore" && (
             <div className="space-y-2">
               <Label htmlFor="daysBefore" className="text-sm font-normal">
-                {t("components.filters.DateRange.daysBeforeToday")}
+                {t("components.filters.DateRangeWithDaysNum.daysBeforeToday")}
               </Label>
               <Input
                 dir={dir}
@@ -220,11 +220,11 @@ const DateRangeWithDaysNum = ({
                 onChange={(e) =>
                   setDaysBeforeValue(Number(e.target.value) || 0)
                 }
-                placeholder={t("components.filters.DateRange.enterDays")}
+                placeholder={t("components.filters.DateRangeWithDaysNum.enterDays")}
                 className="w-full"
               />
               <p className="text-xs text-gray-500">
-                {t("components.filters.DateRange.daysBeforeHelper", {
+                {t("components.filters.DateRangeWithDaysNum.daysBeforeHelper", {
                   date: new Date(
                     new Date().setDate(new Date().getDate() - daysBeforeValue)
                   ).toLocaleDateString("en-US", {
