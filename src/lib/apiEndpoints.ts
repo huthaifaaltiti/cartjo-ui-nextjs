@@ -1,4 +1,6 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
+const PUBLIC_URL = process.env.NEXT_PUBLIC_API_LINK;
+const BASE_URL = PUBLIC_URL;
+const API_URL = process.env.API_URL;
 
 export const API_ENDPOINTS = {
   AUTH: {
@@ -31,7 +33,7 @@ export const API_ENDPOINTS = {
       UPDATE_ADMIN: `${BASE_URL}/api/v1/user/update-admin`,
     },
     CATEGORIES: {
-      ACTIVE: `${BASE_URL}/api/v1/category/active`,
+      ACTIVE: `${BASE_URL || API_URL}/api/v1/category/active`,
       GET_ALL: `${BASE_URL}/api/v1/category/all`,
       DELETE: `${BASE_URL}/api/v1/category/delete`,
       UN_DELETE: `${BASE_URL}/api/v1/category/un-delete`,

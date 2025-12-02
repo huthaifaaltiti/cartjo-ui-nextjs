@@ -92,7 +92,7 @@ export default async function LocaleLayout({
                   <NuqsAdapter>
                     <GeneralContextProvider>
                       <ReduxProvider>{children}</ReduxProvider>
-                      <Footer />
+                      <Footer locale={locale} isArabic={isArabic} />
                     </GeneralContextProvider>
                   </NuqsAdapter>
                 </HomeEffectsContextProvider>
