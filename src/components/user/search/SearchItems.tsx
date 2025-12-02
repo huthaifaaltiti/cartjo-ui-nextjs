@@ -9,7 +9,6 @@ import { FetchError } from "@/types/common";
 import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import SearchProductCard from "./SearchProductCard";
-import SearchItemsLoading from "./SearchItemsLoading";
 import MainSearchBar from "@/components/MainSearchBar";
 import NoSearchText from "./NoSearchText";
 import NoSearchItemsFound from "./NoSearchItemsFound";
@@ -172,13 +171,13 @@ const SearchItems = () => {
     );
   }
 
-  if (showLoader) {
-    return (
-      <div className={containerClass}>
-        <SearchItemsLoading />
-      </div>
-    );
-  }
+  // if (showLoader) {
+  //   return (
+  //     <div className={containerClass}>
+  //       <SearchItemsLoading />
+  //     </div>
+  //   );
+  // }
 
   if (showError) {
     return (
