@@ -190,7 +190,6 @@ const ShowcaseProductVertCard = ({
       isHovered={isHovered}
       // isLoading={isAddToCartLoading || isWishListing}
     >
-      {isWishListed || 'No'}
       <WishlistButton
         isWishListed={isWishListed}
         isLoading={isWishListing}
