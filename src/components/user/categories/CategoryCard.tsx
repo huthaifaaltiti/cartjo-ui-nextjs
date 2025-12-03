@@ -1,9 +1,7 @@
 import { memo } from "react";
 import { useLocale } from "next-intl";
-
 import { isArabicLocale } from "@/config/locales.config";
 import { Category } from "@/types/category.type";
-
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
 
 interface CategoryCardProps {
@@ -17,14 +15,14 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
   return (
     <div className="flex flex-col items-center gap-2 bg-transparent rounded-xl">
       {category?.media?.ar?.url && category?.media?.en?.url && (
-        <div className="relative w-20 h-28 rounded-md overflow-hidden">
+        <div className="relative w-16 h-20 md:w-16 md:h-20 lg:w-20 lg:h-28 rounded-md overflow-hidden">
           <ImageWithFallback
             src={isArabic ? category?.media?.ar?.url : category?.media?.en?.url}
             alt={
               (isArabic ? category?.name?.ar : category?.name?.en) ||
               "category image"
             }
-            fill={true}
+            useFill={true}
             className="object-fill"
             sizes="96px"
           />
