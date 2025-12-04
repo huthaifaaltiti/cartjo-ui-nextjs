@@ -1,14 +1,16 @@
+'use client';
+
 import { memo, useState } from "react";
 import {
-    Heart,
-    Minus,
-    Plus,
-    RotateCcw,
-    Share2,
-    Shield,
-    ShoppingCart,
-    Star,
-    Truck,
+  Heart,
+  Minus,
+  Plus,
+  RotateCcw,
+  Share2,
+  Shield,
+  ShoppingCart,
+  Star,
+  Truck,
 } from "lucide-react";
 import { Product } from "@/types/product.type";
 
@@ -183,10 +185,6 @@ const ProductDetailsContent = ({ product }: Props) => {
                 <Share2 className="w-5 h-5" />
               </button>
             </div>
-
-            <button className="w-full bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
-              Buy Now
-            </button>
           </div>
 
           {/* Features */}
