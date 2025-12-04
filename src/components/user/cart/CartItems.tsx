@@ -3,7 +3,7 @@
 import { memo, useEffect } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import CartProductCard from "./CartProductCard";
-import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
+import InfiniteScrollList, { GRID_TYPE } from "@/components/shared/InfiniteScrollList";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import { useTranslations } from "next-intl";
 import PageLoader from "@/components/shared/PageLoader";
@@ -77,6 +77,7 @@ const CartItems = () => {
             fetchNextPage={fetchNextPage}
             ListItemCard={CartProductCard}
             cardProps={{}}
+            gridType={GRID_TYPE.WIDE}
           />
         </div>
 
