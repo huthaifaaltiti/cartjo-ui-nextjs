@@ -5,12 +5,15 @@ import { DataResponse } from "@/types/service-response.type";
 import CartItems from "@/components/user/cart/CartItems";
 import { getCartQueryOptions } from "@/utils/queryOptions";
 import { Cart } from "@/types/cart.type";
+import { redirect } from "next/navigation";
 
 const Page = async () => {
   const token = await getAccessTokenFromServerSession();
-  if (!token) throw new Error("No access token found");
+
+  if (!token) redirect("/auth");
 
   const queryClient = getQueryClient();
+
   await queryClient.prefetchInfiniteQuery<DataResponse<Cart>>(
     getCartQueryOptions(token)
   );

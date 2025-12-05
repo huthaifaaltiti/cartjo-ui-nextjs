@@ -1,343 +1,243 @@
 "use client";
 
-import { memo, useState } from "react";
-import { useTranslations } from "next-intl";
-import { Star, Plus, Minus, Trash } from "lucide-react";
+import { memo, useCallback, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import {
   showErrorToast,
   showSuccessToast,
   showWarningToast,
 } from "@/components/shared/CustomToast";
-import { CartItem } from "@/types/cartItem.type";
-import LoadingProductButton from "@/components/shared/loaders/LoadingProduct";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
 import {
   addItemToServer,
   removeItemFromServer,
 } from "@/redux/slices/cart/actions";
-import CounterDown from "@/components/shared/CounterDown";
-import { DEFAULT_FALLBACK_IMAGE } from "@/config/media.config";
+import { useRouter } from "next/navigation";
+import CardWrapper from "@/components/shared/card/CardWrapper";
+import DiscountBadge from "@/components/shared/card/DiscountBadge";
+import ProductImage from "@/components/shared/card/ProductImage";
+import ProductTitle from "@/components/shared/card/ProductTitle";
+import ProductPrice from "@/components/shared/card/ProductPrice";
+import ProductRating from "@/components/shared/card/ProductRating";
+import QuantityChanger from "@/components/shared/card/QuantityChanger";
+import { CartItem } from "@/types/cartItem.type";
+import LoadingOverlay from "@/components/shared/card/LoadingOverlay";
+import RemoveItemFromCartBtn from "./RemoveItemFromCartBtn";
 
-const CartProductCard = ({ item: product }: { item: CartItem }) => {
+const CartProductCard = ({
+  item,
+  isArabic,
+}: {
+  item: CartItem;
+  isArabic: boolean;
+}) => {
+  const title = isArabic ? item?.name?.ar : item?.name?.en;
+
   const t = useTranslations();
-  const dispatch = useDispatch<AppDispatch>();
-  const { isArabic, locale } = useSelector((state: RootState) => state.general);
-
-  const [isHovered, setIsHovered] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [quantity, setQuantity] = useState(product?.quantity ?? 1);
-  const [showCounter, setShowCounter] = useState(false);
-
+  const locale = useLocale();
   const { accessToken } = useAuthContext();
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const discountedPrice = product?.discountRate
-    ? product.price! - (product.discountRate / 100) * product.price!
-    : product.price;
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isAddToCartLoading, setIsAddToCartLoading] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>(item?.quantity ?? 1);
+  const [showCounter, setShowCounter] = useState<boolean>(false);
 
-  const formatPrice = (price: number) =>
-    new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    }).format(price);
+  const formatPrice = useCallback(
+    (price: number) => {
+      return new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      }).format(price);
+    },
+    [item, isArabic]
+  );
 
-  const handleRemoveFromCart = async (quantityMount?: number) => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
+  const handleGoToProductPage = useCallback(() => {
+    let categorySlug, subCategorySlug;
+    const productSlug = item.slug;
 
-      setShowCounter(true)
-
-      return;
+    if (Object.keys(item.categoryId).length > 0) {
+      categorySlug = item?.categoryId?.slug;
+    } else {
+      categorySlug = item.categoryId;
     }
 
-    try {
-      setIsLoading(true);
-      const response = await dispatch(
-        removeItemFromServer({
-          productId: product?._id!,
-          quantity: quantityMount || quantity,
-          lang: locale,
-          token: accessToken,
-        })
-      ).unwrap();
+    if (Object.keys(item.subCategoryId).length > 0) {
+      subCategorySlug = item?.subCategoryId?.slug;
+    } else {
+      subCategorySlug = item.subCategoryId;
+    }
 
-      if (response.isSuccess) {
-        showSuccessToast({
-          title: t("general.toast.title.success"),
-          description: t(
-            "routes.cart.components.CartProductCard.removedFromCartLabel"
-          ),
+    router.push(
+      `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${item._id}`
+    );
+  }, [item, isArabic]);
+
+  const handleRemoveFromCart = useCallback(
+    async (quantityMount?: number) => {
+      if (!accessToken) {
+        showWarningToast({
+          title: t("general.toast.title.warning"),
+          description: t("general.toast.description.loginRequired"),
           dismissText: t("general.toast.dismissText"),
         });
 
-        setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+        setShowCounter(true);
+        return;
       }
-    } catch (error) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to remove item.",
-        dismissText: t("general.toast.dismissText"),
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const handleAddToCart = async (quantityMount?: number) => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
+      try {
+        setIsAddToCartLoading(true);
 
-      return;
-    }
+        const response = await dispatch(
+          removeItemFromServer({
+            productId: item?._id!,
+            quantity: quantityMount || quantity,
+            lang: locale,
+            token: accessToken,
+          })
+        ).unwrap();
 
-    try {
-      setIsLoading(true);
-      const response = await dispatch(
-        addItemToServer({
-          productId: product?._id!,
-          quantity: quantityMount || quantity,
-          lang: locale,
-          token: accessToken,
-        })
-      ).unwrap();
+        if (response.isSuccess) {
+          showSuccessToast({
+            title: t("general.toast.title.success"),
+            description:
+              response?.message ??
+              t("routes.cart.components.CartProductCard.removedFromCartLabel"),
+            dismissText: t("general.toast.dismissText"),
+          });
 
-      if (response.isSuccess) {
-        showSuccessToast({
-          title: t("general.toast.title.success"),
-          description: t(
-            "routes.cart.components.CartProductCard.removedFromCartLabel"
-          ),
+          setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+        }
+      } catch (error) {
+        showErrorToast({
+          title: t("general.toast.title.error"),
+          description: (error as Error)?.message || "Failed to remove item.",
+          dismissText: t("general.toast.dismissText"),
+        });
+      } finally {
+        setIsAddToCartLoading(false);
+      }
+    },
+    [item, isArabic]
+  );
+
+  const handleAddToCart = useCallback(
+    async (quantityMount?: number) => {
+      if (!accessToken) {
+        showWarningToast({
+          title: t("general.toast.title.warning"),
+          description: t("general.toast.description.loginRequired"),
           dismissText: t("general.toast.dismissText"),
         });
 
-        setQuantity((prev) => prev + 1);
+        return;
       }
-    } catch (error) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to remove item.",
-        dismissText: t("general.toast.dismissText"),
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const handleQuantityChange = async (type: "increment" | "decrement") => {
-    if (type === "decrement") {
-      if (quantity <= 1) return;
+      try {
+        setIsAddToCartLoading(true);
 
-      await handleRemoveFromCart(1);
-    } else if (type === "increment") {
-      await handleAddToCart(1);
-    }
-  };
+        const response = await dispatch(
+          addItemToServer({
+            productId: item?._id!,
+            quantity: quantityMount || quantity,
+            lang: locale,
+            token: accessToken,
+          })
+        ).unwrap();
+
+        if (response.isSuccess) {
+          showSuccessToast({
+            title: t("general.toast.title.success"),
+            description:
+              response?.message ??
+              t("routes.cart.components.CartProductCard.removedFromCartLabel"),
+            dismissText: t("general.toast.dismissText"),
+          });
+
+          setQuantity((prev) => prev + 1);
+        }
+      } catch (error) {
+        showErrorToast({
+          title: t("general.toast.title.error"),
+          description: (error as Error)?.message || "Failed to remove item.",
+          dismissText: t("general.toast.dismissText"),
+        });
+      } finally {
+        setIsAddToCartLoading(false);
+      }
+    },
+    [item, isArabic]
+  );
+
+  const handleQuantityChange = useCallback(
+    async (type: "increment" | "decrement") => {
+      if (type === "decrement") {
+        if (quantity <= 1) return;
+
+        await handleRemoveFromCart(1);
+      } else if (type === "increment") {
+        await handleAddToCart(1);
+      }
+    },
+    [isArabic, item]
+  );
 
   return (
-    <div
-      className={`w-full group relative overflow-hidden bg-white-50 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 ease-out transform hover:-translate-y-2 ${
-        isHovered ? "scale-[1.02]" : "scale-100"
-      } border border-gray-100 hover:border-gray-200 ${
-        isLoading ? "pointer-events-none" : ""
-      }`}
-      style={{
-        background: "linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)",
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Discount Badge */}
-      {product?.discountRate! > 0 && (
-        <div className="absolute top-4 left-4 z-10">
-          <div className="bg-gradient-to-r from-red-500 to-red-600 text-white-50 px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
-            <div className="flex items-center gap-1">
-              <span>-{product.discountRate}%</span>
-              <div className="w-2 h-2 bg-white-50/60 rounded-full animate-pulse"></div>
-            </div>
-          </div>
+    <CardWrapper isHovered={isHovered}>
+      {isAddToCartLoading && <LoadingOverlay />}
+
+      <DiscountBadge discount={item.discountRate} />
+
+      <div
+        className="w-full h-[23vh] sm:h-[22vh] max-[500px]:h-[18vh] max-[400px]:h-[16vh] max-[350px]:h-[14vh]"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <ProductImage
+          src={item.mainImage}
+          alt={title}
+          isHovered={isHovered}
+          isLoading={isAddToCartLoading}
+        />
+      </div>
+
+      <div className="flex-1 flex flex-col justify-between mt-2">
+        <div
+          className="w-full h-auto cursor-pointer"
+          onClick={handleGoToProductPage}
+        >
+          <ProductTitle
+            title={title}
+            isHovered={isHovered}
+            isLoading={isAddToCartLoading}
+          />
         </div>
-      )}
 
-      {/* Product Image Container */}
-      <div className="relative p-6 pb-4">
-        <div className="aspect-square w-full rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 group-hover:shadow-inner transition-all duration-500 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white-50/30 to-transparent -translate-x-full animate-[shimmer_3s_infinite] z-10"></div>
+        <div className="space-y-3">
+          <div className="w-full flex items-center justify-between gap-1">
+            <ProductPrice item={item} formatPrice={formatPrice} />
+            <ProductRating rating={item.ratings} />
+          </div>
 
-          <ImageWithFallback
-            src={product?.mainImage || DEFAULT_FALLBACK_IMAGE}
-            alt={isArabic ? product?.name?.ar : product?.name?.en}
-            className={`object-contain transition-all duration-700 ${
-              isHovered ? "scale-110 filter brightness-105" : "scale-100"
-            } ${isLoading ? "scale-110 blur-[1px]" : ""}`}
-            style={{
-              filter:
-                isHovered && !isLoading
-                  ? "drop-shadow(0 10px 20px rgba(0,0,0,0.1))"
-                  : "none",
-            }}
+          <QuantityChanger
+            quantity={quantity}
+            isLoading={isAddToCartLoading}
+            handleChange={handleQuantityChange}
+          />
+
+          <RemoveItemFromCartBtn
+            showCounter={showCounter}
+            isLoading={isAddToCartLoading}
+            handleRemoveFromCart={handleRemoveFromCart}
           />
         </div>
       </div>
-
-      {/* Content Section */}
-      <div className="px-6 pb-6 space-y-4">
-        {/* Product Title */}
-        <h3
-          className={`font-semibold text-gray-900 text-lg leading-tight line-clamp-2 transition-all duration-300 ${
-            isHovered && !isLoading ? "text-primary-600" : "text-gray-900"
-          } ${isLoading ? "opacity-70" : ""}`}
-        >
-          {isArabic ? product?.name?.ar : product?.name?.en}
-        </h3>
-
-        {/* Rating Section */}
-        <div
-          className={`flex items-center gap-2 transition-all duration-300 ${
-            isLoading ? "opacity-70" : ""
-          }`}
-        >
-          <div className="flex items-center gap-0.5">
-            {Array.from({ length: 5 }, (_, i) => (
-              <Star
-                key={i}
-                className={`w-4 h-4 transition-all duration-300 ${
-                  i < Math.floor(product?.ratings || 0)
-                    ? "text-yellow-400 fill-yellow-400 drop-shadow-sm"
-                    : i < (product?.ratings || 0)
-                    ? "text-yellow-400 fill-yellow-400 opacity-50"
-                    : "text-gray-200 fill-gray-200"
-                } ${
-                  isHovered &&
-                  i < Math.floor(product?.ratings || 0) &&
-                  !isLoading
-                    ? "scale-110"
-                    : ""
-                }`}
-              />
-            ))}
-          </div>
-          <span className="text-sm font-medium text-gray-700">
-            {product?.ratings || 0}
-          </span>
-        </div>
-
-        {/* Price Section */}
-        <div
-          className={`space-y-1 transition-all duration-300 ${
-            isLoading ? "opacity-70" : ""
-          }`}
-        >
-          {product?.discountRate! > 0 ? (
-            <div className="flex items-center gap-3">
-              <div className="flex items-baseline gap-1">
-                <span className="text-2xl font-bold text-green-600 drop-shadow-sm">
-                  {product?.currency}
-                  {formatPrice(discountedPrice!)}
-                </span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-lg text-gray-400 line-through font-medium">
-                  {product?.currency}
-                  {formatPrice(product?.price!)}
-                </span>
-                <span className="text-sm font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full animate-pulse">
-                  Save {product?.currency}
-                  {formatPrice(product?.price! - discountedPrice!)}
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="text-2xl font-bold text-gray-900">
-              {product?.currency}
-              {formatPrice(product?.price!)}
-            </div>
-          )}
-        </div>
-
-        {/* Quantity Changer */}
-        <div className="flex items-center justify-start gap-3 mt-2">
-          <button
-            onClick={() => handleQuantityChange("decrement")}
-            className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200"
-          >
-            <Minus className="w-4 h-4 text-gray-700" />
-          </button>
-          <span className="text-lg font-medium">{quantity}</span>
-          <button
-            onClick={() => handleQuantityChange("increment")}
-            className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200"
-          >
-            <Plus className="w-4 h-4 text-gray-700" />
-          </button>
-        </div>
-
-        {showCounter && (
-          <CounterDown
-            startCounting={showCounter}
-            countDownAmount={5}
-            withRelocation={false}
-            withDirMessage={false}
-            dirMessage={""}
-            relocationPath="/auth?redirectTo=/cart&resend=false"
-            size="md"
-            color="purple"
-            align="center"
-          />
-        )}
-
-        {!showCounter && (
-          <div>
-            <button
-              onClick={() => handleRemoveFromCart()}
-              disabled={isLoading}
-              className={`w-full h-14 group/btn relative overflow-hidden font-semibold py-3.5 px-3 rounded-xl transition-all duration-300 transform shadow-lg flex items-center justify-center gap-3 disabled:cursor-not-allowed ${
-                isLoading
-                  ? "bg-primary-400 text-white-50 scale-105 shadow-2xl"
-                  : "bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white-50 hover:scale-105 active:scale-95 hover:shadow-xl"
-              }`}
-            >
-              <div
-                className={`p-1.5 rounded-lg transition-all duration-300 ${
-                  isLoading
-                    ? "bg-white-50/30"
-                    : "bg-white-50/20 group-hover/btn:bg-white-50/30 group-hover/btn:scale-110"
-                }`}
-              >
-                {isLoading ? (
-                  <LoadingProductButton color="#fff" />
-                ) : (
-                  <Trash className="w-5 h-5" />
-                )}
-              </div>
-
-              <span className="text-sm font-bold tracking-wide">
-                {isLoading
-                  ? t(
-                      "routes.cart.components.CartProductCard.removingFromCartLabel"
-                    )
-                  : t(
-                      "routes.cart.components.CartProductCard.removeFromCartLabel"
-                    )}
-              </span>
-            </button>
-          </div>
-        )}
-      </div>
-
-      {isLoading && (
-        <div className="absolute inset-0 z-10 rounded-2xl bg-gradient-to-br from-primary-50/20 to-blue-50/20 animate-pulse pointer-events-none"></div>
-      )}
-    </div>
+    </CardWrapper>
   );
 };
 

@@ -1,9 +1,11 @@
 "use client";
 
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import CartProductCard from "./CartProductCard";
-import InfiniteScrollList, { GRID_TYPE } from "@/components/shared/InfiniteScrollList";
+import InfiniteScrollList, {
+  GRID_TYPE,
+} from "@/components/shared/InfiniteScrollList";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import { useTranslations } from "next-intl";
 import PageLoader from "@/components/shared/PageLoader";
@@ -21,6 +23,7 @@ const CartItems = () => {
   const { isSessionLoading, isAuthenticated } = useAuthContext();
   const dispatch = useDispatch<AppDispatch>();
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
+  const { isArabic } = useSelector((state: RootState) => state.general);
 
   const {
     data,
@@ -30,7 +33,12 @@ const CartItems = () => {
     fetchNextPage,
     isError,
     error,
-  } = useCartQuery({ search: "" });
+  } = useCartQuery();
+
+  const fetchedItems = useMemo(
+    () => data?.pages?.flatMap((page) => page?.data?.items || []) ?? [],
+    [data]
+  );
 
   const showData = (cartItems as CartItem[]).length !== 0;
   const showNoData = !cartItems || (cartItems as CartItem[]).length === 0;
@@ -38,13 +46,10 @@ const CartItems = () => {
   const showLoader = isLoading || isSessionLoading;
 
   useEffect(() => {
-    const fetchedItems =
-      data?.pages?.flatMap((page) => page?.data?.items || []) ?? [];
-
     if (fetchedItems.length > 0) {
       dispatch(setCartItems(fetchedItems));
     }
-  }, [data, dispatch]);
+  }, [fetchedItems, dispatch]);
 
   if (showLoader) return <PageLoader />;
 
@@ -76,7 +81,9 @@ const CartItems = () => {
             list={cartItems}
             fetchNextPage={fetchNextPage}
             ListItemCard={CartProductCard}
-            cardProps={{}}
+            cardProps={{
+              isArabic,
+            }}
             gridType={GRID_TYPE.WIDE}
           />
         </div>

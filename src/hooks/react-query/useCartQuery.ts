@@ -24,14 +24,12 @@ export const fetchCartItems = async ({
   lang = "en",
   limit = PAGINATION_LIMITS.CART_ITEMS,
   lastId,
-  search,
 }: FetchCartItemsParams): Promise<DataResponse<Cart>> => {
   const url = new URL(`${API_ENDPOINTS.LOGGED_USER.CART.ONE}`);
 
   url.searchParams.append("limit", limit.toString());
   if (lang) url.searchParams.append("lang", lang);
   if (lastId) url.searchParams.append("lastId", lastId);
-  if (search) url.searchParams.append("search", search);
 
   const res = await fetch(url, {
     headers: {
@@ -47,12 +45,12 @@ export const fetchCartItems = async ({
   return resObj;
 };
 
-export const useCartQuery = ({ search }: { search: string }) => {
+export const useCartQuery = () => {
   const { accessToken, locale, status } = useAuthContext();
   const { queryKey } = useWishlist();
 
   return useInfiniteQuery<DataResponse<Cart>>({
-    queryKey: [queryKey, search],
+    queryKey: [queryKey],
     queryFn: ({ pageParam }) => {
       // This should never be reached due to enabled condition, but keeping as safeguard
       if (!accessToken) {
@@ -65,7 +63,6 @@ export const useCartQuery = ({ search }: { search: string }) => {
         limit: PAGINATION_LIMITS.CART_ITEMS,
         lastId:
           pageParam && typeof pageParam === "string" ? pageParam : undefined,
-        search,
       });
     },
     getNextPageParam: (lastPage) => {
@@ -76,10 +73,13 @@ export const useCartQuery = ({ search }: { search: string }) => {
       return lastProduct?._id || undefined;
     },
     initialPageParam: undefined,
-    staleTime: STALE_TIME,
+    // staleTime: STALE_TIME,
+    staleTime: 0,
     gcTime: GC_TIME,
     // KEY FIX: Only enable the query when session is loaded and we have an accessToken
     enabled: status !== "loading" && !!accessToken,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     // Optional: Retry configuration
     retry: (failureCount, error) => {
       // Don't retry if it's an auth error
