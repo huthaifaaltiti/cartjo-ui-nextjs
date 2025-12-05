@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { memo } from "react";
 import { useTranslations } from "next-intl";
@@ -37,19 +37,11 @@ const RemoveItemFromCartBtn = ({
           <button
             onClick={() => handleRemoveFromCart()}
             disabled={isLoading}
-            className={`w-full h-14 group/btn relative overflow-hidden font-semibold py-3.5 px-3 rounded-xl transition-all duration-300 transform shadow-lg flex items-center justify-center gap-3 disabled:cursor-not-allowed bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white-50 hover:scale-105 active:scale-95 hover:shadow-xl`}
+            className={`w-full h-auto group/btn relative overflow-hidden font-semibold py-2 px-1 rounded-xl transition-all duration-300 transform shadow-lg flex items-center justify-center gap-3 disabled:cursor-not-allowed bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white-50 hover:scale-105 active:scale-95 hover:shadow-xl`}
           >
-            <div
-              className={`p-1.5 rounded-lg transition-all duration-300 ${
-                isLoading
-                  ? "bg-white-50/30"
-                  : "bg-white-50/20 group-hover/btn:bg-white-50/30 group-hover/btn:scale-110"
-              }`}
-            >
-              <Trash className="w-5 h-5" />
-            </div>
+            <Trash className="w-5 h-5" />
 
-            <span className="text-sm font-bold tracking-wide">
+            <span className="text-lg font-bold tracking-wide capitalize">
               {t("routes.cart.components.CartProductCard.removeFromCartLabel")}
             </span>
           </button>
