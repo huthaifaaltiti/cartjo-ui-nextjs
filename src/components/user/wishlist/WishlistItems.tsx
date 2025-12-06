@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { useWishlistQuery } from "@/hooks/react-query/useWishlistQuery";
 import { Product } from "@/types/product.type";
 import { useAuthContext } from "@/hooks/useAuthContext";
@@ -20,6 +20,7 @@ const WishlistItems = () => {
   const { items: wishlistItems } = useSelector(
     (state: RootState) => state.wishlist
   );
+
   const t = useTranslations();
   const { isSessionLoading, isAuthenticated } = useAuthContext();
 
@@ -31,27 +32,27 @@ const WishlistItems = () => {
     fetchNextPage,
     isError,
     error,
-    refetch,
-  } = useWishlistQuery({ search: "" });
+    refetch
+  } = useWishlistQuery();
 
-  const showData = (wishlistItems as Product[]).length !== 0;
+  const fetchedItems = useMemo(
+    () => data?.pages?.flatMap((page) => page?.data?.products || []) ?? [],
+    [data]
+  );
+
+  const showData = (wishlistItems as Product[]).length > 0;
   const showNoData =
     !wishlistItems || (wishlistItems as Product[]).length === 0;
   const showError = isError;
   const showLoader = isLoading || isSessionLoading;
 
   useEffect(() => {
-    const fetchedItems =
-      data?.pages?.flatMap((page) => page?.data?.products || []) ?? [];
-
-    if (fetchedItems.length > 0) {
-      dispatch(setWishlistItems(fetchedItems));
-    }
-  }, [data, dispatch]);
+    if (fetchedItems.length > 0) dispatch(setWishlistItems(fetchedItems));
+  }, [fetchedItems, dispatch]);
 
   useEffect(() => {
     refetch();
-  }, [refetch]);
+  }, []);
 
   if (showLoader) return <PageLoader />;
 

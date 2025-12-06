@@ -5,10 +5,11 @@ import { DataResponse } from "@/types/service-response.type";
 import { Wishlist } from "@/types/wishlist.type";
 import WishlistItems from "@/components/user/wishlist/WishlistItems";
 import { getWishlistQueryOptions } from "@/utils/queryOptions";
+import { redirect } from "next/navigation";
 
 const Page = async () => {
   const token = await getAccessTokenFromServerSession();
-  if (!token) throw new Error("No access token found");
+  if (!token) redirect('/auth');
 
   const queryClient = getQueryClient();
   await queryClient.prefetchInfiniteQuery<DataResponse<Wishlist>>(

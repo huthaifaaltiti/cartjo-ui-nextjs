@@ -47,6 +47,7 @@
     },
     "cart": {
       "addToCart": "Add to Cart",
+      "adding": "Adding to Cart...",
       "removeFromCart": "Remove from Cart"
     },
     "actions": {
@@ -1868,9 +1869,9 @@
           "confirmDeleteTitle": "Delete Confirmation",
           "confirmDeleteMessage": "Are you sure that you want to delete all wishlist items? Your wishlist data will be removed after confirming.",
           "confirmCartItemsMessage": "Are you sure you want to send all wishlist items to your cart? Your wishlist data will be sent and deleted after confirming.",
-          "confirmCartItemsTitle": "Send all items to cart all",
+          "confirmCartItemsTitle": "Send all items to cart",
           "confirmDelete": "Delete all items",
-          "confirmCart": "Wishlist all items",
+          "confirmCart": "Send all items to cart",
           "cancel": "Cancel",
           "deleting": "Deleting Items...",
           "deleteError": "Error happened while deleting wishlist items",
@@ -2292,7 +2293,7 @@
           "discoverProducts": "Discover Products"
         },
         "CartProductCard": {
-          "removeFromCartLabel": "Remove from cart",
+          "removeFromCartLabel": "Remove",
           "removingFromCartLabel": "Removing from cart...",
           "removedFromCartLabel": "Removed from cart"
         },

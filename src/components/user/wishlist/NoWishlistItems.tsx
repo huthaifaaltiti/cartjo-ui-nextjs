@@ -30,17 +30,7 @@ const NoWishlistItems = () => {
         </p>
       </div>
 
-      <div className="w-full max-w-sm flex items-center gap-3 mt-10">
-        <Link href={"#"}>
-          <Button
-            className="w-auto py-3 bg-primary-500 text-white-50 font-semibold hover:bg-primary-700 transition-colors rounded-lg"
-            type="button"
-            disabled={false}
-          >
-            {t("routes.wishlist.components.NoWishlistItems.discoverProducts")}
-          </Button>
-        </Link>
-
+      <div className="w-full max-w-sm flex items-center justify-center gap-3 mt-10">
         <Link href={"/"}>
           <Button
             className="w-auto py-3 text-primary-500 bg-white-50 border border-primary-500 font-semibold hover:bg-white-500 transition-colors rounded-lg"

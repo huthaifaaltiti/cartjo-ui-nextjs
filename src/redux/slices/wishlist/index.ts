@@ -66,7 +66,13 @@ const wishlistSlice = createSlice({
         const addedProduct = action.meta.arg.product;
 
         state.loading = false;
-        state.items = [...state.items, {...addedProduct}]
+        state.items = [
+          ...state.items,
+          {
+            ...addedProduct,
+            isWishListed: true,
+          },
+        ];
         state.itemsCount = state.items.length ?? 0;
       })
 

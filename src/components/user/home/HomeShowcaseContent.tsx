@@ -17,6 +17,7 @@ const HomeShowcaseContent = () => {
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
   const t = useTranslations();
+
   const { data, isLoading, isFetching, isError, error } =
     useActiveShowcasesQuery(PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE);
 
