@@ -60,13 +60,13 @@ const CartProductCard = ({
     let categorySlug, subCategorySlug;
     const productSlug = item.slug;
 
-    if (Object.keys(item.categoryId).length > 0) {
+    if (typeof item.categoryId !== "string") {
       categorySlug = item?.categoryId?.slug;
     } else {
       categorySlug = item.categoryId;
     }
 
-    if (Object.keys(item.subCategoryId).length > 0) {
+    if (typeof item.subCategoryId !== "string") {
       subCategorySlug = item?.subCategoryId?.slug;
     } else {
       subCategorySlug = item.subCategoryId;

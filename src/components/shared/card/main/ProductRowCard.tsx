@@ -186,15 +186,27 @@ const ProductRowCard = ({
     }
   };
 
-  const handleGoToProductPage = () => {
-    const categorySlug = item.categoryId;
-    const subCategorySlug = item.subCategoryId;
+  const handleGoToProductPage = useCallback(() => {
+    let categorySlug, subCategorySlug;
     const productSlug = item.slug;
+
+    if (typeof item.categoryId !== "string") {
+      categorySlug = item?.categoryId?.slug;
+    } else {
+      categorySlug = item.categoryId;
+    }
+
+    if (typeof item.subCategoryId !== "string") {
+      subCategorySlug = item?.subCategoryId?.slug;
+    } else {
+      subCategorySlug = item.subCategoryId;
+    }
 
     router.push(
       `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${item._id}`
     );
-  };
+  }, [item, isArabic]);
+
   return (
     <RowCardWrapper
       isHovered={isHovered}

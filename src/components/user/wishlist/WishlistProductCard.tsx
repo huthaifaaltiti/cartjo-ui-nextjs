@@ -138,13 +138,13 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
     let categorySlug, subCategorySlug;
     const productSlug = product.slug;
 
-    if (typeof product.categoryId !== 'string') {
+    if (typeof product.categoryId !== "string") {
       categorySlug = product?.categoryId?.slug;
     } else {
       categorySlug = product.categoryId;
     }
 
-    if (typeof product.subCategoryId !== 'string') {
+    if (typeof product.subCategoryId !== "string") {
       subCategorySlug = product?.subCategoryId?.slug;
     } else {
       subCategorySlug = product.subCategoryId;
