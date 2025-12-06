@@ -200,7 +200,6 @@ const ProductRowCard = ({
       isHovered={isHovered}
       // isLoading={isWishListLoading || isAddToCartLoading}
     >
-      {isWishListed || "No"}
       <WishlistButton
         isWishListed={isWishListed}
         isLoading={isWishListLoading}
