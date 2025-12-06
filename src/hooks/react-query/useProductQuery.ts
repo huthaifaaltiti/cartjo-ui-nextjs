@@ -9,9 +9,10 @@ import { FetchError } from "@/types/common";
 import { fetcher } from "@/utils/fetcher";
 import { Comment } from "@/types/comment.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
+import { getProductQueryOptions } from "@/utils/queryOptions";
 
 interface FetchProductProps {
-  token?: string;
+  token?: string | null;
   lang?: Locale | string;
   productId: string;
 }
@@ -60,22 +61,5 @@ export const useProductQuery = ({
 }: Pick<FetchProductProps, "lang" | "productId">) => {
   const { locale, accessToken } = useAuthContext();
 
-  return useQuery({
-    queryKey: ["publicProduct", lang, productId],
-    queryFn: () =>
-      fetchProduct({
-        token: accessToken,
-        lang: lang || locale,
-        productId: productId!,
-      }),
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!productId,
-    retry: (failureCount, error) => {
-      const err = error as FetchError;
-      if (err?.status === 404) return false;
-      return failureCount < 2; // Only retry up to 2 times for other errors
-    },
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-  });
+  return useQuery(getProductQueryOptions(locale, productId, accessToken));
 };

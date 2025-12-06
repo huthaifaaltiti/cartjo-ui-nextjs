@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import {
   Heart,
   Minus,
   Plus,
-  RotateCcw,
   Share2,
   Shield,
   ShoppingCart,
@@ -13,27 +12,63 @@ import {
   Truck,
 } from "lucide-react";
 import { Product } from "@/types/product.type";
+import { useLocale } from "next-intl";
+import { isArabicLocale } from "@/config/locales.config";
+import WishlistButton from "@/components/shared/card/WishlistButton";
+import {
+  showErrorToast,
+  showSuccessToast,
+  showWarningToast,
+} from "@/components/shared/CustomToast";
+import { useTranslations } from "use-intl";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import {
+  addWishlistItem,
+  removeWishlistItem,
+} from "@/redux/slices/wishlist/actions";
+import { addItemToServer } from "@/redux/slices/cart/actions";
+import { DataResponse } from "@/types/service-response.type";
+import { Cart } from "@/types/cart.type";
 
 interface Props {
   product: Product;
 }
 
 const ProductDetailsContent = ({ product }: Props) => {
+  const t = useTranslations();
+  const locale = useLocale();
+  const isArabic = isArabicLocale(locale);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { accessToken } = useAuthContext();
+
+  const title = isArabic ? product.name.ar : product.name.en;
+  const description = isArabic
+    ? product.description.ar
+    : product.description.en;
+
+  // STATES
+  const [isWishListing, setIsWishListing] = useState(false);
+  const [isWishListed, setIsWishListed] = useState(product.isWishListed);
+  const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
+
   const [selectedImage, setSelectedImage] = useState(product.mainImage);
   const [quantity, setQuantity] = useState(1);
-  const [isWishListed, setIsWishListed] = useState(product.isWishListed);
 
-  const renderStars = (rating: number) => {
-    return [...Array(5)].map((_, i) => (
+  // ⭐ Rating Stars
+  const renderStars = (rating: number) =>
+    [...Array(5)].map((_, i) => (
       <Star
         key={i}
-        className={`w-5 h-5 ${
+        className={`w-4 h-4 sm:w-5 sm:h-5 ${
           i < rating ? "text-yellow-400 fill-current" : "text-gray-300"
         }`}
       />
     ));
-  };
 
+  // 📌 Quantity Change
   const handleQuantityChange = (action: string) => {
     if (action === "increase" && quantity < product.availableCount) {
       setQuantity(quantity + 1);
@@ -42,19 +77,142 @@ const ProductDetailsContent = ({ product }: Props) => {
     }
   };
 
-  const toggleWishlist = () => {
-    setIsWishListed(!isWishListed);
-  };
-
+  // 💰 Discounted Price
   const discountedPrice =
     product.discountRate > 0
       ? product.price * (1 - product.discountRate / 100)
       : product.price;
 
+  // ❤️ Remove from wishlist
+  const handleRemoveWishListItem = useCallback(async () => {
+    if (!accessToken) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("general.toast.description.loginRequired"),
+        dismissText: t("general.toast.dismissText"),
+      });
+      return;
+    }
+
+    try {
+      setIsWishListing(true);
+
+      const response = await dispatch(
+        removeWishlistItem({
+          productId: product._id,
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (response.isSuccess) {
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+          description: response.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+        setIsWishListed(false);
+      }
+    } catch (error) {
+      showErrorToast({
+        title: t("general.toast.title.error"),
+        description: (error as Error)?.message || "Failed to remove item.",
+        dismissText: t("general.toast.dismissText"),
+      });
+    } finally {
+      setIsWishListing(false);
+    }
+  }, [locale, accessToken, product._id, t]);
+
+  // ❤️ Add to wishlist
+  const handleAddWishListItem = useCallback(async () => {
+    if (!accessToken) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("general.toast.description.loginRequired"),
+        dismissText: t("general.toast.dismissText"),
+      });
+      return;
+    }
+
+    try {
+      setIsWishListing(true);
+
+      const response = await dispatch(
+        addWishlistItem({
+          product,
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (response.isSuccess) {
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+          description: response.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+        setIsWishListed(true);
+      }
+    } catch (error) {
+      showErrorToast({
+        title: t("general.toast.title.error"),
+        description: (error as Error)?.message || "Failed to add item.",
+        dismissText: t("general.toast.dismissText"),
+      });
+    } finally {
+      setIsWishListing(false);
+    }
+  }, [locale, accessToken, product._id, t]);
+
+  const handleWishListedItemState = () =>
+    isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
+
+  // 🛒 ADD TO CART FUNCTION
+  const handleAddToCart = async (): Promise<DataResponse<Cart> | undefined> => {
+    if (!accessToken) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("general.toast.description.loginRequired"),
+        dismissText: t("general.toast.dismissText"),
+      });
+      return;
+    }
+
+    try {
+      setIsAddToCartLoading(true);
+
+      const response = await dispatch(
+        addItemToServer({
+          productId: product._id!,
+          quantity: quantity, // 👍 use selected quantity
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (response.isSuccess) {
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+          description: response.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+      }
+    } catch (error) {
+      showErrorToast({
+        title: t("general.toast.title.error"),
+        description: (error as Error)?.message || "Failed to add item.",
+        dismissText: t("general.toast.dismissText"),
+      });
+    } finally {
+      setIsAddToCartLoading(false);
+    }
+  };
+
   return (
-    <div className="max-w-7xl mx-auto py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Image Section */}
+    <div className="max-w-7xl mx-auto py-6 sm:py-8 px-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
+        {/* IMAGES */}
         <div className="space-y-4">
           <div className="aspect-square overflow-hidden rounded-xl bg-gray-100 relative group">
             <img
@@ -62,156 +220,100 @@ const ProductDetailsContent = ({ product }: Props) => {
               alt={product.name.en}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
+
             {product.discountRate > 0 && (
-              <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                 -{product.discountRate}%
               </div>
             )}
-            <button
-              onClick={toggleWishlist}
-              className={`absolute top-4 right-4 p-2 rounded-full transition-colors ${
-                isWishListed
-                  ? "bg-red-100 text-red-500"
-                  : "bg-white/80 text-gray-600 hover:bg-white"
-              }`}
-            >
-              <Heart
-                className={`w-5 h-5 ${isWishListed ? "fill-current" : ""}`}
-              />
-            </button>
+
+            <WishlistButton
+              isWishListed={isWishListed}
+              isLoading={isWishListing}
+              onClick={handleWishListedItemState}
+            />
           </div>
 
-          {/* Thumbnail Images */}
-          <div className="flex space-x-2 overflow-x-auto">
+          <div className="flex space-x-2 overflow-x-auto pb-2">
             {[product.mainImage, ...product.images].map((image, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(image)}
-                className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${
+                className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 ${
                   selectedImage === image
                     ? "border-blue-500"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
-                <img
-                  src={image}
-                  alt={`${product.name.en} ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
+                <img src={image} className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
         </div>
 
-        {/* Product Information */}
+        {/* PRODUCT INFO */}
         <div className="space-y-6">
-          {/* Title and Rating */}
-          <div className="space-y-3">
-            <h1 className="text-3xl font-bold text-gray-900 leading-tight">
-              {product.name.en}
-            </h1>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center">
-                {renderStars(product.ratings)}
-              </div>
-              <span className="text-sm text-gray-600">
-                ({product.ratings} reviews)
-              </span>
-              {product.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+          <h1 className="text-4xl font-bold">{title}</h1>
+
+          <div className="flex items-center gap-2">
+            <div className="flex">{renderStars(product.ratings)}</div>
+            <span className="text-gray-600 text-sm">
+              ({product.ratings} reviews)
+            </span>
           </div>
 
-          {/* Price */}
-          <div className="space-y-2">
-            <div className="flex items-center space-x-3">
-              <span className="text-3xl font-bold text-gray-900">
+          <div>
+            <div className="flex items-center gap-3">
+              <span className="text-4xl font-bold">
                 {discountedPrice.toFixed(2)} {product.currency}
               </span>
+
               {product.discountRate > 0 && (
-                <span className="text-xl text-gray-500 line-through">
+                <span className="text-2xl text-gray-500 line-through">
                   {product.price.toFixed(2)} {product.currency}
                 </span>
               )}
             </div>
-            <p className="text-sm text-green-600 font-medium">
+            <p className="text-green-600 text-sm">
               ✓ In stock ({product.availableCount} available)
             </p>
           </div>
 
-          {/* Description */}
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-gray-900">Description</h3>
-            <p className="text-gray-700 leading-relaxed">
-              {product.description.en}
-            </p>
+          <div>
+            <h3 className="text-lg font-semibold">Description</h3>
+            <p className="text-gray-700">{description}</p>
           </div>
 
-          {/* Quantity and Add to Cart */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center border border-gray-300 rounded-lg">
-                <button
-                  onClick={() => handleQuantityChange("decrease")}
-                  disabled={quantity <= 1}
-                  className="p-2 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="px-4 py-2 min-w-[60px] text-center font-medium">
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => handleQuantityChange("increase")}
-                  disabled={quantity >= product.availableCount}
-                  className="p-2 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-
-              <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
-                <ShoppingCart className="w-5 h-5" />
-                <span>Add to Cart</span>
+          {/* QUANTITY + ADD TO CART */}
+          <div className="flex items-center gap-4">
+            {/* Quantity */}
+            <div className="flex items-center border border-gray-300 rounded-lg">
+              <button
+                onClick={() => handleQuantityChange("decrease")}
+                disabled={quantity <= 1}
+                className="p-2 disabled:opacity-50"
+              >
+                <Minus />
               </button>
-
-              <button className="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                <Share2 className="w-5 h-5" />
+              <span className="px-4 py-2 font-medium">{quantity}</span>
+              <button
+                onClick={() => handleQuantityChange("increase")}
+                disabled={quantity >= product.availableCount}
+                className="p-2 disabled:opacity-50"
+              >
+                <Plus />
               </button>
             </div>
-          </div>
 
-          {/* Features */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t">
-            <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-              <Truck className="w-6 h-6 text-blue-600" />
-              <div>
-                <p className="font-medium text-sm">Free Shipping</p>
-                <p className="text-xs text-gray-600">On orders over 50 JOD</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-              <RotateCcw className="w-6 h-6 text-green-600" />
-              <div>
-                <p className="font-medium text-sm">Easy Returns</p>
-                <p className="text-xs text-gray-600">30 days return policy</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-              <Shield className="w-6 h-6 text-purple-600" />
-              <div>
-                <p className="font-medium text-sm">Secure Payment</p>
-                <p className="text-xs text-gray-600">256-bit SSL encryption</p>
-              </div>
-            </div>
+            {/* ADD TO CART BUTTON */}
+            <button
+              onClick={handleAddToCart}
+              disabled={isAddToCartLoading}
+              className="flex-1 bg-blue-600 text-white-50 px-6 py-3 rounded-lg flex items-center justify-center gap-2 font-semibold hover:bg-blue-700 disabled:opacity-50"
+            >
+              {isAddToCartLoading ? "..." : <ShoppingCart />}
+              {t("general.cart.addToCart")}
+            </button>
           </div>
         </div>
       </div>

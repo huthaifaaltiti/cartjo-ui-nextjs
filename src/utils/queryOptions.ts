@@ -170,21 +170,24 @@ export const getSubCategoryProductsQueryOptions = (
 
 export const getProductQueryOptions = (
   locale: string | Locale,
-  productId: string
-) => ({
-  queryKey: ["publicProduct", locale, productId],
-  queryFn: () => fetchProduct({ lang: locale, productId }),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-  enabled: !!productId,
-  retry: (failureCount: number, error: Error) => {
-    const err = error as FetchError;
-    if (err?.status === 404) return false;
-    return failureCount < 2; // Only retry up to 2 times for other errors
-  },
-  retryDelay: (attemptIndex: number) =>
-    Math.min(1000 * 2 ** attemptIndex, 30000),
-});
+  productId: string,
+  token: string | null
+) => {
+  return {
+    queryKey: ["publicProduct", locale, productId, token],
+    queryFn: () => fetchProduct({ lang: locale, productId, token }),
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    enabled: !!token || !!productId,
+    retry: (failureCount: number, error: Error) => {
+      const err = error as FetchError;
+      if (err?.status === 404) return false;
+      return failureCount < 2; // Only retry up to 2 times for other errors
+    },
+    retryDelay: (attemptIndex: number) =>
+      Math.min(1000 * 2 ** attemptIndex, 30000),
+  };
+};
 
 export const getSearchProductsQueryOptions = (
   locale: string,

@@ -12,6 +12,7 @@ import ProductDetailsPage from "@/components/user/product/ProductDetailsPage";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
 import { Comment } from "@/types/comment.type";
 import { PublicProductContextProvider } from "@/contexts/PublicProduct.context";
+import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 
 interface PageProps {
   params: Promise<{
@@ -26,6 +27,8 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   const { locale } = await params;
   const { p_id } = await searchParams;
 
+  const token = await getAccessTokenFromServerSession();
+
   const productId = p_id as string;
 
   const queryClient = getQueryClient();
@@ -35,7 +38,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   );
 
   await queryClient.prefetchQuery<DataResponse<Product>>(
-    getProductQueryOptions(locale, productId)
+    getProductQueryOptions(locale, productId, token)
   );
 
   await queryClient.prefetchInfiniteQuery<DataListResponse<Comment>>(
