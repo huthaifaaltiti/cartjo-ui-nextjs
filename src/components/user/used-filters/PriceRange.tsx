@@ -1,0 +1,152 @@
+"use client";
+
+import { memo, useState, useCallback, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { CircleDollarSign } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+
+import { useGeneralContext } from "@/contexts/General.context";
+import { Currency } from "@/constants/currency.constant";
+
+interface PriceRangeProps {
+  setPriceFrom: (value: number) => void;
+  setPriceTo: (value: number) => void;
+  onApplyFilter?: (from: number, to: number) => void;
+  initialFrom?: number;
+  initialTo?: number;
+}
+
+const PriceRange = ({
+  setPriceFrom,
+  setPriceTo,
+  onApplyFilter,
+  initialFrom = 0,
+  initialTo = 1000,
+}: PriceRangeProps) => {
+  const t = useTranslations();
+
+  const { isArabic } = useGeneralContext()
+
+  const [customFrom, setCustomFrom] = useState<number>(initialFrom);
+  const [customTo, setCustomTo] = useState<number>(initialTo);
+  const [isActiveFilter, setIsActiveFilter] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCustomFrom(initialFrom);
+    setCustomTo(initialTo);
+  }, [initialFrom, initialTo]);
+
+  useEffect(() => {
+    if (initialFrom || initialTo) {
+      setIsActiveFilter(true);
+    } else {
+      setIsActiveFilter(false);
+    }
+  }, [initialFrom, initialTo]);
+
+  const handleApplyFilter = useCallback(() => {
+    setPriceFrom(customFrom);
+    setPriceTo(customTo);
+    onApplyFilter?.(customFrom, customTo);
+  }, [customFrom, customTo, setPriceFrom, setPriceTo, onApplyFilter]);
+
+  const handleClearFilter = useCallback(() => {
+    setCustomFrom(0);
+    setCustomTo(1000);
+    setPriceFrom(0);
+    setPriceTo(0);
+    onApplyFilter?.(0, 0);
+  }, [setPriceFrom, setPriceTo, onApplyFilter]);
+
+  return (
+    <div className="w-auto flex items-center gap-2">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className={`flex items-center gap-2 h-8 px-3 ${
+              isActiveFilter ? "border-[2px] border-primary-500" : ""
+            }`}
+          >
+            <CircleDollarSign className="w-4 h-4 text-secondary-900" />
+            <span className="text-sm text-secondary-900">
+              {t("components.filters.PriceRange.price")}
+            </span>
+          </Button>
+        </PopoverTrigger>
+
+        <PopoverContent className="w-60 p-3 space-y-2">
+          <div className="w-full flex gap-2">
+            <div className="w-1/2 flex flex-col gap-1">
+              <Label className="text-xs text-gray-600 mb-1">
+                {t("components.filters.PriceRange.from", {
+                  currency: isArabic
+                    ? Currency.JOD.labelAr
+                    : Currency.JOD.labelEn,
+                })}
+              </Label>
+              <Input
+                type="number"
+                value={customFrom}
+                onChange={(e) => setCustomFrom(Number(e.target.value))}
+                placeholder="0"
+                min="0"
+                step="0.01"
+                className="h-8 text-sm"
+              />
+            </div>
+
+            <div className="w-1/2 flex flex-col gap-1">
+              <Label className="text-xs text-gray-600 mb-1">
+                {t("components.filters.PriceRange.to", {
+                  currency: isArabic
+                    ? Currency.JOD.labelAr
+                    : Currency.JOD.labelEn,
+                })}
+              </Label>
+              <Input
+                type="number"
+                value={customTo}
+                onChange={(e) => setCustomTo(Number(e.target.value))}
+                placeholder="1000"
+                min="0"
+                max="100000"
+                step="0.01"
+                className="h-8 text-sm"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-2">
+            <Button
+              onClick={handleApplyFilter}
+              variant="outline"
+              size="sm"
+              className="w-1/2 h-8 px-3"
+            >
+              {t("components.filters.actions.apply")}
+            </Button>
+            <Button
+              onClick={handleClearFilter}
+              variant="outline"
+              size="sm"
+              className="w-1/2 h-8 px-3"
+            >
+              {t("components.filters.actions.clear")}
+            </Button>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+};
+
+export default memo(PriceRange);

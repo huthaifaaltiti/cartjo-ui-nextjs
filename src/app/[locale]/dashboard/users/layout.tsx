@@ -1,0 +1,14 @@
+import UsersPageHeader from "@/components/admin/routes/users/UsersPageHeader";
+
+export default async function UsersPageLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="w-full h-full">
+      <UsersPageHeader />
+      {children}
+    </div>
+  );
+}

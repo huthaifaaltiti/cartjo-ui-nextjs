@@ -1,0 +1,28 @@
+.loadingDots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot {
+  font-size: 1rem;
+  margin: 0 4px;
+  animation: swayLeftRight 1s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes swayLeftRight {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.5;
+  }
+  25% {
+    transform: translateX(-6px);
+    opacity: 1;
+  }
+  75% {
+    transform: translateX(6px);
+    opacity: 1;
+  }
+}

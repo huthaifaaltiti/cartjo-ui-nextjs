@@ -1,0 +1,2388 @@
+{
+  "general": {
+    "loadingStates": {
+      "loadingApi": "Sending data",
+      "loading": "Loading",
+      "loadingUserSession": "Loading user's session",
+      "requestingData": "Requesting data, be patient 🤗"
+    },
+    "UploadingStates": {
+      "uploadingData": "Uploading Data"
+    },
+    "processing": "Processing",
+    "data": {
+      "noData": "No data",
+      "tryAgain": "Please try again later"
+    },
+    "toast": {
+      "title": {
+        "success": "Success",
+        "error": "Error",
+        "warning": "Warning"
+      },
+      "description": {
+        "loginRequired": "Login required!"
+      },
+      "dismissText": "Dismiss"
+    },
+    "authorization": {
+      "unAuthorizedToken": "Unauthorized user token"
+    },
+    "items": {
+      "noMoreItems": "No more items to show",
+      "itemsFound": "Items found",
+      "noItemsFound": "No items found",
+      "stock": "Stock",
+      "sold": "Sold",
+      "favorites": "Favorites",
+      "states": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "deleted": "Deleted",
+        "inStock": "In Stock",
+        "outOfStock": "Out of Stock",
+        "lowStock": "Low Stock",
+        "stockItemsCount": "Only {count} left in stock"
+      }
+    },
+    "cart": {
+      "addToCart": "Add to Cart",
+      "adding": "Adding to Cart...",
+      "removeFromCart": "Remove from Cart"
+    },
+    "actions": {
+      "delete": "Delete",
+      "restore": "Restore",
+      "edit": "Edit",
+      "create": "Create",
+      "proceed": "Proceed",
+      "activate": "Activate",
+      "deActivate": "De Activate",
+      "returnToHomePage": "Return To Home Page",
+      "returnBack": "Return Back",
+      "save": "Save",
+      "saving": "Saving",
+      "cancel": "Cancel",
+      "goBack": "Go Back",
+      "tryAgain": "Try Again",
+      "search": "Search"
+    },
+    "others": {
+      "unknown": "Unknown",
+      "created": "Created",
+      "edited": "Edited",
+      "createdBy": "Created by",
+      "updated": "Updated",
+      "from": "From",
+      "to": "To",
+      "date": "Date",
+      "time": "Time",
+      "selectDate": "Select Date",
+      "button_text": "Button Text",
+      "button_link": "Button Link",
+      "created_by": "Created By",
+      "key": "Key",
+      "priority": "Priority",
+      "characters": "Characters",
+      "star": "star",
+      "stars": "stars",
+      "logoTitle": "CartJO",
+      "home": "Home",
+      "timeline": "Timeline",
+      "updatedBy": "Updated By",
+      "notFound": "Not Found"
+    },
+    "date": {
+      "startDate": "Start Date",
+      "endDate": "End Date"
+    },
+    "account": {
+      "status": {
+        "verifiedAccount": "Verified Account"
+      }
+    },
+    "status": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "info": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "receipt": {
+      "order": {
+        "header": "CartJO Order Receipt",
+        "info": {
+          "transactionId": "Transaction ID",
+          "paymentMethod": "Payment Method",
+          "status": "Payment Status",
+          "customer": "Customer Information",
+          "shippingAddress": "Shipping Address",
+          "note": "Note"
+        },
+        "items": "Order Items",
+        "total": "Total Receipt Amount",
+        "thanks": "Thank you for your purchase!"
+      }
+    },
+    "buttons": {
+      "downloadReceiptPDF": "Download Receipt (PDF)"
+    }
+  },
+  "errors": {
+    "api": {
+      "timeout": "Request timed out. Please try again.",
+      "badRequest": "Bad Request",
+      "somethingWentWrong": "Something went wrong!"
+    },
+    "components": {
+      "errorPage": {
+        "applicationError": "Application Error",
+        "unexpectedErrorOccurred": "An unexpected error occurred",
+        "couldNotLoadData": "We couldn't load your data. This might be due to an authentication issue or server problem.",
+        "signInAgain": "Sign In Again",
+        "dashboard": "Dashboard",
+        "tryAgain": "Try Again",
+        "retry": "Retry",
+        "signInWithDiffAccount": "Sign in with a different account",
+        "contactSupport": "If the problem continues, please contact support via 0797662401 or try again later."
+      }
+    },
+    "data": {
+      "fetchingFailure": "Data fetching failed"
+    }
+  },
+  "components": {
+    "TopBarDeliveryMessage": {
+      "deliver": "We deliver to you every day",
+      "fromTo": "from {fromTime} to {toTime}"
+    },
+    "LanguageSelector": {
+      "english": "English",
+      "arabic": "العربية"
+    },
+    "ImageUploader": {
+      "labels": {
+        "maxFileSize": "Max file size"
+      },
+      "errors": {
+        "sizeLimit": "File size must be less than {maxSize} MB.",
+        "invalidType": "File type not supported. Accepted types: ({types}).",
+        "maxImagesReached": "Max number of files reached! ({maxImages})"
+      }
+    },
+    "TagsInput": {
+      "labels": {
+        "addTags": "Add tags...",
+        "clearAllTags": "Clear all tags",
+        "tags": "tags",
+        "maxTagsReached": "Maximum tags reached"
+      }
+    },
+    "FileUpload": {
+      "uploadFile": "Upload File",
+      "browseFile": "Drag and drop your file here, or click to browse",
+      "supportedFormats": "Supported formats: ({formats})"
+    },
+    "ErrorMessage": {
+      "somethingWrong": "Something went wrong"
+    },
+    "BackToHomePage": {
+      "backToHome": "Back Home"
+    },
+    "DeliverLocation": {
+      "header": "Deliver to",
+      "selectPlaceholder": "Deliver to"
+    },
+    "CategoriesCarouselClient": {
+      "failedLoad": "Failed to load categories",
+      "noData": "No categories found",
+      "checkLater": "Check back later for new categories"
+    },
+    "BannersCarouselClient": {
+      "failedLoad": "Failed to load banners",
+      "noData": "No active banners found",
+      "checkLater": "Check back later for new banners"
+    },
+    "filters": {
+      "actions": {
+        "apply": "Apply",
+        "clear": "Clear",
+        "clearAll": "Clear All Filters"
+      },
+      "PaymentMethodFilter": {
+        "title": "Payment Method",
+        "select": "Select Method",
+        "type": {
+          "card": "Card",
+          "cash": "Cash"
+        }
+      },
+      "PaymentStatusFilter": {
+        "title": "Payment Status",
+        "select": "Select Status",
+        "type": {
+          "paid": "Paid",
+          "pending": "Pending",
+          "failed": "Failed"
+        }
+      },
+      "PriceRange": {
+        "price": "Filter by Price",
+        "from": "From ({currency})",
+        "to": "To ({currency})"
+      },
+      "RatingRange": {
+        "rating": "Filter by Rating",
+        "minRate": "Minimum Rating"
+      },
+      "DateRange": {
+        "title": "Filter by Date",
+        "desc": "Select start and end dates",
+        "fromDate": "Start Date",
+        "toDate": "End Date"
+      },
+      "DateRangeWithDaysNum": {
+        "dateFilter": "Filter by Date",
+        "filterType": "How would you like to filter by date?",
+        "selectDateRange": "Choose specific date range",
+        "selectDaysBefore": "Show items from the last few days",
+        "fromDate": "Start Date",
+        "toDate": "End Date",
+        "daysBeforeToday": "Number of Days",
+        "enterDays": "Enter number of days (e.g., 7 for last week)",
+        "daysBeforeHelper": "This will show items created in the last {days} days (since {date})",
+        "dateRangeHelper": "Select the period you want to see items from",
+        "exampleText": "Example: 30 days = last month's items",
+        "lastWeek": "Week",
+        "lastMonth": "Month",
+        "lastQuarter": "3 Months"
+      }
+    },
+    "SearchSuggestions": {
+      "popularSearches": "Popular Searches"
+    },
+    "UserAvatarByName": {
+      "fN": "UnKnown",
+      "lN": "User"
+    },
+    "HelpSection": {
+      "title": "Need Help Finding Something?",
+      "subTitle": "Our customer support team is here to help you find exactly what you're looking for. Get personalized recommendations and assistance.",
+      "labels": {
+        "contactSupport": "Contact Support",
+        "browseCategories": "Browse Categories"
+      }
+    },
+    "Footer": {
+      "components": {
+        "FooterTop": {
+          "title": "We're Always Here To Help",
+          "desc": "Reach out to us through any of these support channels",
+          "email": "care@cartjo.com",
+          "emailSupport": "email support"
+        },
+        "FooterBot": {
+          "rights": "© {date} CartJO. All Rights Reserved",
+          "items": {
+            "terms": "Terms of Use",
+            "privacy": "Privacy Policy",
+            "warranty": "Warranty Policy"
+          }
+        },
+        "FooterMid": {
+          "failed": "Failed to load active list data",
+          "noData": "No data available this time",
+          "checkLater": "Check later for more active data"
+        }
+      }
+    },
+    "CounterDown": {
+      "seconds": "seconds",
+      "second": "second",
+      "redirectingToLogin": "Redirecting to login page.."
+    },
+    "AuthRedirect": {
+      "title": "Please log in to view this protected content.",
+      "desc": " Redirecting to login route after..."
+    },
+    "LocationPicker": {
+      "searchPlaceholder": "Search for place..",
+      "useMyLocation": "Use My Location",
+      "gettingLocation": "Getting location...",
+      "geoNotSupported": "Geolocation is not supported by your browser",
+      "geoPermissionDenied": "Please allow location access in your browser settings.",
+      "geoUnavailable": "Location information is unavailable.",
+      "geoTimeout": "Location request timed out.",
+      "geoUnknown": "An unknown error occurred.",
+      "geoFailed": "Could not get your location."
+    },
+    "AddToCartButton": {
+      "add": "ADD TO CART",
+      "adding": "ADDING..."
+    }
+  },
+  "routes": {
+    "auth": {
+      "components": {
+        "AuthTabs": {
+          "login": "Log In",
+          "register": "New User?",
+          "components": {
+            "login": {
+              "hint": "If you have an account with CartJO, sign in with your identifier.",
+              "dataSet": {
+                "username": {
+                  "label": "Account Identifier",
+                  "placeholder": "Account Identifier",
+                  "desc": "Username or phone number or email address"
+                },
+                "password": {
+                  "label": "Password",
+                  "placeholder": "Password",
+                  "desc": "Password"
+                },
+                "rememberMe": {
+                  "label": "Remember me"
+                },
+                "lostPassword": {
+                  "label": "Lost your password?"
+                }
+              },
+              "actions": {
+                "proceed": "Log In"
+              },
+              "validations": {
+                "identifier": {
+                  "min": "Identifier must be at least 3 characters",
+                  "max": "Identifier must be at most 50 characters",
+                  "pattern": "Must be a valid username, Jordanian phone number, or email"
+                },
+                "password": {
+                  "min": "Password must be at least 6 characters"
+                }
+              },
+              "api": {
+                "loginFailed": "Login failed"
+              }
+            },
+            "register": {
+              "hint": "There are many advantages to creating an account: the payment process is faster, shipment tracking is possible and much more.",
+              "note": "Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our",
+              "privacyPolicy": "privacy policy.",
+              "dataSet": {
+                "firstName": {
+                  "label": "First name",
+                  "placeholder": "First name",
+                  "desc": "First name"
+                },
+                "lastName": {
+                  "label": "Last name",
+                  "placeholder": "Last name",
+                  "desc": "Last name"
+                },
+                "phoneNumber": {
+                  "label": "Phone number",
+                  "placeholder": "Phone number",
+                  "desc": "Phone number"
+                },
+                "email": {
+                  "label": "Email",
+                  "placeholder": "Email",
+                  "desc": "Email"
+                },
+                "password": {
+                  "label": "Password",
+                  "placeholder": "Password",
+                  "desc": "Password"
+                },
+                "preferredLang": {
+                  "label": "Preferred Language",
+                  "placeholder": "Preferred Language",
+                  "desc": "The user's preferred language will be used as the primary option when displaying content.",
+                  "langs": {
+                    "en": "English",
+                    "ar": "Arabic"
+                  }
+                },
+                "termsAccepted": {
+                  "label": "Terms accepted",
+                  "placeholder": "Terms accepted",
+                  "desc": "Terms accepted"
+                },
+                "marketingEmails": {
+                  "label": "Marketing emails",
+                  "placeholder": "Marketing emails",
+                  "desc": "Marketing emails"
+                }
+              },
+              "actions": {
+                "proceed": "Register"
+              },
+              "validations": {
+                "firstName": {
+                  "min": "First name must be at least 2 characters long"
+                },
+                "lastName": {
+                  "min": "Last name must be at least 2 characters long"
+                },
+                "phoneNumber": {
+                  "pattern": "Phone number must start with 77, 78, or 79 and be 9 digits long"
+                },
+                "email": {
+                  "invalid": "Please enter a valid email address"
+                },
+                "password": {
+                  "min": "Password must be at least 8 characters long"
+                },
+                "termsAccepted": {
+                  "required": "You must accept the terms and conditions"
+                }
+              },
+              "api": {
+                "registrationFailed": "Registration failed"
+              }
+            },
+            "ForgotPasswordLink": {
+              "label": "Forgot Password?"
+            },
+            "PasswordRules": {
+              "rules": {
+                "charsCount": "The password must be at least eight characters long.",
+                "uppercase": "The password must contain at least one uppercase letter.",
+                "lowercase": "The password must contain at least one lowercase letter.",
+                "number": "The password must contain at least one number.",
+                "special": "The password must contain at least one special character (such as: ! @ # $ % ^ & * . ,)."
+              }
+            }
+          }
+        }
+      },
+      "routes": {
+        "forgotPassword": {
+          "components": {
+            "ForgotPasswordStepper": {
+              "steps": {
+                "_1": {
+                  "title": "Identify Account",
+                  "desc": "Enter your credentials"
+                },
+                "_2": {
+                  "title": "Verify Code",
+                  "desc": "Check your email or phone"
+                },
+                "_3": {
+                  "title": "New Password",
+                  "description": "Create a secure password"
+                }
+              },
+              "title": "Password Recovery",
+              "desc": "Follow the steps to reset your password securely"
+            },
+            "IdentifyAccount": {
+              "noIdentifier": "Please enter your identifier; email, or phone number, or username",
+              "header": "Forgot Password?",
+              "desc": "Enter your email, phone number, or username to receive a verification code.",
+              "input": {
+                "label": "Email, Phone, or Username",
+                "placeholder": "Enter your email, phone, or username"
+              },
+              "submit": "Send Verification Code"
+            },
+            "VerifyCode": {
+              "title": "Verify Your Identity",
+              "description": "We have sent a 6-digit code to the email that is connected with {identifier}. Check your inbox and enter the verification code to reset your password.",
+              "inputLabel": "Verification Code",
+              "placeholder": "000000",
+              "noCode": "Please enter the 6-digit verification code",
+              "resend": "Did not receive the code? Resend",
+              "back": "Back",
+              "verifyCode": "Verify Code",
+              "loading": "Verifying..."
+            },
+            "CreateNewPassword": {
+              "title": "Create New Password",
+              "description": "Choose a strong password to secure your account",
+              "newPasswordLabel": "New Password",
+              "newPasswordPlaceholder": "Enter new password",
+              "confirmPasswordLabel": "Confirm Password",
+              "confirmPasswordPlaceholder": "Confirm new password",
+              "passwordNotMeetRules": "Password does not meet all rules",
+              "passwordsDoNotMatch": "Passwords do not match",
+              "passwordsMatch": "Passwords match",
+              "backButton": "Back",
+              "resetButton": "Reset Password",
+              "redirectingMessage": "Redirecting to login page."
+            }
+          }
+        }
+      }
+    },
+    "home": {
+      "components": {
+        "UserMenu": {
+          "signIn": "Sign In"
+        },
+        "UserAccountLinkMenu": {
+          "account": "Account",
+          "myAccount": "My Account",
+          "logout": "Logout"
+        },
+        "UserDashboardLink": {
+          "dashboard": "Dashboard"
+        },
+        "MainSearchBar": {
+          "placeholder": "Search for products, categories, or anything.."
+        },
+        "SelectedCategoriesItemsHeader": {
+          "title": "Featured Products",
+          "subtitle": "Discover handpicked items from various categories"
+        },
+        "SelectedCategoriesItemsContentHeader": {
+          "ctaBtnText": "View More of {categoryName} Items"
+        },
+        "SelectedCategoriesItemsContent": {
+          "err": "Failed to load products",
+          "noDataHeader": "No products found for this category",
+          "noDataMsg": "Check back later for new category's products"
+        }
+      }
+    },
+    "dashboard": {
+      "routes": {
+        "locations": {
+          "title": "Locations Management",
+          "desc": "Manage and upload location data with pricing information",
+          "currentLocations": "Current Locations",
+          "components": {
+            "DashboardUploadLocations": {
+              "uploadNewLocations": "Upload New Locations"
+            },
+            "DashboardLocationsStatCards": {
+              "totalLocations": "Total Locations",
+              "mainLocations": "Main Locations",
+              "subLocations": "Sub Locations",
+              "adminUsers": "Admin users"
+            }
+          },
+          "errors": {
+            "failedLoadLocations": "Failed to Load Locations"
+          }
+        },
+        "users": {
+          "title": "Users Management",
+          "desc": "Manage users data",
+          "components": {
+            "DashboardUsersStatCards": {
+              "totalUsers": "Total users",
+              "activeUsers": "Active users",
+              "deletedUsers": "Deleted users",
+              "adminUsers": "Admin users"
+            }
+          },
+          "errors": {
+            "failedLoadUsers": "Failed to Load Users"
+          },
+          "routes": {
+            "totalUsers": {
+              "components": {
+                "SearchBar": { "placeholder": "Search for users" },
+                "TotalUsersList": {
+                  "usersFound": "users found",
+                  "noUsersToLoad": "No more users to load",
+                  "noUsersFound": "No more users found",
+                  "errors": {
+                    "totalUsersFetchingFailure": "Error while fetching users"
+                  }
+                },
+                "UserCardActions": {
+                  "archivingUserDetails": "Archiving user details...",
+                  "archiveUser": "Archive User",
+                  "restoringUserDetails": "Restoring user details...",
+                  "restoreUser": "Restore User"
+                }
+              },
+              "errors": {
+                "dataLoadFailure": "Failed to load total users details"
+              }
+            },
+            "activeUsers": {
+              "components": {
+                "SearchBar": { "placeholder": "Search for active users" },
+                "TotalUsersList": {
+                  "usersFound": "active users found",
+                  "noUsersToLoad": "No more active users to load",
+                  "noUsersFound": "No more active users found",
+                  "errors": {
+                    "totalUsersFetchingFailure": "Error while fetching active users"
+                  }
+                },
+                "UserCardActions": {
+                  "archivingUserDetails": "Archiving active user details...",
+                  "archiveUser": "Archive Active User",
+                  "restoringUserDetails": "Restoring active user details...",
+                  "restoreUser": "Restore Active User"
+                }
+              },
+              "errors": {
+                "dataLoadFailure": "Failed to load active users details"
+              }
+            },
+            "deletedUsers": {
+              "components": {
+                "SearchBar": { "placeholder": "Search for deleted users" }
+              },
+              "errors": {
+                "dataLoadFailure": "Failed to load deleted users details"
+              }
+            },
+            "adminUsers": {
+              "components": {
+                "SearchBar": { "placeholder": "Search for admin users" },
+                "CreateAdminUser": {
+                  "createAdmin": "Create Admin"
+                }
+              },
+              "errors": {
+                "dataLoadFailure": "Failed to load admin users details"
+              }
+            }
+          }
+        },
+        "categories": {
+          "title": "Categories Management",
+          "desc": "Manage categories data",
+          "createCategory": {
+            "label": "Create Category",
+            "uploadArImage": "Upload Ar category image",
+            "uploadEnImage": "Upload En category image",
+            "creationFailed": "Category creation failed"
+          },
+          "editCategory": {
+            "label": "Edit Category",
+            "uploadArImage": "Upload Ar category image",
+            "uploadEnImage": "Upload En category image",
+            "creationFailed": "Category updating failed"
+          },
+          "errors": {
+            "failedLoadData": "Failed to Load categories"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for categories" },
+            "CreateCategoryForm": {
+              "fields": {
+                "categoryImage_ar": {
+                  "label": "Ar Category image",
+                  "placeholder": "Ar Category image"
+                },
+                "categoryImage_en": {
+                  "label": "En Category image",
+                  "placeholder": "En Category image"
+                },
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                }
+              },
+              "validations": {
+                "categoryImage_ar": {
+                  "required": "Ar Category image should be provided"
+                },
+                "categoryImage_en": {
+                  "required": "En Category image should be provided"
+                },
+                "name_ar": {
+                  "minChars": "Arabic name must be at least ({min}) characters long",
+                  "maxChars": "Arabic name must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least ({min}) characters long",
+                  "maxChars": "English name must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                }
+              },
+              "errors": {
+                "failedCreation": "Category creation failed"
+              }
+            },
+            "EditCategoryForm": {
+              "fields": {
+                "categoryImage_ar": {
+                  "label": "Ar Category image",
+                  "placeholder": "Ar Category image"
+                },
+                "categoryImage_en": {
+                  "label": "En Category image",
+                  "placeholder": "En Category image"
+                },
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                }
+              },
+              "validations": {
+                "categoryImage_ar": {
+                  "required": "Ar Category image should be provided"
+                },
+                "categoryImage_en": {
+                  "required": "En Category image should be provided"
+                },
+                "name_ar": {
+                  "minChars": "Arabic name must be at least ({min}) characters long",
+                  "maxChars": "Arabic name must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least ({min}) characters long",
+                  "maxChars": "English name must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                }
+              }
+            }
+          }
+        },
+        "subCategories": {
+          "title": "SubCategories Management",
+          "desc": "Manage sub-categories data",
+          "createSubCategory": {
+            "label": "Create SubCategory",
+            "uploadArImage": "Upload Ar sub-category image",
+            "uploadEnImage": "Upload En sub-category image"
+          },
+          "errors": {
+            "failedLoadData": "Failed to Load sub-categories"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for sub-categories" },
+            "CreateSubCategoryForm": {
+              "fields": {
+                "subCategoryImage_ar": {
+                  "label": "Ar Sub-Category image",
+                  "placeholder": "Ar Sub-Category image"
+                },
+                "subCategoryImage_en": {
+                  "label": "En Sub-Category image",
+                  "placeholder": "En Sub-Category image"
+                },
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                },
+                "category": {
+                  "label": "Category",
+                  "placeholder": "Select a category"
+                }
+              },
+              "validations": {
+                "subCategoryImage_ar": {
+                  "required": "Ar Sub-Category image should be provided"
+                },
+                "subCategoryImage_en": {
+                  "required": "En Sub-Category image should be provided"
+                },
+                "name_ar": {
+                  "minChars": "Arabic name must be at least ({min}) characters long",
+                  "maxChars": "Arabic name must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain arabic characters only"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least ({min}) characters long",
+                  "maxChars": "English name must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "category": {
+                  "required": "Category is required"
+                }
+              },
+              "errors": {
+                "failedCreation": "SubCategory creation failed"
+              }
+            },
+            "EditSubCategoryForm": {
+              "fields": {
+                "subCategoryImage_ar": {
+                  "label": "Ar Sub-Category image",
+                  "placeholder": "Ar Sub-Category image"
+                },
+                "subCategoryImage_en": {
+                  "label": "En Sub-Category image",
+                  "placeholder": "En Sub-Category image"
+                },
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                },
+                "category": {
+                  "label": "Category",
+                  "placeholder": "Select a category"
+                }
+              },
+              "validations": {
+                "subCategoryImage_ar": {
+                  "required": "Ar Sub-Category image should be provided"
+                },
+                "subCategoryImage_en": {
+                  "required": "En Sub-Category image should be provided"
+                },
+                "name_ar": {
+                  "minChars": "Arabic name must be at least ({min}) characters long",
+                  "maxChars": "Arabic name must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain arabic characters only"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least ({min}) characters long",
+                  "maxChars": "English name must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "category": {
+                  "required": "Category is required"
+                }
+              },
+              "errors": {
+                "failedCreation": "SubCategory editing failed"
+              }
+            },
+            "CategoryListSelector": {
+              "select": {
+                "all": "All Categories",
+                "one": "Select Category"
+              }
+            }
+          }
+        },
+        "products": {
+          "title": "Products Management",
+          "desc": "Manage products data",
+          "createProduct": {
+            "label": "Create Product",
+            "uploadImage": "Upload product image"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for products" },
+            "CreateProductForm": {
+              "fields": {
+                "mainImage": {
+                  "label": "Product main images",
+                  "placeholder": "Product main images"
+                },
+                "images": {
+                  "label": "Product Images",
+                  "placeholder": "Product Images"
+                },
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                },
+                "desc_ar": {
+                  "label": "Arabic Description",
+                  "placeholder": "Arabic Description"
+                },
+                "desc_en": {
+                  "label": "English Description",
+                  "placeholder": "English Description"
+                },
+                "price": {
+                  "label": "Price",
+                  "placeholder": "Price"
+                },
+                "currency": {
+                  "label": "Currency",
+                  "placeholder": "Currency"
+                },
+                "totalAmountCount": {
+                  "label": "Total amount count",
+                  "placeholder": "Total amount count"
+                },
+                "typeHint": {
+                  "label": "Type Hint",
+                  "placeholder": "Type Hint"
+                },
+                "category": {
+                  "label": "Category",
+                  "placeholder": "Select a category"
+                },
+                "subCategory": {
+                  "label": "Sub-Category",
+                  "placeholder": "Select a sub-category"
+                },
+                "tags": {
+                  "label": "Tags",
+                  "placeholder": "Add tags"
+                },
+                "availableCount": {
+                  "label": "Available count",
+                  "placeholder": "Available count"
+                },
+                "discountRate": {
+                  "label": "Discount rate",
+                  "placeholder": "Discount rate"
+                }
+              },
+              "validations": {
+                "mainImage": {
+                  "required": "Product main image should be provided"
+                },
+                "images": {
+                  "required": "Product's images should be provided"
+                },
+                "name_ar": {
+                  "minChars": "Arabic name must be at least 2 characters long"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least 2 characters long"
+                },
+                "category": {
+                  "required": "Category is required"
+                },
+                "desc_ar": {
+                  "minChars": "Arabic desc must be at least 20 characters long"
+                },
+                "desc_en": {
+                  "minChars": "English desc must be at least 20 characters long"
+                },
+                "price": {
+                  "min": "Price must be at least 1"
+                },
+                "totalAmountCount": {
+                  "min": "Total amount count must be at least 1"
+                },
+                "currency": {
+                  "notSupported": "Select one of the supported currencies"
+                },
+                "typeHint": {
+                  "notSupported": "Select one of the supported type hints"
+                },
+                "subCategory": {
+                  "required": "SubCategory is required"
+                },
+                "tags": {
+                  "min": "Add one tag at least"
+                },
+                "availableCount": {
+                  "min": "Available amount count must be at least 1"
+                },
+                "discountRate": {
+                  "min": "Discount amount must be at least 1"
+                }
+              }
+            },
+            "EditProductForm": {
+              "fields": {
+                "mainImage": {
+                  "label": "Product main images",
+                  "placeholder": "Product main images"
+                },
+                "images": {
+                  "label": "Product Images",
+                  "placeholder": "Product Images"
+                },
+                "name_ar": {
+                  "label": "Arabic Name",
+                  "placeholder": "Arabic Name"
+                },
+                "name_en": {
+                  "label": "English Name",
+                  "placeholder": "English Name"
+                },
+                "desc_ar": {
+                  "label": "Arabic Description",
+                  "placeholder": "Arabic Description"
+                },
+                "desc_en": {
+                  "label": "English Description",
+                  "placeholder": "English Description"
+                },
+                "price": {
+                  "label": "Price",
+                  "placeholder": "Price"
+                },
+                "currency": {
+                  "label": "Currency",
+                  "placeholder": "Currency"
+                },
+                "totalAmountCount": {
+                  "label": "Total amount count",
+                  "placeholder": "Total amount count"
+                },
+                "typeHint": {
+                  "label": "Type Hint",
+                  "placeholder": "Type Hint"
+                },
+                "category": {
+                  "label": "Category",
+                  "placeholder": "Select a category"
+                },
+                "subCategory": {
+                  "label": "Sub-Category",
+                  "placeholder": "Select a sub-category"
+                },
+                "tags": {
+                  "label": "Tags",
+                  "placeholder": "Add tags"
+                },
+                "availableCount": {
+                  "label": "Available count",
+                  "placeholder": "Available count"
+                },
+                "discountRate": {
+                  "label": "Discount rate",
+                  "placeholder": "Discount rate"
+                }
+              },
+              "validations": {
+                "mainImage": {
+                  "required": "Product main image should be provided"
+                },
+                "images": {
+                  "required": "Product's images should be provided"
+                },
+                "name_ar": {
+                  "minChars": "Arabic name must be at least 2 characters long"
+                },
+                "name_en": {
+                  "minChars": "English name must be at least 2 characters long"
+                },
+                "category": {
+                  "required": "Category is required"
+                },
+                "desc_ar": {
+                  "minChars": "Arabic desc must be at least 20 characters long"
+                },
+                "desc_en": {
+                  "minChars": "English desc must be at least 20 characters long"
+                },
+                "price": {
+                  "min": "Price must be at least 1"
+                },
+                "totalAmountCount": {
+                  "min": "Total amount count must be at least 1"
+                },
+                "currency": {
+                  "notSupported": "Select one of the supported currencies"
+                },
+                "typeHint": {
+                  "notSupported": "Select one of the supported type hints"
+                },
+                "subCategory": {
+                  "required": "SubCategory is required"
+                },
+                "tags": {
+                  "min": "Add one tag at least"
+                },
+                "availableCount": {
+                  "min": "Available amount count must be at least 1"
+                },
+                "discountRate": {
+                  "min": "Discount amount must be at least 1"
+                }
+              }
+            }
+          }
+        },
+        "logos": {
+          "title": "Logos Management",
+          "desc": "Manage logos data",
+          "createLogo": {
+            "label": "Create Logo",
+            "uploadImage": "Upload logo image",
+            "actionFailed": "Logo creation failed"
+          },
+          "editLogo": {
+            "label": "Edit Logo",
+            "uploadImage": "Upload logo image",
+            "actionFailed": "Logo editing failed"
+          },
+          "errors": {
+            "failedLoadData": "Failed to Load logos"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for logos" },
+            "CreateLogoForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "Logo image",
+                  "placeholder": "Logo image"
+                },
+                "name": {
+                  "label": "Name",
+                  "placeholder": "Name"
+                },
+                "altText": {
+                  "label": "Alternative text",
+                  "placeholder": "Alternative text"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "Logo image should be provided"
+                },
+                "name": {
+                  "minChars": "Name must be at least ({min}) characters long",
+                  "maxChars": "Name must be at most ({max}) characters long"
+                },
+                "altText": {
+                  "minChars": "Alternative text must be at least ({min}) characters long",
+                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                }
+              },
+              "errors": {
+                "failedCreation": "Logo creation failed"
+              }
+            },
+            "EditCategoryForm": {
+              "fields": {
+                "logoImage": {
+                  "label": "Logo image",
+                  "placeholder": "Logo image"
+                },
+                "name": {
+                  "label": "Name",
+                  "placeholder": "Name"
+                },
+                "altText": {
+                  "label": "Alternative text",
+                  "placeholder": "Alternative text"
+                }
+              },
+              "validations": {
+                "logoImage": {
+                  "required": "Logo image should be provided"
+                },
+                "name": {
+                  "minChars": "Name must be at least ({min}) characters long",
+                  "maxChars": "Name must be at most ({max}) characters long"
+                },
+                "altText": {
+                  "minChars": "Alternative text must be at least ({min}) characters long",
+                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                }
+              },
+              "errors": {
+                "failedEditing": "Logo editing failed"
+              }
+            }
+          }
+        },
+        "banners": {
+          "title": "Banners Management",
+          "desc": "Manage banners data",
+          "createBanner": {
+            "label": "Create Banner",
+            "uploadImage_ar": "Upload ar banner image",
+            "uploadImage_en": "Upload en banner image",
+            "actionFailed": "Banner creation failed"
+          },
+          "editBanner": {
+            "label": "Edit Banner",
+            "uploadImage": "Upload banner image",
+            "actionFailed": "Banner editing failed"
+          },
+          "errors": {
+            "failedLoadData": "Failed to Load banners"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for banners" },
+            "CreateBannerForm": {
+              "fields": {
+                "bannerImage_ar": {
+                  "label": "Ar Banner image",
+                  "placeholder": "Ar Banner image"
+                },
+                "bannerImage_en": {
+                  "label": "En Banner image",
+                  "placeholder": "En Banner image"
+                },
+                "title_ar": {
+                  "label": "Ar Title",
+                  "placeholder": "Ar Title"
+                },
+                "title_en": {
+                  "label": "En Title",
+                  "placeholder": "En Title"
+                },
+                "link": {
+                  "label": "Banner cta link",
+                  "placeholder": "Banner cta link"
+                },
+                "withAction": {
+                  "label": "Banner with an action?",
+                  "placeholder": "Banner with an action?"
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Start Date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "End Date"
+                }
+              },
+              "validations": {
+                "bannerImage_ar": {
+                  "required": "Banner ar image should be provided"
+                },
+                "bannerImage_en": {
+                  "required": "Banner en image should be provided"
+                },
+                "title_ar": {
+                  "minChars": "Arabic title must be at least ({min}) characters long",
+                  "maxChars": "Arabic title must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain arabic characters only"
+                },
+                "title_en": {
+                  "minChars": "English title must be at least ({min}) characters long",
+                  "maxChars": "English title must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "link": {
+                  "minChars": "Link must be at least ({min}) characters long",
+                  "maxChars": "Link must be at most ({max}) characters long"
+                },
+                "withAction": {
+                  "required": "Banner with an action label should be provided"
+                },
+                "startDate": {
+                  "required": "Start Date is required",
+                  "invalid": "Invalid Date"
+                },
+                "endDate": {
+                  "invalid": "Invalid Date",
+                  "mustBeAfterStart": "End Date must be after start date"
+                }
+              },
+              "errors": {
+                "failedCreation": "Banner creation failed"
+              }
+            },
+            "EditBannerForm": {
+              "fields": {
+                "bannerImage_ar": {
+                  "label": "Banner ar image",
+                  "placeholder": "Banner ar image"
+                },
+                "bannerImage_en": {
+                  "label": "En Banner image",
+                  "placeholder": "En Banner image"
+                },
+                "title_ar": {
+                  "label": "Ar Title",
+                  "placeholder": "Ar Title"
+                },
+                "title_en": {
+                  "label": "En Title",
+                  "placeholder": "En Title"
+                },
+                "link": {
+                  "label": "Banner cta link",
+                  "placeholder": "Banner cta link"
+                },
+                "withAction": {
+                  "label": "Banner with an action?",
+                  "placeholder": "Banner with an action?"
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Start Date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "End Date"
+                }
+              },
+              "validations": {
+                "bannerImage_ar": {
+                  "required": "Banner ar image should be provided"
+                },
+                "bannerImage_en": {
+                  "required": "Banner en image should be provided"
+                },
+                "title_ar": {
+                  "minChars": "Arabic title must be at least ({min}) characters long",
+                  "maxChars": "Arabic title must be at most ({max}) characters long",
+                  "arabicCharsOnly": "Must contain arabic characters only"
+                },
+                "title_en": {
+                  "minChars": "English title must be at least ({min}) characters long",
+                  "maxChars": "English title must be at most ({max}) characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "link": {
+                  "minChars": "Link must be at least ({min}) characters long",
+                  "maxChars": "Link must be at most ({max}) characters long"
+                },
+                "withAction": {
+                  "required": "Banner with an action label should be provided"
+                },
+                "startDate": {
+                  "required": "Start Date is required",
+                  "invalid": "Invalid Date"
+                },
+                "endDate": {
+                  "invalid": "Invalid Date",
+                  "mustBeAfterStart": "End Date must be after start date"
+                }
+              },
+              "errors": {
+                "failedEditing": "Banner editing failed"
+              }
+            }
+          }
+        },
+        "showcases": {
+          "title": "Showcases Management",
+          "desc": "Manage showcases data",
+          "createShowcase": {
+            "label": "Create showcase",
+            "uploadImage_ar": "Upload ar banner image",
+            "uploadImage_en": "Upload en banner image",
+            "actionFailed": "Showcase creation failed"
+          },
+          "editShowcase": {
+            "label": "Edit Showcase",
+            "uploadImage": "Upload banner image",
+            "actionFailed": "Showcase editing failed"
+          },
+          "errors": {
+            "failedLoadData": "Failed to Load showcases"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for showcases" },
+
+            "CreateShowcaseForm": {
+              "fields": {
+                "title_ar": {
+                  "label": "Arabic Title",
+                  "placeholder": "Enter Arabic title"
+                },
+                "title_en": {
+                  "label": "English Title",
+                  "placeholder": "Enter English title"
+                },
+                "description_ar": {
+                  "label": "Arabic Description",
+                  "placeholder": "Enter Arabic description"
+                },
+                "description_en": {
+                  "label": "English Description",
+                  "placeholder": "Enter English description"
+                },
+                "showAllButtonText_ar": {
+                  "label": "Arabic Button Text",
+                  "placeholder": "Enter Arabic button text"
+                },
+                "showAllButtonText_en": {
+                  "label": "English Button Text",
+                  "placeholder": "Enter English button text"
+                },
+                "showAllButtonLink": {
+                  "label": "Button Link",
+                  "placeholder": "Enter button link URL"
+                },
+                "type": {
+                  "label": "Showcase Type",
+                  "placeholder": "Select showcase type"
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Select start date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "Select end date"
+                }
+              },
+              "validations": {
+                "title_ar": {
+                  "minChars": "Arabic title must be at least {min} characters long",
+                  "maxChars": "Arabic title must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "title_en": {
+                  "minChars": "English title must be at least {min} characters long",
+                  "maxChars": "English title must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "description_ar": {
+                  "minChars": "Arabic description must be at least {min} characters long",
+                  "maxChars": "Arabic description must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "description_en": {
+                  "minChars": "English description must be at least {min} characters long",
+                  "maxChars": "English description must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "showAllButtonText_ar": {
+                  "minChars": "Arabic button text must be at least {min} characters long",
+                  "maxChars": "Arabic button text must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "showAllButtonText_en": {
+                  "minChars": "English button text must be at least {min} characters long",
+                  "maxChars": "English button text must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "showAllButtonLink": {
+                  "minChars": "English button link must be at least {min} characters long",
+                  "maxChars": "English button link must be at most {max} characters long",
+                  "invalidUrl": "Invalid Url"
+                },
+                "type": { "invalid": "Invalid showcase hint-type" },
+                "startDate": {
+                  "invalid": "Invalid start date"
+                },
+                "endDate": {
+                  "invalid": "Invalid end date",
+                  "mustBeAfterStart": "End date must be after start date"
+                }
+              },
+              "errors": {
+                "failedCreation": "Showcase creation failed"
+              }
+            },
+            "EditShowcaseForm": {
+              "fields": {
+                "title_ar": {
+                  "label": "Arabic Title",
+                  "placeholder": "Enter Arabic title"
+                },
+                "title_en": {
+                  "label": "English Title",
+                  "placeholder": "Enter English title"
+                },
+                "description_ar": {
+                  "label": "Arabic Description",
+                  "placeholder": "Enter Arabic description"
+                },
+                "description_en": {
+                  "label": "English Description",
+                  "placeholder": "Enter English description"
+                },
+                "showAllButtonText_ar": {
+                  "label": "Arabic Button Text",
+                  "placeholder": "Enter Arabic button text"
+                },
+                "showAllButtonText_en": {
+                  "label": "English Button Text",
+                  "placeholder": "Enter English button text"
+                },
+                "showAllButtonLink": {
+                  "label": "Button Link",
+                  "placeholder": "Enter button link URL"
+                },
+                "type": {
+                  "label": "Showcase Type",
+                  "placeholder": "Select showcase type"
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Select start date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "Select end date"
+                }
+              },
+              "validations": {
+                "title_ar": {
+                  "minChars": "Arabic title must be at least {min} characters long",
+                  "maxChars": "Arabic title must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "title_en": {
+                  "minChars": "English title must be at least {min} characters long",
+                  "maxChars": "English title must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "description_ar": {
+                  "minChars": "Arabic description must be at least {min} characters long",
+                  "maxChars": "Arabic description must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "description_en": {
+                  "minChars": "English description must be at least {min} characters long",
+                  "maxChars": "English description must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "showAllButtonText_ar": {
+                  "minChars": "Arabic button text must be at least {min} characters long",
+                  "maxChars": "Arabic button text must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "showAllButtonText_en": {
+                  "minChars": "English button text must be at least {min} characters long",
+                  "maxChars": "English button text must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "showAllButtonLink": {
+                  "minChars": "English button link must be at least {min} characters long",
+                  "maxChars": "English button link must be at most {max} characters long",
+                  "invalidUrl": "Invalid Url"
+                },
+                "type": { "invalid": "Invalid showcase hint-type" },
+                "startDate": {
+                  "invalid": "Invalid start date"
+                },
+                "endDate": {
+                  "invalid": "Invalid end date",
+                  "mustBeAfterStart": "End date must be after start date"
+                }
+              },
+              "errors": {
+                "failedCreation": "Showcase editing failed"
+              }
+            }
+          }
+        },
+        "typeHintConfigs": {
+          "title": "Type-Hint Configs Management",
+          "desc": "Manage type-hint configs data",
+          "createTypeHintConfig": {
+            "label": "Create Type-Hint Config",
+            "actionFailed": "Type-hint config creation failed"
+          },
+          "components": {
+            "SearchBar": { "placeholder": "Search for type-hint configs" },
+            "CreateTypeHintConfigForm": {
+              "fields": {
+                "label_ar": {
+                  "label": "Arabic Label",
+                  "placeholder": "Enter Arabic Label"
+                },
+                "label_en": {
+                  "label": "English Label",
+                  "placeholder": "Enter English Label"
+                },
+                "icon": {
+                  "label": "Icon Name",
+                  "placeholder": "Enter icon name",
+                  "hint": "Use Lucide Icons (https://lucide.dev/icons) to make user experience good."
+                },
+                "clrFrom": {
+                  "label": "Color-From Code",
+                  "placeholder": "Enter Color-From code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "clrTo": {
+                  "label": "Color-To Code",
+                  "placeholder": "Enter Color-To code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "textClr": {
+                  "label": "Text color Code",
+                  "placeholder": "Enter Text color code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "priority": {
+                  "label": "Priority",
+                  "placeholder": "Enter priority value",
+                  "hint": "From 1 to 10, 1 is the most priority one."
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Start Date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "End Date"
+                }
+              },
+              "validations": {
+                "label_ar": {
+                  "minChars": "Arabic label must be at least {min} characters long",
+                  "maxChars": "Arabic label must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "label_en": {
+                  "minChars": "English label must be at least {min} characters long",
+                  "maxChars": "English label must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "icon": {
+                  "minChars": "Icon must be at least {min} characters long",
+                  "maxChars": "Icon must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "clrFrom": {
+                  "minChars": "Color-From Code must be at least {min} characters long",
+                  "maxChars": "Color-From Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters only"
+                },
+                "clrTo": {
+                  "minChars": "Color-To Code must be at least {min} characters long",
+                  "maxChars": "Color-To Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters and numbers only"
+                },
+                "textClr": {
+                  "minChars": "Text color Code must be at least {min} characters long",
+                  "maxChars": "Text color Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters and numbers only"
+                },
+                "priority": {
+                  "minChars": "Priority must be at least {min}",
+                  "maxChars": "Priority must be at most {max}"
+                },
+                "startDate": {
+                  "required": "Start Date is required",
+                  "invalid": "Invalid Date"
+                },
+                "endDate": {
+                  "invalid": "Invalid Date",
+                  "mustBeAfterStart": "End Date must be after start date"
+                }
+              },
+              "errors": {
+                "failedCreation": "Showcase creation failed"
+              }
+            },
+            "EditTypeHintConfigForm": {
+              "fields": {
+                "label_ar": {
+                  "label": "Arabic Label",
+                  "placeholder": "Enter Arabic Label"
+                },
+                "label_en": {
+                  "label": "English Label",
+                  "placeholder": "Enter English Label"
+                },
+                "icon": {
+                  "label": "Icon Name",
+                  "placeholder": "Enter icon name",
+                  "hint": "Use Lucide Icons (https://lucide.dev/icons) to make user experience good."
+                },
+                "clrFrom": {
+                  "label": "Color-From Code",
+                  "placeholder": "Enter Color-From code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "clrTo": {
+                  "label": "Color-To Code",
+                  "placeholder": "Enter Color-To code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "textClr": {
+                  "label": "Text color Code",
+                  "placeholder": "Enter Text color code",
+                  "hint": "Use hex color codes, like (ED5353 or 622A9B, etc)"
+                },
+                "priority": {
+                  "label": "Priority",
+                  "placeholder": "Enter priority value",
+                  "hint": "From 1 to 10, 1 is the most priority one."
+                },
+                "startDate": {
+                  "label": "Start Date",
+                  "placeholder": "Start Date"
+                },
+                "endDate": {
+                  "label": "End Date",
+                  "placeholder": "End Date"
+                }
+              },
+              "validations": {
+                "label_ar": {
+                  "minChars": "Arabic label must be at least {min} characters long",
+                  "maxChars": "Arabic label must be at most {max} characters long",
+                  "arabicCharsOnly": "Must contain Arabic characters only"
+                },
+                "label_en": {
+                  "minChars": "English label must be at least {min} characters long",
+                  "maxChars": "English label must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain English characters only"
+                },
+                "icon": {
+                  "minChars": "Icon must be at least {min} characters long",
+                  "maxChars": "Icon must be at most {max} characters long",
+                  "englishCharsOnly": "Must contain english characters only"
+                },
+                "clrFrom": {
+                  "minChars": "Color-From Code must be at least {min} characters long",
+                  "maxChars": "Color-From Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters only"
+                },
+                "clrTo": {
+                  "minChars": "Color-To Code must be at least {min} characters long",
+                  "maxChars": "Color-To Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters and numbers only"
+                },
+                "textClr": {
+                  "minChars": "Text color Code must be at least {min} characters long",
+                  "maxChars": "Text color Code must be at most {max} characters long",
+                  "englishCharsAndNumOnly": "Must contain english characters and numbers only"
+                },
+                "priority": {
+                  "minChars": "Priority must be at least {min}",
+                  "maxChars": "Priority must be at most {max}"
+                },
+                "startDate": {
+                  "required": "Start Date is required",
+                  "invalid": "Invalid Date"
+                },
+                "endDate": {
+                  "invalid": "Invalid Date",
+                  "mustBeAfterStart": "End Date must be after start date"
+                }
+              },
+              "errors": {
+                "failedCreation": "Showcase creation failed"
+              }
+            }
+          },
+          "errors": {
+            "failedLoadData": "Failed to Load type-hint configs"
+          }
+        },
+        "orders": {
+          "title": "Orders Management",
+          "desc": "Manage orders data",
+          "errors": {
+            "failedLoadData": "Failed to Load orders"
+          },
+          "components": {
+            "SearchBar": {
+              "placeholder": "Search for transaction ID, email, merchant reference, or user ID"
+            },
+            "OrderCard": {
+              "status": {
+                "pending": "Pending",
+                "failed": "Failed",
+                "paid": "Paid"
+              },
+              "transactionId": "Transaction ID",
+              "reference": "Reference",
+              "paymentMethod": "Payment Method",
+              "item": "Item",
+              "items": "Items",
+              "shippingAddress": "Shipping Address",
+              "orderItems": "Order Items"
+            },
+            "OrderCardActions": {
+              "viewDetails": "View Details"
+            },
+            "OrderDetailedCard": {
+              "orderDetails": "Order Details",
+              "notFound": "The order you're looking for doesn't exist or has been removed.",
+              "status": {
+                "pending": "Pending",
+                "failed": "Failed",
+                "paid": "Paid"
+              },
+              "transactionId": "Transaction ID",
+              "reference": "Reference",
+              "paymentMethod": "Payment Method",
+              "item": "Item",
+              "items": "Items",
+              "shippingAddress": "Shipping Address",
+              "orderItems": "Order Items",
+              "customerInfo": "Customer Information"
+            },
+            "ExportOrders": {
+              "title": "Export Data",
+              "selectDates": "Select Date Range",
+              "excel": "Export Excel",
+              "pdf": "Export PDF",
+              "exporting": "Exporting...",
+              "disabledTooltip": "Please select a date range first"
+            }
+          }
+        }
+      },
+      "components": {
+        "NoLoggedUserState": {
+          "notLoggedIn": "You are not logged in!",
+          "goTo": "Please go to",
+          "pathLink": "/auth",
+          "toLogin": "to login"
+        },
+        "AuthUserDashboard": {
+          "welcomeBack": "Welcome back!",
+          "loggedAsUser": "You are logged in as a regular user.",
+          "signOut": "Sign Out",
+          "navigateToHome": "Navigate to home page"
+        },
+        "DashboardControlNavLinks": {
+          "navLinks": "Navigation Links",
+          "navItems": {
+            "locations": "Locations",
+            "users": "Users",
+            "categories": "Categories",
+            "subCategories": "SubCategories",
+            "products": "Products",
+            "media": "Media",
+            "logo": "Logo",
+            "banner": "Banners",
+            "typeHintConfigs": "Type-Hint Configs",
+            "showcases": "Showcases",
+            "orders": "Orders"
+          }
+        },
+        "DashboardLocationCard": {
+          "hide": "Hide",
+          "show": "Show"
+        },
+        "BackToDashboardBtn": {
+          "label": "Back to dashboard"
+        }
+      },
+      "errors": {
+        "dashboardFailure": "Failed to load dashboard details"
+      }
+    },
+    "wishlist": {
+      "header": "Wishlist",
+      "errors": {
+        "failedLoadData": "Failed to load wishlist items"
+      },
+      "components": {
+        "NoWishlistItems": {
+          "wishlistIsEmpty": "Your wishlist is empty! Ready to make a wish?",
+          "adviceStartAddingItems": "Start adding items you love to your wishlist by tapping on the heart icon",
+          "discoverProducts": "Discover Products"
+        },
+        "WishlistLayoutHeaderActions": {
+          "emptyWishlist": "Empty Wishlist",
+          "itemCount": "Item Count ({count})",
+          "noItemsToRemove": "No items to remove",
+          "clearAllItems": "Clear all items",
+          "confirmDeleteTitle": "Delete Confirmation",
+          "confirmDeleteMessage": "Are you sure that you want to delete all wishlist items? Your wishlist data will be removed after confirming.",
+          "confirmCartItemsMessage": "Are you sure you want to send all wishlist items to your cart? Your wishlist data will be sent and deleted after confirming.",
+          "confirmCartItemsTitle": "Send all items to cart",
+          "confirmDelete": "Delete all items",
+          "confirmCart": "Send all items to cart",
+          "cancel": "Cancel",
+          "deleting": "Deleting Items...",
+          "deleteError": "Error happened while deleting wishlist items",
+          "sendToCart": "Send Items to Cart",
+          "sendingToCart": "Sending Items To Cart..."
+        }
+      }
+    },
+    "categories": {
+      "failed": "Failed to load categories",
+      "components": {
+        "CategorySubCategoriesGrid": {
+          "header": "Explore Subcategories and Find What Suits You Best 🤗",
+          "failed": "Oops! Failed to load subcategories!",
+          "noData": "No subcategories available",
+          "checkLater": "Check later for sub-categories"
+        },
+        "CategoryItems": {
+          "failed": "Oops! Failed to load category items!",
+          "noData": "No subcategories available"
+        },
+        "NoCategoryItems": {
+          "empty": "Oops! No items found for this category. Start searching for other ones!"
+        }
+      }
+    },
+    "subCategory": {
+      "failed": "Failed to load sub-category's data",
+      "components": {
+        "SubCategoryItems": {
+          "failed": "Oops! Failed to load sub-category's items!",
+          "noData": "No subcategories data available"
+        },
+        "NoCategoryItems": {
+          "empty": "Oops! No items found for this sub-category. Start searching for other ones!"
+        }
+      }
+    },
+    "product": {
+      "errors": {
+        "failed": "Failed to load product's data"
+      },
+      "components": {
+        "ProductDetailsPage": {
+          "failed": "Failed to load product's data"
+        },
+        "ProdCommentsHeader": {
+          "customerReviews": "Customer Reviews",
+          "rating": "rating",
+          "ratings": "ratings"
+        },
+        "ProdCommentsErr": {
+          "failedLoadComments": "Failed to Load Comments"
+        },
+        "NoProdComments": {
+          "noReviews": "No Reviews Yet",
+          "shareThoughts": "Be the first to share your thoughts about this product"
+        },
+        "ProductCommentCard": {
+          "verifiedPurchase": "Verified Purchase",
+          "confirmDeleteTitle": "Delete Confirmation",
+          "confirmDeleteMessage": "Are you sure that you want to delete your comment? Your comment will be removed after confirming.",
+          "confirmDelete": "Delete Comment",
+          "cancel": "Cancel",
+          "deleting": "Deleting...",
+          "deleteError": "Error happened while deleting comment"
+        },
+        "AddComment": {
+          "writeReview": "Write a Review",
+          "yourRating": "Your Rating",
+          "yourComment": "Your Comment",
+          "shareThoughts": "Share your thoughts about this product..",
+          "submit": "Submit Review",
+          "submitting": "Submitting...",
+          "enterComment": "Please enter a comment",
+          "submitCommentFailed": "Failed to submit comment"
+        },
+        "EditComment": {
+          "rating": "Rating",
+          "clearRating": "Clear Rating",
+          "editPlaceholder": "Share your thoughts about this product"
+        },
+        "NoProductFound": {
+          "title": "Product Not Found",
+          "desc": "We couldn't find the product you're looking for. It might have been moved, discontinued, or the link might be broken.",
+          "prodId": "Product ID",
+          "searchFor": "Search for Something Else"
+        },
+        "RecommendedProducts": {
+          "failed": "Failed to load suggested products",
+          "title": "You Might Also Like",
+          "subTitle": "Check out these popular products from our collection"
+        },
+        "RecProductsData": {
+          "title": "You Might Also Like",
+          "subTitle": "Check out these popular products from our collection"
+        }
+      }
+    },
+    "search": {
+      "errors": {
+        "failed": "Failed to load search data"
+      },
+      "components": {
+        "NoSearch": {
+          "noSearchTextTitle": "We could not find your search items",
+          "noSearchTextDesc": "Might an error occurred! Please try again later, or search by a proper text using search box.",
+          "tryAgain": "Try Again",
+          "newSearch": "New Search",
+          "searchTipsTitle": "Search Tips",
+          "tip1": "Check your spelling and try again",
+          "tip2": "Use different keywords or shorter terms",
+          "tip3": "Try more general search terms"
+        },
+        "NoSearchItemsFound": {
+          "empty": "Oops! No items found for this search. Start searching for other things!"
+        },
+        "SearchItems": {
+          "failed": "Failed to load your search data"
+        }
+      }
+    },
+    "support": {
+      "errors": {
+        "failedLoadData": "Failed to load our support data, try again later!"
+      },
+      "components": {
+        "heroSection": {
+          "title": "How can we help you?",
+          "subTitle": "Search our knowledge base or get in touch with our support team",
+          "searchPlaceholder": "Search for help..."
+        },
+        "contactSection": {
+          "title": "Contact Support",
+          "contactMethods": {
+            "email": {
+              "title": "Email Support",
+              "availability": "Response within 4 hours"
+            },
+            "phone": {
+              "title": "Phone Support",
+              "availability": "Mon-Fri, 9AM-6PM EST"
+            }
+          }
+        },
+        "SupportFAQ": {
+          "title": "Frequently Asked Questions",
+          "categories": {
+            "all": "All Topics",
+            "orders": "Orders",
+            "shipping": "Shipping",
+            "returnAndRefunds": "Returns & Refunds",
+            "payment": "Payment",
+            "account": "Account"
+          },
+          "faqs": {
+            "trackOrder": {
+              "q": "How do I track my order?",
+              "a": "You can track your order by logging into your account and visiting the 'Orders' section. Click on the order you want to track to see real-time updates."
+            },
+            "returnPolicy": {
+              "q": "What is your return policy?",
+              "a": "We offer a 30-day return policy for most items. Products must be unused and in original packaging. Free return shipping for defective items."
+            },
+            "shippingTime": {
+              "q": "How long does shipping take?",
+              "a": "Standard shipping takes 3-5 business days. Express shipping is available for 1-2 day delivery. International orders typically arrive within 7-14 days."
+            },
+            "paymentMethods": {
+              "q": "What payment methods do you accept?",
+              "a": "We accept all major credit cards (Visa, Mastercard, Amex), PayPal, Apple Pay, and Google Pay. All transactions are secure and encrypted."
+            },
+            "updateAccount": {
+              "q": "How do I change my account information?",
+              "a": "Log into your account and navigate to Settings. From there you can update your email, password, shipping addresses, and payment methods."
+            },
+            "internationalShipping": {
+              "q": "Do you ship internationally?",
+              "a": "Yes, we ship to over 50 countries worldwide. International shipping costs and delivery times vary by destination."
+            },
+            "cancelOrder": {
+              "q": "How do I cancel an order?",
+              "a": "Orders can be cancelled within 1 hour of placement. Go to your order history, select the order, and click 'Cancel Order'. After 1 hour, please contact support."
+            },
+            "damagedItem": {
+              "q": "What if I receive a damaged item?",
+              "a": "We're sorry to hear that! Please contact us within 48 hours with photos of the damaged item. We'll send a replacement or issue a full refund immediately."
+            }
+          },
+          "noResults": "No results found. Try a different search term or contact support."
+        },
+        "SupportQuickLicks": {
+          "title": "Quick Links",
+          "links": {
+            "trackOrder": "Track Your Order",
+            "returns": "Start a Return",
+            "shippingInfo": "Shipping Information",
+            "account": "Manage Account",
+            "sizeGuide": "Size Guide",
+            "warranty": "Warranty Information",
+            "giftCards": "Gift Cards",
+            "terms": "Terms & Conditions"
+          }
+        }
+      }
+    },
+    "user": {
+      "errors": {
+        "failedLoadData": "Failed to load your details, please try again later!"
+      },
+      "layout": {
+        "components": {
+          "UserInfoRow": {
+            "failed": "Failed to load user information. Please try again.",
+            "noData": "No user data available."
+          },
+          "UserQuickActions": {
+            "quickActions": {
+              "orders": "Orders",
+              "returns": "Returns",
+              "wishlist": "Wishlist"
+            }
+          },
+          "UserAccountMenu": {
+            "header": "My Account",
+            "items": {
+              "profile": "Profile",
+              "addresses": "Addresses",
+              "payments": "Payments",
+              "digitalCards": "Digital Cards"
+            }
+          },
+          "UserOthersActions": {
+            "header": "Others",
+            "items": {
+              "notifications": "Notifications",
+              "securitySettings": "Security Settings"
+            }
+          },
+          "UserLogout": {
+            "label": "Sign out"
+          }
+        },
+        "routes": {
+          "profile": {
+            "errors": {
+              "failedLoadData": "Failed to load your profile data"
+            },
+            "components": {
+              "UserProfileHeader": {
+                "title": "Profile",
+                "description": "View & Update Your Personal and Contact Information"
+              },
+              "UserProfileContactInfo": {
+                "title": "Contact Information"
+              },
+              "UserProfileContactInfoContent": {
+                "dataSet": {
+                  "phoneNumber": {
+                    "label": "Phone number",
+                    "placeholder": "Phone number",
+                    "desc": "Phone number"
+                  },
+                  "email": {
+                    "label": "Email",
+                    "placeholder": "Email",
+                    "desc": "Email"
+                  }
+                },
+                "actions": {
+                  "proceed": "Register"
+                },
+                "validations": {
+                  "phoneNumber": {
+                    "pattern": "Phone number must start with 77, 78, or 79 and be 9 digits long"
+                  },
+                  "email": {
+                    "invalid": "Please enter a valid email address"
+                  }
+                },
+                "api": {
+                  "registrationFailed": "Registration failed"
+                }
+              },
+              "UserProfilePersonalInfo": {
+                "title": "Personal Information"
+              },
+              "UserProfilePersonalInfoContent": {
+                "dataSet": {
+                  "firstName": {
+                    "label": "First name",
+                    "placeholder": "First name",
+                    "desc": "First name"
+                  },
+                  "lastName": {
+                    "label": "Last name",
+                    "placeholder": "Last name",
+                    "desc": "Last name"
+                  },
+                  "nationality": {
+                    "label": "Nationality",
+                    "placeholder": "Nationality",
+                    "desc": "Nationality"
+                  },
+                  "birthDate": {
+                    "label": "Date of Birth",
+                    "placeholder": "Select your birth date",
+                    "desc": "Birth date"
+                  },
+                  "gender": {
+                    "label": "Gender",
+                    "placeholder": "Select gender",
+                    "options": {
+                      "male": "Male",
+                      "female": "Female"
+                    }
+                  }
+                },
+                "actions": {
+                  "proceed": "Register"
+                },
+                "validations": {
+                  "firstName": {
+                    "min": "First name must be at least 2 characters long"
+                  },
+                  "lastName": {
+                    "min": "Last name must be at least 2 characters long"
+                  },
+                  "nationality": {
+                    "required": "Select your nationality"
+                  },
+                  "birthDate": {
+                    "required": "Birth date is required",
+                    "future": "Birth date cannot be in the future"
+                  },
+                  "gender": {
+                    "required": "Gender is required"
+                  }
+                },
+                "api": {
+                  "registrationFailed": "Registration failed"
+                }
+              },
+              "UserProfileSubmitBtn": {
+                "submit": "Update Profile",
+                "loading": "Updating Profile.."
+              },
+              "UserProfileContent": {
+                "errors": {
+                  "failed": "Failed to load your personal data"
+                },
+                "noData": {
+                  "title": "No data found",
+                  "desc": "Try to reload your page, or contact the system admin."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: Oct 12, 2025"
+    },
+    "termsOfUse": {
+      "title": "Terms Of Use",
+      "lastUpdated": "Last updated: Oct 12, 2025"
+    },
+    "warrantyPolicy": {
+      "title": "Warranty Policy",
+      "lastUpdated": "Last updated: Oct 12, 2025"
+    },
+    "verifyEmail": {
+      "errors": {
+        "failed": "An error occurred while generation route!"
+      },
+      "components": {
+        "VerifyEmailContent": {
+          "logoSubtitle": "Your Shopping Destination",
+          "verifyingEmail": "Verifying Your Email",
+          "verifyingEmailDesc": "Please wait while we confirm your email address...",
+          "emailVerifiedTitle": "Email Verified! 🎉",
+          "emailVerifiedDesc": "Your account is now active!",
+          "emailVerifiedExtra": "You can now access all features of CartJO",
+          "redirectingToLogin": "Redirecting to login in",
+          "seconds": "seconds",
+          "continueToLogin": "Continue to Login",
+          "verificationFailedTitle": "Verification Failed",
+          "commonReasons": "Common reasons:",
+          "linkExpired": "• Verification link has expired (valid for 48 hours)",
+          "linkUsed": "• Link has already been used",
+          "invalidLink": "• Invalid or corrupted link",
+          "requestNewLink": "Request New Link",
+          "contactSupport": "Contact Support",
+          "noToken": "No verification token found. Please check your email link.",
+          "successMessageDefault": "Your email has been verified successfully!",
+          "errorMessageDefault": "Verification failed. The link may be invalid or expired.",
+          "errorOccurred": "An error occurred while verifying your email. Please try again."
+        },
+        "RequestNewLinkBtn": {
+          "mustLoginTitle": "Login Required",
+          "mustLoginDesc": "Please log in first to request a new verification link.",
+          "sending": "Sending...",
+          "linkSent": "Verification Link Sent!",
+          "requestNewLink": "Request New Link"
+        }
+      }
+    },
+    "cart": {
+      "header": "Cart",
+      "errors": {
+        "failedLoadData": "Failed to load cart items"
+      },
+      "components": {
+        "NoCartItems": {
+          "cartIsEmpty": "Your Cart is empty! Ready to buy one?",
+          "adviceStartAddingItems": "Start adding items you love to your Cart by tapping on the cart icon",
+          "discoverProducts": "Discover Products"
+        },
+        "CartProductCard": {
+          "removeFromCartLabel": "Remove",
+          "removingFromCartLabel": "Removing from cart...",
+          "removedFromCartLabel": "Removed from cart"
+        },
+        "CartOrderStatus": {
+          "title": "Order Summary",
+          "subtotal": "Subtotal",
+          "total": "Total",
+          "processing": "Processing...",
+          "proceed": "Proceed to checkout"
+        },
+        "CartLayoutHeaderActions": {
+          "emptyCart": "Empty Cart",
+          "itemCount": "Item Count ({count})",
+          "noItemsToRemove": "No items to remove",
+          "clearAllItems": "Clear all items",
+          "confirmDeleteTitle": "Delete Confirmation",
+          "confirmWishlistItemsTitle": "Wishlist Cart Items",
+          "confirmDeleteMessage": "Are you sure that you want to delete all Cart items? Your Cart data will be removed after confirming.",
+          "confirmWishlistItemsMessage": "Are you sure that you want to send all Cart items to your wishlist? Your Cart data will be sent and deleted after confirming.",
+          "confirmDelete": "Delete all items",
+          "confirmWishlist": "Wishlist all items",
+          "cancel": "Cancel",
+          "deleting": "Deleting Items...",
+          "deleteError": "Error happened while deleting Cart items",
+          "sendToCart": "Send All Items To Wishlist",
+          "sendingToCart": "Sending Items To Cart..."
+        }
+      }
+    },
+    "checkout": {
+      "header": "Checkout",
+      "errors": {
+        "failedLoadData": "Failed to checkout order details"
+      },
+      "components": {
+        "PaymentForm": {
+          "paymentDetails": "Payment Details",
+          "securePurchase": "Complete your purchase securely",
+          "cardNumber": "Card Number",
+          "cardNumberPlaceholder": "1234 5678 9012 3456",
+          "expiryDate": "Expiry Date",
+          "expiryPlaceholder": "MM/YY",
+          "cvv": "CVV",
+          "cvvPlaceholder": "123",
+          "cardHolder": "Cardholder Name",
+          "cardHolderPlaceholder": "JOHN DOE",
+          "securePayment": "Secure Payment",
+          "secureDescription": "Your payment information is encrypted and secure",
+          "processing": "Processing...",
+          "loading": "Loading...",
+          "pay": "Pay",
+          "sslEncrypted": "SSL Encrypted",
+          "pciCompliant": "PCI Compliant",
+          "errors": {
+            "paymentFailed": "Payment failed.",
+            "checkoutErr": "Checkout error."
+          }
+        },
+        "OrderSummary": {
+          "orderSummary": "Order Summary",
+          "subtotal": "Subtotal",
+          "total": "Total",
+          "billingTo": "Billing to"
+        },
+        "ShippingAddressForm": {
+          "title": "Shipping Address",
+          "fullName": "Full Name",
+          "phone": "Phone Number",
+          "country": "Country",
+          "city": "City",
+          "town": "Town / Area",
+          "street": "Street",
+          "building": "Building (Optional)",
+          "extraInfo": "Additional Information (Optional)",
+          "location": "Map Location",
+          "continueToPayment": "Continue to Payment",
+          "selected": "Selected",
+          "errors": {
+            "fullNameRequired": "Full Name is required",
+            "phoneRequired": "Phone Number is required",
+            "phoneInvalid": "Phone Number is invalid",
+            "countryRequired": "Country is required",
+            "cityRequired": "City is required",
+            "townRequired": "Town / Area is required",
+            "streetRequired": "Street is required",
+            "mapLocationRequired": "Location is required"
+          }
+        }
+      }
+    }
+  }
+}
