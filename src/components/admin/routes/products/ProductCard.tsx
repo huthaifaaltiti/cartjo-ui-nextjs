@@ -23,7 +23,7 @@ import ProductCardActions from "./ProductCardActions";
 import { Button } from "@/components/ui/button";
 import ImageGallery from "../../shared/ImageGallery";
 import EditProductForm from "./EditProductForm";
-import { typeHintLabels } from "@/enums/typeHint.enum";
+
 
 type DashboardProductCardProps = {
   item: Product;
@@ -148,9 +148,7 @@ const DashboardProductCard = ({
           images={allImages}
           alt={product.name.en}
           badgeText={
-            isArabic
-              ? typeHintLabels[product.typeHint as keyof typeof typeHintLabels]
-              : product.typeHint
+            product.typeHint
           }
           bulletActiveColor="bg-white-50"
           bulletInactiveColor="bg-black-50/30"
