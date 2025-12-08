@@ -36,7 +36,6 @@ import { invalidateQuery } from "@/utils/queryUtils";
 import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { Currency } from "@/enums/currency.enum";
-import { TypeHint } from "@/enums/typeHint.enum";
 import { Product } from "@/types/product.type";
 import { SubCategory } from "@/types/subCategory";
 
@@ -56,10 +55,10 @@ for (const key in Currency) {
   currencyValues.push(Currency[key as keyof typeof Currency]);
 }
 
-const typeHintValues: string[] = Object.values(TypeHint);
-for (const key in TypeHint) {
-  typeHintValues.push(key as keyof typeof TypeHint);
-}
+// const typeHintValues: string[] = Object.values(TypeHint);
+// for (const key in TypeHint) {
+//   typeHintValues.push(key as keyof typeof TypeHint);
+// }
 
 const editFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -113,7 +112,10 @@ const editFormSchema = (t: (key: string) => string) =>
         "routes.dashboard.routes.products.components.EditProductForm.validations.totalAmountCount.min"
       ),
     }),
-    typeHint: z.enum(typeHintValues as [string, ...string[]], {
+    typeHint:
+    // z.enum(typeHintValues as [string, ...string[]],
+    z.string(
+       {
       message: t(
         "routes.dashboard.routes.products.components.EditProductForm.validations.typeHint.notSupported"
       ),
@@ -841,13 +843,16 @@ const EditProductForm = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Object.values(TypeHint)?.map((th, i) => (
+                        {/* {Object.values(TypeHint)?.map((th, i) => ( */}
+                        {Object.values({})?.map((th, i) => (
                           <SelectItem
                             key={`TypeHintItem_${i}`}
-                            value={th}
+                            // value={th}
+                            value={''}
                             className="cursor-pointer capitalize"
                           >
-                            {th}
+                            {/* {th} */}
+                            Test
                           </SelectItem>
                         ))}
                       </SelectContent>
