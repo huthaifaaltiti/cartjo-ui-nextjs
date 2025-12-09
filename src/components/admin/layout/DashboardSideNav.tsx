@@ -12,8 +12,8 @@ const DashboardSideNav = () => {
 
   return (
     <aside className="h-full w-full p-4">
-      <ul className="h-full flex flex-col gap-8">
-        <li className="p-2 bg-primary-950 rounded">
+      <ul className="h-full flex flex-col gap-5">
+        <li className="p-2 bg-white-50 rounded">
           <Link href={`/${locale}/dashboard`}>
             <DynamicLogo />
           </Link>
