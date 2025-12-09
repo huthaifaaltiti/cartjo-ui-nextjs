@@ -1,5 +1,4 @@
 import { useSession } from "next-auth/react";
-
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { CustomSession } from "@/lib/authOptions";

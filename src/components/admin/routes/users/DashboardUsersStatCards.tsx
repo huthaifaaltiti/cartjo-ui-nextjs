@@ -1,9 +1,7 @@
 import { memo } from "react";
 import { UserRoundX, UsersRound, ShieldCheck, UserCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
-
 import StatCard from "@/components/shared/StatCard";
-
 import { StatCardType } from "@/types/statCard";
 import { UsersStats } from "@/types/UsersStats";
 
