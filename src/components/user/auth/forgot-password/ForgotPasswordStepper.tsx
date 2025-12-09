@@ -14,8 +14,8 @@ const ForgotPasswordStepper = () => {
   const t = useTranslations(
     "routes.auth.routes.forgotPassword.components.ForgotPasswordStepper"
   );
-
   const dispatch = useDispatch<AppDispatch>();
+  const { isArabic } = useSelector((state: RootState) => state.general);
   const { currentStep } = useSelector(
     (state: RootState) => state.forgotPassword
   );
@@ -59,6 +59,7 @@ const ForgotPasswordStepper = () => {
             isNextBtnDisabled={false}
             isPrevBtnDisabled={false}
             hideBtns={true}
+            dir={isArabic ? "rtl" : "ltr"}
           />
         </div>
 
