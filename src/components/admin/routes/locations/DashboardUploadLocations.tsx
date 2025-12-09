@@ -4,10 +4,8 @@ import { useRouter } from "next/navigation";
 import { memo, useState } from "react";
 import { FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
-
 import { useBulkUploadLocations } from "@/hooks/react-query/useBulkUploadLocations";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
-
 import FileUpload from "../../../shared/FileUpload";
 import StatusMessage from "@/components/shared/StatusMessage";
 
