@@ -11,7 +11,6 @@ import ReactQueryProvider from "@/components/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
 import { HomeEffectsContextProvider } from "@/contexts/HomeEffectsContext";
 import { GeneralContextProvider } from "@/contexts/General.context";
-import Footer from "@/components/Footer";
 import "../globals.css";
 import "../../styles/prose.css";
 import ReduxProvider from "../../redux/ReduxProvider";
@@ -92,7 +91,6 @@ export default async function LocaleLayout({
                   <NuqsAdapter>
                     <GeneralContextProvider>
                       <ReduxProvider>{children}</ReduxProvider>
-                      <Footer locale={locale} isArabic={isArabic} />
                     </GeneralContextProvider>
                   </NuqsAdapter>
                 </HomeEffectsContextProvider>
