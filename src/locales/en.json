@@ -2381,6 +2381,23 @@
             "streetRequired": "Street is required",
             "mapLocationRequired": "Location is required"
           }
+        },
+        "CashPayment": {
+          "title": "Cash on Delivery",
+          "description": "Pay with cash when your order is delivered to your doorstep.",
+          "tip1": "Have exact change ready",
+          "tip2": "Payment is due upon delivery",
+          "tip3": "Inspect your order before payment",
+          "addShipping": "+ Add Shipping Address",
+          "shippingAdded": "✓ Shipping address added",
+          "placeOrder": "Place Order (Cash on Delivery)",
+          "processing": "Processing...",
+          "errors": {
+            "notLoggedIn": "You must be logged in to place an order",
+            "noShipping": "Please fill the shipping address first.",
+            "orderFailed": "Failed to create cash order",
+            "processingFailed": "Failed to process cash order"
+          }
         }
       }
     }

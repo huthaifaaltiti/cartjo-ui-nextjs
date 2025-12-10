@@ -45,7 +45,7 @@ const FooterMidContent = ({ data, isArabic, locale }: Props) => {
 
       return { pathname, query };
     },
-    [data]
+    [data, locale]
   );
 
   return (

@@ -8,17 +8,14 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { useLocale, useTranslations } from "next-intl";
-
 import { useActiveBannersQuery } from "@/hooks/react-query/useBannersQuery";
 import { isArabicLocale } from "@/config/locales.config";
-
 import { Banner } from "@/types/banner.type";
-
 import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
-
 import "./BannersCarouselClient.css";
+import Image from "next/image";
 
 const BannersCarouselClient = () => {
   const { data, isLoading, isFetching, error, isError } =
@@ -112,7 +109,7 @@ const BannersCarouselClient = () => {
               >
                 <div className="w-full h-full">
                   <div className="w-full h-full overflow-hidden">
-                    <img
+                    <Image
                       src={
                         isArabic
                           ? banner?.media?.ar?.url
