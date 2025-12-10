@@ -2,9 +2,11 @@ import { fetchShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import ShowcasesPage from "@/components/admin/routes/showcases/ShowcasesPage";
+import { requireAuth } from "@/utils/authRedirect";
 
 const Page = async () => {
   const token = await getAccessTokenFromServerSession();
+  requireAuth(token)
 
   const { data } = await fetchShowcases({
     token,
