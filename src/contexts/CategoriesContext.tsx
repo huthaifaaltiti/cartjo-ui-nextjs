@@ -9,7 +9,7 @@ import { BaseResponse } from "@/types/service-response.type";
 type CategoriesContextType = {
   queryKey: string;
   searchQuery: string;
-  accessToken: string;
+  accessToken: string | null;
   setSearchQuery: (searchQuery: string) => void;
   deleteCategory: (
     token: string,
@@ -30,7 +30,7 @@ type CategoriesContextType = {
 };
 
 type CategoriesContextProviderType = {
-  accessToken: string;
+  accessToken: string | null;
   children: ReactNode;
 };
 

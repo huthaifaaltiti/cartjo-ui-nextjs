@@ -1,8 +1,6 @@
 import { memo } from "react";
 import { Blocks } from "lucide-react";
-
 import { Category } from "@/types/category.type";
-
 import { CategoriesContextProvider } from "@/contexts/CategoriesContext";
 import SearchCategories from "./SearchCategories";
 import CategoriesList from "./CategoriesList";
@@ -11,7 +9,7 @@ import CreateCategoryForm from "./CreateCategoryForm";
 
 type CategoriesPageProps = {
   initialCategories: Category[];
-  accessToken: string;
+  accessToken: string | null;
 };
 
 const CategoriesPage = ({

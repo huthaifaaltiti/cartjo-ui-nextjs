@@ -10,7 +10,7 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
 
 interface FetchCategoriesParams {
-  token: string;
+  token: string | null;
   lang?: string;
   limit?: number;
   lastId?: string;
