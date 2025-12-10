@@ -1,8 +1,6 @@
 import { memo } from "react";
 import { Blocks } from "lucide-react";
-
 import { Logo } from "@/types/logo";
-
 import { LogosContextProvider } from "@/contexts/LogosContext";
 import SearchLogos from "./SearchLogos";
 import ModalCreateButton from "@/components/shared/ModalCreateButton";
@@ -11,7 +9,7 @@ import CreateLogoForm from "./CreateLogoForm";
 
 type LogosPageProps = {
   initialLogos: Logo[];
-  accessToken: string;
+  accessToken: string | null;
 };
 
 const LogosPage = ({ initialLogos, accessToken }: LogosPageProps) => {

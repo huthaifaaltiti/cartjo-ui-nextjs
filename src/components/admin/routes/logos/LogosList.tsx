@@ -1,11 +1,9 @@
 "use client";
 
 import { memo } from "react";
-
 import { Logo } from "@/types/logo";
 import { useLogosQuery } from "@/hooks/react-query/useLogosQuery";
 import { useLogos } from "@/contexts/LogosContext";
-
 import InfiniteScrollList from "../../../shared/InfiniteScrollList";
 import LogoCard from "./LogoCard";
 
