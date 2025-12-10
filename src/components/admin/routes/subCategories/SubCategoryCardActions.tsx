@@ -4,11 +4,8 @@ import { memo, useCallback, useState } from "react";
 import { Package, PackageOpen } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
-
 import { BaseResponse } from "@/types/service-response.type";
-
 import { invalidateQuery } from "@/utils/queryUtils";
-
 import { Button } from "@/components/ui/button";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
 import {
@@ -22,15 +19,15 @@ type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean }
 > = {
   cardItem: T;
-  deleteFn: (token: string, id: string) => Promise<BaseResponse>;
-  unDeleteFn: (token: string, id: string) => Promise<BaseResponse>;
+  deleteFn: (token: string | null, id: string) => Promise<BaseResponse>;
+  unDeleteFn: (token: string | null, id: string) => Promise<BaseResponse>;
   switchUserActiveStatusFn: (
-    token: string,
+    token: string | null,
     lang: string,
     isActive: boolean,
     id: string
   ) => Promise<BaseResponse>;
-  accessToken: string;
+  accessToken: string | null;
   queryKey: string;
   showEditButton?: boolean;
   renderEditForm?: (item: T) => React.ReactNode;

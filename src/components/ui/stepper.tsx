@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -38,7 +38,7 @@ const Step: React.FC<StepProps> = ({
           )}
         </div>
       </div>
-      <div className="ml-4">
+      <div className="mx-4">
         <p
           className={cn(
             "text-sm font-medium",
@@ -67,6 +67,7 @@ interface StepperProps {
   isPrevBtnDisabled: boolean;
   isNextBtnDisabled: boolean;
   hideBtns?: boolean;
+  dir: "rtl" | "ltr";
 }
 
 export function Stepper({
@@ -79,6 +80,7 @@ export function Stepper({
   isNextBtnDisabled,
   isPrevBtnDisabled,
   hideBtns = false,
+  dir = "ltr",
 }: StepperProps) {
   return (
     <div className="w-full max-w-3xl mx-auto">
@@ -91,9 +93,12 @@ export function Stepper({
               isCompleted={index < currentStep}
               isActive={index === currentStep}
             />
-            {index < steps.length - 1 && (
-              <ChevronRight className="hidden md:block text-muted-foreground" />
-            )}
+            {index < steps.length - 1 &&
+              (dir === "ltr" ? (
+                <ChevronRight className="hidden md:block text-muted-foreground" />
+              ) : (
+                <ChevronLeft className="hidden md:block text-muted-foreground" />
+              ))}
           </React.Fragment>
         ))}
       </div>

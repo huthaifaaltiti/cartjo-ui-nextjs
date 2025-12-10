@@ -6,14 +6,15 @@ import DashboardControlNavLinks from "./DashboardControlNavLinks";
 import LanguageSelector from "@/components/LanguageSelector";
 import BackToHomePage from "@/components/shared/BackToHomePage";
 import DynamicLogo from "@/components/shared/DynamicLogo";
+import { LogoutBtn } from "@/components/shared/LogoutBrn";
 
 const DashboardSideNav = () => {
   const locale = useLocale();
 
   return (
     <aside className="h-full w-full p-4">
-      <ul className="h-full flex flex-col gap-8">
-        <li className="p-2 bg-primary-950 rounded">
+      <ul className="h-full flex flex-col gap-5">
+        <li className="p-2 bg-white-50 rounded">
           <Link href={`/${locale}/dashboard`}>
             <DynamicLogo />
           </Link>
@@ -29,9 +30,12 @@ const DashboardSideNav = () => {
               <DashboardControlNavLinks />
             </li>
 
-            <li className="mt-auto flex flex-wrap items-end justify-start gap-2">
-              <LanguageSelector />
-              <BackToHomePage />
+            <li className="mt-auto flex flex-wrap items-end justify-start gap-2 border-t pt-5">
+              <div className="w-full flex items-center gap-1 flex-wrap">
+                <BackToHomePage />
+                <LanguageSelector />
+                <LogoutBtn />
+              </div>
             </li>
           </ul>
         </li>

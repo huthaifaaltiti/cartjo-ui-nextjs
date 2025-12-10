@@ -2,7 +2,6 @@
 
 import { memo } from "react";
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,15 +12,12 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, LogOutIcon, User, UserRoundPen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useGeneralContext } from "@/contexts/General.context";
+import { LogoutBtn } from "./shared/LogoutBrn";
 
 const UserAccountLinkMenu = () => {
   const router = useRouter();
   const t = useTranslations();
   const { dir, locale } = useGeneralContext();
-
-  const handleLogout = async () => {
-    await signOut({ callbackUrl: `/${locale}` });
-  };
 
   return (
     <DropdownMenu dir={dir}>
@@ -42,9 +38,8 @@ const UserAccountLinkMenu = () => {
           {t("routes.home.components.UserAccountLinkMenu.myAccount")}
         </DropdownMenuItem>
 
-        <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
-          <LogOutIcon className="w-4 h-4" />
-          {t("routes.home.components.UserAccountLinkMenu.logout")}
+        <DropdownMenuItem className="cursor-pointer">
+          <LogoutBtn />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

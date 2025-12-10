@@ -2,10 +2,8 @@
 
 import { memo } from "react";
 import { BlocksIcon } from "lucide-react";
-
 import { SubCategory } from "@/types/subCategory";
 import { Category } from "@/types/category.type";
-
 import { SubCategoriesContextProvider } from "@/contexts/SubCategoriesContext";
 import ModalCreateButton from "@/components/shared/ModalCreateButton";
 import CreateSubCategoryForm from "./CreateSubCategoryForm";
@@ -16,7 +14,7 @@ import CategoryListSelector from "./CategoryListSelector";
 type SubCategoriesPageProps = {
   initialCategories: Category[];
   initialSubCategories: SubCategory[];
-  accessToken: string;
+  accessToken: string | null;
 };
 
 const SubCategoriesPage = ({

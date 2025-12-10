@@ -4,12 +4,9 @@ import { memo, useCallback, useState } from "react";
 import { Edit, Package, PackageOpen } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
-
 import { invalidateQuery } from "@/utils/queryUtils";
-
 import { Product } from "@/types/product.type";
 import { BaseResponse } from "@/types/service-response.type";
-
 import { useProducts } from "@/contexts/Products.context";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
 import { Button } from "@/components/ui/button";
@@ -23,17 +20,17 @@ type ProductCardActionsProps = {
   setShowActions: (showActions: boolean) => void;
   product: Product;
   deleteFn: (
-    token: string,
+    token: string | null,
     lang: string,
     prodId: string
   ) => Promise<BaseResponse>;
   unDeleteFn: (
-    token: string,
+    token: string | null,
     lang: string,
     prodId: string
   ) => Promise<BaseResponse>;
   switchActiveStatusFn: (
-    token: string,
+    token: string | null,
     lang: string,
     isActive: boolean,
     id: string

@@ -38,6 +38,7 @@ import TagsInput from "@/components/shared/TagsInput";
 import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { Currency } from "@/enums/currency.enum";
+// import { TypeHint } from "@/enums/typeHint.enum";
 import { Textarea } from "@/components/ui/textarea";
 import { SubCategory } from "@/types/subCategory";
 

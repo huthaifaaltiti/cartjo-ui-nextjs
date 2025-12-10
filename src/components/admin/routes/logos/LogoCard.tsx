@@ -1,10 +1,8 @@
 import { memo } from "react";
 import { useTranslations } from "next-intl";
-
 import { BaseResponse } from "@/types/service-response.type";
 import { Logo } from "@/types/logo";
 import { Locale } from "@/types/locale";
-
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import LogoCardActions from "./LogoCardActions";
 import EditLogoForm from "./EditLogoForm";
@@ -12,18 +10,18 @@ import EditLogoForm from "./EditLogoForm";
 type LogoCardProps = {
   item: Logo;
   deleteLogo: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   unDeleteLogo: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
-  accessToken: string;
+  accessToken: string | null;
   switchLogoActiveStatus: (
-    token: string,
+    token: string | null,
     lang: string,
     isActive: boolean,
     userId: string

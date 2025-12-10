@@ -1,9 +1,7 @@
 import { memo } from "react";
 import { useTranslations } from "next-intl";
 import { MapPin } from "lucide-react";
-
 import StatCard from "@/components/shared/StatCard";
-
 import { StatCardType } from "@/types/statCard";
 
 type LocationData = {

@@ -4,7 +4,6 @@ import { Lock, CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { memo, useCallback, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { useGeneralContext } from "@/contexts/General.context";
 import PasswordRules from "../../PasswordRules";
 import CounterDown from "@/components/shared/CounterDown";
 import { useTranslations } from "next-intl";
@@ -30,7 +29,7 @@ const CreateNewPassword = () => {
     verificationCode,
     isNewPasswordSet,
   } = useSelector((state: RootState) => state.forgotPassword);
-  const { locale } = useGeneralContext();
+  const { locale } = useSelector((state: RootState) => state.general);
 
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -80,6 +79,10 @@ const CreateNewPassword = () => {
     setShowRules(newPassword.length > 0);
   }, [newPassword]);
 
+  useEffect(() => {
+    handleReset();
+  }, [locale]);
+
   return (
     <div className="space-y-6 max-w-md mx-auto">
       {/* Header */}
@@ -112,7 +115,7 @@ const CreateNewPassword = () => {
             <button
               type="button"
               onClick={() => setShowNewPassword(!showNewPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              className="absolute ltr:right-3 rtl:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             >
               {showNewPassword ? (
                 <EyeOff className="w-5 h-5" />
@@ -152,7 +155,7 @@ const CreateNewPassword = () => {
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              className="absolute ltr:right-3 rtl:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             >
               {showConfirmPassword ? (
                 <EyeOff className="w-5 h-5" />

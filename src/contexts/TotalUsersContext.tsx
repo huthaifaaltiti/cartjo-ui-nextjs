@@ -12,7 +12,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 type TotalUsersContextProps = {
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
-  accessToken: string;
+  accessToken: string | null;
   deleteUser: (token: string, userId: string) => Promise<DeleteUserResponse>;
   unDeleteUser: (
     token: string,
@@ -28,7 +28,7 @@ type TotalUsersContextProps = {
 
 type TotalUsersProviderProps = {
   children: ReactNode;
-  accessToken: string;
+  accessToken: string | null;
 };
 
 const TotalUsersContext = createContext<undefined | TotalUsersContextProps>(

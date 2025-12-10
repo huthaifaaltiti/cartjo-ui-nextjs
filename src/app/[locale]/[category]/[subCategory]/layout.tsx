@@ -1,4 +1,4 @@
-export default async function PageLayout({
+export default async function SubCategoryPageLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -1,10 +1,11 @@
 "use client";
 
 import { KeyRound, Mail, Phone, User } from "lucide-react";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import {
+  resetForgotPasswordState,
   setErrors,
   setIdentifier,
 } from "@/redux/slices/authorization/forgotPassword";
@@ -22,6 +23,11 @@ const IdentifyAccount = () => {
     errors: { sendIdentifier: sendIdentifierErr, identifier: identifierErr },
     isLoading,
   } = useSelector((state: RootState) => state.forgotPassword);
+  const { locale } = useSelector((state: RootState) => state.general);
+
+  useEffect(() => {
+    dispatch(resetForgotPasswordState());
+  }, [locale]);
 
   const handleIdentifierChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,12 +48,11 @@ const IdentifyAccount = () => {
 
     dispatch(setErrors({}));
 
-    await dispatch(sendIdentifier({ identifier }));
+    await dispatch(sendIdentifier({ identifier, lang: locale }));
   }, [identifier, dispatch]);
 
   return (
     <div className="max-w-md mx-auto space-y-6">
-      
       {/* Header */}
       <div className="text-center space-y-2">
         <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">

@@ -1,17 +1,15 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
-
 import { Logo } from "@/types/logo";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
-
 import { CustomSession } from "@/lib/authOptions";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 
 interface FetchLogosParams {
-  token: string;
+  token: string | null;
   lang?: string;
   limit?: number;
   lastId?: string;

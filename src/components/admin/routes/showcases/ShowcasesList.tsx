@@ -1,11 +1,8 @@
 "use client";
 
 import { memo } from "react";
-
 import { useShowcasesQuery } from "@/hooks/react-query/useShowcasesQuery";
-
 import { Showcase } from "@/types/showcase.type";
-
 import InfiniteScrollList from "../../../shared/InfiniteScrollList";
 import { useShowcases } from "@/contexts/Showcase.context";
 import ShowcaseCard from "./ShowcaseCard";

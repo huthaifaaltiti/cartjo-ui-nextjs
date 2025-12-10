@@ -24,7 +24,7 @@ const VerifyCode = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     identifier,
-    errors,
+    errors: { verifyCode: verifyCodeErr },
     isLoading,
     verificationCode,
     currentStep,
@@ -40,7 +40,6 @@ const VerifyCode = () => {
 
   const handleNext = async () => {
     dispatch(resetVerificationCodeMessage());
-
     if (!verificationCode.trim() || verificationCode.length !== 6) {
       dispatch(
         setErrors({
@@ -69,7 +68,7 @@ const VerifyCode = () => {
   };
 
   const handleResendVerifyCode = async () => {
-    await dispatch(sendIdentifier({ identifier }));
+    await dispatch(sendIdentifier({ identifier, lang: locale }));
   };
 
   return (
@@ -94,13 +93,13 @@ const VerifyCode = () => {
             placeholder={t("placeholder")}
             maxLength={6}
             className={`w-full px-4 py-3 border ${
-              errors.verificationCode ? "border-red-500" : "border-gray-300"
+              !verificationCode || verifyCodeErr
+                ? "border-red-500"
+                : "border-gray-300"
             } rounded-lg text-center text-2xl font-mono tracking-widest focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all`}
           />
-          {errors.verificationCode && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.verificationCode}
-            </p>
+          {verifyCodeErr && (
+            <p className="mt-1 text-sm text-red-600">{verifyCodeErr}</p>
           )}
         </div>
 

@@ -2,7 +2,6 @@
 
 import { memo } from "react";
 import { useSubCategories } from "@/contexts/SubCategoriesContext";
-
 import InfiniteScrollList from "../../../shared/InfiniteScrollList";
 import SubCategoryCard from "./SubCategoryCard";
 import { SubCategory } from "@/types/subCategory";

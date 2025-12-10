@@ -1,9 +1,7 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useState } from "react";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
 
@@ -13,17 +11,17 @@ type ShowcasesContextType = {
   accessToken: string | null;
   setSearchQuery: (searchQuery: string) => void;
   deleteShowcase: (
-    token: string,
+    token: string | null,
     showcaseId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   unDeleteShowcase: (
-    token: string,
+    token: string | null,
     showcaseId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   switchShowcaseActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     showcaseId: string
@@ -47,7 +45,7 @@ export const ShowcasesContextProvider = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const deleteShowcase = async (
-    token: string,
+    token: string | null,
     showcaseId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
@@ -72,7 +70,7 @@ export const ShowcasesContextProvider = ({
   };
 
   const unDeleteShowcase = async (
-    token: string,
+    token: string | null,
     showcaseId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
@@ -97,7 +95,7 @@ export const ShowcasesContextProvider = ({
   };
 
   const switchShowcaseActiveStatus = async (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     showcaseId: string
