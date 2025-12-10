@@ -13,12 +13,12 @@ import {
 } from "lucide-react";
 
 export const dashboardNavLinks = [
-  {
-    labelKey:
-      "routes.dashboard.components.DashboardControlNavLinks.navItems.locations",
-    href: "/dashboard/locations",
-    icon: MapPin,
-  },
+  // {
+  //   labelKey:
+  //     "routes.dashboard.components.DashboardControlNavLinks.navItems.locations",
+  //   href: "/dashboard/locations",
+  //   icon: MapPin,
+  // },
   {
     labelKey:
       "routes.dashboard.components.DashboardControlNavLinks.navItems.users",
@@ -43,12 +43,12 @@ export const dashboardNavLinks = [
     href: "/dashboard/products",
     icon: ShoppingBasket,
   },
-  {
-    labelKey:
-      "routes.dashboard.components.DashboardControlNavLinks.navItems.media",
-    href: "/dashboard/media",
-    icon: FileMusic,
-  },
+  // {
+  //   labelKey:
+  //     "routes.dashboard.components.DashboardControlNavLinks.navItems.media",
+  //   href: "/dashboard/media",
+  //   icon: FileMusic,
+  // },
   {
     labelKey:
       "routes.dashboard.components.DashboardControlNavLinks.navItems.logo",

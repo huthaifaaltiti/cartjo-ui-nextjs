@@ -1,9 +1,7 @@
 import { memo } from "react";
 import { BlocksIcon } from "lucide-react";
-
 import { Product } from "@/types/product.type";
 import { Category } from "@/types/category.type";
-
 import { ProductsContextProvider } from "@/contexts/Products.context";
 import SearchProducts from "./SearchProducts";
 import ProductsList from "./ProductsList";
@@ -13,7 +11,7 @@ import CreateProductForm from "./CreateProductForm";
 type ProductsPageProps = {
   initialProducts: Product[];
   initialCategories: Category[];
-  token: string;
+  token: string | null;
 };
 
 const ProductsPage = ({

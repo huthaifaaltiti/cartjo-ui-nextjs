@@ -1,16 +1,15 @@
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-
 import { fetchSubCategories } from "@/hooks/react-query/useSubCategoriesQuery";
 import { fetchCategories } from "@/hooks/react-query/useCategoriesQuery";
-
 import { Category } from "@/types/category.type";
 import { SubCategory } from "@/types/subCategory";
-
 import SubCategoriesPage from "@/components/admin/routes/subCategories/SubCategoriesPage";
+import { requireAuth } from "@/utils/authRedirect";
 
 export default async function Page() {
   const accessToken = await getAccessTokenFromServerSession();
+  requireAuth(accessToken);
 
   let categories: Category[] = [];
   let subCategories: SubCategory[] = [];

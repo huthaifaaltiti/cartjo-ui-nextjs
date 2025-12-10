@@ -11,34 +11,31 @@ import {
   MoreVertical,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { formatDate } from "@/utils/formatDate";
 import { isArabicLocale } from "@/config/locales.config";
-
 import { BaseResponse } from "@/types/service-response.type";
 import { Product } from "@/types/product.type";
-
 import ProductCardActions from "./ProductCardActions";
 import { Button } from "@/components/ui/button";
 import ImageGallery from "../../shared/ImageGallery";
 import EditProductForm from "./EditProductForm";
-import { typeHintLabels } from "@/enums/typeHint.enum";
+// import { typeHintLabels } from "@/enums/typeHint.enum";
 
 type DashboardProductCardProps = {
   item: Product;
   deleteProduct: (
-    token: string,
+    token: string | null,
     locale: string,
     prodId: string
   ) => Promise<BaseResponse>;
   unDeleteProduct: (
-    token: string,
+    token: string | null,
     locale: string,
     prodId: string
   ) => Promise<BaseResponse>;
   switchProductActiveStatus: (
-    token: string,
+    token: string | null,
     lang: string,
     isActive: boolean,
     id: string
@@ -147,11 +144,12 @@ const DashboardProductCard = ({
         <ImageGallery
           images={allImages}
           alt={product.name.en}
-          badgeText={
-            isArabic
-              ? typeHintLabels[product.typeHint as keyof typeof typeHintLabels]
-              : product.typeHint
-          }
+          // badgeText={
+          //   isArabic
+          //     ? typeHintLabels[product.typeHint as keyof typeof typeHintLabels]
+          //     : product.typeHint
+          // }
+          badgeText={product.typeHint}
           bulletActiveColor="bg-white-50"
           bulletInactiveColor="bg-black-50/30"
           badgeColorClass="bg-primary-50/50 text-primary-800"

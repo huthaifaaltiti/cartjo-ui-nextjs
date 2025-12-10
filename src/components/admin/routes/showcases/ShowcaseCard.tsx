@@ -1,30 +1,27 @@
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
-
 import { isArabicLocale } from "@/config/locales.config";
-
 import { BaseResponse } from "@/types/service-response.type";
 import { Locale } from "@/types/locale";
 import { Showcase } from "@/types/showcase.type";
-
 import ShowcasesCardActions from "./ShowcasesCardActions";
 import EditShowcaseForm from "./EditShowcaseForm";
 
 type ShowcaseCardProps = {
   item: Showcase;
   deleteShowcase: (
-    accessToken: string,
+    accessToken: string | null,
     showcaseId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   unDeleteShowcase: (
-    accessToken: string,
+    accessToken: string | null,
     showcaseId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
-  accessToken: string;
+  accessToken: string | null;
   switchShowcaseActiveStatus: (
-    token: string,
+    token: string | null,
     lang: string,
     isActive: boolean,
     showcaseId: string

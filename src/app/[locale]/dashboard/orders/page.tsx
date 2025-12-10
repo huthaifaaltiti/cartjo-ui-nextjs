@@ -5,15 +5,16 @@ import { DataListResponse } from "@/types/service-response.type";
 import { getOrdersQueryOptions } from "@/utils/queryOptions";
 import { Order } from "@/types/order.type";
 import OrdersPageContainer from "@/components/admin/routes/orders/OrdersPageContainer";
+import { requireAuth } from "@/utils/authRedirect";
 
 export default async function DashboardOrdersPage() {
   const token = await getAccessTokenFromServerSession();
-  if (!token) throw new Error("No access token found");
+  requireAuth(token)
 
   const queryClient = getQueryClient();
 
   await queryClient.prefetchInfiniteQuery<DataListResponse<Order>>(
-    getOrdersQueryOptions(token)
+    getOrdersQueryOptions(token!!)
   );
 
   const dehydratedState = dehydrate(queryClient);

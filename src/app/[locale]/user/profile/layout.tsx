@@ -1,4 +1,4 @@
-export default async function UserPageLayout({
+export default async function UserProfilePageLayout({
   children,
   // params,
 }: {

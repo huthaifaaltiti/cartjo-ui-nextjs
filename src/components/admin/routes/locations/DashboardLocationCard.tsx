@@ -3,7 +3,6 @@
 import { memo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { DollarSign, MapPinned } from "lucide-react";
-
 import { Locale } from "@/types/locale";
 
 type LocationData = {

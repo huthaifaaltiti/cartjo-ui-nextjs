@@ -1,12 +1,9 @@
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
-
 import { BaseResponse } from "@/types/service-response.type";
 import { Category } from "@/types/category.type";
 import { Locale } from "@/types/locale";
-
 import { isArabicLocale } from "@/config/locales.config";
-
 import CategoryCardActions from "./CategoryCardActions";
 import EditCategoryForm from "./EditCategoryForm";
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
@@ -14,18 +11,18 @@ import ImageWithFallback from "@/components/shared/ImageWithFallback";
 type CategoryCardProps = {
   item: Category;
   deleteCategory: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   unDeleteCategory: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
-  accessToken: string;
+  accessToken: string | null;
   switchCategoryActiveStatus: (
-    token: string,
+    token: string | null,
     lang: string,
     isActive: boolean,
     userId: string
@@ -74,6 +71,7 @@ const CategoryCard = ({
             alt={isArabic ? category.name.ar : category.name.en}
             width={40}
             height={40}
+            useFill={false}
             className="object-cover w-full h-full"
           />
         </div>

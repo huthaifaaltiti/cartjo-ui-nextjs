@@ -2,9 +2,11 @@ import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { fetchTypeHintConfigs } from "@/hooks/react-query/useTypeHintConfigsQuery";
 import TypeHintConfigsPage from "@/components/admin/routes/typeHintConfigs/TypeHintConfigsPage";
+import { requireAuth } from "@/utils/authRedirect";
 
 const Page = async () => {
   const token = await getAccessTokenFromServerSession();
+  requireAuth(token)
 
   const { data } = await fetchTypeHintConfigs({
     token,

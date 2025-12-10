@@ -1,29 +1,27 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useState } from "react";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
 
 type LogosContextType = {
   queryKey: string;
   searchQuery: string;
-  accessToken: string;
+  accessToken: string | null;
   setSearchQuery: (searchQuery: string) => void;
   deleteLogo: (
-    token: string,
+    token: string | null,
     logoId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   unDeleteLogo: (
-    token: string,
+    token: string | null,
     logoId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   switchLogoActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     catId: string
@@ -31,7 +29,7 @@ type LogosContextType = {
 };
 
 type LogosContextProviderType = {
-  accessToken: string;
+  accessToken: string | null;
   children: ReactNode;
 };
 
@@ -45,7 +43,7 @@ export const LogosContextProvider = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const deleteLogo = async (
-    token: string,
+    token: string | null,
     logoId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
@@ -70,7 +68,7 @@ export const LogosContextProvider = ({
   };
 
   const unDeleteLogo = async (
-    token: string,
+    token: string | null,
     logoId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
@@ -95,7 +93,7 @@ export const LogosContextProvider = ({
   };
 
   const switchLogoActiveStatus = async (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     logoId: string

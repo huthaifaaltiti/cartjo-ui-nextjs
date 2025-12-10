@@ -1,14 +1,12 @@
 import { memo } from "react";
-
 import { DeletedUsersContextProvider } from "@/contexts/DeletedUsersContext";
 import { User } from "@/types/user";
-
 import SearchDeletedUsers from "./SearchDeletedUsers";
 import DeletedUsersList from "./DeletedUsersList";
 
 interface DeletedUsersPageProps {
   initialUsers: User[];
-  accessToken: string;
+  accessToken: string | null;
 }
 
 const DeletedUsersPage = ({

@@ -2,7 +2,6 @@
 
 import { memo } from "react";
 import { useTranslations } from "next-intl";
-
 import SearchBar from "@/components/shared/SearchBar";
 import { useLogos } from "@/contexts/LogosContext";
 

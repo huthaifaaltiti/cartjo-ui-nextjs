@@ -3,7 +3,6 @@
 import { memo } from "react";
 import { useTranslations } from "next-intl";
 import { MapPin } from "lucide-react";
-
 import DashboardLocationCard from "./DashboardLocationCard";
 
 type LocationData = {

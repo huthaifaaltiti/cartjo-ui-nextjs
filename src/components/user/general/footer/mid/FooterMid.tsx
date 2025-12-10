@@ -7,7 +7,7 @@ import { fetcher } from "@/utils/fetcher";
 
 export default async function FooterMid({
   locale,
-  isArabic,
+  isArabic = false,
 }: {
   locale: Locale;
   isArabic: boolean;

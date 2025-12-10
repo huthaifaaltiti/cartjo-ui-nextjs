@@ -1,11 +1,8 @@
 "use client";
 
 import { memo } from "react";
-
 import { Product } from "@/types/product.type";
-
 import { useProductsQuery } from "@/hooks/react-query/useProductsQuery";
-
 import InfiniteScrollList from "../../../shared/InfiniteScrollList";
 import { useProducts } from "@/contexts/Products.context";
 import ProductCard from "./ProductCard";
