@@ -1,8 +1,6 @@
 import { memo } from "react";
-
 import { User } from "@/types/user";
 import { ActiveUsersContextProvider } from "@/contexts/ActiveUsersContext";
-
 import SearchActiveUsers from "./SearchActiveUsers";
 import ActiveUsersList from "./ActiveUsersList";
 

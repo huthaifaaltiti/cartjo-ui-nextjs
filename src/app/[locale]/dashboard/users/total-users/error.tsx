@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-
 import { ErrorPageProps } from "@/types/common";
 import ErrorPage from "@/components/shared/ErrorPage";
 

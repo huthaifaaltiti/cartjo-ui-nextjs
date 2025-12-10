@@ -12,7 +12,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 type DeletedUsersContextProps = {
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
-  accessToken: string;
+  accessToken: string | null;
   deleteUser: (token: string, userId: string) => Promise<DeleteUserResponse>;
   unDeleteUser: (
     token: string,
@@ -28,7 +28,7 @@ type DeletedUsersContextProps = {
 
 type DeletedUsersContextProviderProps = {
   children: ReactNode;
-  accessToken: string;
+  accessToken: string | null;
 };
 
 const DeletedUsersContext = createContext<undefined | DeletedUsersContextProps>(
@@ -42,7 +42,7 @@ export const DeletedUsersContextProvider = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const deleteUser = async (
-    token: string,
+    token: string | null,
     userId: string
   ): Promise<UnDeleteUserResponse> => {
     const res = await fetch(
@@ -65,7 +65,7 @@ export const DeletedUsersContextProvider = ({
   };
 
   const unDeleteUser = async (
-    token: string,
+    token: string | null,
     userId: string
   ): Promise<DeleteUserResponse> => {
     const res = await fetch(
@@ -88,7 +88,7 @@ export const DeletedUsersContextProvider = ({
   };
 
   const switchUserActiveStatus = async (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     userId: string

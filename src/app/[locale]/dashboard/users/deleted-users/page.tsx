@@ -1,8 +1,6 @@
 import { fetchDeletedUsers } from "@/hooks/react-query/useDeletedUsersQuery";
-
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-
 import DeletedUsersPage from "@/components/admin/routes/users/deletedUsers/DeletedUsersPage";
 
 export default async function Page() {

@@ -1,9 +1,6 @@
 import { memo } from "react";
-
 import { AdminUsersContextProvider } from "@/contexts/AdminUsersContext";
-
 import { User } from "@/types/user";
-
 import SearchAdminUsers from "./SearchAdminUsers";
 import AdminUsersList from "./AdminUsersList";
 import CreateAdminUserBtn from "./CreateAdminUserBtn";

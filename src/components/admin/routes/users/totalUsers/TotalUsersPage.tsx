@@ -1,5 +1,4 @@
 import { memo } from "react";
-
 import { User } from "@/types/user";
 import { TotalUsersProvider } from "@/contexts/TotalUsersContext";
 import SearchTotalUsers from "./SearchTotalUsers";
@@ -7,7 +6,7 @@ import TotalUsersList from "./TotalUsersList";
 
 interface TotalUsersPageProps {
   initialUsers: User[];
-  accessToken: string;
+  accessToken: string | null;
 }
 
 const TotalUsersPage = ({ initialUsers, accessToken }: TotalUsersPageProps) => {

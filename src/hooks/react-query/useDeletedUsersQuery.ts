@@ -16,7 +16,7 @@ interface ActiveUsersResp {
 }
 
 interface FetchUsersParams {
-  token: string;
+  token: string | null;
   lang?: string;
   limit?: number;
   lastId?: string;
