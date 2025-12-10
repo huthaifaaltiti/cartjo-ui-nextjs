@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 export function requireAuth(
-  accessToken: string | undefined,
+  accessToken: string | undefined | null,
   redirectTo: string = "/auth"
 ) {
   if (!accessToken) {
