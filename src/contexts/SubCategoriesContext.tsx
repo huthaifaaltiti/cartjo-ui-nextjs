@@ -1,39 +1,37 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useState } from "react";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-
-import { DeletingResponse } from "@/types/common";
 import { Locale } from "@/types/locale";
-import { SwitchActiveStatusResponse } from "@/types/common";
+import { SwitchUserActiveStatusResponse } from "@/types/totalUser";
+import { BaseResponse } from "@/types/service-response.type";
 
 interface SubCategoriesContextType {
-  accessToken: string;
+  accessToken: string | null;
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
   queryKey: string;
   deleteSubCategory: (
-    token: string,
+    token: string | null,
     subCatId: string
-  ) => Promise<DeletingResponse>;
+  ) => Promise<BaseResponse>;
   unDeleteSubCategory: (
-    token: string,
+    token: string | null,
     subCatId: string
-  ) => Promise<DeletingResponse>;
+  ) => Promise<BaseResponse>;
   switchSubCategoryActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     subCatId: string
-  ) => Promise<SwitchActiveStatusResponse>;
+  ) => Promise<BaseResponse>;
   selectedCatId?: string;
   setSelectedCatId?: (id: string | undefined) => void;
 }
 
 interface SubCategoriesContextProviderProps {
   children: ReactNode;
-  accessToken: string;
+  accessToken: string | null;
 }
 
 const SubCategoriesContext = createContext<
@@ -49,9 +47,9 @@ export const SubCategoriesContextProvider = ({
   const [selectedCatId, setSelectedCatId] = useState<string | undefined>();
 
   const deleteSubCategory = async (
-    token: string,
+    token: string | null,
     subCatId: string
-  ): Promise<DeletingResponse> => {
+  ): Promise<BaseResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.SUB_CATEGORIES.DELETE}/${subCatId}`,
       {
@@ -72,9 +70,9 @@ export const SubCategoriesContextProvider = ({
   };
 
   const unDeleteSubCategory = async (
-    token: string,
+    token: string | null,
     subCatId: string
-  ): Promise<DeletingResponse> => {
+  ): Promise<BaseResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.SUB_CATEGORIES.UN_DELETE}/${subCatId}`,
       {
@@ -95,11 +93,11 @@ export const SubCategoriesContextProvider = ({
   };
 
   const switchSubCategoryActiveStatus = async (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     subCatId: string
-  ): Promise<SwitchActiveStatusResponse> => {
+  ): Promise<SwitchUserActiveStatusResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.SUB_CATEGORIES.SWITCH_ACTIVE_STATUS}/${subCatId}`,
       {

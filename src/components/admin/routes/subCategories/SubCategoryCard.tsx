@@ -1,11 +1,8 @@
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
-
 import { BaseResponse } from "@/types/service-response.type";
 import { SubCategory } from "@/types/subCategory";
-
 import { isArabicLocale } from "@/config/locales.config";
-
 import SubCategoryCardActions from "./SubCategoryCardActions";
 import EditSubCategoryForm from "./EditSubCategoryForm";
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
@@ -13,16 +10,16 @@ import ImageWithFallback from "@/components/shared/ImageWithFallback";
 type SubCategoryCardProps = {
   item: SubCategory;
   deleteSubCategory: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string
   ) => Promise<BaseResponse>;
   unDeleteSubCategory: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string
   ) => Promise<BaseResponse>;
-  accessToken: string;
+  accessToken: string | null;
   switchSubCategoryActiveStatus: (
-    token: string,
+    token: string | null,
     lang: string,
     isActive: boolean,
     userId: string
@@ -75,6 +72,7 @@ const SubCategoryCard = ({
             alt={isArabic ? subCategory.name.ar : subCategory.name.en}
             width={40}
             height={40}
+            useFill={false}
             className="object-cover w-full h-full"
           />
         </div>
