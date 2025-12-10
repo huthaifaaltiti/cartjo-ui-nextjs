@@ -1,13 +1,6 @@
 import { Order } from "@/types/order.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  changePaymentStatus,
-  createOrder,
-  deleteOrder,
-  getOrder,
-  getOrders,
-  restoreOrder,
-} from "./actions";
+import { changePaymentStatus, getOrder, getOrders } from "./actions";
 
 interface OrderState {
   items: Order[];
@@ -100,7 +93,11 @@ const orderSlice = createSlice({
   },
 });
 
-export const { resetOrdersState, setOrdersItems, setSelectedOrder, setOrdersSearchQuery } =
-  orderSlice.actions;
+export const {
+  resetOrdersState,
+  setOrdersItems,
+  setSelectedOrder,
+  setOrdersSearchQuery,
+} = orderSlice.actions;
 
 export default orderSlice.reducer;

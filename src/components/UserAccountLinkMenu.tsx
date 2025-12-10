@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, LogOutIcon, User, UserRoundPen } from "lucide-react";
+import { ChevronDown, User, UserRoundPen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useGeneralContext } from "@/contexts/General.context";
 import { LogoutBtn } from "./shared/LogoutBrn";
@@ -17,7 +17,7 @@ import { LogoutBtn } from "./shared/LogoutBrn";
 const UserAccountLinkMenu = () => {
   const router = useRouter();
   const t = useTranslations();
-  const { dir, locale } = useGeneralContext();
+  const { dir } = useGeneralContext();
 
   return (
     <DropdownMenu dir={dir}>

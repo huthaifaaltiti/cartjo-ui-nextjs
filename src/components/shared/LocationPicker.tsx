@@ -234,14 +234,14 @@ export default function LocationPicker({
     <div className="relative w-full h-[400px] rounded-xl overflow-hidden">
       {/* Search Box */}
       <SearchBox
-        onSelectLocation={(lat, lng, name) =>
+        onSelectLocation={(lat, lng) =>
           handlePositionChange({ lat, lng })
         }
       />
 
       {/* Use My Location */}
       <UseMyLocationButton
-        onSelectLocation={(lat, lng, name) =>
+        onSelectLocation={(lat, lng) =>
           handlePositionChange({ lat, lng })
         }
       />

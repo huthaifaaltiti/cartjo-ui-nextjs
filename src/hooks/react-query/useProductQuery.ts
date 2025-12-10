@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Product } from "@/types/product.type";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
-import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useAuthContext } from "../useAuthContext";
 import { Locale } from "@/types/locale";
-import { FetchError } from "@/types/common";
 import { fetcher } from "@/utils/fetcher";
 import { Comment } from "@/types/comment.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
@@ -56,7 +54,6 @@ export const fetchProductComments = async ({
 };
 
 export const useProductQuery = ({
-  lang = "en",
   productId,
 }: Pick<FetchProductProps, "lang" | "productId">) => {
   const { locale, accessToken } = useAuthContext();

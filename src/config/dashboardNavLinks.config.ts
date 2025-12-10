@@ -1,10 +1,8 @@
 import {
-  MapPin,
   Users,
   Box,
   Boxes,
   ShoppingBasket,
-  FileMusic,
   Feather,
   Flag,
   LayoutPanelTop,
