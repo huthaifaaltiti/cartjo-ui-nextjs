@@ -12,17 +12,17 @@ type CategoriesContextType = {
   accessToken: string | null;
   setSearchQuery: (searchQuery: string) => void;
   deleteCategory: (
-    token: string,
+    token: string | null,
     catId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   unDeleteCategory: (
-    token: string,
+    token: string | null,
     catId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   switchCategoryActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     catId: string
@@ -46,7 +46,7 @@ export const CategoriesContextProvider = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const deleteCategory = async (
-    token: string,
+    token: string | null,
     catId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
@@ -71,7 +71,7 @@ export const CategoriesContextProvider = ({
   };
 
   const unDeleteCategory = async (
-    token: string,
+    token: string | null,
     catId: string,
     lang: Locale
   ): Promise<BaseResponse> => {
@@ -96,7 +96,7 @@ export const CategoriesContextProvider = ({
   };
 
   const switchCategoryActiveStatus = async (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     catId: string

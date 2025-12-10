@@ -21,19 +21,23 @@ type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean }
 > = {
   cardItem: T;
-  deleteFn: (token: string, id: string, lang: Locale) => Promise<BaseResponse>;
+  deleteFn: (
+    token: string | null,
+    id: string,
+    lang: Locale
+  ) => Promise<BaseResponse>;
   unDeleteFn: (
-    token: string,
+    token: string | null,
     id: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   switchUserActiveStatusFn: (
-    token: string,
+    token: string | null,
     lang: string,
     isActive: boolean,
     id: string
   ) => Promise<BaseResponse>;
-  accessToken: string;
+  accessToken: string | null;
   queryKey: string;
   showEditButton?: boolean;
   renderEditForm?: (item: T) => React.ReactNode;
