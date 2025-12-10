@@ -6,10 +6,9 @@ import OrderCardActions from "./OrderCardActions";
 
 type OrderCardProps = {
   item: Order;
-  queryKey: string;
 };
 
-const OrderCard = ({ item, queryKey }: OrderCardProps) => {
+const OrderCard = ({ item }: OrderCardProps) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);

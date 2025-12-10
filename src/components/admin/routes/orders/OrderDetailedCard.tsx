@@ -137,6 +137,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
       // optionally show toast
       // console.error("Failed to generate PDF", err);
       alert(t("general.errors.pdfGeneration") || "Failed to generate PDF.");
+      console.log({err})
     }
   }, [selectedOrder, t]);
 
@@ -179,7 +180,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
   }
 
   if (showData) {
-    const totalItems = selectedOrder.items.reduce(
+    const totalItems: number = selectedOrder.items.reduce(
       (sum: number, product: any) => sum + (product.quantity || 0),
       0
     );

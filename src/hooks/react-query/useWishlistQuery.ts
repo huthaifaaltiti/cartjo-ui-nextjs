@@ -1,4 +1,3 @@
-// useWishlistQuery.ts
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -10,7 +9,6 @@ import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { handleUnauthorizedResponse } from "@/utils/handleUnauthorizedResponse";
 import { Locale } from "@/types/locale";
-import { useWishlist } from "@/contexts/Wishlist.context";
 
 interface FetchWishlistItemsParams {
   token: string | null;

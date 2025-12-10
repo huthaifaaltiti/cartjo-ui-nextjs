@@ -1,5 +1,4 @@
 import { FetchError } from "@/types/common";
-import { handleUnauthorizedResponse } from "./handleUnauthorizedResponse";
 import { Locale } from "@/types/locale";
 
 /**
@@ -13,7 +12,7 @@ import { Locale } from "@/types/locale";
 export async function fetcher<T = any>(
   url: string | URL,
   options?: RequestInit,
-  lang?: string | Locale
+  // lang?: string | Locale
 ): Promise<T> {
   const resp = await fetch(url, options);
 

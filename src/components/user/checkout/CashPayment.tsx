@@ -6,8 +6,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import ShippingAddressForm, { ShippingAddress } from "./ShippingAddressForm";
 import Modal from "@/components/shared/Modal";
+import { useTranslations } from "next-intl";
 
 export default function CashPayment() {
+  const t = useTranslations("routes.checkout.components.CashPayment");
+
   const { totalAmount } = useSelector((state: RootState) => state.cart);
   const { accessToken } = useAuthContext();
 
@@ -19,12 +22,12 @@ export default function CashPayment() {
 
   const handleCashPayment = async () => {
     if (!accessToken) {
-      setError("You must be logged in to place an order");
+      setError(t("errors.notLoggedIn"));
       return;
     }
 
     if (!shippingAddress) {
-      setError("Please fill the shipping address first.");
+      setError(t("errors.noShipping"));
       return;
     }
 
@@ -32,7 +35,6 @@ export default function CashPayment() {
     setError(null);
 
     try {
-      // Call your backend to create a cash order
       const response = await fetch("/api/orders/create-cash-order", {
         method: "POST",
         headers: {
@@ -46,16 +48,15 @@ export default function CashPayment() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create cash order");
+        throw new Error(t("errors.orderFailed"));
       }
 
       const data = await response.json();
 
-      // Redirect to success page or show confirmation
       window.location.href = `/order-confirmation/${data.orderId}`;
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to process cash order"
+        err instanceof Error ? err.message : t("errors.processingFailed")
       );
     } finally {
       setCashOrderProcessing(false);
@@ -67,12 +68,10 @@ export default function CashPayment() {
       <div className="space-y-4">
         <div className="bg-green-50 border border-green-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-green-900 mb-2">
-            Cash on Delivery
+            {t("title")}
           </h3>
 
-          <p className="text-green-800 mb-4">
-            Pay with cash when your order is delivered to your doorstep.
-          </p>
+          <p className="text-green-800 mb-4">{t("description")}</p>
 
           <ul className="space-y-2 text-sm text-green-700">
             <li className="flex items-start">
@@ -87,8 +86,9 @@ export default function CashPayment() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>Have exact change ready</span>
+              <span>{t("tip1")}</span>
             </li>
+
             <li className="flex items-start">
               <svg
                 className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0"
@@ -101,8 +101,9 @@ export default function CashPayment() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>Payment is due upon delivery</span>
+              <span>{t("tip2")}</span>
             </li>
+
             <li className="flex items-start">
               <svg
                 className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0"
@@ -115,11 +116,10 @@ export default function CashPayment() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>Inspect your order before payment</span>
+              <span>{t("tip3")}</span>
             </li>
           </ul>
 
-          {/* Show shipping status */}
           <div className="mt-4">
             {!shippingAddress ? (
               <button
@@ -127,11 +127,11 @@ export default function CashPayment() {
                 type="button"
                 className="text-blue-600 underline text-sm"
               >
-                + Add Shipping Address
+                {t("addShipping")}
               </button>
             ) : (
               <p className="text-green-700 text-sm font-medium">
-                ✓ Shipping address added
+                {t("shippingAdded")}
               </p>
             )}
           </div>
@@ -164,12 +164,18 @@ export default function CashPayment() {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              Processing...
+              {t("processing")}
             </span>
           ) : (
-            "Place Order (Cash on Delivery)"
+            t("placeOrder")
           )}
         </button>
+
+        {error && (
+          <p className="text-red-600 text-sm font-medium text-center mt-2">
+            {error}
+          </p>
+        )}
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

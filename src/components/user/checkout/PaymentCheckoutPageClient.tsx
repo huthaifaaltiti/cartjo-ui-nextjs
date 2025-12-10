@@ -57,6 +57,7 @@ export default function PaymentCheckoutPageClient() {
 
                 {paymentMethod === PaymentMethods.Card && <CardsPayment />}
                 {paymentMethod === PaymentMethods.Cash && <CashPayment />}
+                {paymentData && <div>paymentData</div>}
               </div>
             </div>
 

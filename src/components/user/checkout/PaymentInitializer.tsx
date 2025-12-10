@@ -63,6 +63,7 @@ export default function PaymentInitializer({
         }
       } catch (err) {
         setError("Failed to initialize payment.");
+        console.log({err})
       }
     };
 
@@ -89,6 +90,7 @@ export default function PaymentInitializer({
         if (resp?.isSuccess) setVerifiedOrder(resp.data);
       } catch (err) {
         setError("Failed to verify payment.");
+        console.log({err})
       }
     };
 
