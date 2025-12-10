@@ -37,7 +37,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
 
   const title = isArabic ? product?.name?.ar : product?.name?.en;
 
-  const [isWishListed, setIsWishListed] = useState(
+  const [isWishListed] = useState(
     product?.isWishListed || false
   );
   const [isHovered, setIsHovered] = useState(false);

@@ -29,7 +29,7 @@ export default function EmailVerificationContent() {
 
   const [status, setStatus] = useState<"loading" | "success" | "error" | "expired" | "manual">("loading");
   const [message, setMessage] = useState("");
-  const [countdown, setCountdown] = useState(10);
+  const [countdown] = useState(10);
   const [email, setEmail] = useState(sessionEmail || "");
   const [isResending, setIsResending] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);

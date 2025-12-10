@@ -12,7 +12,7 @@ const CartOrderStatus: React.FC = () => {
   const { items, totalAmount, totalItemsCount } = useSelector(
     (state: RootState) => state.cart
   );
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing] = useState(false);
 
   return (
     <div className="w-full min-h-[20vh] h-auto mt-9 px-4 py-4 bg-white-50 border border-gray-100 rounded shadow-sm">

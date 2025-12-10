@@ -1,16 +1,7 @@
 "use client";
 
 import { memo, useCallback, useState } from "react";
-import {
-  Heart,
-  Minus,
-  Plus,
-  Share2,
-  Shield,
-  ShoppingCart,
-  Star,
-  Truck,
-} from "lucide-react";
+import { Minus, Plus, ShoppingCart, Star } from "lucide-react";
 import { Product } from "@/types/product.type";
 import { useLocale } from "next-intl";
 import { isArabicLocale } from "@/config/locales.config";
@@ -31,6 +22,7 @@ import {
 import { addItemToServer } from "@/redux/slices/cart/actions";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
+import Image from "next/image";
 
 interface Props {
   product: Product;
@@ -163,7 +155,7 @@ const ProductDetailsContent = ({ product }: Props) => {
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, accessToken, product._id, t]);
+  }, [locale, accessToken, product._id, t, dispatch]);
 
   const handleWishListedItemState = () =>
     isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
@@ -215,7 +207,7 @@ const ProductDetailsContent = ({ product }: Props) => {
         {/* IMAGES */}
         <div className="space-y-4">
           <div className="aspect-square overflow-hidden rounded-xl bg-gray-100 relative group">
-            <img
+            <Image
               src={selectedImage}
               alt={product.name.en}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -245,7 +237,7 @@ const ProductDetailsContent = ({ product }: Props) => {
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
-                <img src={image} className="w-full h-full object-cover" />
+                <Image src={image} alt={title} className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
