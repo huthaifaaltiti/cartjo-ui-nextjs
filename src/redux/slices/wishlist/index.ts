@@ -106,7 +106,7 @@ const wishlistSlice = createSlice({
         state.loading = true;
       })
 
-      .addCase(removeAllWishlistItems.fulfilled, (state, action) => {
+      .addCase(removeAllWishlistItems.fulfilled, (state) => {
         state.loading = false;
         state.items = [];
         state.itemsCount = 0;

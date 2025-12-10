@@ -61,7 +61,7 @@ const CategoriesPageMainItems = () => {
   const showData = !isLoading && !isFetching && categories.length > 0;
 
   // TODO: Add analytics tracking
-  const handleCategoryClick = (category: Category) => {
+  const handleCategoryClick = () => {
     // TODO: Track category clicks for analytics
     // trackEvent('category_clicked', { category_id: category._id, category_name: category.name[locale] });
     // TODO: Navigate to category page
