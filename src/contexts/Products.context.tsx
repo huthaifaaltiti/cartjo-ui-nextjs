@@ -1,29 +1,27 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useState } from "react";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
 
 type ProductsContextType = {
-  token: string;
+  token: string | null;
   queryKey: string;
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
   deleteProduct: (
-    token: string,
+    token: string | null,
     locale: string,
     prodId: string
   ) => Promise<BaseResponse>;
   unDeleteProduct: (
-    token: string,
+    token: string | null,
     locale: string,
     prodId: string
   ) => Promise<BaseResponse>;
   switchProductActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     prodId: string
@@ -36,7 +34,7 @@ const ProductsContext = createContext<ProductsContextType | undefined>(
 
 type ProductsContextProviderType = {
   children: ReactNode;
-  token: string;
+  token: string | null;
 };
 
 export const ProductsContextProvider = ({
@@ -47,7 +45,7 @@ export const ProductsContextProvider = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const deleteProduct = async (
-    token: string,
+    token: string | null,
     locale: string,
     prodId: string
   ): Promise<BaseResponse> => {
@@ -71,7 +69,7 @@ export const ProductsContextProvider = ({
   };
 
   const unDeleteProduct = async (
-    token: string,
+    token: string | null,
     locale: string,
     prodId: string
   ): Promise<BaseResponse> => {
@@ -95,7 +93,7 @@ export const ProductsContextProvider = ({
   };
 
   const switchProductActiveStatus = async (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     prodId: string

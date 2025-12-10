@@ -7,7 +7,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Tag } from "react-tag-input";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,21 +24,18 @@ import {
 import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { isArabicLocale } from "@/config/locales.config";
 import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
 import { tagStyledClassName } from "@/constants/tagsInputStyles";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { invalidateQuery } from "@/utils/queryUtils";
-
 import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { Currency } from "@/enums/currency.enum";
-import { TypeHint } from "@/enums/typeHint.enum";
+// import { TypeHint } from "@/enums/typeHint.enum";
 import { Product } from "@/types/product.type";
 import { SubCategory } from "@/types/subCategory";
-
 import { useProducts } from "@/contexts/Products.context";
 import {
   Select,
@@ -56,10 +52,11 @@ for (const key in Currency) {
   currencyValues.push(Currency[key as keyof typeof Currency]);
 }
 
-const typeHintValues: string[] = Object.values(TypeHint);
-for (const key in TypeHint) {
-  typeHintValues.push(key as keyof typeof TypeHint);
-}
+const typeHintValues: string[] = Object.values({});
+// const typeHintValues: string[] = Object.values(TypeHint);
+// for (const key in TypeHint) {
+//   typeHintValues.push(key as keyof typeof TypeHint);
+// }
 
 const editFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -840,7 +837,7 @@ const EditProductForm = ({
                           />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      {/* <SelectContent>
                         {Object.values(TypeHint)?.map((th, i) => (
                           <SelectItem
                             key={`TypeHintItem_${i}`}
@@ -850,7 +847,7 @@ const EditProductForm = ({
                             {th}
                           </SelectItem>
                         ))}
-                      </SelectContent>
+                      </SelectContent> */}
                     </Select>
                     <FormMessage />
                   </FormItem>
