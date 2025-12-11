@@ -32,7 +32,7 @@ const notoKufiArabic = Noto_Kufi_Arabic({
 export async function generateMetadata({
   params,
 }: {
-  params:  Promise<{ locale: Locale }>;
+  params:  Promise<{ locale: Locale | string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
   const isArabic = isArabicLocale(locale);

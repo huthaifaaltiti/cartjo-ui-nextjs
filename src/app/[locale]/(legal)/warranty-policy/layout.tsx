@@ -8,7 +8,7 @@ export default async function WarrantyPolicyPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params:  Promise<{ locale: Locale }>;
+  params:  Promise<{ locale: Locale | string }>;
 }) {
   const { locale } = await params;
 
