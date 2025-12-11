@@ -75,7 +75,7 @@ const ProductVertCard = ({
 
       const response = await dispatch(
         addItemToServer({
-          productId: item?._id!,
+          productId: item?._id,
           quantity: 1,
           lang: locale,
           token: accessToken,

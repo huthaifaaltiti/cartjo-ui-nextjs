@@ -22,6 +22,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import ReceiptHiddenLayout from "./ReceiptHiddenLayout";
 import NoOrderDetailedCardData from "./NoOrderDetailedCardData";
+import { OrderItem } from "@/types/orderItem.type";
 
 type Props = { orderId: string };
 
@@ -181,7 +182,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
 
   if (showData) {
     const totalItems: number = selectedOrder.items.reduce(
-      (sum: number, product: any) => sum + (product.quantity || 0),
+      (sum: number, product: OrderItem) => sum + (product.quantity || 0),
       0
     );
 
@@ -363,7 +364,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
               </h3>
             </div>
             <div className="space-y-3">
-              {selectedOrder.items.map((product: any, index: number) => (
+              {selectedOrder.items.map((product: OrderItem, index: number) => (
                 <OrderDetailedCardItem
                   key={index}
                   product={product}

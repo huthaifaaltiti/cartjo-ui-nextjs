@@ -39,3 +39,8 @@ export interface FetchError extends Error {
   status?: number;
   details?: any;
 }
+
+export type FormHandler<T> = {
+  trigger: () => Promise<boolean>;
+  getValues: () => T;
+};
