@@ -8,7 +8,7 @@ export default async function PrivacyPolicyPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: Locale | string }>;
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
 

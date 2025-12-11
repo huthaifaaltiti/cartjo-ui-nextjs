@@ -15,7 +15,7 @@ export default async function SupportPageLayout({
     <>
       <TopBar />
       <div className="w-full">{children}</div>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </>
   );
 }

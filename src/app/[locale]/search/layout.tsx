@@ -18,7 +18,7 @@ export default async function SearchPageLayout({
       <MaxWidthWrapper className="w-full min-h-[70vh]">
         <div className="w-full">{children}</div>
       </MaxWidthWrapper>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </>
   );
 }

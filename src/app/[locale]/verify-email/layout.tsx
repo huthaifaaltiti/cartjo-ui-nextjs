@@ -15,7 +15,7 @@ export default async function VerifyEmailPageLayout({
     <>
       <TopBar />
       <div className="w-full h-screen">{children}</div>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </>
   );
 }

@@ -27,7 +27,7 @@ export default async function WishlistPageLayout({
           <div className="w-full">{children}</div>
         </MaxWidthWrapper>
       </WishlistContextProvider>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </>
   );
 }

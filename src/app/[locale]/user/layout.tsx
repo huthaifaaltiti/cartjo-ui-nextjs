@@ -42,7 +42,7 @@ export default async function UserPageLayout({
           </main>
         </div>
       </MaxWidthWrapper>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </div>
   );
 }

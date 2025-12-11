@@ -11,7 +11,7 @@ export default async function CartPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params:  Promise<{ locale: Locale | string }>;
+  params:  Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
 
