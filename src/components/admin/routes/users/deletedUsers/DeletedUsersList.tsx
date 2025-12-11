@@ -1,11 +1,9 @@
 "use client";
 
 import { memo } from "react";
-
 import { useDeletedUsersQuery } from "@/hooks/react-query/useDeletedUsersQuery";
 import { useDeletedUsers } from "@/contexts/DeletedUsersContext";
 import { User } from "@/types/user";
-
 import UsersInfiniteScrollList from "@/components/admin/shared/UsersInfiniteScrollList";
 
 type DeletedUsersListProps = {

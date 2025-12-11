@@ -1,5 +1,4 @@
 import { memo } from "react";
-
 import { User } from "@/types/user";
 import UserCardActions from "./UserCardActions";
 

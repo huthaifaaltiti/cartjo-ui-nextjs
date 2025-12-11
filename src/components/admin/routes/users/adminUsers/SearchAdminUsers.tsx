@@ -2,9 +2,7 @@
 
 import { memo } from "react";
 import { useTranslations } from "next-intl";
-
 import { useAdminUsers } from "@/contexts/AdminUsersContext";
-
 import SearchBar from "@/components/shared/SearchBar";
 
 const SearchAdminUsers = () => {
