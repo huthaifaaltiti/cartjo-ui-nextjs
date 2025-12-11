@@ -1,5 +1,4 @@
 import { memo } from "react";
-
 import { User } from "@/types/user";
 import {
   DeleteUserResponse,
@@ -7,23 +6,21 @@ import {
   UnDeleteUserResponse,
 } from "@/types/totalUser";
 import { Locale } from "@/types/locale";
-
 import DashboardUserCardActions from "./DashboardUserCardActions";
-
 
 export type UserCardProps = {
   user: User;
   deleteUser: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string
   ) => Promise<DeleteUserResponse>;
   unDeleteUser: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string
   ) => Promise<UnDeleteUserResponse>;
-  accessToken: string;
+  accessToken: string | null;
   switchUserActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     userId: string
