@@ -15,6 +15,8 @@
 // //   LucideProps,
 // // } from "lucide-react";
 
+import { LucideIcon } from "lucide-react";
+
 // const typeHintLabelsAr = {
 //   // [TypeHint.COLD_SALE]: "تخفيضات باردة",
 //   // [TypeHint.HOT_DEAL]: "صفقة ساخنة",
@@ -164,10 +166,16 @@
 //   };
 // };
 
+type TypeHintGradient = {
+  from: string;
+  to: string;
+  textColor: string;
+};
+
 const typeHintLabelsAr: Record<string, string> = {} as Record<string, string>;
 const typeHintLabelsEn: Record<string, string> = {} as Record<string, string>;
-const typeHintIcons: Record<string, any> = {} as Record<string, any>;
-const typeHintGradients: Record<string, any> = {} as Record<string, any>;
+const typeHintIcons: Record<string, LucideIcon> = {} as Record<string, any>;
+const typeHintGradients: Record<string, TypeHintGradient> = {} as Record<string, TypeHintGradient>;
 
 export const useTypeHints = () => {
   const getLabel = (typeHint: string, isArabic: boolean): string =>
