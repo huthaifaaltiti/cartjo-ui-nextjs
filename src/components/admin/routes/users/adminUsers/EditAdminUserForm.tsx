@@ -66,7 +66,7 @@ const createFormSchema = (t: (key: string) => string) =>
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 
 interface EditAdminUserFormProps {
-  accessToken: string;
+  accessToken: string | null;
   user: User;
 }
 
