@@ -18,19 +18,23 @@ import TopBar from "@/components/TopBar";
 import { HomeContextProvider } from "@/contexts/HomeContext";
 import HomeShowcase from "@/components/user/home/HomeShowcase";
 import SelectedCategoriesItems from "@/components/user/home/SelectedCategoriesItems";
+import Footer from "@/components/Footer";
+import { Locale } from "@/types/locale";
 
-export default async function Home() {
+export default async function Home({ params }: { params: { locale: Locale } }) {
+  const { locale } = params;
+
   const token = await getAccessTokenFromServerSession();
   const queryClient = getQueryClient();
 
   const [categoriesResult] = await Promise.all([
-    queryClient.fetchQuery(getActiveCategoriesQueryOptions("en")),
+    queryClient.fetchQuery(getActiveCategoriesQueryOptions(locale || "en")),
     queryClient.prefetchQuery(
       getActiveShowcasesQueryOptions(
         PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE
       )
     ),
-    queryClient.prefetchQuery(getActiveBannersQueryOptions("en")),
+    queryClient.prefetchQuery(getActiveBannersQueryOptions(locale || "en")),
   ]);
 
   const categories = categoriesResult?.data ?? [];
@@ -54,15 +58,18 @@ export default async function Home() {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <HomeContextProvider>
-      <TopBar />
-      <MainHeader />
-      <HydrationBoundary state={dehydratedState}>
-        <HeroSection />
-        <CategoriesCarousel />
-        <HomeShowcase />
-        <SelectedCategoriesItems randomCategories={randomCategories} />
-      </HydrationBoundary>
-    </HomeContextProvider>
+    <>
+      <HomeContextProvider>
+        <TopBar />
+        <MainHeader />
+        <HydrationBoundary state={dehydratedState}>
+          <HeroSection />
+          <CategoriesCarousel />
+          <HomeShowcase />
+          <SelectedCategoriesItems randomCategories={randomCategories} />
+        </HydrationBoundary>
+      </HomeContextProvider>
+      <Footer locale={locale} />
+    </>
   );
 }
