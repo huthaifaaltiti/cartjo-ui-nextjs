@@ -21,8 +21,8 @@ import SelectedCategoriesItems from "@/components/user/home/SelectedCategoriesIt
 import Footer from "@/components/Footer";
 import { Locale } from "@/types/locale";
 
-export default async function Home({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
 
   const token = await getAccessTokenFromServerSession();
   const queryClient = getQueryClient();
