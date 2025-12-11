@@ -7,7 +7,7 @@ export default async function SupportPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params:  Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
   

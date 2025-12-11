@@ -11,7 +11,7 @@ export default async function WishlistPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params:  Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
 

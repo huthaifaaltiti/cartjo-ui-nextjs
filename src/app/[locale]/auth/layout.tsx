@@ -3,14 +3,15 @@ import {
   METADATA_ROUTES_NAMES,
   routesMetadata,
 } from "@/constants/metadata.constant";
+import { Locale } from "@/types/locale";
 import { Metadata } from "next";
 
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string };
+  params:  Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
-  const { locale } = params;
+  const { locale } = await params;
   const isArabic = isArabicLocale(locale);
   const meta = routesMetadata[METADATA_ROUTES_NAMES.AUTH];
 

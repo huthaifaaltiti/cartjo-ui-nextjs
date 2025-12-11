@@ -8,7 +8,7 @@ export default async function CategoryPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params:  Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
 

@@ -8,7 +8,7 @@ export default async function SearchPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params:  Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
   

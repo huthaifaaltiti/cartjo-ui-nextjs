@@ -9,7 +9,7 @@ export default async function CheckoutPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params:  Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
 
