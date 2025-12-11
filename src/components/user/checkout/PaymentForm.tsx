@@ -19,13 +19,14 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import Modal from "@/components/shared/Modal";
 import ShippingAddressForm, { ShippingAddress } from "./ShippingAddressForm";
 
-interface SubmitPaymentResponse {
+export interface SubmitPaymentResponse {
   isSuccess: boolean;
   message?: string;
   data?: {
     order: {
       _id: string;
     };
+    return_url:string
   };
 }
 
