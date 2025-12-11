@@ -174,7 +174,7 @@ type TypeHintGradient = {
 
 const typeHintLabelsAr: Record<string, string> = {} as Record<string, string>;
 const typeHintLabelsEn: Record<string, string> = {} as Record<string, string>;
-const typeHintIcons: Record<string, LucideIcon> = {} as Record<string, any>;
+const typeHintIcons: Record<string, LucideIcon> = {} as Record<string, LucideIcon>;
 const typeHintGradients: Record<string, TypeHintGradient> = {} as Record<string, TypeHintGradient>;
 
 export const useTypeHints = () => {
