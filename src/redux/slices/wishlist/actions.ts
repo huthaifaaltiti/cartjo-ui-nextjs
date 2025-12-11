@@ -22,7 +22,7 @@ export const removeWishlistItem = createAsyncThunk<
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.REMOVE);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Wishlist>>(url.toString(), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export const addWishlistItem = createAsyncThunk<
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.ADD);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Wishlist>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export const sendWishlistItemToCart = createAsyncThunk<
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.SEND_TO_CART);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +132,7 @@ export const removeAllWishlistItems = createAsyncThunk<
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.REMOVE_ALL);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -168,7 +168,7 @@ export const sendAllWishlistItemsToCart = createAsyncThunk<
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.SEND_ALL_TO_CART);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
