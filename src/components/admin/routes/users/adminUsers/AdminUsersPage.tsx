@@ -7,7 +7,7 @@ import CreateAdminUserBtn from "./CreateAdminUserBtn";
 
 interface AdminUsersPageProps {
   initialUsers: User[];
-  accessToken: string;
+  accessToken: string | null;
 }
 
 const AdminUsersPage = ({ initialUsers, accessToken }: AdminUsersPageProps) => {
