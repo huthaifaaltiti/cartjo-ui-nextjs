@@ -2,7 +2,8 @@ export default async function UserProfilePageLayout({
   children
 }: {
   children: React.ReactNode;
-  params?: Promise<{ slug?: string[] }>;
+  // params?: Promise<{ slug?: string[] }>;
+  params: Promise<{ locale: string }>;
 }) {
   // If you need to use params, await it here:
   // const resolvedParams = params ? await params : undefined;
