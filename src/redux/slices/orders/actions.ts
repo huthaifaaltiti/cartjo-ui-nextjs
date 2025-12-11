@@ -11,6 +11,16 @@ import { Order } from "@/types/order.type";
 import { ORDER_CONSTANTS } from "./constants";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
 
+// Define shipping address type
+interface ShippingAddress {
+  street?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  postalCode?: string;
+  [key: string]: unknown;
+}
+
 // GET /api/v1/order/all
 export const getOrders = createAsyncThunk<
   DataListResponse<Order>,
@@ -50,10 +60,11 @@ export const getOrders = createAsyncThunk<
       }
 
       return response as DataListResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -67,8 +78,7 @@ export const getOrder = createAsyncThunk<
   ORDER_CONSTANTS.getOrder,
   async ({ id, lang = "en", token }, { rejectWithValue }) => {
     try {
-      const url = new URL(
-        API_ENDPOINTS.ORDER.GetOne.replace(":id", id));
+      const url = new URL(API_ENDPOINTS.ORDER.GetOne.replace(":id", id));
       url.searchParams.set("lang", String(lang));
 
       const response = await fetcher(url.toString(), {
@@ -83,10 +93,11 @@ export const getOrder = createAsyncThunk<
       }
 
       return response as DataResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -94,13 +105,20 @@ export const getOrder = createAsyncThunk<
 
 export const changePaymentStatus = createAsyncThunk<
   DataResponse<Order>,
-  { orderId: string; status: PaymentStatus; lang?: Locale | string; token: string },
+  {
+    orderId: string;
+    status: PaymentStatus;
+    lang?: Locale | string;
+    token: string;
+  },
   { rejectValue: BaseResponse }
 >(
   ORDER_CONSTANTS.changePaymentStatus,
   async ({ orderId, status, lang = "en", token }, { rejectWithValue }) => {
     try {
-      const url = new URL(API_ENDPOINTS.ORDER.ChangePaymentStatus.replace(":id", orderId));
+      const url = new URL(
+        API_ENDPOINTS.ORDER.ChangePaymentStatus.replace(":id", orderId)
+      );
 
       const response = await fetcher(url.toString(), {
         method: "POST",
@@ -114,10 +132,11 @@ export const changePaymentStatus = createAsyncThunk<
       if (!response.isSuccess) return rejectWithValue(response);
 
       return response as DataResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -149,10 +168,11 @@ export const deleteOrder = createAsyncThunk<
       if (!response.isSuccess) return rejectWithValue(response);
 
       return response as DataResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -184,10 +204,11 @@ export const restoreOrder = createAsyncThunk<
       if (!response.isSuccess) return rejectWithValue(response);
 
       return response as DataResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -203,7 +224,7 @@ export const createOrder = createAsyncThunk<
     merchantReference: string;
     transactionId?: string | null;
     paymentMethod: string;
-    shippingAddress: any;
+    shippingAddress: ShippingAddress;
     lang?: Locale | string;
     token: string;
   },
@@ -228,10 +249,10 @@ export const createOrder = createAsyncThunk<
     if (!response.isSuccess) return rejectWithValue(response);
 
     return response as DataResponse<Order>;
-  } catch (error: any) {
+  } catch (error) {
     return rejectWithValue({
       isSuccess: false,
-      message: error.message || "Something went wrong",
+      message: error instanceof Error ? error.message : "Something went wrong",
     });
   }
 });

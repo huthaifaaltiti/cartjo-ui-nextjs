@@ -6,6 +6,12 @@ import {
   removeItemFromServer,
   wishlistItems,
 } from "./actions";
+import { DataResponse } from "@/types/service-response.type";
+import { Cart } from "@/types/cart.type";
+
+interface ServerCartItem extends CartItem {
+  productId: string;
+}
 
 interface CartState {
   items: CartItem[];
@@ -43,7 +49,7 @@ const cartSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    const updateCartState = (state: CartState, payload: any) => {
+    const updateCartState = (state: CartState, payload: DataResponse<Cart>) => {
       if (!payload.data) return;
 
       const payloadList = payload?.data?.items || [];
@@ -57,8 +63,8 @@ const cartSlice = createSlice({
         return;
       }
 
-      const payloadMap = new Map<string, CartItem>(
-        payloadList.map((item: any) => [item.productId, item])
+      const payloadMap = new Map<string, ServerCartItem>(
+        (payloadList as ServerCartItem[]).map((item) => [item.productId, item])
       );
 
       state.items = stateList
