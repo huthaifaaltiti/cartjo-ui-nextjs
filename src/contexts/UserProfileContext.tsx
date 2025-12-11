@@ -97,7 +97,7 @@ export const UserProfileContextProvider = ({
           },
           body: JSON.stringify(body),
         },
-        locale
+        // locale
       );
 
       if (response.isSuccess) {
