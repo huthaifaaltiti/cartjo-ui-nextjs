@@ -3,15 +3,17 @@ import { generateLocalizedMetadata } from "@/utils/generateMetadata";
 
 
 type TermsOfUsePageProps = {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 };
 
-const TermsOfUsePage = ({ params }: TermsOfUsePageProps) => {
+const TermsOfUsePage = async ({ params }: TermsOfUsePageProps) => {
+    const { locale } = await params;
+
   return (
     <LegalPageRenderer
-      locale={params.locale}
+      locale={locale}
       folderName="terms-of-use"
       fileName="terms-of-use"
       titleKey="routes.termsOfUse.title"
@@ -23,7 +25,7 @@ const TermsOfUsePage = ({ params }: TermsOfUsePageProps) => {
 export default TermsOfUsePage;
 
 export async function generateMetadata({ params }: TermsOfUsePageProps) {
-  const { locale } = params;
+  const { locale } = await params;
 
   return generateLocalizedMetadata({
     locale,

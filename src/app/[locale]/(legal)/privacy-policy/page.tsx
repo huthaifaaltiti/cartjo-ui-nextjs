@@ -1,17 +1,18 @@
 import LegalPageRenderer from "@/components/user/legal/LegalPageRenderer";
 import { generateLocalizedMetadata } from "@/utils/generateMetadata";
 
-
 type PrivacyPolicyPageProps = {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 };
 
-const PrivacyPolicyPage = ({ params }: PrivacyPolicyPageProps) => {
+const PrivacyPolicyPage = async ({ params }: PrivacyPolicyPageProps) => {
+  const { locale } = await params;
+
   return (
     <LegalPageRenderer
-      locale={params.locale}
+      locale={locale}
       folderName="policies"
       fileName="privacy-policy"
       titleKey="routes.privacyPolicy.title"
@@ -23,7 +24,7 @@ const PrivacyPolicyPage = ({ params }: PrivacyPolicyPageProps) => {
 export default PrivacyPolicyPage;
 
 export async function generateMetadata({ params }: PrivacyPolicyPageProps) {
-  const { locale } = params;
+  const { locale } = await params;
 
   return generateLocalizedMetadata({
     locale,
