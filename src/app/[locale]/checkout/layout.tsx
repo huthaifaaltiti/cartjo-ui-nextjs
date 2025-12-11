@@ -9,7 +9,7 @@ export default async function CheckoutPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params:  Promise<{ locale: Locale }>;
+  params:  Promise<{ locale: Locale | string }>;
 }) {
   const { locale } = await params;
 
@@ -22,7 +22,7 @@ export default async function CheckoutPageLayout({
         </div>
         <div className="w-full">{children}</div>
       </MaxWidthWrapper>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </>
   );
 }
