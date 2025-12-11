@@ -37,7 +37,7 @@ const LegalPageRenderer = ({
   }
 
   const fileContent = fs.readFileSync(filePath, "utf8");
-  const htmlContent = marked(fileContent);
+  const htmlContent = marked.parse(fileContent) as string;
 
   return (
     <div
