@@ -61,12 +61,12 @@ const CategoriesPageMainItems = () => {
   const showData = !isLoading && !isFetching && categories.length > 0;
 
   // TODO: Add analytics tracking
-  const handleCategoryClick = () => {
+  // const handleCategoryClick = () => {
     // TODO: Track category clicks for analytics
     // trackEvent('category_clicked', { category_id: category._id, category_name: category.name[locale] });
     // TODO: Navigate to category page
     // router.push(`/categories/${category.slug}`);
-  };
+  // };
 
   // TODO: Add loading skeleton component
   if (showLoader) {
