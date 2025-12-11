@@ -2,7 +2,7 @@
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuthContext } from "../useAuthContext";
-import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
+import { GC_TIME } from "@/config/reactQueryOptions";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";

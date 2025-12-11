@@ -36,10 +36,10 @@ export const removeWishlistItem = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message: error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -73,10 +73,10 @@ export const addWishlistItem = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message: error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -110,10 +110,10 @@ export const sendWishlistItemToCart = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message: error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -146,10 +146,10 @@ export const removeAllWishlistItems = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message: error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -182,15 +182,11 @@ export const sendAllWishlistItemsToCart = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message: error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
 );
-
-
-
-

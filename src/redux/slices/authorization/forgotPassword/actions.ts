@@ -30,10 +30,11 @@ export const sendIdentifier = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -64,10 +65,11 @@ export const verifyResetPasswordCode = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -106,10 +108,11 @@ export const resetPassword = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
