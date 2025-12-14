@@ -44,3 +44,5 @@ export type FormHandler<T> = {
   trigger: () => Promise<boolean>;
   getValues: () => T;
 };
+
+export type Direction = "rtl" | "ltr";
