@@ -445,6 +445,14 @@ const RegisterForm = () => {
                   "routes.auth.components.AuthTabs.components.register.privacyPolicy"
                 )}
               </span>
+            </Link>{" "}
+            {t("general.others.&")}{" "}
+            <Link href="/terms-of-use" target="_blank">
+              <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
+                {t(
+                  "routes.auth.components.AuthTabs.components.register.termsAndConditions"
+                )}
+              </span>
             </Link>
           </p>
         </div>
@@ -459,7 +467,7 @@ const RegisterForm = () => {
                 name="termsAccepted"
                 render={({ field }) => (
                   <FormItem dir={dir} className="flex items-center gap-2">
-                    <FormControl>
+                    <FormControl className="h-4 mt-2">
                       <GeneralCheckbox
                         id="termsAccepted"
                         checked={field.value}
