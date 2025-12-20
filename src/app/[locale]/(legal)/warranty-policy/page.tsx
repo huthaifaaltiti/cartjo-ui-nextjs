@@ -1,17 +1,17 @@
 import LegalPageRenderer from "@/components/user/legal/LegalPageRenderer";
 import { generateLocalizedMetadata } from "@/utils/generateMetadata";
-;
-
 type WarrantyPolicyPageProps = {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 };
 
-const WarrantyPolicyPage = ({ params }: WarrantyPolicyPageProps) => {
+const WarrantyPolicyPage = async ({ params }: WarrantyPolicyPageProps) => {
+  const { locale } = await params;
+
   return (
     <LegalPageRenderer
-      locale={params.locale}
+      locale={locale}
       folderName="warranty-policy"
       fileName="warranty-policy"
       titleKey="routes.warrantyPolicy.title"
@@ -23,7 +23,7 @@ const WarrantyPolicyPage = ({ params }: WarrantyPolicyPageProps) => {
 export default WarrantyPolicyPage;
 
 export async function generateMetadata({ params }: WarrantyPolicyPageProps) {
-  const { locale } = params;
+  const { locale } = await params;
 
   return generateLocalizedMetadata({
     locale,

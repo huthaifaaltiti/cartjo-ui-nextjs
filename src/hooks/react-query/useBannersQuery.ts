@@ -57,6 +57,8 @@ export const fetchBanners = async ({
     },
   });
 
+  console.log({res})
+
   if (!res.ok) throw new Error("Could not retrieve banners");
 
   const resObj = await res.json();

@@ -13,13 +13,13 @@ type TotalUsersContextProps = {
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
   accessToken: string | null;
-  deleteUser: (token: string, userId: string) => Promise<DeleteUserResponse>;
+  deleteUser: (token: string | null, userId: string) => Promise<DeleteUserResponse>;
   unDeleteUser: (
-    token: string,
+    token: string | null,
     userId: string
   ) => Promise<UnDeleteUserResponse>;
   switchUserActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     userId: string
@@ -42,7 +42,7 @@ export const TotalUsersProvider = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const deleteUser = async (
-    token: string,
+    token: string | null,
     userId: string
   ): Promise<DeleteUserResponse> => {
     const res = await fetch(
@@ -65,7 +65,7 @@ export const TotalUsersProvider = ({
   };
 
   const unDeleteUser = async (
-    token: string,
+    token: string | null,
     userId: string
   ): Promise<DeleteUserResponse> => {
     const res = await fetch(
@@ -88,7 +88,7 @@ export const TotalUsersProvider = ({
   };
 
   const switchUserActiveStatus = async (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     userId: string

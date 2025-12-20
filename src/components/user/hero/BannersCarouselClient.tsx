@@ -25,18 +25,21 @@ const BannersCarouselClient = () => {
   const t = useTranslations();
 
   const duplicatedBanners: Banner[] = useMemo(() => {
-    const originalBanners =
-      data?.pages
-        ?.flatMap((page) => page.data || [])
-        .filter((banner) => banner?.isActive) ?? [];
+    // const originalBanners =
+    //   data?.pages
+    //     ?.flatMap((page) => page.data || [])
+    //     .filter((banner) => banner?.isActive) ?? [];
 
-    if (originalBanners.length <= 1) return originalBanners;
+    // if (originalBanners.length <= 1) return originalBanners;
 
-    return Array.from({ length: 4 }).flatMap(() => originalBanners);
+    // return Array.from({ length: 4 }).flatMap(() => originalBanners);
+
+    return []
   }, [data]);
 
-  const banners: Banner[] =
-    data?.pages?.flatMap((page) => page.data || []) ?? [];
+  // const banners: Banner[] =
+  //   data?.pages?.flatMap((page) => page.data || []) ?? [];
+  const banners: Banner[] = [];
 
   const showLoader: boolean =
     (!isLoading && !isFetching && !isError && !data) || isLoading || isFetching;

@@ -23,16 +23,16 @@ type Props = {
   usersList: User[];
   fetchNextPage?: () => void;
   deleteUser: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string
   ) => Promise<DeleteUserResponse>;
   unDeleteUser: (
-    accessToken: string,
+    accessToken: string | null,
     userId: string
   ) => Promise<UnDeleteUserResponse>;
-  accessToken: string;
+  accessToken: string | null;
   switchUserActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     userId: string

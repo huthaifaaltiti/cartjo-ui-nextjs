@@ -19,6 +19,8 @@ import {
   METADATA_ROUTES_NAMES,
   routesMetadata,
 } from "@/constants/metadata.constant";
+import { Locale } from "@/types/locale";
+import ReduxLocaleSync from "@/components/ReduxLocaleSync";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,9 +33,9 @@ const notoKufiArabic = Noto_Kufi_Arabic({
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: Locale | string }>;
 }): Promise<Metadata> {
-  const { locale } = params;
+  const { locale } = await params;
   const isArabic = isArabicLocale(locale);
   const meta = routesMetadata[METADATA_ROUTES_NAMES.HOME];
 
@@ -90,7 +92,10 @@ export default async function LocaleLayout({
                   />
                   <NuqsAdapter>
                     <GeneralContextProvider>
-                      <ReduxProvider>{children}</ReduxProvider>
+                      <ReduxProvider>
+                        <ReduxLocaleSync />
+                        {children}
+                      </ReduxProvider>
                     </GeneralContextProvider>
                   </NuqsAdapter>
                 </HomeEffectsContextProvider>

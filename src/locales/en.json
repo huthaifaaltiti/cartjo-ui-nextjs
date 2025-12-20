@@ -90,7 +90,8 @@
       "home": "Home",
       "timeline": "Timeline",
       "updatedBy": "Updated By",
-      "notFound": "Not Found"
+      "notFound": "Not Found",
+      "&": "&"
     },
     "date": {
       "startDate": "Start Date",
@@ -370,7 +371,8 @@
             "register": {
               "hint": "There are many advantages to creating an account: the payment process is faster, shipment tracking is possible and much more.",
               "note": "Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our",
-              "privacyPolicy": "privacy policy.",
+              "termsAndConditions": "Terms & Conditions.",
+              "privacyPolicy": "privacy policy",
               "dataSet": {
                 "firstName": {
                   "label": "First name",
@@ -407,14 +409,14 @@
                   }
                 },
                 "termsAccepted": {
-                  "label": "Terms accepted",
-                  "placeholder": "Terms accepted",
-                  "desc": "Terms accepted"
+                  "label": "Terms & Conditions Accepted",
+                  "placeholder": "Terms Accepted",
+                  "desc": "Terms Accepted"
                 },
                 "marketingEmails": {
-                  "label": "Marketing emails",
-                  "placeholder": "Marketing emails",
-                  "desc": "Marketing emails"
+                  "label": "Marketing Emails",
+                  "placeholder": "Marketing Emails",
+                  "desc": "Marketing Emails"
                 }
               },
               "actions": {

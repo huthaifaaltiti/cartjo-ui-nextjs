@@ -8,9 +8,9 @@ export default async function PrivacyPolicyPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale | string }>;
 }) {
-  const { locale } = params;
+  const { locale } = await params;
 
   return (
     <>
@@ -18,7 +18,7 @@ export default async function PrivacyPolicyPageLayout({
       <MaxWidthWrapper className="w-full min-h-[70vh]">
         <div className="w-full">{children}</div>
       </MaxWidthWrapper>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </>
   );
 }

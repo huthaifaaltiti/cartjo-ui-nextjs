@@ -19,6 +19,17 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import Modal from "@/components/shared/Modal";
 import ShippingAddressForm, { ShippingAddress } from "./ShippingAddressForm";
 
+export interface SubmitPaymentResponse {
+  isSuccess: boolean;
+  message?: string;
+  data?: {
+    order: {
+      _id: string;
+    };
+    return_url:string
+  };
+}
+
 interface PaymentFormProps {
   formRef: RefObject<HTMLFormElement | null>;
   paymentData: PaymentData | null;
@@ -40,9 +51,6 @@ export default function PaymentForm({
   const { totalAmount } = useSelector((state: RootState) => state.cart);
   const apsFormRef = useRef<HTMLFormElement>(null);
 
-  console.log({paymentData})
-  console.log({verifiedOrder})
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress | null>(null);
@@ -57,8 +65,6 @@ export default function PaymentForm({
   // Listen for APS PayFort tokenization response
   useEffect(() => {
     if (!paymentData || !verifiedOrder || !shippingAddress || tokenReceived) return;
-
-    console.log('handleAPSResponse')
 
     const handleAPSResponse = async (event: MessageEvent) => {
       console.log('inside handleAPSResponse')
@@ -107,7 +113,7 @@ export default function PaymentForm({
     try {
       const url = new URL(API_ENDPOINTS.CHECKOUT.SUBMIT_PAYMENT);
 
-      const resp = await fetcher(url.toString(), {
+      const resp = await fetcher<SubmitPaymentResponse>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -126,9 +132,9 @@ export default function PaymentForm({
 
       console.log({resp})
 
-      if (resp?.isSuccess) {
+      if (resp?.isSuccess && resp?.data) {
         // Payment successful! Redirect to success page
-        window.location.href = `/checkout/success?orderId=${resp.data.order._id}`;
+        window.location.href = `/checkout/success?orderId=${resp?.data.order._id}`;
       } else {
         setError(resp?.message || t("errors.paymentFailed"));
         setIsProcessing(false);

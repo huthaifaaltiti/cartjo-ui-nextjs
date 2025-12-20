@@ -14,7 +14,7 @@ export default async function UserPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params:  Promise<{ locale: Locale | string }>;
 }) {
   const { locale } = await params;
 
@@ -42,7 +42,7 @@ export default async function UserPageLayout({
           </main>
         </div>
       </MaxWidthWrapper>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </div>
   );
 }

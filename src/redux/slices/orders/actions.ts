@@ -48,7 +48,7 @@ export const getOrders = createAsyncThunk<
       if (lastId) url.searchParams.set("lastId", lastId);
       if (search) url.searchParams.set("search", search);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataListResponse<Order>>(url.toString(), {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -81,7 +81,7 @@ export const getOrder = createAsyncThunk<
       const url = new URL(API_ENDPOINTS.ORDER.GetOne.replace(":id", id));
       url.searchParams.set("lang", String(lang));
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ export const changePaymentStatus = createAsyncThunk<
         API_ENDPOINTS.ORDER.ChangePaymentStatus.replace(":id", orderId)
       );
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -156,7 +156,7 @@ export const deleteOrder = createAsyncThunk<
         process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
       );
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -192,7 +192,7 @@ export const restoreOrder = createAsyncThunk<
         process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
       );
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -237,7 +237,7 @@ export const createOrder = createAsyncThunk<
       process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
     );
 
-    const response = await fetcher(url.toString(), {
+    const response = await fetcher<DataResponse<Order>>(url.toString(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
