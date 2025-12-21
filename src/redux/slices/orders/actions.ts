@@ -222,7 +222,7 @@ export const createOrder = createAsyncThunk<
   { rejectValue: BaseResponse }
 >(ORDER_CONSTANTS.createOrder, async (payload, { rejectWithValue }) => {
   try {
-    const { token, lang = "en", ...body } = payload;
+    const { token, ...body } = payload;
 
     const url = new URL(
       API_ENDPOINTS.ORDER.Create,
