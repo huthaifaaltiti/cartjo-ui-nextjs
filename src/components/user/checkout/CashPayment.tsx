@@ -67,11 +67,14 @@ export default function CashPayment() {
 
         setMessage(result.message);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage =
-        err?.message ||
-        err?.response?.message ||
-        t("routes.checkout.components.CashPayment.errors.processingFailed");
+        typeof err === "object" &&
+        err !== null &&
+        "message" in err &&
+        typeof (err as { message: string }).message === "string"
+          ? (err as { message: string }).message
+          : t("routes.checkout.components.CashPayment.errors.processingFailed");
 
       setError(errorMessage);
 
