@@ -12,12 +12,14 @@ import { Currency } from "@/enums/currency.enum";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { ShippingAddress } from "@/types/shippingAddress.type";
 import { showSuccessToast } from "@/components/shared/CustomToast";
+import { resetOrdersState } from "@/redux/slices/orders";
+import { resetCartState } from "@/redux/slices/cart";
 
 export default function CashPayment() {
   const dispatch = useDispatch<AppDispatch>();
   const t = useTranslations("");
 
-  const { totalAmount } = useSelector((state: RootState) => state.cart);
+  const { totalAmount, items } = useSelector((state: RootState) => state.cart);
   const { accessToken, user, locale } = useAuthContext();
 
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +28,12 @@ export default function CashPayment() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [shippingAddress, setShippingAddress] =
     useState<ShippingAddress | null>(null);
+
+  const isProceedBtnDisabled =
+    cashOrderProcessing ||
+    !accessToken ||
+    !shippingAddress ||
+    (totalAmount === 0 && items.length === 0);
 
   const handleCashPayment = async () => {
     if (!accessToken) {
@@ -66,6 +74,9 @@ export default function CashPayment() {
         });
 
         setMessage(result.message);
+
+        dispatch(resetOrdersState());
+        dispatch(resetCartState());
       }
     } catch (err: unknown) {
       const errorMessage =
@@ -162,7 +173,7 @@ export default function CashPayment() {
 
         <button
           onClick={handleCashPayment}
-          disabled={cashOrderProcessing || !accessToken || !shippingAddress}
+          disabled={isProceedBtnDisabled}
           className="w-full bg-green-600 text-white-50 py-4 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {cashOrderProcessing ? (

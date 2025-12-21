@@ -2358,7 +2358,8 @@
           "orderSummary": "Order Summary",
           "subtotal": "Subtotal",
           "total": "Total",
-          "billingTo": "Billing to"
+          "billingTo": "Billing to",
+          "discoverHome": "Oops! there is no items in your cart to be purchased, discover home page for more."
         },
         "ShippingAddressForm": {
           "title": "Shipping Address",
