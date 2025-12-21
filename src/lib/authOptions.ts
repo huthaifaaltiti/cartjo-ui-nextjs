@@ -2,13 +2,13 @@ import { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { JWT } from "next-auth/jwt";
 
-interface CustomUser {
+export interface CustomUser {
   id: string;
   email: string;
   phoneNumber: string;
   role: string;
   canManage: boolean;
-  accessToken: string;
+  accessToken?: string;
   firstName: string;
   lastName: string;
 }
