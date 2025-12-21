@@ -1,30 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { useSession } from "next-auth/react";
 import PaymentInitializer from "./PaymentInitializer";
 import OrderSummary from "./OrderSummary";
-import { PaymentData, VerifiedOrder } from "@/types/payment.types";
+import { PaymentData } from "@/types/payment.types";
 import CardsPayment from "./CardsPayment";
 import CashPayment from "./CashPayment";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
+import { useCartQuery } from "@/hooks/react-query/useCartQuery";
+import { setCartItems } from "@/redux/slices/cart";
 
 export default function PaymentCheckoutPageClient() {
+  const dispatch = useDispatch<AppDispatch>();
   const { totalAmount } = useSelector((state: RootState) => state.cart);
+
+  const { data } = useCartQuery();
+
   const { data: sessionData } = useSession();
   const { accessToken } = useAuthContext();
 
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethods>(PaymentMethods.Cash);
+  const fetchedItems = useMemo(
+    () => data?.pages?.flatMap((page) => page?.data?.items || []) ?? [],
+    [data]
+  );
+
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethods>(
+    PaymentMethods.Cash
+  );
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [orderEncrypted, setOrderEncrypted] = useState<string | null>(null);
-  const [verifiedOrder, setVerifiedOrder] = useState<VerifiedOrder | null>(
-    null
-  );
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (fetchedItems.length > 0) {
+      dispatch(setCartItems(fetchedItems));
+    }
+  }, [fetchedItems]);
 
   return (
     <>
@@ -34,7 +50,7 @@ export default function PaymentCheckoutPageClient() {
         totalAmount={totalAmount}
         setPaymentData={setPaymentData}
         setOrderEncrypted={setOrderEncrypted}
-        setVerifiedOrder={setVerifiedOrder}
+        setVerifiedOrder={() => {}}
         setError={setError}
         orderEncrypted={orderEncrypted}
       />
@@ -62,7 +78,7 @@ export default function PaymentCheckoutPageClient() {
             </div>
 
             <div className="lg:col-span-1">
-              <OrderSummary verifiedOrder={verifiedOrder} />
+              <OrderSummary />
             </div>
           </div>
         </div>

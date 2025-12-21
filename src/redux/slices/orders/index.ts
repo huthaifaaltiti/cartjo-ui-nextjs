@@ -2,6 +2,7 @@ import { Order } from "@/types/order.type";
 import { BaseResponse } from "@/types/service-response.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { changePaymentStatus, getOrder, getOrders } from "./actions";
+import { Currency } from "@/enums/currency.enum";
 
 interface OrderState {
   items: Order[];
@@ -11,11 +12,13 @@ interface OrderState {
   selectedOrder: Order | null;
   searchQuery: string;
   queryKey: string;
+  currency: Currency;
 }
 
 const initialState: OrderState = {
   items: [],
   itemsCount: 0,
+  currency: Currency.JOD,
   loading: false,
   error: null,
   selectedOrder: null,

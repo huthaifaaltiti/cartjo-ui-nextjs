@@ -2,19 +2,26 @@
 
 import { useState } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import ShippingAddressForm, { ShippingAddress } from "./ShippingAddressForm";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import ShippingAddressForm from "./ShippingAddressForm";
 import Modal from "@/components/shared/Modal";
 import { useTranslations } from "next-intl";
+import { createOrder } from "@/redux/slices/orders/actions";
+import { Currency } from "@/enums/currency.enum";
+import { PaymentMethods } from "@/enums/paymentMethods.enum";
+import { ShippingAddress } from "@/types/shippingAddress.type";
+import { showSuccessToast } from "@/components/shared/CustomToast";
 
 export default function CashPayment() {
-  const t = useTranslations("routes.checkout.components.CashPayment");
+  const dispatch = useDispatch<AppDispatch>();
+  const t = useTranslations("");
 
   const { totalAmount } = useSelector((state: RootState) => state.cart);
-  const { accessToken } = useAuthContext();
+  const { accessToken, user, locale } = useAuthContext();
 
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>("");
   const [cashOrderProcessing, setCashOrderProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [shippingAddress, setShippingAddress] =
@@ -22,12 +29,12 @@ export default function CashPayment() {
 
   const handleCashPayment = async () => {
     if (!accessToken) {
-      setError(t("errors.notLoggedIn"));
+      setError(t("routes.checkout.components.CashPayment.errors.notLoggedIn"));
       return;
     }
 
     if (!shippingAddress) {
-      setError(t("errors.noShipping"));
+      setError(t("routes.checkout.components.CashPayment.errors.noShipping"));
       return;
     }
 
@@ -35,29 +42,43 @@ export default function CashPayment() {
     setError(null);
 
     try {
-      const response = await fetch("/api/orders/create-cash-order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          totalAmount,
-          paymentMethod: "cash",
-        }),
-      });
+      const merchantReference = `CASH-${Date.now()}`;
 
-      if (!response.ok) {
-        throw new Error(t("errors.orderFailed"));
+      const result = await dispatch(
+        createOrder({
+          amount: totalAmount,
+          currency: Currency.JOD,
+          email: user!.email,
+          merchantReference,
+          transactionId: null,
+          paymentMethod: PaymentMethods.Cash,
+          shippingAddress,
+          lang: locale,
+          token: accessToken,
+        })
+      ).unwrap();
+
+      if (result) {
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+          description: result.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+
+        setMessage(result.message);
       }
+    } catch (err: unknown) {
+      const errorMessage =
+        typeof err === "object" &&
+        err !== null &&
+        "message" in err &&
+        typeof (err as { message: string }).message === "string"
+          ? (err as { message: string }).message
+          : t("routes.checkout.components.CashPayment.errors.processingFailed");
 
-      const data = await response.json();
+      setError(errorMessage);
 
-      window.location.href = `/order-confirmation/${data.orderId}`;
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : t("errors.processingFailed")
-      );
+      console.error("Create order failed:", err);
     } finally {
       setCashOrderProcessing(false);
     }
@@ -68,10 +89,12 @@ export default function CashPayment() {
       <div className="space-y-4">
         <div className="bg-green-50 border border-green-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-green-900 mb-2">
-            {t("title")}
+            {t("routes.checkout.components.CashPayment.title")}
           </h3>
 
-          <p className="text-green-800 mb-4">{t("description")}</p>
+          <p className="text-green-800 mb-4">
+            {t("routes.checkout.components.CashPayment.description")}
+          </p>
 
           <ul className="space-y-2 text-sm text-green-700">
             <li className="flex items-start">
@@ -86,7 +109,7 @@ export default function CashPayment() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>{t("tip1")}</span>
+              <span>{t("routes.checkout.components.CashPayment.tip1")}</span>
             </li>
 
             <li className="flex items-start">
@@ -101,7 +124,7 @@ export default function CashPayment() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>{t("tip2")}</span>
+              <span>{t("routes.checkout.components.CashPayment.tip2")}</span>
             </li>
 
             <li className="flex items-start">
@@ -116,7 +139,7 @@ export default function CashPayment() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>{t("tip3")}</span>
+              <span>{t("routes.checkout.components.CashPayment.tip3")}</span>
             </li>
           </ul>
 
@@ -127,11 +150,11 @@ export default function CashPayment() {
                 type="button"
                 className="text-blue-600 underline text-sm"
               >
-                {t("addShipping")}
+                {t("routes.checkout.components.CashPayment.addShipping")}
               </button>
             ) : (
               <p className="text-green-700 text-sm font-medium">
-                {t("shippingAdded")}
+                {t("routes.checkout.components.CashPayment.shippingAdded")}
               </p>
             )}
           </div>
@@ -167,13 +190,19 @@ export default function CashPayment() {
               {t("processing")}
             </span>
           ) : (
-            t("placeOrder")
+            t("routes.checkout.components.CashPayment.placeOrder")
           )}
         </button>
 
         {error && (
           <p className="text-red-600 text-sm font-medium text-center mt-2">
             {error}
+          </p>
+        )}
+
+        {message && (
+          <p className="text-green-600 text-sm font-medium text-center mt-2">
+            {message}
           </p>
         )}
       </div>
