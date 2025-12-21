@@ -17,7 +17,8 @@ import { Currency } from "@/enums/currency.enum";
 import { fetcher } from "@/utils/fetcher";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import Modal from "@/components/shared/Modal";
-import ShippingAddressForm, { ShippingAddress } from "./ShippingAddressForm";
+import ShippingAddressForm from "./ShippingAddressForm";
+import { ShippingAddress } from "@/types/shippingAddress.type";
 
 export interface SubmitPaymentResponse {
   isSuccess: boolean;
@@ -129,8 +130,6 @@ export default function PaymentForm({
           shippingAddress,
         }),
       });
-
-      console.log({resp})
 
       if (resp?.isSuccess && resp?.data) {
         // Payment successful! Redirect to success page
