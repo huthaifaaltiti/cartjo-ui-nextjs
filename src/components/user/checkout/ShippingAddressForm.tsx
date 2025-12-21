@@ -27,18 +27,7 @@ import { jordanCities } from "@/constants/jordanCities.constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import LocationPicker from "@/components/shared/LocationPicker";
-
-export interface ShippingAddress {
-  fullName: string;
-  phone: string;
-  country: string;
-  city: string;
-  town: string;
-  street: string;
-  building?: string;
-  additionalInfo?: string;
-  location: { lat: number; lng: number; name: string };
-}
+import { ShippingAddress } from "@/types/shippingAddress.type";
 
 interface ShippingAddressFormProps {
   onComplete: (data: ShippingAddress) => void;
@@ -57,7 +46,7 @@ const shippingFormSchema = (t: (key: string) => string) =>
     street: z.string().min(2, { message: t("errors.streetRequired") }),
     building: z.string().optional(),
     additionalInfo: z.string().optional(),
-    location: z
+    mapLocation: z
       .object({
         lat: z.number(),
         lng: z.number(),
@@ -84,7 +73,7 @@ const ShippingAddressForm = ({ onComplete }: ShippingAddressFormProps) => {
       street: "",
       building: "",
       additionalInfo: "",
-      location: undefined,
+      mapLocation: undefined,
     },
   });
 
@@ -104,7 +93,7 @@ const ShippingAddressForm = ({ onComplete }: ShippingAddressFormProps) => {
     name: string;
   }) => {
     setLocation(loc);
-    form.setValue("location", loc, { shouldValidate: true });
+    form.setValue("mapLocation", loc, { shouldValidate: true });
   };
 
   return (
@@ -186,11 +175,11 @@ const ShippingAddressForm = ({ onComplete }: ShippingAddressFormProps) => {
           )}
         />
 
-        {/* Location Picker */}
+        {/* MapLocation Picker */}
         <div>
           <FormField
             control={form.control}
-            name="location"
+            name="mapLocation"
             render={() => (
               <FormItem>
                 <FormLabel>{t("location")}</FormLabel>

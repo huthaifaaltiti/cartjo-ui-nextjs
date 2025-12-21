@@ -7,7 +7,7 @@ export interface ShippingAddress {
   city: string;
   town: string;
   street: string;
-  building: string;
-  additionalInfo: string;
+  building?: string;
+  additionalInfo?: string;
   mapLocation: MapLocation;
 }

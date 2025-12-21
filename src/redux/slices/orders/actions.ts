@@ -10,16 +10,7 @@ import { fetcher } from "@/utils/fetcher";
 import { Order } from "@/types/order.type";
 import { ORDER_CONSTANTS } from "./constants";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
-
-// Define shipping address type
-interface ShippingAddress {
-  street?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  postalCode?: string;
-  [key: string]: unknown;
-}
+import { ShippingAddress } from "@/types/shippingAddress.type";
 
 // GET /api/v1/order/all
 export const getOrders = createAsyncThunk<
@@ -232,6 +223,7 @@ export const createOrder = createAsyncThunk<
 >(ORDER_CONSTANTS.createOrder, async (payload, { rejectWithValue }) => {
   try {
     const { token, lang = "en", ...body } = payload;
+
     const url = new URL(
       API_ENDPOINTS.ORDER.Create,
       process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
@@ -243,7 +235,7 @@ export const createOrder = createAsyncThunk<
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ ...body, lang }),
+      body: JSON.stringify({ ...body }),
     });
 
     if (!response.isSuccess) return rejectWithValue(response);
