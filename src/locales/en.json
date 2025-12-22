@@ -2231,6 +2231,12 @@
                 }
               }
             }
+          },
+          "orders": {
+            "errors": {
+              "failedLoadData": "Failed to load your orders data"
+            },
+            "components": {}
           }
         }
       }
@@ -2402,6 +2408,22 @@
             "processingFailed": "Failed to process cash order"
           }
         }
+      }
+    },
+    "notFound": {
+      "status": "404",
+      "header": "Oops! Page Not Found",
+      "description": "We couldn't find the page you're looking for. It might have been removed, renamed, or doesn't exist.",
+      "actions": {
+        "goBack": "Go Back",
+        "backToHome": "Back to Home"
+      },
+      "search": {
+        "placeholder": "Search for products..."
+      },
+      "help": {
+        "text": "Need help?",
+        "support": "customer support"
       }
     }
   }
