@@ -104,7 +104,17 @@
     },
     "status": {
       "online": "Online",
-      "offline": "Offline"
+      "offline": "Offline",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "shipped": "Shipped",
+      "out_for_delivery": "Out For Delivery",
+      "delivered": "Delivered",
+      "failed": "Failed",
+      "refunded": "Refunded",
+      "canceled": "Canceled",
+      "paid": "Paid"
     },
     "info": {
       "name": "Name",
@@ -2236,7 +2246,52 @@
             "errors": {
               "failedLoadData": "Failed to load your orders data"
             },
-            "components": {}
+            "components": {
+              "SearchUserOrders": {
+                "placeholder": "Search for transaction ID, or merchant reference."
+              },
+              "UserOrderCard": {
+                "orderRef": "Order Reference",
+                "items": "Items",
+                "item": "Item",
+                "total": "Total Amount",
+                "status": "Status",
+                "paymentMethod": "Payment Method",
+                "shippingAddress": "Shipping Address",
+                "quantity": "Qty",
+                "show": "Show Full Details",
+                "hide": "Hide Details",
+                "payment": "Payment",
+                "delivery": "Delivery"
+              },
+              "UserOrderDetailedCard": {
+                "title": "Order Details",
+                "transactionId": "Transaction ID",
+                "merchantRef": "Merchant Reference",
+                "totalAmount": "Total Amount",
+                "orderItems": "Order Items",
+                "qty": "Qty",
+                "rating": "Rating",
+                "shippingAddress": "Shipping Address",
+                "fullName": "Full Name",
+                "phone": "Phone",
+                "address": "Address",
+                "paymentCustomer": "Payment & Customer",
+                "paymentMethod": "Payment Method",
+                "email": "Email",
+                "customer": "Customer",
+                "orderSummary": "Order Summary",
+                "subtotal": "Subtotal",
+                "shipping": "Shipping",
+                "shippingCost": "Variant (Depends on customer's location)",
+                "free": "Free",
+                "total": "Total",
+                "itemsCount": "{count} items",
+                "loadingError": "Unable to load order details",
+                "payment": "Payment",
+                "delivery": "Delivery"
+              }
+            }
           }
         }
       }

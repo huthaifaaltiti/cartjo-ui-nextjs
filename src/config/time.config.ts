@@ -1,0 +1,1 @@
+export const DEBOUNCE_TIME_MS = process.env.NEXT_PUBLIC_DEBOUNCE_TIME_MS;

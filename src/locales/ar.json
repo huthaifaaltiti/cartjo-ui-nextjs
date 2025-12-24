@@ -102,7 +102,17 @@
     },
     "status": {
       "online": "نشط",
-      "offline": "غير نشط"
+      "offline": "غير نشط",
+      "pending": "قيد الانتظار",
+      "confirmed": "تم التأكيد",
+      "preparing": "جارٍ التحضير",
+      "shipped": "تم الشحن",
+      "out_for_delivery": "في الطريق للتسليم",
+      "delivered": "تم التسليم",
+      "failed": "فشل",
+      "refunded": "تم الاسترداد",
+      "canceled": "تم الإلغاء",
+      "paid": "مدفوع"
     },
     "info": {
       "name": "الاسم",
@@ -2235,7 +2245,45 @@
             "errors": {
               "failedLoadData": "فشل تحميل بيانات طلباتك"
             },
-            "components": {}
+            "components": {
+              "UserOrderCard": {
+                "orderNumber": "مرجع الطلب",
+                "items": "عناصر",
+                "item": "عنصر",
+                "total": "المبلغ الإجمالي",
+                "status": "الحالة",
+                "paymentMethod": "طريقة الدفع",
+                "shippingAddress": "عنوان الشحن",
+                "quantity": "الكمية",
+                "show": "عرض التفاصيل",
+                "hide": "إخفاء التفاصيل"
+              },
+              "UserOrderDetailedCard": {
+                "title": "تفاصيل الطلب",
+                "transactionId": "رقم المعاملة",
+                "merchantRef": "مرجع التاجر",
+                "totalAmount": "المبلغ الإجمالي",
+                "orderItems": "عناصر الطلب",
+                "qty": "الكمية",
+                "rating": "التقييم",
+                "shippingAddress": "عنوان الشحن",
+                "fullName": "الاسم الكامل",
+                "phone": "رقم الهاتف",
+                "address": "العنوان",
+                "paymentCustomer": "الدفع والعميل",
+                "paymentMethod": "طريقة الدفع",
+                "email": "البريد الإلكتروني",
+                "customer": "العميل",
+                "orderSummary": "ملخص الطلب",
+                "subtotal": "المجموع الفرعي",
+                "shipping": "الشحن",
+                "shippingCost": "متغير (يعتمد على موقع العميل)",
+                "free": "مجاني",
+                "total": "الإجمالي",
+                "itemsCount": "{count} عناصر",
+                "loadingError": "تعذر تحميل تفاصيل الطلب"
+              }
+            }
           }
         }
       }

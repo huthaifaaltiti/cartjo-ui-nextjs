@@ -13,7 +13,7 @@ export default function UserOrdersError({ error, reset }: ErrorPageProps) {
       reset={reset}
       title={
         error?.message ||
-        t("routes.user.orders.failedLoadData")
+        t("routes.user.layout.routes.orders.errors.failedLoadData")
       }
       showReLogin={true}
     />

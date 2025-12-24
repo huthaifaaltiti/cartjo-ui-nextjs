@@ -248,3 +248,37 @@ export const createOrder = createAsyncThunk<
     });
   }
 });
+
+export const getMyOrder = createAsyncThunk<
+  DataResponse<Order>,
+  { id: string; lang?: Locale | string; token: string; userId: string },
+  { rejectValue: BaseResponse }
+>(
+  ORDER_CONSTANTS.getMyOrder,
+  async ({ id, lang = "en", token, userId }, { rejectWithValue }) => {
+    try {
+      const url = new URL(`${API_ENDPOINTS.ORDER.GetMyOrder}/${userId}/${id}`);
+
+      url.searchParams.set("lang", String(lang));
+
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.isSuccess) {
+        return rejectWithValue(response);
+      }
+
+      return response as DataResponse<Order>;
+    } catch (error) {
+      return rejectWithValue({
+        isSuccess: false,
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
+      });
+    }
+  }
+);
