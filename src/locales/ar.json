@@ -2257,7 +2257,7 @@
             },
             "components": {
               "UserOrderCard": {
-                "orderNumber": "مرجع الطلب",
+                "orderRef": "مرجع الطلب",
                 "items": "عناصر",
                 "item": "عنصر",
                 "total": "المبلغ الإجمالي",
@@ -2266,7 +2266,9 @@
                 "shippingAddress": "عنوان الشحن",
                 "quantity": "الكمية",
                 "show": "عرض التفاصيل",
-                "hide": "إخفاء التفاصيل"
+                "hide": "إخفاء التفاصيل",
+                "payment": "حالة الدفع",
+                "delivery": "حالة التوصيل"
               },
               "UserOrderDetailedCard": {
                 "title": "تفاصيل الطلب",
