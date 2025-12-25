@@ -6,12 +6,10 @@ import {
   MapPin,
   CreditCard,
   Calendar,
-  Clock,
   Mail,
   Phone,
   User,
   Building2,
-  CheckCircle2,
   AlertCircle,
   Star,
   CircleDollarSign,
@@ -74,7 +72,6 @@ const UserOrderDetailedCard = ({ itemId }: { itemId: string }) => {
     order.paymentStatus === "pending"
       ? "bg-yellow-100 text-yellow-800"
       : "bg-green-100 text-green-800";
-  const StatusIcon = order.paymentStatus === "pending" ? Clock : CheckCircle2;
 
   return (
     <div className="space-y-6">
