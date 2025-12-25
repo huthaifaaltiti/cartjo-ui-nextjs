@@ -237,6 +237,10 @@
           "failed": "فشل الدفع"
         }
       },
+      "DeliveryStatusFilter": {
+        "title": "حالة التوصيل",
+        "select": "اختر الحالة"
+      },
       "PriceRange": {
         "price": "تصفية حسب السعر",
         "from": "من ({currency})",

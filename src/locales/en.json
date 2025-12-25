@@ -113,6 +113,7 @@
       "delivered": "Delivered",
       "failed": "Failed",
       "refunded": "Refunded",
+      "returned": "Returned",
       "canceled": "Canceled",
       "paid": "Paid"
     },
@@ -238,6 +239,10 @@
           "pending": "Pending",
           "failed": "Failed"
         }
+      },
+      "DeliveryStatusFilter": {
+        "title": "Delivery Status",
+        "select": "Select Status"
       },
       "PriceRange": {
         "price": "Filter by Price",
