@@ -53,12 +53,7 @@ const OrdersList = () => {
     "paymentStatus",
     {
       defaultValue: null,
-      parse: (value) =>
-        value === PaymentStatus.FAILED ||
-        value === PaymentStatus.PAID ||
-        value === PaymentStatus.PENDING
-          ? (value as PaymentStatus)
-          : null,
+      parse: (value) => (value ? (value as PaymentStatus) : null),
       serialize: (value) => (value ? String(value) : ""),
     }
   );

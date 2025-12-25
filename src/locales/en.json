@@ -1822,6 +1822,12 @@
               "pdf": "Export PDF",
               "exporting": "Exporting...",
               "disabledTooltip": "Please select a date range first"
+            },
+            "OrderCardPaymentAction": {
+              "title": "Select Payment Status"
+            },
+            "OrderCardDeliveryAction": {
+              "title": "Select Delivery Status"
             }
           }
         }

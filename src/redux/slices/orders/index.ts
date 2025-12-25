@@ -2,6 +2,7 @@ import { Order } from "@/types/order.type";
 import { BaseResponse } from "@/types/service-response.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  changeDeliveryStatus,
   changePaymentStatus,
   getMyOrder,
   getOrder,
@@ -97,6 +98,28 @@ const orderSlice = createSlice({
       );
     });
     builder.addCase(changePaymentStatus.rejected, (state, action) => {
+      state.loading = false;
+      const payload = action.payload as BaseResponse | undefined;
+      state.error = payload?.message ?? "Failed to change payment status";
+    });
+
+    // changeDeliveryStatus
+    builder.addCase(changeDeliveryStatus.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(changeDeliveryStatus.fulfilled, (state, { payload }) => {
+      state.loading = false;
+
+      const updated = payload.data;
+
+      if (!updated) return;
+
+      state.items = state.items.map((o) =>
+        o._id === updated._id ? updated : o
+      );
+    });
+    builder.addCase(changeDeliveryStatus.rejected, (state, action) => {
       state.loading = false;
       const payload = action.payload as BaseResponse | undefined;
       state.error = payload?.message ?? "Failed to change payment status";

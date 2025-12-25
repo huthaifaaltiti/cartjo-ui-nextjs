@@ -161,6 +161,7 @@ export const API_ENDPOINTS = {
   ORDER: {
     Root: `${BASE_URL}/api/v1/order`,
     ChangePaymentStatus: `${BASE_URL}/api/v1/order/:id/change-payment-status`,
+    ChangeDeliveryStatus: `${BASE_URL}/api/v1/order/:id/change-delivery-status`,
     Delete: `${BASE_URL}/api/v1/order/delete/:id`,
     UnDelete: `${BASE_URL}/api/v1/order/un-delete/:id`,
     GetAll: `${BASE_URL}/api/v1/order/all`,

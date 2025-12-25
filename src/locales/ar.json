@@ -1820,6 +1820,12 @@
               "pdf": "تصدير PDF",
               "exporting": "جارٍ التصدير...",
               "disabledTooltip": "يرجى اختيار نطاق التاريخ أولاً"
+            },
+            "OrderCardPaymentAction": {
+              "title": "اختر حالة الدفع"
+            },
+            "OrderCardDeliveryAction": {
+              "title": "اختر حالة التوصيل"
             }
           }
         }
