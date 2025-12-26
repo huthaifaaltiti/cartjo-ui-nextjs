@@ -2,13 +2,13 @@
 
 import { usePathname } from "@/i18n/navigation";
 import {
-  Bell,
-  CreditCard,
-  HandCoins,
+  // Bell,
+  // CreditCard,
+  // HandCoins,
   Heart,
-  MapPin,
+  // MapPin,
   Power,
-  Settings,
+  // Settings,
   ShoppingBag,
   Undo2,
   User,
@@ -56,43 +56,43 @@ export function useUserLayoutRoutesNavigator(type: UserRouteType) {
         label: t("routes.user.layout.components.UserAccountMenu.items.profile"),
         path: "/user/profile",
       },
-      {
-        icon: MapPin,
-        label: t(
-          "routes.user.layout.components.UserAccountMenu.items.addresses"
-        ),
-        path: "/user/account/addresses",
-      },
-      {
-        icon: HandCoins,
-        label: t(
-          "routes.user.layout.components.UserAccountMenu.items.payments"
-        ),
-        path: "/user/account/payments",
-      },
-      {
-        icon: CreditCard,
-        label: t(
-          "routes.user.layout.components.UserAccountMenu.items.digitalCards"
-        ),
-        path: "/user/account/digital-cards",
-      },
+      // {
+      //   icon: MapPin,
+      //   label: t(
+      //     "routes.user.layout.components.UserAccountMenu.items.addresses"
+      //   ),
+      //   path: "/user/account/addresses",
+      // },
+      // {
+      //   icon: HandCoins,
+      //   label: t(
+      //     "routes.user.layout.components.UserAccountMenu.items.payments"
+      //   ),
+      //   path: "/user/account/payments",
+      // },
+      // {
+      //   icon: CreditCard,
+      //   label: t(
+      //     "routes.user.layout.components.UserAccountMenu.items.digitalCards"
+      //   ),
+      //   path: "/user/account/digital-cards",
+      // },
     ],
     [UserRouteType.OTHERS]: [
-      {
-        icon: Bell,
-        label: t(
-          "routes.user.layout.components.UserOthersActions.items.notifications"
-        ),
-        path: "/user/notifications",
-      },
-      {
-        icon: Settings,
-        label: t(
-          "routes.user.layout.components.UserOthersActions.items.securitySettings"
-        ),
-        path: "/user/security-settings",
-      },
+      // {
+      //   icon: Bell,
+      //   label: t(
+      //     "routes.user.layout.components.UserOthersActions.items.notifications"
+      //   ),
+      //   path: "/user/notifications",
+      // },
+      // {
+      //   icon: Settings,
+      //   label: t(
+      //     "routes.user.layout.components.UserOthersActions.items.securitySettings"
+      //   ),
+      //   path: "/user/security-settings",
+      // },
     ],
     [UserRouteType.SIGNOUT]: [
       {
