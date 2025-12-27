@@ -48,9 +48,10 @@ const DeliveryStatusFilter = ({ deliveryStatus, setDeliveryStatus }: Props) => {
         </Label>
 
         <div className="flex flex-col gap-2">
-          {Object.values(OrderDeliveryStatus).map((status) => {
+          {Object.values(OrderDeliveryStatus).map((status, i) => {
             return (
               <Button
+                key={`${status}-${i}`}
                 size="sm"
                 variant={
                   deliveryStatus === OrderDeliveryStatus[status]

@@ -1,6 +1,3 @@
-import { Locale } from "@/types/locale";
-
-// formatLocalizedDate
 export const formatDate = (
   dateString: Date | string,
   lang: string,
