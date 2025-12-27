@@ -2296,6 +2296,61 @@
                 "loadingError": "تعذر تحميل تفاصيل الطلب"
               }
             }
+          },
+          "returns": {
+            "errors": {
+              "failedLoadData": "فشل في تحميل بيانات مرتجعات الطلبات الخاصة بك"
+            },
+            "components": {
+              "SearchUserOrderReturns": {
+                "placeholder": "ابحث عن رقم عملية الإرجاع أو الرقم المرجعي للتاجر"
+              },
+              "UserOrderReturnCard": {
+                "orderRef": "مرجع الطلب",
+                "items": "المنتجات",
+                "item": "منتج",
+                "total": "المبلغ الإجمالي",
+                "status": "الحالة",
+                "paymentMethod": "طريقة الدفع",
+                "shippingAddress": "عنوان الشحن",
+                "quantity": "الكمية",
+                "show": "عرض التفاصيل",
+                "hide": "إخفاء التفاصيل",
+                "payment": "الدفع",
+                "delivery": "التوصيل"
+              },
+              "UserOrderReturnDetailedCard": {
+                "title": "تفاصيل الطلب",
+                "transactionId": "رقم العملية",
+                "merchantRef": "الرقم المرجعي للتاجر",
+                "totalAmount": "المبلغ الإجمالي",
+                "orderItems": "عناصر الطلب",
+                "qty": "الكمية",
+                "rating": "التقييم",
+                "shippingAddress": "عنوان الشحن",
+                "fullName": "الاسم الكامل",
+                "phone": "رقم الهاتف",
+                "address": "العنوان",
+                "paymentCustomer": "الدفع والعميل",
+                "paymentMethod": "طريقة الدفع",
+                "email": "البريد الإلكتروني",
+                "customer": "العميل",
+                "orderSummary": "ملخص الطلب",
+                "subtotal": "المجموع الفرعي",
+                "shipping": "الشحن",
+                "shippingCost": "التكلفة (تعتمد على موقع العميل)",
+                "free": "مجاني",
+                "total": "الإجمالي",
+                "itemsCount": "{count} عناصر",
+                "loadingError": "تعذر تحميل تفاصيل الطلب",
+                "payment": "الدفع",
+                "delivery": "التوصيل"
+              },
+              "NoUserOrderReturns": {
+                "empty": "سلة المرتجعات فارغة.",
+                "advice": "لم تقم بأي طلبات معنا بعد؟ جرّب تصفح مجموعات منتجاتنا."
+              }
+            }
           }
         }
       }

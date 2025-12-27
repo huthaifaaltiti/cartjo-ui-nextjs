@@ -19,6 +19,7 @@ import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { fetchSuggestedProducts } from "@/hooks/react-query/useSuggestedProductQuery";
+import { fetchUserOrderReturns } from "@/hooks/react-query/useUserOrderReturnsQuery";
 import { fetchUserOrders } from "@/hooks/react-query/useUserOrdersQuery";
 import { fetchMyProfile } from "@/hooks/react-query/useUserProfileQuery";
 import { fetchWishlistItems } from "@/hooks/react-query/useWishlistQuery";
@@ -397,6 +398,43 @@ export const getUserOrdersQueryOptions = (
         lang: locale,
         uid,
         limit: PAGINATION_LIMITS.USER_ORDERS,
+        lastId: pageParam,
+        search,
+      });
+    },
+    getNextPageParam,
+    initialPageParam: undefined,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    enabled: !!token,
+  };
+};
+
+export const getUserOrderReturnsQueryOptions = (
+  locale: Locale | string,
+  token: string,
+  uid: string,
+  search?: string
+) => {
+  const getNextPageParam = (lastPage: DataListResponse<Order>) => {
+    if (!lastPage?.data?.length) return undefined;
+    const lastOrder = lastPage.data[lastPage.data.length - 1];
+    return lastOrder?._id || undefined;
+  };
+
+  return {
+    queryKey: ["userOrderReturns", locale, token, uid, search] as const,
+    queryFn: async (context: QueryFunctionContext) => {
+      const pageParam = context.pageParam as string | undefined;
+
+      if (!token) throw new Error("Not authorized");
+      if (!uid) throw new Error("No user id");
+
+      return fetchUserOrderReturns({
+        token,
+        lang: locale,
+        uid,
+        limit: PAGINATION_LIMITS.USER_ORDER_RETURNS,
         lastId: pageParam,
         search,
       });

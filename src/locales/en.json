@@ -2303,6 +2303,61 @@
                 "delivery": "Delivery"
               }
             }
+          },
+          "returns": {
+            "errors": {
+              "failedLoadData": "Failed to load your orders' returns data"
+            },
+            "components": {
+              "SearchUserOrderReturns": {
+                "placeholder": "Search for order's return transaction ID, or merchant reference"
+              },
+              "UserOrderReturnCard": {
+                "orderRef": "Order's Reference",
+                "items": "Items",
+                "item": "Item",
+                "total": "Total Amount",
+                "status": "Status",
+                "paymentMethod": "Payment Method",
+                "shippingAddress": "Shipping Address",
+                "quantity": "Qty",
+                "show": "Show Full Details",
+                "hide": "Hide Details",
+                "payment": "Payment",
+                "delivery": "Delivery"
+              },
+              "UserOrderReturnDetailedCard": {
+                "title": "Order's Details",
+                "transactionId": "Transaction ID",
+                "merchantRef": "Merchant Reference",
+                "totalAmount": "Total Amount",
+                "orderItems": "Order Items",
+                "qty": "Qty",
+                "rating": "Rating",
+                "shippingAddress": "Shipping Address",
+                "fullName": "Full Name",
+                "phone": "Phone",
+                "address": "Address",
+                "paymentCustomer": "Payment & Customer",
+                "paymentMethod": "Payment Method",
+                "email": "Email",
+                "customer": "Customer",
+                "orderSummary": "Order's Summary",
+                "subtotal": "Subtotal",
+                "shipping": "Shipping",
+                "shippingCost": "Variant (Depends on customer's location)",
+                "free": "Free",
+                "total": "Total",
+                "itemsCount": "{count} items",
+                "loadingError": "Unable to load order details",
+                "payment": "Payment",
+                "delivery": "Delivery"
+              },
+              "NoUserOrderReturns": {
+                "empty": "Your box is empty.",
+                "advice": "No ordering with us yet? Try browsing our products collections."
+              }
+            }
           }
         }
       }
