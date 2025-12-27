@@ -76,9 +76,13 @@ export const useUserOrdersReturnsQuery = (search?: string) => {
     enabled: status !== "loading" && !!accessToken,
     refetchOnMount: "always",
     refetchOnWindowFocus: true,
-    retry: (failureCount, error: any) => {
-      // Don't retry if it's an auth error
-      if (error?.message?.includes("access token")) return false;
+    retry: (failureCount, error: unknown) => {
+      if (error instanceof Error) {
+        if (error.message.includes("access token")) {
+          return false;
+        }
+      }
+
       return failureCount < 3;
     },
   });
