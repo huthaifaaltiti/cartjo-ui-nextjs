@@ -25,3 +25,7 @@ export const getAccessTokenFromServerSession = async (): Promise<
 
   return session?.accessToken ?? null;
 };
+
+export const getUserServerSession = async (): Promise<CustomSession> => {
+  return (await getServerSession(authOptions)) as CustomSession;
+};

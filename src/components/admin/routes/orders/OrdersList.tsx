@@ -15,6 +15,7 @@ import OrdersListFilters from "./OrdersListFilters";
 import { useQueryState } from "nuqs";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
+import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
 
 const OrdersList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -52,15 +53,17 @@ const OrdersList = () => {
     "paymentStatus",
     {
       defaultValue: null,
-      parse: (value) =>
-        value === PaymentStatus.FAILED ||
-        value === PaymentStatus.PAID ||
-        value === PaymentStatus.PENDING
-          ? (value as PaymentStatus)
-          : null,
+      parse: (value) => (value ? (value as PaymentStatus) : null),
       serialize: (value) => (value ? String(value) : ""),
     }
   );
+
+  const [deliveryStatus, setDeliveryStatus] =
+    useQueryState<OrderDeliveryStatus | null>("deliveryStatus", {
+      defaultValue: null,
+      parse: (value) => (value ? (value as OrderDeliveryStatus) : null),
+      serialize: (value) => (value ? String(value) : ""),
+    });
 
   const [createdBefore, setCreatedBefore] = useQueryState<string>(
     "createdBefore",
@@ -94,6 +97,7 @@ const OrdersList = () => {
     amountMax,
     paymentMethod,
     paymentStatus,
+    deliveryStatus,
     createdAfter,
     createdBefore,
   });
@@ -147,6 +151,8 @@ const OrdersList = () => {
           setPaymentMethod={setPaymentMethod}
           paymentStatus={paymentStatus}
           setPaymentStatus={setPaymentStatus}
+          deliveryStatus={deliveryStatus}
+          setDeliveryStatus={setDeliveryStatus}
           createdBefore={createdBefore}
           setCreatedBefore={setCreatedBefore}
           createdAfter={createdAfter}
@@ -172,6 +178,8 @@ const OrdersList = () => {
             setPaymentMethod={setPaymentMethod}
             paymentStatus={paymentStatus}
             setPaymentStatus={setPaymentStatus}
+            deliveryStatus={deliveryStatus}
+            setDeliveryStatus={setDeliveryStatus}
             createdBefore={createdBefore}
             setCreatedBefore={setCreatedBefore}
             createdAfter={createdAfter}

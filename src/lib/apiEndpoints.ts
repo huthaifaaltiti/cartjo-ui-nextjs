@@ -161,11 +161,15 @@ export const API_ENDPOINTS = {
   ORDER: {
     Root: `${BASE_URL}/api/v1/order`,
     ChangePaymentStatus: `${BASE_URL}/api/v1/order/:id/change-payment-status`,
+    ChangeDeliveryStatus: `${BASE_URL}/api/v1/order/:id/change-delivery-status`,
     Delete: `${BASE_URL}/api/v1/order/delete/:id`,
     UnDelete: `${BASE_URL}/api/v1/order/un-delete/:id`,
     GetAll: `${BASE_URL}/api/v1/order/all`,
     Create: `${BASE_URL}/api/v1/order/create`,
     GetOne: `${BASE_URL}/api/v1/order/:id`,
+    GetMyOrders: `${BASE_URL}/api/v1/order/my-orders`,
+    GetMyOrderReturns: `${BASE_URL}/api/v1/order/my-orders/$uid/returns`,
+    GetMyOrder: `${BASE_URL}/api/v1/order/my-order`,
     Export: `${BASE_URL}/api/v1/order/export`,
   },
 };

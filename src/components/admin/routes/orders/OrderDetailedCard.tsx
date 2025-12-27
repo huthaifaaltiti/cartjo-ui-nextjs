@@ -16,6 +16,8 @@ import {
   User,
   Calendar,
   ShoppingBag,
+  CircleDollarSign,
+  Truck,
 } from "lucide-react";
 import OrderDetailedCardItem from "./OrderDetailedCardItem";
 import jsPDF from "jspdf";
@@ -23,6 +25,8 @@ import html2canvas from "html2canvas";
 import ReceiptHiddenLayout from "./ReceiptHiddenLayout";
 import NoOrderDetailedCardData from "./NoOrderDetailedCardData";
 import { OrderItem } from "@/types/orderItem.type";
+import StatusBadge from "@/components/shared/StatusBadge";
+import { Statuses } from "@/enums/statuses.enum";
 
 type Props = { orderId: string };
 
@@ -56,20 +60,6 @@ const OrderDetailedCard = ({ orderId }: Props) => {
       document.body.style.height = "";
     };
   }, [orderId]);
-
-  const getPaymentStatusColor = useCallback((status: string) => {
-    switch (status) {
-      case "pending":
-        return "bg-yellow-100 text-yellow-800 border-yellow-300";
-      case "completed":
-      case "paid":
-        return "bg-green-100 text-green-800 border-green-300";
-      case "failed":
-        return "bg-red-100 text-red-800 border-red-300";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-300";
-    }
-  }, []);
 
   const downloadReceipt = useCallback(async () => {
     if (!receiptRef.current || !selectedOrder) return;
@@ -138,7 +128,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
       // optionally show toast
       // console.error("Failed to generate PDF", err);
       alert(t("general.errors.pdfGeneration") || "Failed to generate PDF.");
-      console.log({err})
+      console.log({ err });
     }
   }, [selectedOrder, t]);
 
@@ -212,15 +202,30 @@ const OrderDetailedCard = ({ orderId }: Props) => {
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-wrap gap-2">
-                <span
-                  className={`rounded-full border px-4 py-1.5 text-sm font-semibold ${getPaymentStatusColor(
-                    selectedOrder.paymentStatus
-                  )}`}
-                >
-                  {t(
-                    `routes.dashboard.routes.orders.components.OrderDetailedCard.status.${selectedOrder.paymentStatus}`
-                  ) || selectedOrder.paymentStatus.toUpperCase()}
-                </span>
+                {/* Statuses */}
+                <div className="flex items-center gap-1">
+                  {/* Payment */}
+                  <div
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full font-semibold`}
+                  >
+                    <CircleDollarSign className="h-5 w-5" />
+                    <StatusBadge
+                      status={selectedOrder.paymentStatus ?? Statuses.PENDING}
+                      className={"border-none p-0"}
+                    />
+                  </div>
+
+                  {/* Delivery */}
+                  <div
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full font-semibold`}
+                  >
+                    <Truck className="h-5 w-5" />
+                    <StatusBadge
+                      status={selectedOrder.deliveryStatus ?? Statuses.PENDING}
+                      className={"border-none p-0"}
+                    />
+                  </div>
+                </div>
 
                 {selectedOrder.isDeleted && (
                   <span className="rounded-full border border-red-300 bg-red-100 px-4 py-1.5 text-sm font-semibold text-red-800">

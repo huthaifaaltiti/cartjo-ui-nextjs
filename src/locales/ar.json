@@ -102,7 +102,17 @@
     },
     "status": {
       "online": "نشط",
-      "offline": "غير نشط"
+      "offline": "غير نشط",
+      "pending": "قيد الانتظار",
+      "confirmed": "تم التأكيد",
+      "preparing": "جارٍ التحضير",
+      "shipped": "تم الشحن",
+      "out_for_delivery": "في الطريق للتسليم",
+      "delivered": "تم التسليم",
+      "failed": "فشل",
+      "refunded": "تم الاسترداد",
+      "canceled": "تم الإلغاء",
+      "paid": "مدفوع"
     },
     "info": {
       "name": "الاسم",
@@ -226,6 +236,10 @@
           "pending": "قيد الانتظار",
           "failed": "فشل الدفع"
         }
+      },
+      "DeliveryStatusFilter": {
+        "title": "حالة التوصيل",
+        "select": "اختر الحالة"
       },
       "PriceRange": {
         "price": "تصفية حسب السعر",
@@ -1806,6 +1820,12 @@
               "pdf": "تصدير PDF",
               "exporting": "جارٍ التصدير...",
               "disabledTooltip": "يرجى اختيار نطاق التاريخ أولاً"
+            },
+            "OrderCardPaymentAction": {
+              "title": "اختر حالة الدفع"
+            },
+            "OrderCardDeliveryAction": {
+              "title": "اختر حالة التوصيل"
             }
           }
         }
@@ -2230,6 +2250,111 @@
                 }
               }
             }
+          },
+          "orders": {
+            "errors": {
+              "failedLoadData": "فشل تحميل بيانات طلباتك"
+            },
+            "components": {
+              "UserOrderCard": {
+                "orderRef": "مرجع الطلب",
+                "items": "عناصر",
+                "item": "عنصر",
+                "total": "المبلغ الإجمالي",
+                "status": "الحالة",
+                "paymentMethod": "طريقة الدفع",
+                "shippingAddress": "عنوان الشحن",
+                "quantity": "الكمية",
+                "show": "عرض التفاصيل",
+                "hide": "إخفاء التفاصيل",
+                "payment": "حالة الدفع",
+                "delivery": "حالة التوصيل"
+              },
+              "UserOrderDetailedCard": {
+                "title": "تفاصيل الطلب",
+                "transactionId": "رقم المعاملة",
+                "merchantRef": "مرجع التاجر",
+                "totalAmount": "المبلغ الإجمالي",
+                "orderItems": "عناصر الطلب",
+                "qty": "الكمية",
+                "rating": "التقييم",
+                "shippingAddress": "عنوان الشحن",
+                "fullName": "الاسم الكامل",
+                "phone": "رقم الهاتف",
+                "address": "العنوان",
+                "paymentCustomer": "الدفع والعميل",
+                "paymentMethod": "طريقة الدفع",
+                "email": "البريد الإلكتروني",
+                "customer": "العميل",
+                "orderSummary": "ملخص الطلب",
+                "subtotal": "المجموع الفرعي",
+                "shipping": "الشحن",
+                "shippingCost": "متغير (يعتمد على موقع العميل)",
+                "free": "مجاني",
+                "total": "الإجمالي",
+                "itemsCount": "{count} عناصر",
+                "loadingError": "تعذر تحميل تفاصيل الطلب"
+              },
+              "NoUserOrders": {
+                "empty": "سلة الطلبات فارغة.",
+                "advice": "لم تقم بأي طلبات معنا بعد؟ جرّب تصفح مجموعات منتجاتنا."
+              }
+            }
+          },
+          "returns": {
+            "errors": {
+              "failedLoadData": "فشل في تحميل بيانات مرتجعات الطلبات الخاصة بك"
+            },
+            "components": {
+              "SearchUserOrderReturns": {
+                "placeholder": "ابحث عن رقم عملية الإرجاع أو الرقم المرجعي للتاجر"
+              },
+              "UserOrderReturnCard": {
+                "orderRef": "مرجع الطلب",
+                "items": "المنتجات",
+                "item": "منتج",
+                "total": "المبلغ الإجمالي",
+                "status": "الحالة",
+                "paymentMethod": "طريقة الدفع",
+                "shippingAddress": "عنوان الشحن",
+                "quantity": "الكمية",
+                "show": "عرض التفاصيل",
+                "hide": "إخفاء التفاصيل",
+                "payment": "الدفع",
+                "delivery": "التوصيل"
+              },
+              "UserOrderReturnDetailedCard": {
+                "title": "تفاصيل الطلب",
+                "transactionId": "رقم العملية",
+                "merchantRef": "الرقم المرجعي للتاجر",
+                "totalAmount": "المبلغ الإجمالي",
+                "orderItems": "عناصر الطلب",
+                "qty": "الكمية",
+                "rating": "التقييم",
+                "shippingAddress": "عنوان الشحن",
+                "fullName": "الاسم الكامل",
+                "phone": "رقم الهاتف",
+                "address": "العنوان",
+                "paymentCustomer": "الدفع والعميل",
+                "paymentMethod": "طريقة الدفع",
+                "email": "البريد الإلكتروني",
+                "customer": "العميل",
+                "orderSummary": "ملخص الطلب",
+                "subtotal": "المجموع الفرعي",
+                "shipping": "الشحن",
+                "shippingCost": "التكلفة (تعتمد على موقع العميل)",
+                "free": "مجاني",
+                "total": "الإجمالي",
+                "itemsCount": "{count} عناصر",
+                "loadingError": "تعذر تحميل تفاصيل الطلب",
+                "payment": "الدفع",
+                "delivery": "التوصيل"
+              },
+              "NoUserOrderReturns": {
+                "empty": "سلة المرتجعات فارغة.",
+                "advice": "لم تقم بأي طلبات معنا بعد؟ جرّب تصفح مجموعات منتجاتنا."
+              }
+            }
           }
         }
       }
@@ -2357,7 +2482,8 @@
           "orderSummary": "ملخص الطلب",
           "subtotal": "الإجمالي الفرعي",
           "total": "المجموع",
-          "billingTo": "الفوترة إلى"
+          "billingTo": "الفوترة إلى",
+          "discoverHome": "عذراً! لا توجد عناصر في سلة التسوق الخاصة بك للشراء، اكتشف الصفحة الرئيسية للمزيد."
         },
         "CashPayment": {
           "title": "الدفع عند الاستلام",
@@ -2376,6 +2502,22 @@
             "processingFailed": "فشل في معالجة الطلب"
           }
         }
+      }
+    },
+    "notFound": {
+      "status": "404",
+      "header": "عذرًا! الصفحة غير موجودة",
+      "description": "لم نتمكن من العثور على الصفحة التي تبحث عنها. ربما تم حذفها أو تغيير اسمها أو أنها غير موجودة.",
+      "actions": {
+        "goBack": "العودة للخلف",
+        "backToHome": "العودة إلى الصفحة الرئيسية"
+      },
+      "search": {
+        "placeholder": "ابحث عن المنتجات..."
+      },
+      "help": {
+        "text": "هل تحتاج إلى مساعدة؟",
+        "support": "دعم العملاء"
       }
     }
   }

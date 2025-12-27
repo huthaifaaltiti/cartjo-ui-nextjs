@@ -1,3 +1,5 @@
+import { Locale } from "@/types/locale";
+
 // formatLocalizedDate
 export const formatDate = (
   dateString: Date | string,
@@ -15,6 +17,20 @@ export const formatDate = (
       numberingSystem: isArabic ? "arab" : "latn",
     }) || "NA"
   );
+};
+
+export const formatDateWithHourAndMin = (
+  dateString: string,
+  isArabic: boolean
+) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat(isArabic ? "ar-JO" : "en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
 };
 
 export const formatRelativeDate = (dateString: Date) => {

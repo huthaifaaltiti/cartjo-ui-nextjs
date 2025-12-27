@@ -11,6 +11,7 @@ import { Order } from "@/types/order.type";
 import { ORDER_CONSTANTS } from "./constants";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
 import { ShippingAddress } from "@/types/shippingAddress.type";
+import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
 
 // GET /api/v1/order/all
 export const getOrders = createAsyncThunk<
@@ -248,3 +249,76 @@ export const createOrder = createAsyncThunk<
     });
   }
 });
+
+export const getMyOrder = createAsyncThunk<
+  DataResponse<Order>,
+  { id: string; lang?: Locale | string; token: string; userId: string },
+  { rejectValue: BaseResponse }
+>(
+  ORDER_CONSTANTS.getMyOrder,
+  async ({ id, lang = "en", token, userId }, { rejectWithValue }) => {
+    try {
+      const url = new URL(`${API_ENDPOINTS.ORDER.GetMyOrder}/${userId}/${id}`);
+
+      url.searchParams.set("lang", String(lang));
+
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.isSuccess) {
+        return rejectWithValue(response);
+      }
+
+      return response as DataResponse<Order>;
+    } catch (error) {
+      return rejectWithValue({
+        isSuccess: false,
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
+      });
+    }
+  }
+);
+
+export const changeDeliveryStatus = createAsyncThunk<
+  DataResponse<Order>,
+  {
+    orderId: string;
+    status: OrderDeliveryStatus;
+    lang?: Locale | string;
+    token: string;
+  },
+  { rejectValue: BaseResponse }
+>(
+  ORDER_CONSTANTS.changeDeliveryStatus,
+  async ({ orderId, status, lang = "en", token }, { rejectWithValue }) => {
+    try {
+      const url = new URL(
+        API_ENDPOINTS.ORDER.ChangeDeliveryStatus.replace(":id", orderId)
+      );
+
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderId, status, lang }),
+      });
+
+      if (!response.isSuccess) return rejectWithValue(response);
+
+      return response as DataResponse<Order>;
+    } catch (error) {
+      return rejectWithValue({
+        isSuccess: false,
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
+      });
+    }
+  }
+);
