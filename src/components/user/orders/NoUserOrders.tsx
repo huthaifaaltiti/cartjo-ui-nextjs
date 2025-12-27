@@ -20,11 +20,11 @@ const NoUserOrders = () => {
 
       <div className="mt-8 mb-6 space-y-2">
         <p className="text-2xl font-bold text-gray-800">
-          {t("routes.cart.components.NoCartItems.cartIsEmpty")}
+          {t("routes.user.layout.routes.orders.components.NoUserOrders.empty")}
         </p>
 
         <p className="text-sm text-gray-500">
-          {t("routes.cart.components.NoCartItems.adviceStartAddingItems")}
+          {t("routes.user.layout.routes.orders.components.NoUserOrders.advice")}
         </p>
       </div>
 

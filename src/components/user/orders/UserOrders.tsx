@@ -19,7 +19,7 @@ import UserOrderCard from "./UserOrderCard";
 import { debounce } from "@/utils/debounce";
 import { DEBOUNCE_TIME_MS } from "@/config/time.config";
 
-const debouncingTime = Number(DEBOUNCE_TIME_MS) || 400;
+const debouncingTime = DEBOUNCE_TIME_MS;
 
 const UserOrders = () => {
   const t = useTranslations();
@@ -63,6 +63,8 @@ const UserOrders = () => {
   useEffect(() => {
     if (fetchedUserOrders.length > 0) {
       dispatch(setOrdersItems(fetchedUserOrders));
+    } else {
+      dispatch(setOrdersItems([]));
     }
   }, [fetchedUserOrders, dispatch]);
 

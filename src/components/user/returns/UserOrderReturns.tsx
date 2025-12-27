@@ -19,7 +19,7 @@ import NoUserOrderReturns from "./NoUserOrderReturns";
 import UserOrderReturnCard from "./UserOrderReturnCard";
 import { useUserOrdersReturnsQuery } from "@/hooks/react-query/useUserOrderReturnsQuery";
 
-const debouncingTime = Number(DEBOUNCE_TIME_MS) || 500;
+const debouncingTime = DEBOUNCE_TIME_MS;
 
 const UserOrderReturns = () => {
   const t = useTranslations();

@@ -2301,6 +2301,10 @@
                 "loadingError": "Unable to load order details",
                 "payment": "Payment",
                 "delivery": "Delivery"
+              },
+              "NoUserOrders": {
+                "empty": "Your box is empty",
+                "advice": "No ordering with us yet? Try browsing our products collections."
               }
             }
           },
@@ -2354,7 +2358,7 @@
                 "delivery": "Delivery"
               },
               "NoUserOrderReturns": {
-                "empty": "Your box is empty.",
+                "empty": "Your box is empty",
                 "advice": "No ordering with us yet? Try browsing our products collections."
               }
             }
