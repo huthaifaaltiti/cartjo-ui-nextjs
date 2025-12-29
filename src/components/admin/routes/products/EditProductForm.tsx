@@ -33,7 +33,6 @@ import { invalidateQuery } from "@/utils/queryUtils";
 import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { Currency } from "@/enums/currency.enum";
-// import { TypeHint } from "@/enums/typeHint.enum";
 import { Product } from "@/types/product.type";
 import { SubCategory } from "@/types/subCategory";
 import { useProducts } from "@/contexts/Products.context";
@@ -46,30 +45,24 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import TagsInput from "@/components/shared/TagsInput";
+import { useActiveTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintConfigsQuery";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
   currencyValues.push(Currency[key as keyof typeof Currency]);
 }
 
-const typeHintValues: string[] = Object.values({});
-// const typeHintValues: string[] = Object.values(TypeHint);
-// for (const key in TypeHint) {
-//   typeHintValues.push(key as keyof typeof TypeHint);
-// }
-
-const editFormSchema = (t: (key: string) => string) =>
+const editFormSchema = (
+  t: (key: string) => string,
+  activeTypeHintConfigsList: string[]
+) =>
   z.object({
     mainImage: z.string().min(2, {
       message: t(
         "routes.dashboard.routes.products.components.EditProductForm.validations.mainImage.required"
       ),
     }),
-    images: z.array(z.string()).min(2, {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.images.required"
-      ),
-    }),
+    images: z.array(z.string()).optional(),
     name_ar: z.string().min(2, {
       message: t(
         "routes.dashboard.routes.products.components.EditProductForm.validations.name_ar.minChars"
@@ -110,11 +103,13 @@ const editFormSchema = (t: (key: string) => string) =>
         "routes.dashboard.routes.products.components.EditProductForm.validations.totalAmountCount.min"
       ),
     }),
-    typeHint: z.enum(typeHintValues as [string, ...string[]], {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.typeHint.notSupported"
-      ),
-    }),
+    typeHint: z
+      .string()
+      .refine((val) => activeTypeHintConfigsList.includes(val), {
+        message: t(
+          "routes.dashboard.routes.products.components.EditProductForm.validations.typeHint.notSupportedd"
+        ),
+      }),
     subCategoryId: z.string().min(1, {
       message: t(
         "routes.dashboard.routes.products.components.EditProductForm.validations.subCategory.required"
@@ -146,6 +141,15 @@ const EditProductForm = ({
   const { token, queryKey } = useProducts();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
+
+  const { data: activeTypeHintConfigsList = [] } =
+    useActiveTypeHintConfigsQuery();
+
+  console.log({ activeTypeHintConfigsList });
+
+  console.log(
+    activeTypeHintConfigsList?.filter((ath) => ath === product?.typeHint)[0]
+  );
 
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
@@ -235,7 +239,7 @@ const EditProductForm = ({
     form.setValue("images", urls);
   };
 
-  const formSchema = editFormSchema(t);
+  const formSchema = editFormSchema(t, activeTypeHintConfigsList);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -248,10 +252,10 @@ const EditProductForm = ({
       subCategoryId: prodSubCat?._id || "",
       description_ar: product?.description.ar || "",
       description_en: product?.description.en || "",
-      price: product?.price || 0,
+      price: Number(product?.price) || 0,
       currency: product?.currency || "",
       totalAmountCount: product?.totalAmountCount || 0,
-      typeHint: product?.typeHint || "",
+      typeHint: product?.typeHint ?? "",
       tags: product?.tags || [],
       availableCount: product?.availableCount || 0,
       discountRate: product?.discountRate || 0,
@@ -709,6 +713,7 @@ const EditProductForm = ({
                     <FormControl>
                       <Input
                         type="number"
+                        step="any"
                         className={getInputClassName()}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.price.placeholder"
@@ -743,7 +748,11 @@ const EditProductForm = ({
                         "routes.dashboard.routes.products.components.EditProductForm.fields.currency.label"
                       )}
                     </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      disabled
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
@@ -837,17 +846,17 @@ const EditProductForm = ({
                           />
                         </SelectTrigger>
                       </FormControl>
-                      {/* <SelectContent>
-                        {Object.values(TypeHint)?.map((th, i) => (
+                      <SelectContent>
+                        {activeTypeHintConfigsList?.map((th, i) => (
                           <SelectItem
                             key={`TypeHintItem_${i}`}
                             value={th}
                             className="cursor-pointer capitalize"
                           >
-                            {th}
+                            {th?.replaceAll("-", " ")}
                           </SelectItem>
                         ))}
-                      </SelectContent> */}
+                      </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
@@ -904,6 +913,7 @@ const EditProductForm = ({
             {/* availableCount */}
             <div className="flex-1">
               <FormField
+                disabled
                 control={form.control}
                 name="availableCount"
                 render={({ field }) => (

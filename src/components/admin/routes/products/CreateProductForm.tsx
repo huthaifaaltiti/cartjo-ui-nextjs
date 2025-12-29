@@ -7,7 +7,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Tag } from "react-tag-input";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -34,16 +33,12 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import TagsInput from "@/components/shared/TagsInput";
-
 import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { Currency } from "@/enums/currency.enum";
-// import { TypeHint } from "@/enums/typeHint.enum";
 import { Textarea } from "@/components/ui/textarea";
 import { SubCategory } from "@/types/subCategory";
-
 import { isArabicLocale } from "@/config/locales.config";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
@@ -56,11 +51,6 @@ for (const key in Currency) {
   currencyValues.push(Currency[key as keyof typeof Currency]);
 }
 
-// const typeHintValues: string[] = Object.values(TypeHint);
-// for (const key in TypeHint) {
-//   typeHintValues.push(key as keyof typeof TypeHint);
-// }
-
 const createFormSchema = (
   t: (key: string) => string,
   activeTypeHintConfigsList: string[]
@@ -71,11 +61,7 @@ const createFormSchema = (
         "routes.dashboard.routes.products.components.CreateProductForm.validations.mainImage.required"
       ),
     }),
-    images: z.array(z.string()).min(2, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.images.required"
-      ),
-    }),
+    images: z.array(z.string()).optional(),
     name_ar: z.string().min(2, {
       message: t(
         "routes.dashboard.routes.products.components.CreateProductForm.validations.name_ar.minChars"
@@ -150,11 +136,8 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   const { token, queryKey } = useProducts();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
-  const {
-    data: activeTypeHintConfigsList = [],
-    // isLoading: isActiveTypeHintConfigLoading,
-    // isFetching: isActiveTypeHintConfigFetching,
-  } = useActiveTypeHintConfigsQuery();
+  const { data: activeTypeHintConfigsList = [] } =
+    useActiveTypeHintConfigsQuery();
 
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
@@ -245,7 +228,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
       description_ar: "",
       description_en: "",
       price: 0,
-      currency: "",
+      currency: Currency.JOD ?? "",
       totalAmountCount: 0,
       typeHint: "",
       tags: [],
@@ -732,7 +715,11 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         "routes.dashboard.routes.products.components.CreateProductForm.fields.currency.label"
                       )}
                     </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      disabled
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
@@ -893,6 +880,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
             {/* availableCount */}
             <div className="flex-1">
               <FormField
+                disabled
                 control={form.control}
                 name="availableCount"
                 render={({ field }) => (
