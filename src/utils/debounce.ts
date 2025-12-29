@@ -25,4 +25,3 @@ export function debounce<Args extends unknown[]>(
     }, delay);
   };
 }
-
