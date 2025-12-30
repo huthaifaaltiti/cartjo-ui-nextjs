@@ -3,7 +3,6 @@
 import { memo, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { ImagePlus, X } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 
 interface ImageUploaderProps {
@@ -98,10 +97,12 @@ const ImageUploader = ({
     }
 
     const acceptedTypes = accept.split(", ").map((type) => type.trim());
-    const isValidType = acceptedTypes.some((type) => {
+
+    const isValidType = acceptedTypes.some((type: string) => {
       if (type.startsWith("image/")) {
-        return file.type === type;
+        return file?.type?.toString() === type?.toString();
       }
+
       return file.name.toLowerCase().endsWith(type.replace("image/", "."));
     });
 
@@ -159,7 +160,6 @@ const ImageUploader = ({
       const newUrls = files.map((file) => URL.createObjectURL(file));
       const allUrls = [...images, ...newUrls];
 
-      console.log("About to call onChange with:", { files, urls: allUrls });
       onChange?.({ files, urls: allUrls });
     } else {
       // Single image mode
@@ -171,12 +171,7 @@ const ImageUploader = ({
       }
 
       const url = URL.createObjectURL(file);
-      console.log("About to call onChange with:", {
-        files: [file],
-        urls: [url],
-        file,
-        url,
-      });
+
       onChange?.({ files: [file], urls: [url], file, url });
     }
   };
