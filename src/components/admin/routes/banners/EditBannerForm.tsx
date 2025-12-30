@@ -99,7 +99,7 @@ const editFormSchema = (
         }),
       link: z.string().optional(),
       withAction: z.boolean(),
-      startDate: z.date({
+      startDate: z.coerce.date({
         required_error: t(
           "routes.dashboard.routes.banners.components.EditBannerForm.validations.startDate.required"
         ),
@@ -107,7 +107,7 @@ const editFormSchema = (
           "routes.dashboard.routes.banners.components.EditBannerForm.validations.startDate.invalid"
         ),
       }),
-      endDate: z
+      endDate: z.coerce
         .date({
           invalid_type_error: t(
             "routes.dashboard.routes.banners.components.EditBannerForm.validations.endDate.invalid"
