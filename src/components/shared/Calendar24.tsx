@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -66,6 +66,12 @@ export function Calendar24({ value, onChange }: Calendar24Props) {
     }
   };
 
+  const handleClear = () => {
+    setTime("00:00:00");
+    onChange(null);
+    setOpen(false);
+  };
+
   return (
     <div className="flex gap-4">
       <div className="flex flex-col gap-3">
@@ -90,6 +96,19 @@ export function Calendar24({ value, onChange }: Calendar24Props) {
               captionLayout="dropdown"
               onSelect={handleDateSelect}
             />
+
+            {/* ✅ Clear Button */}
+            {dateValue && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2 w-full text-red-500 hover:text-red-600"
+                onClick={handleClear}
+              >
+                <X className="w-4 h-4 mr-1" />
+                {t("general.others.clearDate")}
+              </Button>
+            )}
           </PopoverContent>
         </Popover>
       </div>

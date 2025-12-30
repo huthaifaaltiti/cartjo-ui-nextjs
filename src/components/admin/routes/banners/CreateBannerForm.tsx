@@ -166,7 +166,9 @@ const CreateBannerForm = () => {
 
   const [withAction, setWithAction] = useState<boolean>(false);
 
-  const imageUploaderRef = useRef<ImageUploaderRef>(null);
+  const imageUploaderRef_ar = useRef<ImageUploaderRef>(null);
+  const imageUploaderRef_en = useRef<ImageUploaderRef>(null);
+
   const [bannerImage_ar, setBannerImage_ar] = useState<{
     file: File | null;
     url: string;
@@ -280,7 +282,8 @@ const CreateBannerForm = () => {
         });
 
         form.reset();
-        imageUploaderRef.current?.clear();
+        imageUploaderRef_ar.current?.clear();
+        imageUploaderRef_en.current?.clear();
 
         await invalidateQuery(queryClient, queryKey);
       }
@@ -321,7 +324,7 @@ const CreateBannerForm = () => {
                     </FormLabel>
 
                     <ImageUploader
-                      ref={imageUploaderRef}
+                      ref={imageUploaderRef_ar}
                       value={bannerImage_ar.url}
                       onChange={handleImageChange_ar}
                       onError={handleImageError}
@@ -349,7 +352,7 @@ const CreateBannerForm = () => {
                       )}
                     </FormLabel>
                     <ImageUploader
-                      ref={imageUploaderRef}
+                      ref={imageUploaderRef_en}
                       value={bannerImage_en.url}
                       onChange={handleImageChange_en}
                       onError={handleImageError}
