@@ -90,20 +90,31 @@ const ImageUploader = ({
 
   const validateFile = (file: File): string | null => {
     const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+
     if (file.size > maxSizeInBytes) {
       return t("components.ImageUploader.errors.sizeLimit", {
         maxSize: maxSizeInMB,
       });
     }
 
-    const acceptedTypes = accept.split(", ").map((type) => type.trim());
+    const acceptedTypes = accept.split(",").map((t) => t.trim().toLowerCase());
 
-    const isValidType = acceptedTypes.some((type: string) => {
-      if (type.startsWith("image/")) {
-        return file?.type?.toString() === type?.toString();
+    const fileType = file.type.toLowerCase();
+    const fileExtension = file.name.split(".").pop()?.toLowerCase();
+
+    const isValidType = acceptedTypes.some((type) => {
+      if (type === fileType) return true;
+
+      // Handle jpg/jpeg mismatch
+      if (
+        (type === "image/jpg" || type === "image/jpeg") &&
+        fileType === "image/jpeg"
+      ) {
+        return true;
       }
 
-      return file.name.toLowerCase().endsWith(type.replace("image/", "."));
+      // Fallback: check extension
+      return fileExtension && type.endsWith(fileExtension);
     });
 
     if (!isValidType) {
@@ -175,7 +186,7 @@ const ImageUploader = ({
       onChange?.({ files: [file], urls: [url], file, url });
     }
   };
-  
+
   const handleRemoveImage = (e: React.MouseEvent, indexToRemove: number) => {
     e.stopPropagation();
 
