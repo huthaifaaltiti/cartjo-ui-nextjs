@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -32,15 +31,12 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import LoadingButton from "@/components/shared/LoadingButton";
-
 import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
-
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicLocale } from "@/config/locales.config";
 import { validationConfig } from "@/config/validationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-
 import { invalidateQuery } from "@/utils/queryUtils";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
@@ -122,7 +118,8 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
-  const imageUploaderRef = useRef<ImageUploaderRef>(null);
+  const imageUploaderRef_ar = useRef<ImageUploaderRef>(null);
+  const imageUploaderRef_en = useRef<ImageUploaderRef>(null);
 
   const [subCategoryImage_ar, setSubCategoryImage_ar] = useState<{
     file: File | null;
@@ -234,7 +231,8 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
         });
 
         form.reset();
-        imageUploaderRef.current?.clear();
+        imageUploaderRef_ar.current?.clear();
+        imageUploaderRef_en.current?.clear();
 
         await invalidateQuery(queryClient, queryKey);
       }
@@ -274,7 +272,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                       )}
                     </FormLabel>
                     <ImageUploader
-                      ref={imageUploaderRef}
+                      ref={imageUploaderRef_ar}
                       value={subCategoryImage_ar.url}
                       onChange={handleImageChange_ar}
                       onError={handleImageError}
@@ -301,7 +299,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                       )}
                     </FormLabel>
                     <ImageUploader
-                      ref={imageUploaderRef}
+                      ref={imageUploaderRef_en}
                       value={subCategoryImage_en.url}
                       onChange={handleImageChange_en}
                       onError={handleImageError}
