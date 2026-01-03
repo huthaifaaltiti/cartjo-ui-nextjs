@@ -280,7 +280,7 @@ const EditCategoryForm = ({ category }: Props) => {
                       maxSizeInMB={2}
                       size="sm"
                       variant="rounded"
-                      // accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
+                      accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
                     />
                     <FormMessage />
                   </FormItem>

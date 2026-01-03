@@ -280,7 +280,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                       maxSizeInMB={2}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/avif"
+                      accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
                     />
                     <FormMessage />
                   </FormItem>

@@ -222,7 +222,7 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
                   maxSizeInMB={2}
                   size="sm"
                   variant="rounded"
-                  accept="image/png, image/jpeg, image/jpg"
+                  accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
                 />
                 <FormMessage />
               </FormItem>
