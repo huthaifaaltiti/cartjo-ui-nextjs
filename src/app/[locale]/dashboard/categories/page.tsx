@@ -2,9 +2,11 @@ import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { fetchCategories } from "@/hooks/react-query/useCategoriesQuery";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import CategoriesPage from "@/components/admin/routes/categories/CategoriesPage";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
   const accessToken = await getAccessTokenFromServerSession();
+    if (!accessToken) redirect('/auth');
 
   const { data } = await fetchCategories({
     token: accessToken,

@@ -2,13 +2,13 @@ import { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { JWT } from "next-auth/jwt";
 
-interface CustomUser {
+export interface CustomUser {
   id: string;
   email: string;
   phoneNumber: string;
   role: string;
   canManage: boolean;
-  accessToken: string;
+  accessToken?: string;
   firstName: string;
   lastName: string;
 }
@@ -58,7 +58,7 @@ export const authOptions: NextAuthOptions = {
           );
 
           // You can also make an API call to verify the token:
-          // const response = await fetch(`${process.env.API_URL}/auth/verify`, {
+          // const response = await fetch(`${process.env.NEXT_PUBLIC_API_LINK}/auth/verify`, {
           //   headers: { Authorization: `Bearer ${credentials.token}` }
           // });
           // if (!response.ok) return null;

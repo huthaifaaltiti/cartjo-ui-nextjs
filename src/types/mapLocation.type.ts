@@ -1,5 +1,5 @@
 export interface MapLocation {
   lat: number;
-  lang: number;
+  lng: number;
   name: string;
 }

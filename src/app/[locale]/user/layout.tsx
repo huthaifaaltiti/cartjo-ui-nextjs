@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 import TopBar from "@/components/TopBar";
 import InfoCard from "@/components/shared/InfoCard";
 import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
@@ -7,17 +6,12 @@ import UserAccountMenu from "@/components/user/user/layout/user-account/UserAcco
 import UserInfoRow from "@/components/user/user/layout/user-info/UserInfoRow";
 import UserOthersActions from "@/components/user/user/layout/user-others/UserOthersActions";
 import UserQuickActions from "@/components/user/user/layout/user-quick-actions/UserQuickActions";
-import { Locale } from "@/types/locale";
 
 export default async function UserPageLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
 }) {
-  const { locale } = await params;
-
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <TopBar />
@@ -42,7 +36,6 @@ export default async function UserPageLayout({
           </main>
         </div>
       </MaxWidthWrapper>
-      <Footer locale={locale} />
     </div>
   );
 }

@@ -57,7 +57,7 @@ export const PublicProductContextProvider = ({ children }: ProviderProps) => {
         },
         body: JSON.stringify(body),
       },
-      locale
+      // locale
     );
   };
 
@@ -87,7 +87,7 @@ export const PublicProductContextProvider = ({ children }: ProviderProps) => {
         },
         body: JSON.stringify(body),
       },
-      locale
+      // locale
     );
   };
 
@@ -110,7 +110,7 @@ export const PublicProductContextProvider = ({ children }: ProviderProps) => {
         },
         body: JSON.stringify(body),
       },
-      locale
+      // locale
     );
   };
 

@@ -1,12 +1,12 @@
 import { fetchAdminUsers } from "@/hooks/react-query/useAdminUsersQuery";
-
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-
 import AdminUsersPage from "@/components/admin/routes/users/adminUsers/AdminUsersPage";
+import { requireAuth } from "@/utils/authRedirect";
 
 export default async function Page() {
   const accessToken = await getAccessTokenFromServerSession();
+  requireAuth(accessToken)
 
   const { users } = await fetchAdminUsers({
     token: accessToken,

@@ -1,6 +1,14 @@
 import { Order } from "@/types/order.type";
+import { BaseResponse } from "@/types/service-response.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { changePaymentStatus, getOrder, getOrders } from "./actions";
+import {
+  changeDeliveryStatus,
+  changePaymentStatus,
+  getMyOrder,
+  getOrder,
+  getOrders,
+} from "./actions";
+import { Currency } from "@/enums/currency.enum";
 
 interface OrderState {
   items: Order[];
@@ -10,11 +18,13 @@ interface OrderState {
   selectedOrder: Order | null;
   searchQuery: string;
   queryKey: string;
+  currency: Currency;
 }
 
 const initialState: OrderState = {
   items: [],
   itemsCount: 0,
+  currency: Currency.JOD,
   loading: false,
   error: null,
   selectedOrder: null,
@@ -50,9 +60,10 @@ const orderSlice = createSlice({
       state.items = payload.data || [];
       state.itemsCount = payload.data?.length ?? 0;
     });
-    builder.addCase(getOrders.rejected, (state, { payload }) => {
+    builder.addCase(getOrders.rejected, (state, action) => {
       state.loading = false;
-      state.error = (payload as any)?.message ?? "Failed to fetch orders";
+      const payload = action.payload as BaseResponse | undefined;
+      state.error = payload?.message ?? "Failed to fetch orders";
     });
 
     // getOrder
@@ -64,9 +75,10 @@ const orderSlice = createSlice({
       state.loading = false;
       state.selectedOrder = payload.data ?? null;
     });
-    builder.addCase(getOrder.rejected, (state, { payload }) => {
+    builder.addCase(getOrder.rejected, (state, action) => {
       state.loading = false;
-      state.error = (payload as any)?.message ?? "Failed to fetch order";
+      const payload = action.payload as BaseResponse | undefined;
+      state.error = payload?.message ?? "Failed to fetch order";
     });
 
     // changePaymentStatus
@@ -85,10 +97,47 @@ const orderSlice = createSlice({
         o._id === updated._id ? updated : o
       );
     });
-    builder.addCase(changePaymentStatus.rejected, (state, { payload }) => {
+    builder.addCase(changePaymentStatus.rejected, (state, action) => {
       state.loading = false;
-      state.error =
-        (payload as any)?.message ?? "Failed to change payment status";
+      const payload = action.payload as BaseResponse | undefined;
+      state.error = payload?.message ?? "Failed to change payment status";
+    });
+
+    // changeDeliveryStatus
+    builder.addCase(changeDeliveryStatus.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(changeDeliveryStatus.fulfilled, (state, { payload }) => {
+      state.loading = false;
+
+      const updated = payload.data;
+
+      if (!updated) return;
+
+      state.items = state.items.map((o) =>
+        o._id === updated._id ? updated : o
+      );
+    });
+    builder.addCase(changeDeliveryStatus.rejected, (state, action) => {
+      state.loading = false;
+      const payload = action.payload as BaseResponse | undefined;
+      state.error = payload?.message ?? "Failed to change payment status";
+    });
+
+    // getMyOrder
+    builder.addCase(getMyOrder.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(getMyOrder.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.selectedOrder = payload.data ?? null;
+    });
+    builder.addCase(getMyOrder.rejected, (state, action) => {
+      state.loading = false;
+      const payload = action.payload as BaseResponse | undefined;
+      state.error = payload?.message ?? "Failed to fetch order";
     });
   },
 });

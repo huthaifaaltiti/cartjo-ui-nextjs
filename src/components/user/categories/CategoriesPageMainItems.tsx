@@ -61,12 +61,12 @@ const CategoriesPageMainItems = () => {
   const showData = !isLoading && !isFetching && categories.length > 0;
 
   // TODO: Add analytics tracking
-  const handleCategoryClick = () => {
+  // const handleCategoryClick = () => {
     // TODO: Track category clicks for analytics
     // trackEvent('category_clicked', { category_id: category._id, category_name: category.name[locale] });
     // TODO: Navigate to category page
     // router.push(`/categories/${category.slug}`);
-  };
+  // };
 
   // TODO: Add loading skeleton component
   if (showLoader) {
@@ -177,13 +177,14 @@ const CategoriesPageMainItems = () => {
           {categories?.map((category: Category) => (
             <div
               key={`category_${category?._id}`}
-              onClick={() => handleCategoryClick(category)}
+              // onClick={() => handleCategoryClick(category)}
+              onClick={() =>{}}
               className="group relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-lg hover:border-gray-300 transition-all duration-300 cursor-pointer overflow-hidden"
             >
               {/* Category Image */}
               <div className="aspect-square bg-gray-100 relative overflow-hidden">
                 {/* TODO: Display category image from media field */}
-                {category.media?.[locale]?.url ? (
+                {/* {category.media?.[locale]?.url ? (
                   // TODO: Replace with Next.js Image component for optimization
                   <img
                     src={category.media[locale].url}
@@ -196,7 +197,7 @@ const CategoriesPageMainItems = () => {
                   <div className="w-full h-full flex items-center justify-center text-4xl text-gray-400">
                     📦
                   </div>
-                )}
+                )} */}
 
                 {/* TODO: Add category badges (new, featured, sale, etc.) */}
                 {/* Example: New Category Badge */}

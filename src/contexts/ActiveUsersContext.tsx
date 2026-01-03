@@ -12,14 +12,14 @@ import { createContext, ReactNode, useContext, useState } from "react";
 type ActiveUsersContextProps = {
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
-  accessToken: string;
-  deleteUser: (token: string, userId: string) => Promise<DeleteUserResponse>;
+  accessToken: string | null;
+  deleteUser: (token: string | null, userId: string) => Promise<DeleteUserResponse>;
   unDeleteUser: (
-    token: string,
+    token: string | null,
     userId: string
   ) => Promise<UnDeleteUserResponse>;
   switchUserActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     userId: string
@@ -28,7 +28,7 @@ type ActiveUsersContextProps = {
 
 type ActiveUsersContextProviderProps = {
   children: ReactNode;
-  accessToken: string;
+  accessToken: string | null;
 };
 
 const ActiveUsersContext = createContext<undefined | ActiveUsersContextProps>(
@@ -42,7 +42,7 @@ export const ActiveUsersContextProvider = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const deleteUser = async (
-    token: string,
+    token: string | null,
     userId: string
   ): Promise<UnDeleteUserResponse> => {
     const res = await fetch(
@@ -65,7 +65,7 @@ export const ActiveUsersContextProvider = ({
   };
 
   const unDeleteUser = async (
-    token: string,
+    token: string | null,
     userId: string
   ): Promise<DeleteUserResponse> => {
     const res = await fetch(
@@ -88,7 +88,7 @@ export const ActiveUsersContextProvider = ({
   };
 
   const switchUserActiveStatus = async (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     userId: string

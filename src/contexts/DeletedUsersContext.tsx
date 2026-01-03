@@ -13,13 +13,13 @@ type DeletedUsersContextProps = {
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
   accessToken: string | null;
-  deleteUser: (token: string, userId: string) => Promise<DeleteUserResponse>;
+  deleteUser: (token: string | null, userId: string) => Promise<DeleteUserResponse>;
   unDeleteUser: (
-    token: string,
+    token: string | null,
     userId: string
   ) => Promise<UnDeleteUserResponse>;
   switchUserActiveStatus: (
-    token: string,
+    token: string | null,
     lang: Locale | string,
     isActive: boolean,
     userId: string

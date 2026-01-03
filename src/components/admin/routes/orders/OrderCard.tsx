@@ -3,6 +3,9 @@ import { useLocale, useTranslations } from "next-intl";
 import { isArabicLocale } from "@/config/locales.config";
 import { Order } from "@/types/order.type";
 import OrderCardActions from "./OrderCardActions";
+import StatusBadge from "@/components/shared/StatusBadge";
+import { Statuses } from "@/enums/statuses.enum";
+import { CircleDollarSign, Truck } from "lucide-react";
 
 type OrderCardProps = {
   item: Order;
@@ -13,19 +16,6 @@ const OrderCard = ({ item }: OrderCardProps) => {
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
 
-  const getPaymentStatusColor = (status: string) => {
-    switch (status) {
-      case "pending":
-        return "bg-yellow-100 text-yellow-800";
-      case "completed":
-        return "bg-green-100 text-green-800";
-      case "failed":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   const totalItems = item.items.reduce(
     (sum, product) => sum + product.quantity,
     0
@@ -34,16 +24,30 @@ const OrderCard = ({ item }: OrderCardProps) => {
   return (
     <div className="relative rounded-lg border bg-card p-4 shadow-sm transition-shadow hover:shadow-md">
       {/* Status Badges */}
-      <div className="mb-3 flex flex-wrap gap-2">
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-medium ${getPaymentStatusColor(
-            item.paymentStatus
-          )}`}
-        >
-          {t(
-            `routes.dashboard.routes.orders.components.OrderCard.status.${item.paymentStatus}`
-          )}
-        </span>
+      <div className="mb-2 flex flex-wrap gap-2">
+        {/* Statuses */}
+        <div className="flex items-center gap-1">
+          {/* Payment */}
+          <div className={`flex items-center gap-1 font-semibold`}>
+            <CircleDollarSign className="h-5 w-5" />
+            <StatusBadge
+              status={item.paymentStatus ?? Statuses.PENDING}
+              className={"border-none px-2 py-1"}
+            />
+          </div>
+
+          <span className="h-4 w-px bg-gray-300 mx-2" />
+
+          {/* Delivery */}
+          <div className={`flex items-center gap-1 font-semibold`}>
+            <Truck className="h-5 w-5" />
+            <StatusBadge
+              status={item.deliveryStatus ?? Statuses.PENDING}
+              className={"border-none px-2 py-1"}
+            />
+          </div>
+        </div>
+
         {item.isDeleted && (
           <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-800">
             {t("general.items.states.deleted")}
@@ -55,7 +59,7 @@ const OrderCard = ({ item }: OrderCardProps) => {
       <div className="space-y-3">
         {/* Transaction ID */}
         <div>
-          <p className="text-sm font-semibold text-gray-900">
+          <p className="text-xs text-gray-600">
             {t(
               "routes.dashboard.routes.orders.components.OrderCard.transactionId"
             )}

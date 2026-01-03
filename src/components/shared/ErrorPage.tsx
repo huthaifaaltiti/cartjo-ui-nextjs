@@ -73,7 +73,7 @@ const ErrorPage = ({
               : errorMessage}
           </p>
 
-          {process.env.NODE_ENV === "development" && error && (
+          {process.env.NEXT_PUBLIC_ENV_TYPE === "development" && error && (
             <div className="mb-6 p-3 bg-gray-50 rounded-md border text-left">
               <p className="text-xs font-mono text-gray-700 break-all">
                 {error.message}

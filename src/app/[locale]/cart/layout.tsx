@@ -11,7 +11,7 @@ export default async function CartPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params:  Promise<{ locale: Locale | string }>;
 }) {
   const { locale } = await params;
 
@@ -27,7 +27,7 @@ export default async function CartPageLayout({
           <div className="w-full">{children}</div>
         </MaxWidthWrapper>
       </WishlistContextProvider>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </>
   );
 }

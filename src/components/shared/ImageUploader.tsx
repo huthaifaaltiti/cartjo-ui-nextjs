@@ -3,7 +3,6 @@
 import { memo, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { ImagePlus, X } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 
 interface ImageUploaderProps {
@@ -91,18 +90,31 @@ const ImageUploader = ({
 
   const validateFile = (file: File): string | null => {
     const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+
     if (file.size > maxSizeInBytes) {
       return t("components.ImageUploader.errors.sizeLimit", {
         maxSize: maxSizeInMB,
       });
     }
 
-    const acceptedTypes = accept.split(", ").map((type) => type.trim());
+    const acceptedTypes = accept.split(",").map((t) => t.trim().toLowerCase());
+
+    const fileType = file.type.toLowerCase();
+    const fileExtension = file.name.split(".").pop()?.toLowerCase();
+
     const isValidType = acceptedTypes.some((type) => {
-      if (type.startsWith("image/")) {
-        return file.type === type;
+      if (type === fileType) return true;
+
+      // Handle jpg/jpeg mismatch
+      if (
+        (type === "image/jpg" || type === "image/jpeg") &&
+        fileType === "image/jpeg"
+      ) {
+        return true;
       }
-      return file.name.toLowerCase().endsWith(type.replace("image/", "."));
+
+      // Fallback: check extension
+      return fileExtension && type.endsWith(fileExtension);
     });
 
     if (!isValidType) {
@@ -159,7 +171,6 @@ const ImageUploader = ({
       const newUrls = files.map((file) => URL.createObjectURL(file));
       const allUrls = [...images, ...newUrls];
 
-      console.log("About to call onChange with:", { files, urls: allUrls });
       onChange?.({ files, urls: allUrls });
     } else {
       // Single image mode
@@ -171,16 +182,11 @@ const ImageUploader = ({
       }
 
       const url = URL.createObjectURL(file);
-      console.log("About to call onChange with:", {
-        files: [file],
-        urls: [url],
-        file,
-        url,
-      });
+
       onChange?.({ files: [file], urls: [url], file, url });
     }
   };
-  
+
   const handleRemoveImage = (e: React.MouseEvent, indexToRemove: number) => {
     e.stopPropagation();
 

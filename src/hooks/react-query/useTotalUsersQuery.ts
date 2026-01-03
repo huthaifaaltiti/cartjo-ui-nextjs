@@ -1,9 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
 import { useInfiniteQuery } from "@tanstack/react-query";
-
 import { User } from "@/types/user";
-
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";

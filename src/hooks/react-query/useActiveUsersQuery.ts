@@ -1,7 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
-
 import { CustomSession } from "@/lib/authOptions";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
@@ -16,7 +15,7 @@ interface ActiveUsersResp {
 }
 
 interface FetchUsersParams {
-  token: string;
+  token: string | null;
   lang?: string;
   limit?: number;
   lastId?: string;

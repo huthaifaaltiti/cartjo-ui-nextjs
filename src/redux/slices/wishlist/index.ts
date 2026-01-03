@@ -12,7 +12,7 @@ interface WishlistState {
   items: Product[];
   itemsCount: number;
   loading: boolean;
-  error: any | null;
+  error: string | null;
 }
 
 const initialState: WishlistState = {
@@ -54,7 +54,7 @@ const wishlistSlice = createSlice({
 
       .addCase(removeWishlistItem.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error || "Failed to remove wishlist item";
+        state.error = action.error.message || "Failed to remove wishlist item";
       })
 
       // Adding wishlist item
@@ -78,7 +78,7 @@ const wishlistSlice = createSlice({
 
       .addCase(addWishlistItem.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error || "Failed to remove wishlist item";
+        state.error = action.error.message || "Failed to add wishlist item";
       })
 
       // Sending wishlist item to cart
@@ -98,7 +98,7 @@ const wishlistSlice = createSlice({
 
       .addCase(sendWishlistItemToCart.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error || "Failed to remove wishlist item";
+        state.error = action.error.message || "Failed to send item to cart";
       })
 
       // Remove all wishlist items
@@ -113,7 +113,7 @@ const wishlistSlice = createSlice({
       })
       .addCase(removeAllWishlistItems.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error || "Failed to remove wishlist items";
+        state.error = action.error.message || "Failed to remove wishlist items";
       })
 
       // Send all wishlist items to cart
@@ -128,7 +128,7 @@ const wishlistSlice = createSlice({
       })
       .addCase(sendAllWishlistItemsToCart.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error || "Failed to remove wishlist items";
+        state.error = action.error.message || "Failed to send items to cart";
       });
   },
 });

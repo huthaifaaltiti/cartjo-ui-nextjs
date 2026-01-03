@@ -5,6 +5,13 @@ import { REVALIDATION_TAGS } from "@/config/revalidation";
 import { Category } from "@/types/category.type";
 import { fetcher } from "@/utils/fetcher";
 
+type ActiveCategoriesType = {
+  data: Category[];
+  dataCount: number;
+  isSuccess: boolean;
+  message: string;
+};
+
 export default async function FooterMid({
   locale,
   isArabic = false,
@@ -12,7 +19,7 @@ export default async function FooterMid({
   locale: Locale;
   isArabic: boolean;
 }) {
-  const res = await fetcher(
+  const res = await fetcher<ActiveCategoriesType>(
     API_ENDPOINTS.DASHBOARD.CATEGORIES.ACTIVE,
     {
       next: {

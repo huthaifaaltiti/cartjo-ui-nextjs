@@ -32,16 +32,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useGeneralContext } from "@/contexts/General.context";
 import PasswordRules from "./user/PasswordRules";
 import TwoColumnFormFields from "./shared/TwoColumnFormFields";
 import GeneralCheckbox from "./shared/GeneralCheckbox";
 import LoadingButton from "./shared/LoadingButton";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const RegisterForm = () => {
   const t = useTranslations();
-  const { isArabic, locale } = useGeneralContext();
-  const dir = isArabic ? "rtl" : "ltr";
+  const { isArabic, locale, dir } = useSelector(
+    (state: RootState) => state.general
+  );
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -194,7 +196,7 @@ const RegisterForm = () => {
         {/* FirstName & LastName */}
         <div className="w-full">
           <TwoColumnFormFields
-            isArabic={isArabic}
+            dir={dir}
             leftField={
               <FormField
                 control={form.control}
@@ -261,7 +263,7 @@ const RegisterForm = () => {
         {/* Phone number & email */}
         <div className="w-full">
           <TwoColumnFormFields
-            isArabic={isArabic}
+            dir={dir}
             leftField={
               <FormField
                 control={form.control}
@@ -443,6 +445,14 @@ const RegisterForm = () => {
                   "routes.auth.components.AuthTabs.components.register.privacyPolicy"
                 )}
               </span>
+            </Link>{" "}
+            {t("general.others.&")}{" "}
+            <Link href="/terms-of-use" target="_blank">
+              <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
+                {t(
+                  "routes.auth.components.AuthTabs.components.register.termsAndConditions"
+                )}
+              </span>
             </Link>
           </p>
         </div>
@@ -450,14 +460,14 @@ const RegisterForm = () => {
         {/* marketingEmails & termsAccepted */}
         <div className="w-full">
           <TwoColumnFormFields
-            isArabic={isArabic}
+            dir={dir}
             rightField={
               <FormField
                 control={form.control}
                 name="termsAccepted"
                 render={({ field }) => (
                   <FormItem dir={dir} className="flex items-center gap-2">
-                    <FormControl>
+                    <FormControl className="h-4 mt-2">
                       <GeneralCheckbox
                         id="termsAccepted"
                         checked={field.value}

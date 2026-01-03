@@ -6,7 +6,7 @@ import ActiveUsersList from "./ActiveUsersList";
 
 interface ActiveUsersPageProps {
   initialUsers: User[];
-  accessToken: string;
+  accessToken: string | null;
 }
 
 const ActiveUsersPage = ({

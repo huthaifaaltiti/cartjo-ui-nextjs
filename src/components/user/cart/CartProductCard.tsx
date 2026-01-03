@@ -95,7 +95,7 @@ const CartProductCard = ({
 
         const response = await dispatch(
           removeItemFromServer({
-            productId: item?._id!,
+            productId: item?._id,
             quantity: quantityMount || quantity,
             lang: locale,
             token: accessToken,
@@ -143,7 +143,7 @@ const CartProductCard = ({
 
         const response = await dispatch(
           addItemToServer({
-            productId: item?._id!,
+            productId: item?._id,
             quantity: quantityMount || quantity,
             lang: locale,
             token: accessToken,

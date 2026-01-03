@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -32,16 +31,13 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import LoadingButton from "@/components/shared/LoadingButton";
-
 import { User } from "@/types/user";
 import { SubCategory } from "@/types/subCategory";
-
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
-
 import { invalidateQuery } from "@/utils/queryUtils";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
@@ -144,6 +140,7 @@ const EditCategoryForm = ({ subCategory }: Props) => {
   }, [allCategories, subCategory]);
 
   const imageUploaderRef = useRef<ImageUploaderRef>(null);
+
   const [subCategoryImage_ar, setSubCategoryImage_ar] = useState<{
     file: File | null;
     url: string;
@@ -240,9 +237,6 @@ const EditCategoryForm = ({ subCategory }: Props) => {
           description: data.message,
           dismissText: t("general.toast.dismissText"),
         });
-
-        form.reset();
-        imageUploaderRef.current?.clear();
 
         await invalidateQuery(queryClient, queryKey);
       }

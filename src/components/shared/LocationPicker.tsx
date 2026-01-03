@@ -223,10 +223,32 @@ export default function LocationPicker({
     else setPosition(null);
   }, [defaultPosition]);
 
+  // const handlePositionChange = async (latlng: LatLngExpression) => {
+  //   setPosition(latlng);
+  //   const { lat, lng } = latlng as any;
+  //   const name = await reverseGeocode(lat, lng);
+  //   onChange({ lat, lng, name });
+  // };
+
   const handlePositionChange = async (latlng: LatLngExpression) => {
     setPosition(latlng);
-    const { lat, lng } = latlng as any;
+
+    let lat: number;
+    let lng: number;
+
+    if (Array.isArray(latlng)) {
+      // tuple [number, number]
+      [lat, lng] = latlng;
+    } else if ("lat" in latlng && "lng" in latlng) {
+      // LatLng or LatLngLiteral
+      lat = latlng.lat;
+      lng = latlng.lng;
+    } else {
+      throw new Error("Invalid LatLngExpression");
+    }
+
     const name = await reverseGeocode(lat, lng);
+
     onChange({ lat, lng, name });
   };
 
@@ -234,16 +256,12 @@ export default function LocationPicker({
     <div className="relative w-full h-[400px] rounded-xl overflow-hidden">
       {/* Search Box */}
       <SearchBox
-        onSelectLocation={(lat, lng) =>
-          handlePositionChange({ lat, lng })
-        }
+        onSelectLocation={(lat, lng) => handlePositionChange({ lat, lng })}
       />
 
       {/* Use My Location */}
       <UseMyLocationButton
-        onSelectLocation={(lat, lng) =>
-          handlePositionChange({ lat, lng })
-        }
+        onSelectLocation={(lat, lng) => handlePositionChange({ lat, lng })}
       />
 
       {/* Map */}

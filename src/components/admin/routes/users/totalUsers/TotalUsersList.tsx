@@ -1,12 +1,9 @@
 "use client";
 
 import { memo } from "react";
-
 import { useTotalUsersQuery } from "@/hooks/react-query/useTotalUsersQuery";
-
 import { useTotalUsers } from "@/contexts/TotalUsersContext";
 import { User } from "@/types/user";
-
 import UsersInfiniteScrollList from "@/components/admin/shared/UsersInfiniteScrollList";
 
 type TotalUsersListProps = {

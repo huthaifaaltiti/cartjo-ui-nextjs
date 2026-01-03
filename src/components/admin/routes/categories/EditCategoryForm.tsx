@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -25,13 +24,10 @@ import ImageUploader, {
 } from "@/components/shared/ImageUploader";
 import { useCategories } from "@/contexts/CategoriesContext";
 import LoadingButton from "@/components/shared/LoadingButton";
-
 import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
-
 import { isArabicLocale } from "@/config/locales.config";
 import { validationConfig } from "@/config/validationConfig";
-
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
@@ -98,7 +94,9 @@ const EditCategoryForm = ({ category }: Props) => {
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
-  const imageUploaderRef = useRef<ImageUploaderRef>(null);
+  const imageUploaderRef_ar = useRef<ImageUploaderRef>(null);
+  const imageUploaderRef_en = useRef<ImageUploaderRef>(null);
+
   const [categoryImage_ar, setCategoryImage_ar] = useState<{
     file: File | null;
     url: string;
@@ -114,12 +112,14 @@ const EditCategoryForm = ({ category }: Props) => {
     url: category?.media?.en?.url || "",
   });
 
+  console.log({categoryImage_ar, categoryImage_en})
+
   const formSchema = editFormSchema(t);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      categoryImage_ar: category?.media?.ar.url || "",
+      categoryImage_ar: category?.media?.ar?.url || "",
       categoryImage_en: category?.media?.en?.url || "",
       name_ar: category?.name?.ar || "",
       name_en: category?.name?.en || "",
@@ -202,9 +202,6 @@ const EditCategoryForm = ({ category }: Props) => {
           dismissText: t("general.toast.dismissText"),
         });
 
-        form.reset();
-        imageUploaderRef.current?.clear();
-
         await invalidateQuery(queryClient, queryKey);
       }
     },
@@ -247,7 +244,7 @@ const EditCategoryForm = ({ category }: Props) => {
                       )}
                     </FormLabel>
                     <ImageUploader
-                      ref={imageUploaderRef}
+                      ref={imageUploaderRef_ar}
                       value={categoryImage_ar.url}
                       onChange={handleImageChange_ar}
                       onError={handleImageError}
@@ -275,7 +272,7 @@ const EditCategoryForm = ({ category }: Props) => {
                       )}
                     </FormLabel>
                     <ImageUploader
-                      ref={imageUploaderRef}
+                      ref={imageUploaderRef_en}
                       value={categoryImage_en.url}
                       onChange={handleImageChange_en}
                       onError={handleImageError}
@@ -283,7 +280,7 @@ const EditCategoryForm = ({ category }: Props) => {
                       maxSizeInMB={2}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
+                      // accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
                     />
                     <FormMessage />
                   </FormItem>
