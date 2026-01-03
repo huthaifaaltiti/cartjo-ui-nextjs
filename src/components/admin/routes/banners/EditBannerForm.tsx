@@ -344,7 +344,7 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
                       maxSizeInMB={2}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/gif"
+                      accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
                     />
                     <FormMessage />
                   </FormItem>
@@ -372,7 +372,7 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
                       maxSizeInMB={2}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/gif"
+                      accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
                     />
                     <FormMessage />
                   </FormItem>

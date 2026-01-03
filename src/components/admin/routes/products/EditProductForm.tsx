@@ -437,7 +437,7 @@ const EditProductForm = ({
                     maxSizeInMB={2}
                     size="sm"
                     variant="rounded"
-                    accept="image/png, image/jpeg, image/jpg"
+                    accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
                     multiple={false}
                   />
                   <FormMessage />
@@ -467,7 +467,7 @@ const EditProductForm = ({
                     maxSizeInMB={2}
                     size="sm"
                     variant="rounded"
-                    accept="image/png, image/jpeg, image/jpg"
+                    accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
                     multiple={true}
                     maxImages={3}
                   />
