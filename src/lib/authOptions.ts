@@ -58,7 +58,7 @@ export const authOptions: NextAuthOptions = {
           );
 
           // You can also make an API call to verify the token:
-          // const response = await fetch(`${process.env.API_URL}/auth/verify`, {
+          // const response = await fetch(`${process.env.NEXT_PUBLIC_API_LINK}/auth/verify`, {
           //   headers: { Authorization: `Bearer ${credentials.token}` }
           // });
           // if (!response.ok) return null;

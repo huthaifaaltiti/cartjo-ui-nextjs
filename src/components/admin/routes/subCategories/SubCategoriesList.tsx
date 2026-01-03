@@ -48,6 +48,8 @@ const SubCategoriesList = ({
       list={subCategories}
       fetchNextPage={fetchNextPage}
       ListItemCard={SubCategoryCard}
+      layout="grid"
+      gridType="wide"
       cardProps={{
         deleteSubCategory,
         unDeleteSubCategory,

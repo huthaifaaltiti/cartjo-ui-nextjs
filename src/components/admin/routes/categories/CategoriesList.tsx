@@ -43,6 +43,8 @@ const CategoriesList = ({ initialCategories }: CategoriesListProps) => {
       list={categories}
       fetchNextPage={fetchNextPage}
       ListItemCard={CategoryCard}
+      layout="grid"
+      gridType="wide"
       cardProps={{
         deleteCategory,
         unDeleteCategory,

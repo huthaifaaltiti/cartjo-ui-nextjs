@@ -91,7 +91,8 @@
       "timeline": "Timeline",
       "updatedBy": "Updated By",
       "notFound": "Not Found",
-      "&": "&"
+      "&": "&",
+      "clearDate": "Clear Date"
     },
     "date": {
       "startDate": "Start Date",
