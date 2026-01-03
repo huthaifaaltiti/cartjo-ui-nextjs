@@ -1,7 +1,6 @@
 "use client";
 
 import { memo } from "react";
-
 import SearchBar from "@/components/shared/SearchBar";
 import { useTotalUsers } from "@/contexts/TotalUsersContext";
 import { useTranslations } from "next-intl";

@@ -12,25 +12,34 @@ import { fetcher } from "@/utils/fetcher";
 import { useTranslations } from "next-intl";
 import { createContext, ReactNode, useContext, useState } from "react";
 
+// Define form value types
+type ContactFormValues = {
+  email: string;
+  phoneNumber: string;
+};
+
+type PersonalFormValues = {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  birthDate: string;
+};
+
+// Define form type
+type FormControls<T> = {
+  trigger: () => Promise<boolean>;
+  getValues: () => T;
+};
+
 type UserProfileContextProps = {
   handleSubmitAll: () => Promise<DataResponse<User> | void>;
-  contactForm?: {
-    trigger: () => Promise<boolean>;
-    getValues: () => any;
-  };
-  personalForm?: {
-    trigger: () => Promise<boolean>;
-    getValues: () => any;
-  };
+  contactForm?: FormControls<ContactFormValues>;
+  personalForm?: FormControls<PersonalFormValues>;
   setContactForm: React.Dispatch<
-    React.SetStateAction<
-      { trigger: () => Promise<boolean>; getValues: () => any } | undefined
-    >
+    React.SetStateAction<FormControls<ContactFormValues> | undefined>
   >;
   setPersonalForm: React.Dispatch<
-    React.SetStateAction<
-      { trigger: () => Promise<boolean>; getValues: () => any } | undefined
-    >
+    React.SetStateAction<FormControls<PersonalFormValues> | undefined>
   >;
   isSubmitting: boolean;
 };
@@ -49,13 +58,12 @@ export const UserProfileContextProvider = ({
   const t = useTranslations();
   const { accessToken, userId, locale } = useAuthContext();
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [contactForm, setContactForm] = useState<
-    { trigger: () => Promise<boolean>; getValues: () => any } | undefined
+    FormControls<ContactFormValues> | undefined
   >(undefined);
-
   const [personalForm, setPersonalForm] = useState<
-    { trigger: () => Promise<boolean>; getValues: () => any } | undefined
+    FormControls<PersonalFormValues> | undefined
   >(undefined);
 
   const handleSubmitAll = async (): Promise<DataResponse<User> | void> => {
@@ -73,7 +81,6 @@ export const UserProfileContextProvider = ({
       if (!contactValid || !personalValid) return;
 
       const url = `${API_ENDPOINTS.USER.UPDATE_PROFILE}/${userId}`;
-
       const body = {
         firstName: personalValues.firstName,
         lastName: personalValues.lastName,
@@ -87,18 +94,14 @@ export const UserProfileContextProvider = ({
 
       setIsSubmitting(true);
 
-      const response = await fetcher<DataResponse<User>>(
-        new URL(url),
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
+      const response = await fetcher<DataResponse<User>>(new URL(url), {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
         },
-        locale
-      );
+        body: JSON.stringify(body),
+      });
 
       if (response.isSuccess) {
         showSuccessToast({
@@ -112,7 +115,7 @@ export const UserProfileContextProvider = ({
     } catch (error) {
       if (error instanceof Error) {
         showErrorToast({
-          title: t("general.toast.title.success"),
+          title: t("general.toast.title.error"),
           description: error?.message,
           dismissText: t("general.toast.dismissText"),
         });
@@ -127,8 +130,8 @@ export const UserProfileContextProvider = ({
       value={{
         handleSubmitAll,
         contactForm,
-        setContactForm,
         personalForm,
+        setContactForm,
         setPersonalForm,
         isSubmitting,
       }}
@@ -140,10 +143,12 @@ export const UserProfileContextProvider = ({
 
 export const useUserProfileContext = () => {
   const context = useContext(UserProfileContext);
+
   if (!context) {
     throw new Error(
       "UserProfileContext must be used within a UserProfileContextProvider"
     );
   }
+
   return context;
 };

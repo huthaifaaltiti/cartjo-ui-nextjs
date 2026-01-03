@@ -4,21 +4,12 @@ import { memo, useCallback, useState } from "react";
 import { Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import {
-  showErrorToast,
-  showSuccessToast,
-  showWarningToast,
-} from "@/components/shared/CustomToast";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
 import { Order } from "@/types/order.type";
-import { useAuthContext } from "@/hooks/useAuthContext";
-import ToggleSwitch from "@/components/shared/ToggleSwitch";
-import { PaymentStatus } from "@/enums/paymentStatus.enum";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import { changePaymentStatus } from "@/redux/slices/orders/actions";
 import OrderDetailedCard from "./OrderDetailedCard";
+import OrderCardPaymentAction from "./OrderCardPaymentAction";
+import OrderCardDeliveryAction from "./OrderCardDeliveryAction";
 
 type OrderCardActionsProps = {
   cardItem: Order;
@@ -26,105 +17,9 @@ type OrderCardActionsProps = {
 
 const OrderCardActions = ({ cardItem }: OrderCardActionsProps) => {
   const t = useTranslations();
-  const { accessToken, locale } = useAuthContext();
-  const dispatch = useDispatch<AppDispatch>();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-
-  const changePaymentStatusText = useCallback(() => {
-    return cardItem.paymentStatus === PaymentStatus.PENDING
-      ? `${PaymentStatus.PAID}?`
-      : `${PaymentStatus.PENDING}?`;
-  }, [cardItem.paymentStatus]);
-
-  const setPaymentPaid = useCallback(async () => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      const response = await dispatch(
-        changePaymentStatus({
-          orderId: cardItem._id!,
-          status: PaymentStatus.PAID,
-          lang: locale,
-          token: accessToken,
-        })
-      ).unwrap();
-
-      if (response.isSuccess) {
-        showSuccessToast({
-          title: t("general.toast.title.success"),
-          description: response.message,
-          dismissText: t("general.toast.dismissText"),
-        });
-      }
-    } catch (error) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to update payment.",
-        dismissText: t("general.toast.dismissText"),
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [accessToken, cardItem._id, dispatch, locale, t]);
-
-  const setPaymentPending = useCallback(async () => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      const response = await dispatch(
-        changePaymentStatus({
-          orderId: cardItem._id!,
-          status: PaymentStatus.PENDING,
-          lang: locale,
-          token: accessToken,
-        })
-      ).unwrap();
-
-      if (response.isSuccess) {
-        showSuccessToast({
-          title: t("general.toast.title.success"),
-          description: response.message,
-          dismissText: t("general.toast.dismissText"),
-        });
-      }
-    } catch (error) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to update payment.",
-        dismissText: t("general.toast.dismissText"),
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [accessToken, cardItem._id, dispatch, locale, t]);
-
-  const handleChangePaymentStatus = useCallback(() => {
-    const isPendingPayment = cardItem.paymentStatus === PaymentStatus.PENDING;
-
-    if (isPendingPayment) {
-      setPaymentPaid();
-    } else {
-      setPaymentPending();
-    }
-  }, [cardItem.paymentStatus, setPaymentPaid, setPaymentPending]);
 
   const openDetailsModal = useCallback(() => {
     setIsDetailsModalOpen(true);
@@ -143,7 +38,7 @@ const OrderCardActions = ({ cardItem }: OrderCardActionsProps) => {
           </div>
         )}
 
-        <Button onClick={openDetailsModal} size="sm" variant="outline">
+        <Button onClick={openDetailsModal} size="sm" variant="outline" className="w-full mb-2">
           <Eye className="mr-1 h-4 w-4" />
           {t(
             "routes.dashboard.routes.orders.components.OrderCardActions.viewDetails"
@@ -151,22 +46,15 @@ const OrderCardActions = ({ cardItem }: OrderCardActionsProps) => {
         </Button>
       </div>
 
-      <div className="w-full flex items-center">
-        <div className="w-full flex items-center gap-2">
-          <ToggleSwitch
-            value={cardItem.paymentStatus === PaymentStatus.PAID}
-            onChange={handleChangePaymentStatus}
-            width={40}
-            height={20}
-            trackColorInactive="#E55050"
-            trackColorActive="#16610E"
-            isDisabled={false}
-          />
-
-          <span className="text-sm capitalize font-bold text-orange-500">
-            {changePaymentStatusText()}
-          </span>
-        </div>
+      <div className="w-full flex flex-col items-center gap-2">
+        <OrderCardPaymentAction
+          orderId={cardItem?._id}
+          setIsLoading={setIsLoading}
+        />
+        <OrderCardDeliveryAction
+          orderId={cardItem?._id}
+          setIsLoading={setIsLoading}
+        />
       </div>
 
       {/* Modal disabled for now */}

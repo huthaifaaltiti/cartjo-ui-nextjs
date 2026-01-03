@@ -90,7 +90,9 @@
       "home": "Home",
       "timeline": "Timeline",
       "updatedBy": "Updated By",
-      "notFound": "Not Found"
+      "notFound": "Not Found",
+      "&": "&",
+      "clearDate": "Clear Date"
     },
     "date": {
       "startDate": "Start Date",
@@ -103,7 +105,18 @@
     },
     "status": {
       "online": "Online",
-      "offline": "Offline"
+      "offline": "Offline",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "shipped": "Shipped",
+      "out_for_delivery": "Out For Delivery",
+      "delivered": "Delivered",
+      "failed": "Failed",
+      "refunded": "Refunded",
+      "returned": "Returned",
+      "canceled": "Canceled",
+      "paid": "Paid"
     },
     "info": {
       "name": "Name",
@@ -227,6 +240,10 @@
           "pending": "Pending",
           "failed": "Failed"
         }
+      },
+      "DeliveryStatusFilter": {
+        "title": "Delivery Status",
+        "select": "Select Status"
       },
       "PriceRange": {
         "price": "Filter by Price",
@@ -370,7 +387,8 @@
             "register": {
               "hint": "There are many advantages to creating an account: the payment process is faster, shipment tracking is possible and much more.",
               "note": "Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our",
-              "privacyPolicy": "privacy policy.",
+              "termsAndConditions": "Terms & Conditions.",
+              "privacyPolicy": "privacy policy",
               "dataSet": {
                 "firstName": {
                   "label": "First name",
@@ -407,14 +425,14 @@
                   }
                 },
                 "termsAccepted": {
-                  "label": "Terms accepted",
-                  "placeholder": "Terms accepted",
-                  "desc": "Terms accepted"
+                  "label": "Terms & Conditions Accepted",
+                  "placeholder": "Terms Accepted",
+                  "desc": "Terms Accepted"
                 },
                 "marketingEmails": {
-                  "label": "Marketing emails",
-                  "placeholder": "Marketing emails",
-                  "desc": "Marketing emails"
+                  "label": "Marketing Emails",
+                  "placeholder": "Marketing Emails",
+                  "desc": "Marketing Emails"
                 }
               },
               "actions": {
@@ -1805,6 +1823,12 @@
               "pdf": "Export PDF",
               "exporting": "Exporting...",
               "disabledTooltip": "Please select a date range first"
+            },
+            "OrderCardPaymentAction": {
+              "title": "Select Payment Status"
+            },
+            "OrderCardDeliveryAction": {
+              "title": "Select Delivery Status"
             }
           }
         }
@@ -2229,6 +2253,116 @@
                 }
               }
             }
+          },
+          "orders": {
+            "errors": {
+              "failedLoadData": "Failed to load your orders data"
+            },
+            "components": {
+              "SearchUserOrders": {
+                "placeholder": "Search for transaction ID, or merchant reference."
+              },
+              "UserOrderCard": {
+                "orderRef": "Order Reference",
+                "items": "Items",
+                "item": "Item",
+                "total": "Total Amount",
+                "status": "Status",
+                "paymentMethod": "Payment Method",
+                "shippingAddress": "Shipping Address",
+                "quantity": "Qty",
+                "show": "Show Full Details",
+                "hide": "Hide Details",
+                "payment": "Payment",
+                "delivery": "Delivery"
+              },
+              "UserOrderDetailedCard": {
+                "title": "Order Details",
+                "transactionId": "Transaction ID",
+                "merchantRef": "Merchant Reference",
+                "totalAmount": "Total Amount",
+                "orderItems": "Order Items",
+                "qty": "Qty",
+                "rating": "Rating",
+                "shippingAddress": "Shipping Address",
+                "fullName": "Full Name",
+                "phone": "Phone",
+                "address": "Address",
+                "paymentCustomer": "Payment & Customer",
+                "paymentMethod": "Payment Method",
+                "email": "Email",
+                "customer": "Customer",
+                "orderSummary": "Order Summary",
+                "subtotal": "Subtotal",
+                "shipping": "Shipping",
+                "shippingCost": "Variant (Depends on customer's location)",
+                "free": "Free",
+                "total": "Total",
+                "itemsCount": "{count} items",
+                "loadingError": "Unable to load order details",
+                "payment": "Payment",
+                "delivery": "Delivery"
+              },
+              "NoUserOrders": {
+                "empty": "Your box is empty",
+                "advice": "No ordering with us yet? Try browsing our products collections."
+              }
+            }
+          },
+          "returns": {
+            "errors": {
+              "failedLoadData": "Failed to load your orders' returns data"
+            },
+            "components": {
+              "SearchUserOrderReturns": {
+                "placeholder": "Search for order's return transaction ID, or merchant reference"
+              },
+              "UserOrderReturnCard": {
+                "orderRef": "Order's Reference",
+                "items": "Items",
+                "item": "Item",
+                "total": "Total Amount",
+                "status": "Status",
+                "paymentMethod": "Payment Method",
+                "shippingAddress": "Shipping Address",
+                "quantity": "Qty",
+                "show": "Show Full Details",
+                "hide": "Hide Details",
+                "payment": "Payment",
+                "delivery": "Delivery"
+              },
+              "UserOrderReturnDetailedCard": {
+                "title": "Order's Details",
+                "transactionId": "Transaction ID",
+                "merchantRef": "Merchant Reference",
+                "totalAmount": "Total Amount",
+                "orderItems": "Order Items",
+                "qty": "Qty",
+                "rating": "Rating",
+                "shippingAddress": "Shipping Address",
+                "fullName": "Full Name",
+                "phone": "Phone",
+                "address": "Address",
+                "paymentCustomer": "Payment & Customer",
+                "paymentMethod": "Payment Method",
+                "email": "Email",
+                "customer": "Customer",
+                "orderSummary": "Order's Summary",
+                "subtotal": "Subtotal",
+                "shipping": "Shipping",
+                "shippingCost": "Variant (Depends on customer's location)",
+                "free": "Free",
+                "total": "Total",
+                "itemsCount": "{count} items",
+                "loadingError": "Unable to load order details",
+                "payment": "Payment",
+                "delivery": "Delivery"
+              },
+              "NoUserOrderReturns": {
+                "empty": "Your box is empty",
+                "advice": "No ordering with us yet? Try browsing our products collections."
+              }
+            }
           }
         }
       }
@@ -2356,7 +2490,8 @@
           "orderSummary": "Order Summary",
           "subtotal": "Subtotal",
           "total": "Total",
-          "billingTo": "Billing to"
+          "billingTo": "Billing to",
+          "discoverHome": "Oops! there is no items in your cart to be purchased, discover home page for more."
         },
         "ShippingAddressForm": {
           "title": "Shipping Address",
@@ -2399,6 +2534,22 @@
             "processingFailed": "Failed to process cash order"
           }
         }
+      }
+    },
+    "notFound": {
+      "status": "404",
+      "header": "Oops! Page Not Found",
+      "description": "We couldn't find the page you're looking for. It might have been removed, renamed, or doesn't exist.",
+      "actions": {
+        "goBack": "Go Back",
+        "backToHome": "Back to Home"
+      },
+      "search": {
+        "placeholder": "Search for products..."
+      },
+      "help": {
+        "text": "Need help?",
+        "support": "customer support"
       }
     }
   }

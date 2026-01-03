@@ -4,12 +4,9 @@ import { memo, useState } from "react";
 import { Package, PackageOpen } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
-
 import { useTotalUsers } from "@/contexts/TotalUsersContext";
 import { invalidateQuery } from "@/utils/queryUtils";
-
 import { User } from "@/types/user";
-
 import { Button } from "@/components/ui/button";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
 import {

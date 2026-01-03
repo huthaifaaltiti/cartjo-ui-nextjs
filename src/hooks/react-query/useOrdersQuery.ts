@@ -9,6 +9,7 @@ import { DataListResponse } from "@/types/service-response.type";
 import { Order } from "@/types/order.type";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
+import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
 
 interface FetchOrdersParams {
   token: string;
@@ -20,6 +21,7 @@ interface FetchOrdersParams {
   amountMax?: number;
   paymentMethod?: PaymentMethods;
   paymentStatus?: PaymentStatus;
+  deliveryStatus?: OrderDeliveryStatus;
   createdAfter?: string;
   createdBefore?: string;
 }
@@ -34,6 +36,7 @@ export const fetchOrders = async ({
   amountMax,
   paymentMethod,
   paymentStatus,
+  deliveryStatus,
   createdAfter,
   createdBefore,
 }: FetchOrdersParams): Promise<DataListResponse<Order>> => {
@@ -52,6 +55,9 @@ export const fetchOrders = async ({
 
   if (paymentStatus)
     url.searchParams.append("paymentStatus", String(paymentStatus));
+
+  if (deliveryStatus)
+    url.searchParams.append("deliveryStatus", String(deliveryStatus));
 
   if (createdBefore !== undefined && createdBefore)
     url.searchParams.append("createdBefore", String(createdBefore));
@@ -79,6 +85,7 @@ export const useOrdersQuery = ({
   amountMax,
   paymentMethod,
   paymentStatus,
+  deliveryStatus,
   createdAfter,
   createdBefore,
 }: {
@@ -88,6 +95,7 @@ export const useOrdersQuery = ({
   amountMax?: number;
   paymentMethod?: PaymentMethods;
   paymentStatus?: PaymentStatus;
+  deliveryStatus?: OrderDeliveryStatus;
   createdAfter?: string;
   createdBefore?: string;
 }) => {
@@ -103,6 +111,7 @@ export const useOrdersQuery = ({
       amountMax,
       paymentMethod,
       paymentStatus,
+      deliveryStatus,
       createdAfter,
       createdBefore,
     ],
@@ -119,6 +128,7 @@ export const useOrdersQuery = ({
         amountMax,
         paymentMethod,
         paymentStatus,
+        deliveryStatus,
         createdAfter,
         createdBefore,
       });

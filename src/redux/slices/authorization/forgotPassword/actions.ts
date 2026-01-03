@@ -19,7 +19,7 @@ export const sendIdentifier = createAsyncThunk<
 
       const body = { lang, identifier };
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<BaseResponse>(url.toString(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -30,10 +30,11 @@ export const sendIdentifier = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -53,7 +54,7 @@ export const verifyResetPasswordCode = createAsyncThunk<
 
       const body = { lang, identifier, code };
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<BaseResponse>(url.toString(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -64,10 +65,11 @@ export const verifyResetPasswordCode = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -95,7 +97,7 @@ export const resetPassword = createAsyncThunk<
 
       const body = { lang, identifier, code, newPassword };
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<BaseResponse>(url.toString(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -106,10 +108,11 @@ export const resetPassword = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }

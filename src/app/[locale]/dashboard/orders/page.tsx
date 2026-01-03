@@ -14,7 +14,7 @@ export default async function DashboardOrdersPage() {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchInfiniteQuery<DataListResponse<Order>>(
-    getOrdersQueryOptions(token!!)
+    getOrdersQueryOptions(token!)
   );
 
   const dehydratedState = dehydrate(queryClient);

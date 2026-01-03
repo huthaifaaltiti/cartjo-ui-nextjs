@@ -8,7 +8,12 @@ import { Cart } from "@/types/cart.type";
 
 export const addItemToServer = createAsyncThunk<
   DataResponse<Cart>,
-  { productId: string; quantity: number; lang?: Locale | string; token: string },
+  {
+    productId: string;
+    quantity: number;
+    lang?: Locale | string;
+    token: string;
+  },
   { rejectValue: BaseResponse }
 >(
   CART_CONSTANTS.addItem,
@@ -16,7 +21,7 @@ export const addItemToServer = createAsyncThunk<
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.CART.ADD);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,10 +35,11 @@ export const addItemToServer = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -54,7 +60,7 @@ export const removeItemFromServer = createAsyncThunk<
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.CART.REMOVE);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -68,10 +74,11 @@ export const removeItemFromServer = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -90,7 +97,7 @@ export const removeAllItemsFromServer = createAsyncThunk<
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.CART.REMOVE_ALL);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -104,17 +111,18 @@ export const removeAllItemsFromServer = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
 );
 
 export const wishlistItems = createAsyncThunk<
-  DataResponse<string[]>,
+  DataResponse<Cart>,
   {
     lang?: Locale | string;
     token: string;
@@ -126,7 +134,7 @@ export const wishlistItems = createAsyncThunk<
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.CART.WISHLIST_ITEMS);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -140,13 +148,12 @@ export const wishlistItems = createAsyncThunk<
       }
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
 );
-
-

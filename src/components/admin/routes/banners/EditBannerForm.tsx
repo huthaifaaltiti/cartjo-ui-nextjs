@@ -99,7 +99,7 @@ const editFormSchema = (
         }),
       link: z.string().optional(),
       withAction: z.boolean(),
-      startDate: z.date({
+      startDate: z.coerce.date({
         required_error: t(
           "routes.dashboard.routes.banners.components.EditBannerForm.validations.startDate.required"
         ),
@@ -107,7 +107,7 @@ const editFormSchema = (
           "routes.dashboard.routes.banners.components.EditBannerForm.validations.startDate.invalid"
         ),
       }),
-      endDate: z
+      endDate: z.coerce
         .date({
           invalid_type_error: t(
             "routes.dashboard.routes.banners.components.EditBannerForm.validations.endDate.invalid"
@@ -233,6 +233,8 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
 
         if (value instanceof Date) {
           formData.append(key, value.toISOString());
+        } else if (key.toLocaleLowerCase() === "endDate".toLocaleLowerCase()) {
+          if (!value) formData.append(key, "");
         } else if (value !== null && value !== undefined) {
           formData.append(key, String(value));
         }
@@ -281,9 +283,6 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
           description: data.message,
           dismissText: t("general.toast.dismissText"),
         });
-
-        form.reset();
-        imageUploaderRef.current?.clear();
 
         await invalidateQuery(queryClient, queryKey);
       }
@@ -382,6 +381,7 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
             </div>
           </div>
 
+          {/* Titles */}
           <div
             className={`flex gap-5 ${
               isArabic ? "flex-row-reverse" : "flex-row"
@@ -440,46 +440,19 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
             </div>
           </div>
 
+          {/* Action btn */}
           <div
             className={`flex gap-5 ${
               isArabic ? "flex-row-reverse" : "flex-row"
             }`}
           >
-            {withAction && (
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="link"
-                  render={({ field }) => (
-                    <FormItem className={getFormItemClassName()}>
-                      <FormLabel className="text-sm font-normal">
-                        {t(
-                          "routes.dashboard.routes.banners.components.EditBannerForm.fields.link.label"
-                        )}
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          className={getInputClassName()}
-                          placeholder={t(
-                            "routes.dashboard.routes.banners.components.EditBannerForm.fields.link.placeholder"
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
-
             <div className={`${!withAction ? "" : "flex-1"}`}>
               <FormField
                 control={form.control}
                 name="withAction"
                 render={({ field }) => (
                   <FormItem
-                    className={`${getFormItemClassName()} flex items-center justify-center gap-2`}
+                    className={`${getFormItemClassName()} flex items-center gap-2`}
                   >
                     <FormLabel className="text-sm font-normal">
                       {t(
@@ -507,49 +480,72 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
               />
             </div>
 
-            <div className={`flex flex-col gap-5`}>
-              <FormField
-                control={form.control}
-                name="startDate"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.banners.components.EditBannerForm.fields.startDate.label"
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Calendar24
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            {withAction && (
+              <div className="flex-1">
+                <FormField
+                  control={form.control}
+                  name="link"
+                  render={({ field }) => (
+                    <FormItem className={getFormItemClassName()}>
+                      <FormLabel className="text-sm font-normal">
+                        {t(
+                          "routes.dashboard.routes.banners.components.EditBannerForm.fields.link.label"
+                        )}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className={getInputClassName()}
+                          placeholder={t(
+                            "routes.dashboard.routes.banners.components.EditBannerForm.fields.link.placeholder"
+                          )}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+          </div>
 
-              <FormField
-                control={form.control}
-                name="endDate"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.banners.components.EditBannerForm.fields.endDate.label"
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Calendar24
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+          {/* Dates */}
+          <div className={`w-full flex flex-col gap-5`}>
+            <FormField
+              control={form.control}
+              name="startDate"
+              render={({ field }) => (
+                <FormItem className={getFormItemClassName()}>
+                  <FormLabel className="text-sm font-normal">
+                    {t(
+                      "routes.dashboard.routes.banners.components.EditBannerForm.fields.startDate.label"
+                    )}
+                  </FormLabel>
+                  <FormControl>
+                    <Calendar24 value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="endDate"
+              render={({ field }) => (
+                <FormItem className={getFormItemClassName()}>
+                  <FormLabel className="text-sm font-normal">
+                    {t(
+                      "routes.dashboard.routes.banners.components.EditBannerForm.fields.endDate.label"
+                    )}
+                  </FormLabel>
+                  <FormControl>
+                    <Calendar24 value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <LoadingButton

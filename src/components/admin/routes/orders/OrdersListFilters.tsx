@@ -10,6 +10,8 @@ import { useTranslations } from "next-intl";
 import ExportOrders from "./ExportOrders";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
 import PaymentStatusFilter from "@/components/user/used-filters/PaymentStatusFilter";
+import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
+import DeliveryStatusFilter from "@/components/user/used-filters/DeliveryStatusFilter";
 
 interface Props {
   setAmountMin: (value: number) => void;
@@ -23,6 +25,9 @@ interface Props {
 
   paymentStatus: PaymentStatus | null;
   setPaymentStatus: (v: PaymentStatus | null) => void;
+
+  deliveryStatus: OrderDeliveryStatus | null;
+  setDeliveryStatus: (v: OrderDeliveryStatus | null) => void;
 
   createdBefore: string;
   setCreatedAfter: (val: string) => void;
@@ -46,6 +51,9 @@ const OrdersListFilters = ({
   paymentStatus,
   setPaymentStatus,
 
+  deliveryStatus,
+  setDeliveryStatus,
+
   createdAfter,
   createdBefore,
   setCreatedAfter,
@@ -67,6 +75,8 @@ const OrdersListFilters = ({
 
     setPaymentStatus(null);
 
+    setDeliveryStatus(null);
+
     setCreatedBefore("");
     setCreatedAfter("");
 
@@ -77,6 +87,7 @@ const OrdersListFilters = ({
     setAmountMax,
     setPaymentMethod,
     setPaymentStatus,
+    setDeliveryStatus,
     setCreatedBefore,
     setCreatedAfter,
     onApplyDateFilter,
@@ -100,6 +111,11 @@ const OrdersListFilters = ({
       <PaymentStatusFilter
         paymentStatus={paymentStatus}
         setPaymentStatus={setPaymentStatus}
+      />
+
+      <DeliveryStatusFilter
+        deliveryStatus={deliveryStatus}
+        setDeliveryStatus={setDeliveryStatus}
       />
 
       <DateRange

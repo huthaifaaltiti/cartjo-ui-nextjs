@@ -1,8 +1,7 @@
 import { isArabicLocale } from "@/config/locales.config";
+import { Direction } from "@/types/common";
 import { Locale } from "@/types/locale";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type Direction = "rtl" | "ltr";
 
 interface GeneralState {
   locale: Locale;

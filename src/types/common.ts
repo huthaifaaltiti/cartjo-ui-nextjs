@@ -37,5 +37,12 @@ export type Actor = {
 
 export interface FetchError extends Error {
   status?: number;
-  details?: any;
+  details?: unknown;
 }
+
+export type FormHandler<T> = {
+  trigger: () => Promise<boolean>;
+  getValues: () => T;
+};
+
+export type Direction = "rtl" | "ltr";

@@ -10,6 +10,8 @@ import { fetcher } from "@/utils/fetcher";
 import { Order } from "@/types/order.type";
 import { ORDER_CONSTANTS } from "./constants";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
+import { ShippingAddress } from "@/types/shippingAddress.type";
+import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
 
 // GET /api/v1/order/all
 export const getOrders = createAsyncThunk<
@@ -38,7 +40,7 @@ export const getOrders = createAsyncThunk<
       if (lastId) url.searchParams.set("lastId", lastId);
       if (search) url.searchParams.set("search", search);
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataListResponse<Order>>(url.toString(), {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -50,10 +52,11 @@ export const getOrders = createAsyncThunk<
       }
 
       return response as DataListResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -67,11 +70,10 @@ export const getOrder = createAsyncThunk<
   ORDER_CONSTANTS.getOrder,
   async ({ id, lang = "en", token }, { rejectWithValue }) => {
     try {
-      const url = new URL(
-        API_ENDPOINTS.ORDER.GetOne.replace(":id", id));
+      const url = new URL(API_ENDPOINTS.ORDER.GetOne.replace(":id", id));
       url.searchParams.set("lang", String(lang));
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -83,10 +85,11 @@ export const getOrder = createAsyncThunk<
       }
 
       return response as DataResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -94,15 +97,22 @@ export const getOrder = createAsyncThunk<
 
 export const changePaymentStatus = createAsyncThunk<
   DataResponse<Order>,
-  { orderId: string; status: PaymentStatus; lang?: Locale | string; token: string },
+  {
+    orderId: string;
+    status: PaymentStatus;
+    lang?: Locale | string;
+    token: string;
+  },
   { rejectValue: BaseResponse }
 >(
   ORDER_CONSTANTS.changePaymentStatus,
   async ({ orderId, status, lang = "en", token }, { rejectWithValue }) => {
     try {
-      const url = new URL(API_ENDPOINTS.ORDER.ChangePaymentStatus.replace(":id", orderId));
+      const url = new URL(
+        API_ENDPOINTS.ORDER.ChangePaymentStatus.replace(":id", orderId)
+      );
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,10 +124,11 @@ export const changePaymentStatus = createAsyncThunk<
       if (!response.isSuccess) return rejectWithValue(response);
 
       return response as DataResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -137,7 +148,7 @@ export const deleteOrder = createAsyncThunk<
         process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
       );
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,10 +160,11 @@ export const deleteOrder = createAsyncThunk<
       if (!response.isSuccess) return rejectWithValue(response);
 
       return response as DataResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -172,7 +184,7 @@ export const restoreOrder = createAsyncThunk<
         process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
       );
 
-      const response = await fetcher(url.toString(), {
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -184,10 +196,11 @@ export const restoreOrder = createAsyncThunk<
       if (!response.isSuccess) return rejectWithValue(response);
 
       return response as DataResponse<Order>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error.message || "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   }
@@ -203,35 +216,109 @@ export const createOrder = createAsyncThunk<
     merchantReference: string;
     transactionId?: string | null;
     paymentMethod: string;
-    shippingAddress: any;
+    shippingAddress: ShippingAddress;
     lang?: Locale | string;
     token: string;
   },
   { rejectValue: BaseResponse }
 >(ORDER_CONSTANTS.createOrder, async (payload, { rejectWithValue }) => {
   try {
-    const { token, lang = "en", ...body } = payload;
+    const { token, ...body } = payload;
+
     const url = new URL(
       API_ENDPOINTS.ORDER.Create,
       process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
     );
 
-    const response = await fetcher(url.toString(), {
+    const response = await fetcher<DataResponse<Order>>(url.toString(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ ...body, lang }),
+      body: JSON.stringify({ ...body }),
     });
 
     if (!response.isSuccess) return rejectWithValue(response);
 
     return response as DataResponse<Order>;
-  } catch (error: any) {
+  } catch (error) {
     return rejectWithValue({
       isSuccess: false,
-      message: error.message || "Something went wrong",
+      message: error instanceof Error ? error.message : "Something went wrong",
     });
   }
 });
+
+export const getMyOrder = createAsyncThunk<
+  DataResponse<Order>,
+  { id: string; lang?: Locale | string; token: string; userId: string },
+  { rejectValue: BaseResponse }
+>(
+  ORDER_CONSTANTS.getMyOrder,
+  async ({ id, lang = "en", token, userId }, { rejectWithValue }) => {
+    try {
+      const url = new URL(`${API_ENDPOINTS.ORDER.GetMyOrder}/${userId}/${id}`);
+
+      url.searchParams.set("lang", String(lang));
+
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.isSuccess) {
+        return rejectWithValue(response);
+      }
+
+      return response as DataResponse<Order>;
+    } catch (error) {
+      return rejectWithValue({
+        isSuccess: false,
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
+      });
+    }
+  }
+);
+
+export const changeDeliveryStatus = createAsyncThunk<
+  DataResponse<Order>,
+  {
+    orderId: string;
+    status: OrderDeliveryStatus;
+    lang?: Locale | string;
+    token: string;
+  },
+  { rejectValue: BaseResponse }
+>(
+  ORDER_CONSTANTS.changeDeliveryStatus,
+  async ({ orderId, status, lang = "en", token }, { rejectWithValue }) => {
+    try {
+      const url = new URL(
+        API_ENDPOINTS.ORDER.ChangeDeliveryStatus.replace(":id", orderId)
+      );
+
+      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderId, status, lang }),
+      });
+
+      if (!response.isSuccess) return rejectWithValue(response);
+
+      return response as DataResponse<Order>;
+    } catch (error) {
+      return rejectWithValue({
+        isSuccess: false,
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
+      });
+    }
+  }
+);

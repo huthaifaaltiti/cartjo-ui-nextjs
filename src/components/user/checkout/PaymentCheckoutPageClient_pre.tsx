@@ -31,7 +31,7 @@ export default function PaymentCheckoutPageClient() {
         src="https://secure-jordan.paytabs.com/payment/js/paylib.js"
         strategy="afterInteractive"
       />
-      
+
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-5 gap-8">
@@ -58,7 +58,7 @@ export default function PaymentCheckoutPageClient() {
             </div>
 
             <div className="lg:col-span-2">
-              <OrderSummary verifiedOrder={verifiedOrder} />
+              <OrderSummary />
             </div>
           </div>
         </div>

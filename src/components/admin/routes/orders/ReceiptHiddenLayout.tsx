@@ -1,9 +1,11 @@
 "use client";
 
+import { Order } from "@/types/order.type";
+import { OrderItem } from "@/types/orderItem.type";
 import { memo, forwardRef } from "react";
 
 interface ReceiptHiddenLayoutProps {
-  selectedOrder: any;
+  selectedOrder: Order;
   t: (key: string) => string;
   rtl?: boolean;
 }
@@ -119,7 +121,7 @@ const ReceiptHiddenLayout = forwardRef<
           </h3>
 
           <div style={{ marginTop: 6 }}>
-            {selectedOrder.items.map((item: any, i: number) => (
+            {selectedOrder.items.map((item: OrderItem, i: number) => (
               <div
                 key={i}
                 style={{
@@ -131,7 +133,7 @@ const ReceiptHiddenLayout = forwardRef<
               >
                 <div style={{ maxWidth: 520 }}>
                   <div style={{ fontWeight: 600 }}>
-                    {item.name?.en || item.name}
+                    {item?.name?.en}
                   </div>
 
                   {item.productId?.mainImage && (

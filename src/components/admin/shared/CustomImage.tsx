@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-interface CustomImageProps {
+interface CustomImageProps extends React.ComponentProps<typeof Image>  {
   src: string;
   alt: string;
   className?: string;
@@ -17,7 +17,6 @@ interface CustomImageProps {
   placeholder?: "blur" | "empty";
   blurDataURL?: string;
   onError?: (event: React.SyntheticEvent<HTMLImageElement, Event>) => void;
-  [key: string]: any; // For additional props
 }
 
 const CustomImage: React.FC<CustomImageProps> = ({

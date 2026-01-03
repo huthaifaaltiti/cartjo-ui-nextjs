@@ -4,9 +4,7 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { Package, PackageOpen } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
-
 import { invalidateQuery } from "@/utils/queryUtils";
-
 import { Button } from "@/components/ui/button";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
 import { UserCardProps } from "./DashboardUserCard";

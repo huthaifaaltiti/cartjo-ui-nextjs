@@ -1,6 +1,8 @@
 import { Currency } from "@/enums/currency.enum";
 import { OrderItem } from "./orderItem.type";
 import { ShippingAddress } from "./shippingAddress.type";
+import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
+import { OrderDeliveredByStatus } from "@/enums/orderDeliveredByStatus.enum";
 
 export interface Order {
   _id: string;
@@ -21,7 +23,17 @@ export interface Order {
   restoredAt: Date | null;
   deletedBy: string | null;
   restoredBy: string | null;
-  createdBy: string | null;
+  isDelivered: boolean;
+  isPaid: boolean;
+  deliveredAt: Date | null;
+  deliveryStatus: OrderDeliveryStatus;
+  deliveredByStatus: OrderDeliveredByStatus;
+  createdBy: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  } | null;
   updatedBy: {
     _id: string;
     firstName: string;
@@ -29,5 +41,5 @@ export interface Order {
     email: string;
   } | null;
   createdAt: Date;
-  __v: number;
+  __v?: number;
 }

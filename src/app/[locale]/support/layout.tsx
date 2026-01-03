@@ -7,7 +7,7 @@ export default async function SupportPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params:  Promise<{ locale: Locale | string }>;
 }) {
   const { locale } = await params;
   
@@ -15,7 +15,7 @@ export default async function SupportPageLayout({
     <>
       <TopBar />
       <div className="w-full">{children}</div>
-      <Footer locale={locale} />
+      <Footer locale={locale as Locale} />
     </>
   );
 }

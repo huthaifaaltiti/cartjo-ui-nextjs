@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -25,16 +24,12 @@ import ImageUploader, {
 } from "@/components/shared/ImageUploader";
 import { useCategories } from "@/contexts/CategoriesContext";
 import LoadingButton from "@/components/shared/LoadingButton";
-
 import { User } from "@/types/user";
-
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
-
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 
@@ -106,7 +101,8 @@ const CreateCategoryForm = () => {
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
-  const imageUploaderRef = useRef<ImageUploaderRef>(null);
+  const imageUploaderRef_ar = useRef<ImageUploaderRef>(null);
+  const imageUploaderRef_en = useRef<ImageUploaderRef>(null);
   const [categoryImage_ar, setCategoryImage_ar] = useState<{
     file: File | null;
     url: string;
@@ -213,7 +209,8 @@ const CreateCategoryForm = () => {
         });
 
         form.reset();
-        imageUploaderRef.current?.clear();
+        imageUploaderRef_ar.current?.clear();
+        imageUploaderRef_en.current?.clear();
 
         await invalidateQuery(queryClient, queryKey);
       }
@@ -257,7 +254,7 @@ const CreateCategoryForm = () => {
                       )}
                     </FormLabel>
                     <ImageUploader
-                      ref={imageUploaderRef}
+                      ref={imageUploaderRef_ar}
                       value={categoryImage_ar.url}
                       onChange={handleImageChange_ar}
                       onError={handleImageError}
@@ -285,7 +282,7 @@ const CreateCategoryForm = () => {
                       )}
                     </FormLabel>
                     <ImageUploader
-                      ref={imageUploaderRef}
+                      ref={imageUploaderRef_en}
                       value={categoryImage_en.url}
                       onChange={handleImageChange_en}
                       onError={handleImageError}
