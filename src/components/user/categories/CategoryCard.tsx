@@ -15,7 +15,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
   return (
     <div className="!w-full !h-full flex flex-col items-center gap-2 bg-transparent rounded-xl">
       {category?.media?.ar?.url && category?.media?.en?.url && (
-        <div className="relative w-[100px] h-[150px]  lg:w-[150px] lg:h-[200px] rounded-md overflow-hidden">
+        <div className="relative w-full h-full rounded-md overflow-hidden">
           <ImageWithFallback
             src={isArabic ? category?.media?.ar?.url : category?.media?.en?.url}
             alt={

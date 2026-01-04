@@ -13,25 +13,58 @@
 }
 
 .embla__slide {
-  min-width: 100px; /* match smallest card width */
+  min-width: 100px;
+  /* match smallest card width */
   min-height: 150px;
 
-  margin: 0 0.5rem; /* small screens */
+  margin: 0 0.5rem;
+  /* small screens */
 }
 
-/* tablets */
-@media (min-width: 640px) {
+@media (min-width: 50px) {
   .embla__slide {
-    margin: 0 0.75rem;
+    margin: 0 0.5rem;
+    min-width: 40px;
+    min-height: 50px;
   }
 }
 
-/* desktop (lg) */
+@media (min-width: 200px) {
+  .embla__slide {
+    margin: 0 0.55rem;
+    min-width: 50px;
+    min-height: 70px;
+  }
+}
+
+@media (min-width: 500px) {
+  .embla__slide {
+    margin: 0 0.6rem;
+    min-width: 70px;
+    min-height: 90px;
+  }
+}
+
+@media (min-width: 600px) {
+  .embla__slide {
+    margin: 0 0.65rem;
+    min-width: 90px;
+    min-height: 140px;
+  }
+}
+
+@media (min-width: 800px) {
+  .embla__slide {
+    margin: 0 0.7rem;
+    min-width: 110px;
+    min-height: 160px;
+  }
+}
+
 @media (min-width: 1024px) {
   .embla__slide {
-    margin: 0 1rem;
-    min-width: 150px;
-    min-height: 200px;
+    margin: 0 0.75rem;
+    min-width: 130px;
+    min-height: 180px;
   }
 }
-

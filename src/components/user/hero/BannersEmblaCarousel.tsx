@@ -36,8 +36,7 @@ const BannersEmblaCarousel = () => {
   const showError = isError;
   const showNoData = !showLoader && !showError && finalBanners.length === 0;
   const showData = !showLoader && !showError && finalBanners.length > 0;
-  const containerClass =
-    "h-[400px] flex items-center justify-center border-y border-[#f9f9f9]";
+  const containerClass = "flex items-center justify-center border-y border-[#f9f9f9]";
 
   const [emblaRef] = useEmblaCarousel(
     {
@@ -61,7 +60,7 @@ const BannersEmblaCarousel = () => {
 
   if (showLoader) {
     return (
-      <div className={containerClass}>
+      <div className={`${containerClass} min-h-[400px]`}>
         <LoadingDotsFlexible size="1.5rem" color="#634C9F" count={3} />
       </div>
     );
@@ -69,7 +68,7 @@ const BannersEmblaCarousel = () => {
 
   if (showError) {
     return (
-      <div className={containerClass}>
+      <div className={`${containerClass} min-h-[400px]`}>
         <ErrorMessage
           message={
             error?.message || t("components.BannersCarouselClient.failedLoad")
@@ -81,7 +80,7 @@ const BannersEmblaCarousel = () => {
 
   if (showNoData) {
     return (
-      <div className={containerClass}>
+      <div className={`${containerClass} min-h-[400px]`}>
         <NoData
           title={t("components.CategoriesCarouselClient.noData")}
           description={t("components.CategoriesCarouselClient.checkLater")}

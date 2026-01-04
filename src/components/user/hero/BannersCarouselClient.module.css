@@ -1,7 +1,8 @@
 .embla {
   overflow: hidden;
-  width: 1300px;
-  height: 400px;
+  width: 100%;
+  max-width: 1300px;
+  aspect-ratio: 13 / 4; /* same as 1300x400 */
 }
 
 /* Container */
@@ -13,51 +14,14 @@
 
 /* Slide */
 .embla__slide {
-  margin: 0;
-  padding: 0;
-
+  flex: 0 0 100%;
   width: 100%;
   height: 100%;
-
-  flex: 0 0 100%;
 }
 
-/* =========================
-   Large screens (≤ 1400px)
-   ========================= */
-@media (max-width: 1400px) {
-  .embla {
-    width: 100%;
-    height: 380px;
-  }
-}
-
-/* =========================
-   Tablets (≤ 1024px)
-   ========================= */
-@media (max-width: 1024px) {
-  .embla {
-    width: 100%;
-    height: 320px;
-  }
-}
-
-/* =========================
-   Small tablets / large phones (≤ 768px)
-   ========================= */
-@media (max-width: 768px) {
-  .embla {
-    width: 100%;
-    height: 260px;
-  }
-}
-
-/* =========================
-   Mobile (≤ 480px)
-   ========================= */
-@media (max-width: 480px) {
-  .embla {
-    width: 100%;
-    height: 200px;
-  }
+/* Image inside slide */
+.embla__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
