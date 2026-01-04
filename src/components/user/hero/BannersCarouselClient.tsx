@@ -34,7 +34,7 @@ const BannersCarouselClient = () => {
 
     // return Array.from({ length: 4 }).flatMap(() => originalBanners);
 
-    return []
+    return [];
   }, [data]);
 
   // const banners: Banner[] =
@@ -85,50 +85,44 @@ const BannersCarouselClient = () => {
 
   if (showData) {
     return (
-      <div className="w-full h-full border-b">
-        <Carousel
-          plugins={
-            hasMultipleBanners
-              ? [Autoplay({ delay: 6000, stopOnInteraction: false })]
-              : []
-          }
-          opts={{
-            loop: true,
-            align: isArabic ? "start" : "center",
-            skipSnaps: false,
-            dragFree: true,
-            containScroll: "trimSnaps",
-            startIndex: banners.length,
-            direction: isArabic ? "rtl" : "ltr",
-          }}
-          className="w-full h-full embla"
-        >
-          <CarouselContent className="w-full h-[200px] md:h-[300px] lg:h-[400px] embla__container">
-            {duplicatedBanners.map((banner, index) => (
-              <CarouselItem
-                key={`${banner._id}-${index}`}
-                // className="embla__slide basis-full"
-                className="basis-full embla__slide"
-              >
-                <div className="w-full h-full">
-                  <div className="w-full h-full overflow-hidden">
-                    <Image
-                      src={
-                        isArabic
-                          ? banner?.media?.ar?.url
-                          : banner?.media?.en?.url
-                      }
-                      alt={banner?.title?.[isArabic ? "ar" : "en"] || "Banner"}
-                      // fill // Fills the parent container
-                      className="h-full w-full object-fill"
-                    />
-                  </div>
+      <Carousel
+        plugins={
+          hasMultipleBanners
+            ? [Autoplay({ delay: 6000, stopOnInteraction: false })]
+            : []
+        }
+        opts={{
+          loop: true,
+          align: isArabic ? "start" : "center",
+          skipSnaps: false,
+          dragFree: true,
+          containScroll: "trimSnaps",
+          startIndex: banners.length,
+          direction: isArabic ? "rtl" : "ltr",
+        }}
+        className="embla"
+      >
+        <CarouselContent className="embla__container">
+          {duplicatedBanners.map((banner, index) => (
+            <CarouselItem
+              key={`${banner._id}-${index}`}
+              className="embla__slide"
+            >
+              <div className="w-full h-full">
+                <div className="w-full h-full overflow-hidden">
+                  <Image
+                    src={
+                      isArabic ? banner?.media?.ar?.url : banner?.media?.en?.url
+                    }
+                    alt={banner?.title?.[isArabic ? "ar" : "en"] || "Banner"}
+                    fill
+                  />
                 </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </div>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     );
   }
 };
