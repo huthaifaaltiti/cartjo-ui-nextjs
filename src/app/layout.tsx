@@ -1,3 +1,4 @@
+import { NextIntlClientProvider } from "next-intl";
 import "./globals.css";
 
 export default async function RootLayout({
@@ -7,7 +8,9 @@ export default async function RootLayout({
 }) {
   return (
     <html>
-      <body>{children}</body>
+      <body>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      </body>
     </html>
   );
 }
