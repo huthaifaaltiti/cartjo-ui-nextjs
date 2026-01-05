@@ -8,12 +8,9 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { useLocale, useTranslations } from "next-intl";
-
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { isArabicLocale } from "@/config/locales.config";
-
 import { Category } from "@/types/category.type";
-
 import CategoryCard from "./CategoryCard";
 import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
@@ -100,7 +97,6 @@ const CategoriesCarouselClient = () => {
             {duplicatedCategories.map((category, index) => (
               <CarouselItem
                 key={`${category._id}-${index}`}
-                className="basis-1/3 md:basis-1/5 lg:basis-1/6"
               >
                 <CategoryCard category={category} />
               </CarouselItem>

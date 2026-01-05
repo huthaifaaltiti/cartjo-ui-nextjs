@@ -1,5 +1,4 @@
 import { NextIntlClientProvider } from "next-intl";
-import ClientFontSetter from "@/components/shared/ClientFontSetter";
 import "./globals.css";
 
 export default async function RootLayout({
@@ -10,11 +9,7 @@ export default async function RootLayout({
   return (
     <html>
       <body>
-        <NextIntlClientProvider>
-          <ClientFontSetter>
-            {children}
-          </ClientFontSetter>
-        </NextIntlClientProvider>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   );
