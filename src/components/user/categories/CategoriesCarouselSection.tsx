@@ -5,7 +5,7 @@ import CategoriesEmblaCarousel from "./CategoriesEmblaCarousel";
 const CategoriesCarouselSection = () => {
   return (
     <section className="w-full min-h-44 h-auto bg-white flex items-center justify-center">
-      <MaxWidthWrapper className="w-full h-full">
+      <MaxWidthWrapper className="w-full h-full mt-8 mb-12">
         <CategoriesEmblaCarousel />
       </MaxWidthWrapper>
     </section>
