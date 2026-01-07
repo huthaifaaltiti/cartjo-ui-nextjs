@@ -31,6 +31,7 @@ import { validationConfig } from "@/config/validationConfig";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
+import { MEDIA_CONFIG } from "@/config/media.config";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string
@@ -249,10 +250,10 @@ const EditCategoryForm = ({ category }: Props) => {
                       onChange={handleImageChange_ar}
                       onError={handleImageError}
                       label={""}
-                      maxSizeInMB={2}
+                      maxSizeInMB={MEDIA_CONFIG.CATEGORY.IMAGE.MAX_SIZE}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
+                      accept={MEDIA_CONFIG.CATEGORY.IMAGE.ALLOWED_TYPES}
                     />
                     <FormMessage />
                   </FormItem>
@@ -277,10 +278,10 @@ const EditCategoryForm = ({ category }: Props) => {
                       onChange={handleImageChange_en}
                       onError={handleImageError}
                       label={""}
-                      maxSizeInMB={2}
+                      maxSizeInMB={MEDIA_CONFIG.CATEGORY.IMAGE.MAX_SIZE}
                       size="sm"
                       variant="rounded"
-                      // accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
+                      accept={MEDIA_CONFIG.CATEGORY.IMAGE.ALLOWED_TYPES}
                     />
                     <FormMessage />
                   </FormItem>
@@ -288,7 +289,7 @@ const EditCategoryForm = ({ category }: Props) => {
               />
             </div>
           </div>
-          
+
           <div
             className={`flex gap-5 ${
               isArabic ? "flex-row-reverse" : "flex-row"

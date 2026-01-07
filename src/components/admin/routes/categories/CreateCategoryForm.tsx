@@ -32,6 +32,7 @@ import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
+import { MEDIA_CONFIG } from "@/config/media.config";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string
@@ -259,10 +260,10 @@ const CreateCategoryForm = () => {
                       onChange={handleImageChange_ar}
                       onError={handleImageError}
                       label={""}
-                      maxSizeInMB={2}
+                      maxSizeInMB={MEDIA_CONFIG.CATEGORY.IMAGE.MAX_SIZE}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
+                      accept={MEDIA_CONFIG.CATEGORY.IMAGE.ALLOWED_TYPES}
                     />
                     <FormMessage />
                   </FormItem>
@@ -287,10 +288,10 @@ const CreateCategoryForm = () => {
                       onChange={handleImageChange_en}
                       onError={handleImageError}
                       label={""}
-                      maxSizeInMB={2}
+                      maxSizeInMB={MEDIA_CONFIG.CATEGORY.IMAGE.MAX_SIZE}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
+                      accept={MEDIA_CONFIG.CATEGORY.IMAGE.ALLOWED_TYPES}
                     />
                     <FormMessage />
                   </FormItem>
