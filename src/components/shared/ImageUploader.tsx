@@ -54,7 +54,7 @@ const ImageUploader = ({
   onError,
   className,
   containerClassName,
-  accept = "image/png, image/jpeg, image/jpg, image/webp",
+  accept = "image/png, image/jpeg, image/jpg, image/webp, image/avif, image/gif, image/tiff, image/x-tiff, image/bmp",
   maxSizeInMB = 5,
   placeholder,
   size = "md",
