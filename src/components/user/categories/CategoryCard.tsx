@@ -22,9 +22,16 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
               (isArabic ? category?.name?.ar : category?.name?.en) ||
               "category image"
             }
-            useFill={true}
-            className="object-fill w-full h-full"
-            sizes="96px"
+            width={130}
+            height={180}
+            useFill={false}
+            quality={95} 
+            priority={true}
+            style={{
+              width: "100%",
+              height: "auto",
+              objectFit: "contain",
+            }}
           />
         </div>
       )}
