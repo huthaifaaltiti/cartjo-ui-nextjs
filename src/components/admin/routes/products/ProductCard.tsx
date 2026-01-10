@@ -144,12 +144,11 @@ const DashboardProductCard = ({
         <ImageGallery
           images={allImages}
           alt={product.name.en}
-          // badgeText={
-          //   isArabic
-          //     ? typeHintLabels[product.typeHint as keyof typeof typeHintLabels]
-          //     : product.typeHint
-          // }
-          badgeText={product.typeHint}
+          badgeText={
+            Array.isArray(product.typeHint)
+              ? product.typeHint.join(" & ")
+              : product.typeHint
+          }
           bulletActiveColor="bg-white-50"
           bulletInactiveColor="bg-black-50/30"
           badgeColorClass="bg-primary-50/50 text-primary-800"
