@@ -9,7 +9,6 @@ import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { isArabicLocale } from "@/config/locales.config";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,24 +20,32 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  showErrorToast,
-  showSuccessToast,
-  showWarningToast,
-} from "./shared/CustomToast";
+import { showErrorToast, showSuccessToast } from "./shared/CustomToast";
 import { useQueryState } from "nuqs";
 import { useVerifyEmail } from "@/contexts/VerifyEmailContext";
 import ForgotPasswordLink from "./user/auth/forgot-password/ForgotPasswordLink";
 import LoadingButton from "./shared/LoadingButton";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { login } from "@/redux/slices/authorization/login/actions";
+import { resetLoginState } from "@/redux/slices/authorization/login";
 
 const LoginForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const dir = isArabic ? 'rtl' : 'ltr';
+  const dir = isArabic ? "rtl" : "ltr";
+
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    status: loginStatus,
+    token,
+    message,
+    isLoading,
+  } = useSelector((state: RootState) => state.login);
 
   const router = useRouter();
-  
+
   const { data: sessionData, status } = useSession();
   const { reVerify } = useVerifyEmail();
 
@@ -56,6 +63,45 @@ const LoginForm = () => {
     defaultValue: "",
     parse: (value) => String(value),
   });
+
+  useEffect(() => {
+    dispatch(resetLoginState());
+
+    if (loginStatus === "success" && token) {
+      showSuccessToast({
+        title: t("general.toast.title.success"),
+        description: message,
+        dismissText: t("general.toast.dismissText"),
+      });
+
+      // Sign/NextAuth
+      signIn("credentials", { token, redirect: false }).then((res) => {
+        if (res?.ok) {
+          if (resend && redirectTo) {
+            router.push(redirectTo);
+          } else {
+            router.push("/");
+          }
+        } else {
+          showErrorToast({
+            title: t("general.toast.title.error"),
+            description: "Failed to sign in with token",
+            dismissText: t("general.toast.dismissText"),
+          });
+        }
+      });
+
+      dispatch(resetLoginState());
+    }
+
+    if (loginStatus === "error") {
+      showErrorToast({
+        title: t("general.toast.title.error"),
+        description: message,
+        dismissText: t("general.toast.dismissText"),
+      });
+    }
+  }, [loginStatus, token, message]);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -110,96 +156,11 @@ const LoginForm = () => {
 
   const loginMutation = useMutation({
     mutationFn: async (data: z.infer<typeof formSchema>) => {
-      const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, lang: locale }),
-      });
-
-      if (!response.ok) {
-        const resp = await response.json();
-
-        if (!resp?.isSuccess && resp?.statusCode === 400) {
-          const messages = resp?.details;
-
-          messages?.forEach(
-            (message: { property: string; message: string }) => {
-              showWarningToast({
-                title: message?.property || t("general.toast.title.warning"),
-                description: message?.message,
-                dismissText: t("general.toast.dismissText"),
-              });
-            }
-          );
-
-          return Promise.reject();
-        }
-
-        if (!resp?.isSuccess && resp?.statusCode === 500) {
-          const { message } = resp;
-
-          showErrorToast({
-            title: t("general.toast.title.error"),
-            description: message,
-            dismissText: t("general.toast.dismissText"),
-          });
-
-          return Promise.reject();
-        }
-      }
-
-      return response.json();
-    },
-    onSuccess: async (data) => {
-      const { message, token } = data;
-
-      showSuccessToast({
-        title: t("general.toast.title.success"),
-        description: message,
-        dismissText: t("general.toast.dismissText"),
-      });
-
-      if (token) {
-        // document.cookie = `auth_token=${token}; path=/`;
-        // // document.cookie = `auth_token=${token}; path=/ Secure; HttpOnly; SameSite=Strict`;
-
-        // router.push("/");
-
-        // Sign in with NextAuth using the custom credentials provider
-        const result = await signIn("credentials", {
-          token,
-          redirect: false,
-        });
-
-        if (result?.ok) {
-          if (resend && redirectTo) {
-            router.push(redirectTo);
-          } else {
-            router.push("/");
-          }
-        } else {
-          showErrorToast({
-            title: t("general.toast.title.error"),
-            description: "Failed to sign in with token",
-            dismissText: t("general.toast.dismissText"),
-          });
-        }
-      }
-    },
-    onError: (error: Error) => {
-      if (!error) return;
-
-      const { message } = error;
-
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: message,
-        dismissText: t("general.toast.dismissText"),
-      });
+      await dispatch(login({ ...data, lang: locale }));
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     loginMutation.mutate(values);
   };
 
@@ -259,12 +220,9 @@ const LoginForm = () => {
                 <FormControl>
                   <div className="relative">
                     <Input
+                      dir="ltr"
                       type={showPassword ? "text" : "password"}
-                      className={`placeholder:text-xs text-xs ${
-                        isArabic
-                          ? "placeholder:text-right pl-10"
-                          : "placeholder:text-left pr-10"
-                      }`}
+                      className={`placeholder:text-xs text-xs`}
                       placeholder={t(
                         "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder"
                       )}
@@ -273,9 +231,7 @@ const LoginForm = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className={`absolute inset-y-0 ${
-                        isArabic ? "left-2" : "right-2"
-                      } flex items-center text-gray-500`}
+                      className={`absolute inset-y-0 right-2 flex items-center text-gray-500`}
                       tabIndex={-1}
                     >
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -292,7 +248,7 @@ const LoginForm = () => {
 
         <LoadingButton
           type="submit"
-          loading={loginMutation?.isPending}
+          loading={(loginMutation?.isPending || isLoading) ?? false}
           withAnimate={true}
           dir={dir}
           label={t(

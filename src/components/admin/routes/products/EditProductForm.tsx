@@ -46,6 +46,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import TagsInput from "@/components/shared/TagsInput";
 import { useActiveTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintConfigsQuery";
+import {
+  SYSTEM_GENERATED_HINTS,
+  SystemGeneratedHint,
+} from "@/config/typeHint.config";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -104,12 +108,20 @@ const editFormSchema = (
       ),
     }),
     typeHint: z
-      .string()
-      .refine((val) => activeTypeHintConfigsList.includes(val), {
+      .array(z.string())
+      .min(1, {
         message: t(
-          "routes.dashboard.routes.products.components.EditProductForm.validations.typeHint.notSupportedd"
+          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.required"
         ),
-      }),
+      })
+      .refine(
+        (values) => values.every((v) => activeTypeHintConfigsList.includes(v)),
+        {
+          message: t(
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid"
+          ),
+        }
+      ),
     subCategoryId: z.string().min(1, {
       message: t(
         "routes.dashboard.routes.products.components.EditProductForm.validations.subCategory.required"
@@ -144,12 +156,6 @@ const EditProductForm = ({
 
   const { data: activeTypeHintConfigsList = [] } =
     useActiveTypeHintConfigsQuery();
-
-  console.log({ activeTypeHintConfigsList });
-
-  console.log(
-    activeTypeHintConfigsList?.filter((ath) => ath === product?.typeHint)[0]
-  );
 
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
@@ -255,7 +261,7 @@ const EditProductForm = ({
       price: Number(product?.price) || 0,
       currency: product?.currency || "",
       totalAmountCount: product?.totalAmountCount || 0,
-      typeHint: product?.typeHint ?? "",
+      typeHint: product?.typeHint ?? [],
       tags: product?.tags || [],
       availableCount: product?.availableCount || 0,
       discountRate: product?.discountRate || 0,
@@ -833,31 +839,67 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.typeHint.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.label"
                       )}
                     </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+
+                    <Select
+                      value={field.value?.[0] ?? ""}
+                      onValueChange={(value) => {
+                        const exists = field.value.includes(value);
+                        field.onChange(
+                          exists
+                            ? field.value.filter((v) => v !== value)
+                            : [...field.value, value]
+                        );
+                      }}
+                    >
                       <FormControl>
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.products.components.EditProductForm.fields.typeHint.placeholder"
+                              "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.placeholder"
                             )}
                           />
                         </SelectTrigger>
                       </FormControl>
+
                       <SelectContent>
-                        {activeTypeHintConfigsList?.map((th, i) => (
-                          <SelectItem
-                            key={`TypeHintItem_${i}`}
-                            value={th}
-                            className="cursor-pointer capitalize"
-                          >
-                            {th?.replaceAll("-", " ")}
-                          </SelectItem>
-                        ))}
+                        {activeTypeHintConfigsList
+                          ?.filter(
+                            (th) =>
+                              !SYSTEM_GENERATED_HINTS.includes(
+                                th as SystemGeneratedHint
+                              )
+                          )
+                          ?.map((th) => (
+                            <SelectItem
+                              key={th}
+                              value={th}
+                              className={`cursor-pointer capitalize ${
+                                field.value.includes(th) ? "font-semibold" : ""
+                              }`}
+                            >
+                              {th}
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
+
+                    {/* selected hints preview */}
+                    {field.value.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {field.value.map((th) => (
+                          <span
+                            key={th}
+                            className="text-xs px-2 py-1 rounded bg-primary-100 text-primary-700"
+                          >
+                            {th}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
                     <FormMessage />
                   </FormItem>
                 )}

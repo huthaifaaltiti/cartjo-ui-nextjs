@@ -22,7 +22,7 @@ export interface Product {
   availableCount: number;
   sellCount: number;
   favoriteCount: number;
-  typeHint: string;
+  typeHint: string[];
   tags: string[];
   slug: string;
   categoryId: Category;
