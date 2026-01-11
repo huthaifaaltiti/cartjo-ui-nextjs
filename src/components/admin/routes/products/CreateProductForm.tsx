@@ -45,6 +45,10 @@ import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
 import { tagStyledClassName } from "@/constants/tagsInputStyles";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { useActiveTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintConfigsQuery";
+import {
+  SYSTEM_GENERATED_HINTS,
+  SystemGeneratedHint,
+} from "@/config/typeHint.config";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -103,12 +107,20 @@ const createFormSchema = (
       ),
     }),
     typeHint: z
-      .string()
-      .refine((val) => activeTypeHintConfigsList.includes(val), {
+      .array(z.string())
+      .min(1, {
         message: t(
-          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid"
+          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.required"
         ),
-      }),
+      })
+      .refine(
+        (values) => values.every((v) => activeTypeHintConfigsList.includes(v)),
+        {
+          message: t(
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid"
+          ),
+        }
+      ),
     subCategoryId: z.string().min(1, {
       message: t(
         "routes.dashboard.routes.products.components.CreateProductForm.validations.subCategory.required"
@@ -230,7 +242,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
       price: 0,
       currency: Currency.JOD ?? "",
       totalAmountCount: 0,
-      typeHint: "",
+      typeHint: [],
       tags: [],
       availableCount: 0,
       discountRate: 0,
@@ -803,7 +815,18 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.label"
                       )}
                     </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+
+                    <Select
+                      value={field.value?.[0] ?? ""}
+                      onValueChange={(value) => {
+                        const exists = field.value.includes(value);
+                        field.onChange(
+                          exists
+                            ? field.value.filter((v) => v !== value)
+                            : [...field.value, value]
+                        );
+                      }}
+                    >
                       <FormControl>
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
@@ -813,18 +836,43 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                           />
                         </SelectTrigger>
                       </FormControl>
+
                       <SelectContent>
-                        {activeTypeHintConfigsList?.map((th, i) => (
-                          <SelectItem
-                            key={`TypeHintItem_${i}`}
-                            value={th}
-                            className="cursor-pointer capitalize"
-                          >
-                            {th}
-                          </SelectItem>
-                        ))}
+                        {activeTypeHintConfigsList
+                          ?.filter(
+                            (th) =>
+                              !SYSTEM_GENERATED_HINTS.includes(
+                                th as SystemGeneratedHint
+                              )
+                          )
+                          ?.map((th) => (
+                            <SelectItem
+                              key={th}
+                              value={th}
+                              className={`cursor-pointer capitalize ${
+                                field.value.includes(th) ? "font-semibold" : ""
+                              }`}
+                            >
+                              {th}
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
+
+                    {/* selected hints preview */}
+                    {field.value.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {field.value.map((th) => (
+                          <span
+                            key={th}
+                            className="text-xs px-2 py-1 rounded bg-primary-100 text-primary-700"
+                          >
+                            {th}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
                     <FormMessage />
                   </FormItem>
                 )}

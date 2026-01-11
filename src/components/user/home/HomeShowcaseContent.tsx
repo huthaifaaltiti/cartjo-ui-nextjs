@@ -23,9 +23,10 @@ const HomeShowcaseContent = () => {
 
   const activeShowcasesList = useMemo(
     () =>
-      data?.data?.sort(
-        (a, b) => (a.priority ?? Infinity) - (b.priority ?? Infinity)
-      ) ?? [],
+      data?.data
+        .filter((as) => as.items.length > 0)
+        ?.sort((a, b) => (a.priority ?? Infinity) - (b.priority ?? Infinity)) ??
+      [],
     [data]
   );
 
