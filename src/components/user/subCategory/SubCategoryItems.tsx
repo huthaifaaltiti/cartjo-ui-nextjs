@@ -9,7 +9,6 @@ import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoSubCategoryItems from "./NoSubCategoryItems";
 import SubCategoryProductCard from "./SubCategoryProductCard";
-import SubCategoryItemsLoading from "./SubCategoryItemsLoading";
 import PriceRange from "../used-filters/PriceRange";
 import RatingRange from "../used-filters/RatingRange";
 import DateRangeWithDaysNum from "../used-filters/DateRangeWithDaysNum";
@@ -137,14 +136,6 @@ const SubCategoryItems = ({
   const showData = !showLoader && !showError && subCategoryProducts.length > 0;
 
   const containerClass = "w-full min-h-40 flex items-center justify-center";
-
-  if (showLoader) {
-    return (
-      <div className={containerClass}>
-        <SubCategoryItemsLoading />
-      </div>
-    );
-  }
 
   if (showError) {
     return (
