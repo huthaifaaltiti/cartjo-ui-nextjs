@@ -115,7 +115,7 @@ export const useSubCategoryProductsQuery = (
   createdTo?: string,
   beforeNumOfDays?: number
 ) => {
-  const { locale } = useAuthContext();
+  const { locale, accessToken } = useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Product>>({
     queryKey: [
@@ -129,6 +129,7 @@ export const useSubCategoryProductsQuery = (
       createdFrom,
       createdTo,
       beforeNumOfDays,
+      accessToken
     ],
     queryFn: ({ pageParam }) => {
       if (!categoryId) {
@@ -148,6 +149,7 @@ export const useSubCategoryProductsQuery = (
         createdFrom,
         createdTo,
         beforeNumOfDays,
+        accessToken
       });
     },
     getNextPageParam: (lastPage) => {
