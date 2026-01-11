@@ -23,8 +23,16 @@ const EmblaBannerCard = ({ banner, isArabic }: EmblaBannerCardProps) => {
             <ImageWithFallback
               src={imageUrl}
               alt={altText}
-              useFill={true}
-              className="h-full w-full object-cover"
+              width={1300} // Match your largest slide width
+              height={400} // Match your largest slide height
+              useFill={false}
+              quality={95}
+              priority={true} // For above-fold content
+              style={{
+                width: "100%",
+                height: "auto",
+                objectFit: "contain",
+              }}
             />
           </Link>
         )}
@@ -33,8 +41,17 @@ const EmblaBannerCard = ({ banner, isArabic }: EmblaBannerCardProps) => {
           <ImageWithFallback
             src={imageUrl}
             alt={altText}
-            useFill={true}
-            className="h-full w-full object-fill"
+            width={1300}
+            height={400}
+            useFill={false}
+            className="h-full w-full object-cover"
+            quality={95}
+            priority={true}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
           />
         )}
       </div>

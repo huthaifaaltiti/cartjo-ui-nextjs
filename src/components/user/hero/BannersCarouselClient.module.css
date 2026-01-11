@@ -1,24 +1,42 @@
 .embla {
   overflow: hidden;
-
   width: 100%;
-  height: 100%;
+  max-width: 1300px;
+  aspect-ratio: 13 / 4; /* same as 1300x400 */
 }
 
+/* Container */
 .embla__container {
   display: flex;
-
   width: 100%;
   height: 100%;
 }
 
+/* Slide */
 .embla__slide {
-  margin: 0;
-  margin-inline: 0;
-  padding: 0;
-
+  flex: 0 0 100%;
   width: 100%;
   height: 100%;
 
-  flex: 0 0 100%;
+  /* Force Better Image Rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.embla__slide img {
+  /* Force Better Image Rendering */
+  image-rendering: high-quality;
+  image-rendering: -webkit-optimize-contrast;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Image inside slide */
+.embla__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

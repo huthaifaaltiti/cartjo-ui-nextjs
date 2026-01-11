@@ -13,18 +13,25 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
   const isArabic = isArabicLocale(locale);
 
   return (
-    <div className="flex flex-col items-center gap-2 bg-transparent rounded-xl">
+    <div className="!w-full !h-full flex flex-col items-center gap-2 bg-transparent rounded-xl">
       {category?.media?.ar?.url && category?.media?.en?.url && (
-        <div className="relative w-16 h-20 md:w-16 md:h-20 lg:w-20 lg:h-28 rounded-md overflow-hidden">
+        <div className="relative w-full h-full rounded-md overflow-hidden">
           <ImageWithFallback
             src={isArabic ? category?.media?.ar?.url : category?.media?.en?.url}
             alt={
               (isArabic ? category?.name?.ar : category?.name?.en) ||
               "category image"
             }
-            useFill={true}
-            className="object-fill"
-            sizes="96px"
+            width={130}
+            height={180}
+            useFill={false}
+            quality={95} 
+            priority={true}
+            style={{
+              width: "100%",
+              height: "auto",
+              objectFit: "contain",
+            }}
           />
         </div>
       )}
