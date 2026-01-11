@@ -23,7 +23,6 @@ import { fetchUserOrderReturns } from "@/hooks/react-query/useUserOrderReturnsQu
 import { fetchUserOrders } from "@/hooks/react-query/useUserOrdersQuery";
 import { fetchMyProfile } from "@/hooks/react-query/useUserProfileQuery";
 import { fetchWishlistItems } from "@/hooks/react-query/useWishlistQuery";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { Cart } from "@/types/cart.type";
 import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
@@ -143,8 +142,6 @@ export const getSubCategoryProductsQueryOptions = (
   categoryId: string,
   subCategoryId: string
 ) => {
-  const { accessToken } = useAuthContext();
-
   const getNextPageParam = (lastPage: DataListResponse<Product>) => {
     if (!lastPage?.data?.length) return undefined;
 
@@ -153,7 +150,7 @@ export const getSubCategoryProductsQueryOptions = (
   };
 
   return {
-    queryKey: ["publicSubCategoryProducts", categoryId, locale, subCategoryId, accessToken],
+    queryKey: ["publicSubCategoryProducts", categoryId, locale, subCategoryId],
     queryFn: async ({ pageParam }: { pageParam: unknown }) => {
       if (!categoryId || !subCategoryId) {
         throw new Error("No category or subCategory id found");
