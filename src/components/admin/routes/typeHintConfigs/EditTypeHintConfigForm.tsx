@@ -26,7 +26,6 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
-import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
 import { TypeHintConfig } from "@/types/typeHintConfig.type";
@@ -35,20 +34,8 @@ import { staticTypeHintConfigs } from "@/constants/staticTypeHintConfigs.constan
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string
 ) => {
-  const {
-    labelMinChars,
-    labelMaxChars,
-    iconMinChars,
-    iconMaxChars,
-    clrFromMinChars,
-    clrFromMaxChars,
-    clrToMinChars,
-    clrToMaxChars,
-    textClrMinChars,
-    textClrMaxChars,
-    priorityMinChars,
-    priorityMaxChars,
-  } = validationConfig.typeHintConfig;
+  const { labelMinChars, labelMaxChars, priorityMinChars, priorityMaxChars } =
+    validationConfig.typeHintConfig;
 
   return z
     .object({
