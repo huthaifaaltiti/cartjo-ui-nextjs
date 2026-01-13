@@ -161,7 +161,7 @@ export const getSubCategoryProductsQueryOptions = (
         categoryId,
         subCategoryId,
         limit: PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS,
-        lastId: typeof pageParam === "string" ? pageParam : undefined,
+        lastId: typeof pageParam === "string" ? pageParam : undefined
       });
     },
     getNextPageParam,

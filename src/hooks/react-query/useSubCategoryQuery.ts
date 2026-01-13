@@ -42,6 +42,7 @@ interface FetchSubCategoryProductsParams {
   createdFrom?: string;
   createdTo?: string;
   beforeNumOfDays?: number;
+  accessToken?: string | undefined;
 }
 
 export const fetchSubCategoryProducts = async ({
@@ -56,6 +57,7 @@ export const fetchSubCategoryProducts = async ({
   createdFrom,
   createdTo,
   beforeNumOfDays,
+  accessToken
 }: FetchSubCategoryProductsParams): Promise<DataListResponse<Product>> => {
   const url = new URL(`${API_ENDPOINTS.SUB_CATEGORY.PRODUCTS}`);
 
@@ -77,7 +79,11 @@ export const fetchSubCategoryProducts = async ({
   if (beforeNumOfDays !== undefined && beforeNumOfDays > 0)
     url.searchParams.append("beforeNumOfDays", String(beforeNumOfDays));
 
-  const res = await fetch(url.toString(), {});
+  const res = await fetch(url.toString(), {
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+    },
+  });
 
   if (!res.ok) throw new Error("Could not retrieve sub-category's products");
 
@@ -109,7 +115,7 @@ export const useSubCategoryProductsQuery = (
   createdTo?: string,
   beforeNumOfDays?: number
 ) => {
-  const { locale } = useAuthContext();
+  const { locale, accessToken } = useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Product>>({
     queryKey: [
@@ -123,6 +129,7 @@ export const useSubCategoryProductsQuery = (
       createdFrom,
       createdTo,
       beforeNumOfDays,
+      accessToken
     ],
     queryFn: ({ pageParam }) => {
       if (!categoryId) {
@@ -142,6 +149,7 @@ export const useSubCategoryProductsQuery = (
         createdFrom,
         createdTo,
         beforeNumOfDays,
+        accessToken
       });
     },
     getNextPageParam: (lastPage) => {

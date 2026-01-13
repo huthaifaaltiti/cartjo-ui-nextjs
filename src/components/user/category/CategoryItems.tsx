@@ -9,7 +9,6 @@ import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoCategoryItems from "./NoCategoryItems";
 import CategoryProductCard from "./CategoryProductCard";
-import CategoryItemsLoading from "./CategoryItemsLoading";
 import PriceRange from "../used-filters/PriceRange";
 import RatingRange from "../used-filters/RatingRange";
 import DateRangeWithDaysNum from "../used-filters/DateRangeWithDaysNum";
@@ -130,13 +129,6 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
 
   const containerClass = "w-full pt-5";
 
-  if (showLoader) {
-    return (
-      <div className={containerClass}>
-        <CategoryItemsLoading />
-      </div>
-    );
-  }
 
   if (showError) {
     return (

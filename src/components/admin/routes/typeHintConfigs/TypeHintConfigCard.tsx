@@ -82,25 +82,6 @@ const TypeHintConfigCard = ({
         <span className="font-medium">{typeHintConfig.priority}</span>
       </p>
 
-      {/* Colors Preview */}
-      <div className="flex items-center gap-2 mt-2">
-        <div
-          className="w-6 h-6 rounded"
-          style={{ backgroundColor: `#${typeHintConfig.colorFrom}` }}
-          title={`From: #${typeHintConfig.colorFrom}`}
-        />
-        <div
-          className="w-6 h-6 rounded"
-          style={{ backgroundColor: `#${typeHintConfig.colorTo}` }}
-          title={`To: #${typeHintConfig.colorTo}`}
-        />
-        <div
-          className="w-6 h-6 rounded border"
-          style={{ backgroundColor: `#${typeHintConfig.textColor}` }}
-          title={`Text: #${typeHintConfig.textColor}`}
-        />
-      </div>
-
       {/* Created / Updated Dates */}
       <div className="text-xs text-gray-600 mt-2 border-t py-3 flex flex-wrap gap-2">
         {typeHintConfig.createdAt && (

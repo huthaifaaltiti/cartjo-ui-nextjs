@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
 import { useOrdersQuery } from "@/hooks/react-query/useOrdersQuery";
-import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
+import InfiniteScrollList, { GRID_TYPE } from "@/components/shared/InfiniteScrollList";
 import OrderCard from "./OrderCard";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import PageLoader from "@/components/shared/PageLoader";
@@ -196,6 +196,7 @@ const OrdersList = () => {
           fetchNextPage={fetchNextPage}
           ListItemCard={OrderCard}
           layout="grid"
+          gridType={GRID_TYPE.WIDE}
           cardProps={{ queryKey }}
         />
       </>
