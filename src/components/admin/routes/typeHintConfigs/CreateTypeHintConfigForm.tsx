@@ -26,27 +26,14 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
-import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string
 ) => {
-  const {
-    labelMinChars,
-    labelMaxChars,
-    iconMinChars,
-    iconMaxChars,
-    clrFromMinChars,
-    clrFromMaxChars,
-    clrToMinChars,
-    clrToMaxChars,
-    textClrMinChars,
-    textClrMaxChars,
-    priorityMinChars,
-    priorityMaxChars,
-  } = validationConfig.typeHintConfig;
+  const { labelMinChars, labelMaxChars, priorityMinChars, priorityMaxChars } =
+    validationConfig.typeHintConfig;
 
   return z
     .object({
@@ -86,82 +73,6 @@ const createFormSchema = (
         .refine((val) => isEnglishOnly(val), {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.label_en.englishCharsOnly"
-          ),
-        }),
-      icon: z
-        .string()
-        .min(iconMinChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.icon.minChars",
-            { min: iconMinChars }
-          ),
-        })
-        .max(iconMaxChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.icon.maxChars",
-            { max: iconMaxChars }
-          ),
-        })
-        .refine((val) => isEnglishOnly(val), {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.icon.englishCharsOnly"
-          ),
-        }),
-      clrFrom: z
-        .string()
-        .min(clrFromMinChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.clrFrom.minChars",
-            { min: clrFromMinChars }
-          ),
-        })
-        .max(clrFromMaxChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.clrFrom.maxChars",
-            { max: clrFromMaxChars }
-          ),
-        })
-        .refine((val) => isEnglishWithNumOnly(val), {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.clrFrom.englishCharsAndNumOnly"
-          ),
-        }),
-      clrTo: z
-        .string()
-        .min(clrToMinChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.clrTo.minChars",
-            { min: clrToMinChars }
-          ),
-        })
-        .max(clrToMaxChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.clrTo.maxChars",
-            { max: clrToMaxChars }
-          ),
-        })
-        .refine((val) => isEnglishWithNumOnly(val), {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.clrTo.englishCharsAndNumOnly"
-          ),
-        }),
-      textClr: z
-        .string()
-        .min(textClrMinChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.textClr.minChars",
-            { min: textClrMinChars }
-          ),
-        })
-        .max(textClrMaxChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.textClr.maxChars",
-            { max: textClrMaxChars }
-          ),
-        })
-        .refine((val) => isEnglishWithNumOnly(val), {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.textClr.englishCharsAndNumOnly"
           ),
         }),
       priority: z
@@ -231,10 +142,6 @@ const CreateTypeHintConfigForm = () => {
     defaultValues: {
       label_ar: "",
       label_en: "",
-      icon: "Component",
-      clrFrom: "622A9B",
-      clrTo: "ED5353",
-      textClr: "fff",
       priority: 10,
       startDate: null,
       endDate: null,
@@ -246,10 +153,6 @@ const CreateTypeHintConfigForm = () => {
       const dataObj = {
         label_ar: data.label_ar,
         label_en: data.label_en,
-        icon: data.icon,
-        colorFrom: data.clrFrom,
-        colorTo: data.clrTo,
-        textColor: data.textClr,
         priority: data.priority,
         startDate: data.startDate,
         endDate: data.endDate,
@@ -366,154 +269,6 @@ const CreateTypeHintConfigForm = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-
-          {/* Icon name field */}
-          <div className="w-full">
-            <FormField
-              control={form.control}
-              name="icon"
-              render={({ field }) => (
-                <FormItem className={getFormItemClassName()}>
-                  <FormLabel className="text-sm font-normal">
-                    {t(
-                      "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.icon.label"
-                    )}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className={getInputClassName()}
-                      placeholder={t(
-                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.icon.placeholder"
-                      )}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription className="text-xs text-text-primary-400">
-                    <span>
-                      <span> 🌟 </span>
-                      <span>
-                        {t(
-                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.icon.hint"
-                        )}
-                      </span>
-                    </span>
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Color codes fields */}
-          <div className="flex gap-5 rtl:flex-row-reverse ltr:flex-row">
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="clrFrom"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.clrFrom.label"
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.clrFrom.placeholder"
-                        )}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs text-text-primary-400">
-                      <span>
-                        <span> 🌟 </span>
-                        <span>
-                          {t(
-                            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.clrFrom.hint"
-                          )}
-                        </span>
-                      </span>
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="clrTo"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.clrTo.label"
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.clrTo.placeholder"
-                        )}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs text-text-primary-400">
-                      <span>
-                        <span> 🌟 </span>
-                        <span>
-                          {t(
-                            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.clrTo.hint"
-                          )}
-                        </span>
-                      </span>
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="textClr"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.textClr.label"
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.textClr.placeholder"
-                        )}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs text-text-primary-400">
-                      <span>
-                        <span> 🌟 </span>
-                        <span>
-                          {t(
-                            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.textClr.hint"
-                          )}
-                        </span>
-                      </span>
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -701,6 +456,7 @@ If you want, I can show a variant that also blocks unwanted keys at the keystrok
             />
           </div>
 
+          {/* Dates */}
           <div className={`flex flex-col gap-5`}>
             <FormField
               control={form.control}

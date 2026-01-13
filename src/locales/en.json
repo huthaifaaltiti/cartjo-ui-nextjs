@@ -1387,7 +1387,6 @@
           },
           "components": {
             "SearchBar": { "placeholder": "Search for showcases" },
-
             "CreateShowcaseForm": {
               "fields": {
                 "title_ar": {
@@ -1416,7 +1415,8 @@
                 },
                 "showAllButtonLink": {
                   "label": "Button Link",
-                  "placeholder": "Enter button link URL"
+                  "placeholder": "Enter button link URL",
+                  "desc": "This field (for the most preferred case) will be used to re-route the user to the collected page products with same the created type of the showcase."
                 },
                 "type": {
                   "label": "Showcase Type",
@@ -1508,7 +1508,8 @@
                 },
                 "showAllButtonLink": {
                   "label": "Button Link",
-                  "placeholder": "Enter button link URL"
+                  "placeholder": "Enter button link URL",
+                  "desc": "This field (for the most preferred case) will be used to re-route the user to the collected page products with same the created type of the showcase."
                 },
                 "type": {
                   "label": "Showcase Type",

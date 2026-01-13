@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -291,7 +292,11 @@ const CreateShowcaseForm = () => {
     mutationFn: async (data: FormData) => {
       const response = await fetch(API_ENDPOINTS.DASHBOARD.SHOWCASES.CREATE, {
         method: "POST",
-        body: JSON.stringify({ ...data, lang: locale }),
+        body: JSON.stringify({
+          ...data,
+          showAllButtonLink: `/search?typeHint=${data.type}`,
+          lang: locale,
+        }),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
@@ -549,6 +554,11 @@ const CreateShowcaseForm = () => {
                     {...field}
                   />
                 </FormControl>
+                <FormDescription className="text-xs text-text-primary-100">
+                  {t(
+                    "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonLink.desc"
+                  )}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
