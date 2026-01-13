@@ -90,82 +90,6 @@ const editFormSchema = (
             "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_en.englishCharsOnly"
           ),
         }),
-      icon: z
-        .string()
-        .min(iconMinChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.icon.minChars",
-            { min: iconMinChars }
-          ),
-        })
-        .max(iconMaxChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.icon.maxChars",
-            { max: iconMaxChars }
-          ),
-        })
-        .refine((val) => isEnglishOnly(val), {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.icon.englishCharsOnly"
-          ),
-        }),
-      clrFrom: z
-        .string()
-        .min(clrFromMinChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.clrFrom.minChars",
-            { min: clrFromMinChars }
-          ),
-        })
-        .max(clrFromMaxChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.clrFrom.maxChars",
-            { max: clrFromMaxChars }
-          ),
-        })
-        .refine((val) => isEnglishWithNumOnly(val), {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.clrFrom.englishCharsAndNumOnly"
-          ),
-        }),
-      clrTo: z
-        .string()
-        .min(clrToMinChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.clrTo.minChars",
-            { min: clrToMinChars }
-          ),
-        })
-        .max(clrToMaxChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.clrTo.maxChars",
-            { max: clrToMaxChars }
-          ),
-        })
-        .refine((val) => isEnglishWithNumOnly(val), {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.clrTo.englishCharsAndNumOnly"
-          ),
-        }),
-      textClr: z
-        .string()
-        .min(textClrMinChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.textClr.minChars",
-            { min: textClrMinChars }
-          ),
-        })
-        .max(textClrMaxChars, {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.textClr.maxChars",
-            { max: textClrMaxChars }
-          ),
-        })
-        .refine((val) => isEnglishWithNumOnly(val), {
-          message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.textClr.englishCharsAndNumOnly"
-          ),
-        }),
       priority: z
         .number()
         .min(priorityMinChars, {
@@ -235,13 +159,9 @@ const EditTypeHintConfigForm = ({
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      label_ar: typeHintConfig?.label?.ar || "",
-      label_en: typeHintConfig?.label?.en || "",
-      icon: typeHintConfig?.icon || "Component",
-      clrFrom: typeHintConfig?.colorFrom || "622A9B",
-      clrTo: typeHintConfig?.colorTo || "ED5353",
-      textClr: typeHintConfig?.textColor || "fff",
-      priority: typeHintConfig?.priority || 10,
+      label_ar: typeHintConfig?.label?.ar ?? "",
+      label_en: typeHintConfig?.label?.en ?? "",
+      priority: typeHintConfig?.priority ?? 10,
       startDate: typeHintConfig?.startDate || null,
       endDate: typeHintConfig?.endDate || null,
     },
@@ -252,10 +172,6 @@ const EditTypeHintConfigForm = ({
       const dataObj = {
         label_ar: data.label_ar,
         label_en: data.label_en,
-        icon: data.icon,
-        colorFrom: data.clrFrom,
-        colorTo: data.clrTo,
-        textColor: data.textClr,
         priority: data.priority,
         startDate: data.startDate,
         endDate: data.endDate,
@@ -382,154 +298,6 @@ const EditTypeHintConfigForm = ({
             </div>
           </div>
 
-          {/* Icon name field */}
-          <div className="w-full">
-            <FormField
-              control={form.control}
-              name="icon"
-              render={({ field }) => (
-                <FormItem className={getFormItemClassName()}>
-                  <FormLabel className="text-sm font-normal">
-                    {t(
-                      "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.icon.label"
-                    )}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className={getInputClassName()}
-                      placeholder={t(
-                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.icon.placeholder"
-                      )}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription className="text-xs text-text-primary-400">
-                    <span>
-                      <span> 🌟 </span>
-                      <span>
-                        {t(
-                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.icon.hint"
-                        )}
-                      </span>
-                    </span>
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Color codes fields */}
-          <div className="flex gap-5 rtl:flex-row-reverse ltr:flex-row">
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="clrFrom"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.clrFrom.label"
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.clrFrom.placeholder"
-                        )}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs text-text-primary-400">
-                      <span>
-                        <span> 🌟 </span>
-                        <span>
-                          {t(
-                            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.clrFrom.hint"
-                          )}
-                        </span>
-                      </span>
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="clrTo"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.clrTo.label"
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.clrTo.placeholder"
-                        )}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs text-text-primary-400">
-                      <span>
-                        <span> 🌟 </span>
-                        <span>
-                          {t(
-                            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.clrTo.hint"
-                          )}
-                        </span>
-                      </span>
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="textClr"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.textClr.label"
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.textClr.placeholder"
-                        )}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs text-text-primary-400">
-                      <span>
-                        <span> 🌟 </span>
-                        <span>
-                          {t(
-                            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.textClr.hint"
-                          )}
-                        </span>
-                      </span>
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-
           {/* Priority */}
           <div className="w-full">
             <FormField
@@ -583,6 +351,7 @@ const EditTypeHintConfigForm = ({
             />
           </div>
 
+          {/* Dates */}
           <div className={`flex flex-col gap-5`}>
             <FormField
               control={form.control}

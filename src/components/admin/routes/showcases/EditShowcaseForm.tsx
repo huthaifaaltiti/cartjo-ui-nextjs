@@ -6,12 +6,12 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -529,6 +529,11 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                     {...field}
                   />
                 </FormControl>
+                <FormDescription className="text-xs text-text-primary-100">
+                  {t(
+                    "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonLink.desc"
+                  )}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

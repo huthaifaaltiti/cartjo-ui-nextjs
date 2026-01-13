@@ -3,7 +3,7 @@
 import { memo } from "react";
 import { useShowcasesQuery } from "@/hooks/react-query/useShowcasesQuery";
 import { Showcase } from "@/types/showcase.type";
-import InfiniteScrollList from "../../../shared/InfiniteScrollList";
+import InfiniteScrollList, { GRID_TYPE } from "../../../shared/InfiniteScrollList";
 import { useShowcases } from "@/contexts/Showcase.context";
 import ShowcaseCard from "./ShowcaseCard";
 
@@ -43,6 +43,8 @@ const BannersList = ({ initialShowcases }: ShowcasesListProps) => {
       list={showcases}
       fetchNextPage={fetchNextPage}
       ListItemCard={ShowcaseCard}
+      layout="grid"
+      gridType={GRID_TYPE.WIDE}
       cardProps={{
         deleteShowcase,
         unDeleteShowcase,
