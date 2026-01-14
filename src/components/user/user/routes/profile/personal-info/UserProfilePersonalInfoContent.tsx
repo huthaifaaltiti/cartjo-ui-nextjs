@@ -28,15 +28,20 @@ import { useStaticNationalityListQuery } from "@/hooks/react-query/useNationalit
 import { useUserProfileContext } from "@/contexts/UserProfileContext";
 import { Gender } from "@/enums/gender.enum";
 import { REGISTRATION_MIN_AGE } from "@/config/user.config";
+import { Locale } from "@/types/locale";
 
 const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
   const t = useTranslations();
-  const { isArabic } = useGeneralContext();
+  const { isArabic, locale, dir } = useGeneralContext();
   const { data } = useStaticNationalityListQuery();
   const { setPersonalForm } = useUserProfileContext();
 
   const staticNationalityList = useMemo(
-    () => data?.data ?? STATIC_NATIONALITIES,
+    () =>
+      data?.data?.sort((a, b) => a.name.en.localeCompare(b.name.en)) ??
+      STATIC_NATIONALITIES.sort((a, b) =>
+        a.name[locale as Locale].localeCompare(b.name[locale as Locale])
+      ),
     [data]
   );
 
@@ -212,7 +217,11 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
                     )}
                   </FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      dir={dir}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
                       <SelectTrigger
                         className={`text-xs text-gray-600 ${
                           isArabic ? "text-right" : "text-left"
@@ -255,7 +264,11 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
                     )}
                   </FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      dir={dir}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
                       <SelectTrigger
                         className={`text-xs text-gray-600 ${
                           isArabic ? "text-right" : "text-left"
