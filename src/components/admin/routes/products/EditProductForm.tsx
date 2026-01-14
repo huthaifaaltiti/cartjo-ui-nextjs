@@ -50,6 +50,7 @@ import {
   SYSTEM_GENERATED_HINTS,
   SystemGeneratedHint,
 } from "@/config/typeHint.config";
+import { MEDIA_CONFIG } from "@/config/media.config";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -440,10 +441,10 @@ const EditProductForm = ({
                     onChange={handleMainImageChange}
                     onError={handleImageError}
                     label={""}
-                    maxSizeInMB={2}
+                    maxSizeInMB={MEDIA_CONFIG.PRODUCT.IMAGE.MAX_SIZE}
                     size="sm"
                     variant="rounded"
-                    accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
+                    accept={MEDIA_CONFIG.PRODUCT.IMAGE.ALLOWED_TYPES}
                     multiple={false}
                   />
                   <FormMessage />
@@ -470,10 +471,10 @@ const EditProductForm = ({
                     onChange={handleImagesChange}
                     onError={handleImageError}
                     label={""}
-                    maxSizeInMB={2}
+                    maxSizeInMB={MEDIA_CONFIG.PRODUCT.IMAGE.MAX_SIZE}
                     size="sm"
                     variant="rounded"
-                    accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
+                    accept={MEDIA_CONFIG.PRODUCT.IMAGE.ALLOWED_TYPES}
                     multiple={true}
                     maxImages={3}
                   />

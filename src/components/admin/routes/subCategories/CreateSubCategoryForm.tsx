@@ -40,6 +40,7 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
+import { MEDIA_CONFIG } from "@/config/media.config";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string
@@ -277,10 +278,10 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                       onChange={handleImageChange_ar}
                       onError={handleImageError}
                       label={""}
-                      maxSizeInMB={2}
+                      maxSizeInMB={MEDIA_CONFIG.SUB_CATEGORY.IMAGE.MAX_SIZE}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
+                      accept={MEDIA_CONFIG.SUB_CATEGORY.IMAGE.ALLOWED_TYPES}
                     />
                     <FormMessage />
                   </FormItem>
@@ -304,10 +305,10 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                       onChange={handleImageChange_en}
                       onError={handleImageError}
                       label={""}
-                      maxSizeInMB={2}
+                      maxSizeInMB={MEDIA_CONFIG.SUB_CATEGORY.IMAGE.MAX_SIZE}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/avif"
+                      accept={MEDIA_CONFIG.SUB_CATEGORY.IMAGE.ALLOWED_TYPES}
                     />
                     <FormMessage />
                   </FormItem>

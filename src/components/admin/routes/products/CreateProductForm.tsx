@@ -49,6 +49,7 @@ import {
   SYSTEM_GENERATED_HINTS,
   SystemGeneratedHint,
 } from "@/config/typeHint.config";
+import { MEDIA_CONFIG } from "@/config/media.config";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -317,8 +318,6 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
         },
       });
 
-      console.log({ response });
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData?.message || "Product's creation failed");
@@ -413,10 +412,10 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     onChange={handleMainImageChange}
                     onError={handleImageError}
                     label={""}
-                    maxSizeInMB={2}
+                    maxSizeInMB={MEDIA_CONFIG.PRODUCT.IMAGE.MAX_SIZE}
                     size="sm"
                     variant="rounded"
-                    accept="image/png, image/jpeg, image/jpg, image/webp, image/avif"
+                    accept={MEDIA_CONFIG.PRODUCT.IMAGE.ALLOWED_TYPES}
                     multiple={false}
                   />
                   <FormMessage />
@@ -443,10 +442,10 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     onChange={handleImagesChange}
                     onError={handleImageError}
                     label={" "}
-                    maxSizeInMB={2}
+                    maxSizeInMB={MEDIA_CONFIG.PRODUCT.IMAGE.MAX_SIZE}
                     size="sm"
                     variant="rounded"
-                    accept="image/png, image/jpeg, image/jpg, image/webp, image/avif"
+                    accept={MEDIA_CONFIG.PRODUCT.IMAGE.ALLOWED_TYPES}
                     multiple={true}
                     maxImages={3}
                   />

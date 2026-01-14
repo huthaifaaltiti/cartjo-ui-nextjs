@@ -6,14 +6,14 @@ export const MEDIA_CONFIG = {
     IMAGE: {
       ALLOWED_TYPES:
         "image/png, image/jpeg, image/jpg, image/webp, image/avif, image/gif, image/tiff, image/x-tiff, image/bmp",
-      MAX_SIZE: 2,
+      MAX_SIZE: 1,
     },
   },
   SUB_CATEGORY: {
     IMAGE: {
       ALLOWED_TYPES:
         "image/png, image/jpeg, image/jpg, image/webp, image/avif, image/gif, image/tiff, image/x-tiff, image/bmp",
-      MAX_SIZE: 2,
+      MAX_SIZE: 1,
     },
   },
   BANNER: {
@@ -34,7 +34,7 @@ export const MEDIA_CONFIG = {
     IMAGE: {
       ALLOWED_TYPES:
         "image/png, image/jpeg, image/jpg, image/webp, image/avif, image/gif, image/tiff, image/x-tiff, image/bmp",
-      MAX_SIZE: 3,
+      MAX_SIZE: 2,
     },
   },
   USER: {

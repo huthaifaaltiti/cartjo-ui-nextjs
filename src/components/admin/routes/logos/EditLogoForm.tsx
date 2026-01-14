@@ -31,6 +31,7 @@ import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
+import { MEDIA_CONFIG } from "@/config/media.config";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string
@@ -219,10 +220,10 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
                   onChange={handleImageChange}
                   onError={handleImageError}
                   label={""}
-                  maxSizeInMB={2}
+                  maxSizeInMB={MEDIA_CONFIG.LOGO.IMAGE.MAX_SIZE}
                   size="sm"
                   variant="rounded"
-                  accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
+                  accept={MEDIA_CONFIG.LOGO.IMAGE.ALLOWED_TYPES}
                 />
                 <FormMessage />
               </FormItem>
