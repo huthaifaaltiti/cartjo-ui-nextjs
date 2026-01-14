@@ -2230,7 +2230,8 @@
                   },
                   "birthDate": {
                     "required": "Birth date is required",
-                    "future": "Birth date cannot be in the future"
+                    "future": "Birth date cannot be in the future",
+                    "minAge": "You must be at least 18 years old"
                   },
                   "gender": {
                     "required": "Gender is required"

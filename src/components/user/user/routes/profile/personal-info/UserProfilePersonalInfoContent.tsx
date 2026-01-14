@@ -27,6 +27,7 @@ import { STATIC_NATIONALITIES } from "@/constants/nationalities";
 import { useStaticNationalityListQuery } from "@/hooks/react-query/useNationalityQuery";
 import { useUserProfileContext } from "@/contexts/UserProfileContext";
 import { Gender } from "@/enums/gender.enum";
+import { REGISTRATION_MIN_AGE } from "@/config/user.config";
 
 const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
   const t = useTranslations();
@@ -55,11 +56,56 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
         "routes.user.layout.routes.profile.components.UserProfilePersonalInfoContent.validations.nationality.required"
       ),
     }),
-    birthDate: z.string().min(1, {
-      message: t(
-        "routes.user.layout.routes.profile.components.UserProfilePersonalInfoContent.validations.birthDate.required"
+    birthDate: z
+      .string()
+      .min(1, {
+        message: t(
+          "routes.user.layout.routes.profile.components.UserProfilePersonalInfoContent.validations.birthDate.required"
+        ),
+      })
+
+      // ❌ Prevent future dates
+      .refine(
+        (value) => {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0); // normalize
+          const birthDate = new Date(value);
+          birthDate.setHours(0, 0, 0, 0);
+
+          return birthDate <= today;
+        },
+        {
+          message: t(
+            "routes.user.layout.routes.profile.components.UserProfilePersonalInfoContent.validations.birthDate.future"
+          ),
+        }
+      )
+
+      // 👶 Prevent children (min age)
+      .refine(
+        (value) => {
+          const today = new Date();
+          const birthDate = new Date(value);
+
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+
+          if (
+            monthDiff < 0 ||
+            (monthDiff === 0 && today.getDate() < birthDate.getDate())
+          ) {
+            age--;
+          }
+
+          return age >= REGISTRATION_MIN_AGE;
+        },
+        {
+          message: t(
+            "routes.user.layout.routes.profile.components.UserProfilePersonalInfoContent.validations.birthDate.minAge"
+          ),
+        }
       ),
-    }),
+
     gender: z.string().min(1, {
       message: t(
         "routes.user.layout.routes.profile.components.UserProfilePersonalInfoContent.validations.gender.required"
@@ -73,7 +119,7 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
       firstName: user?.firstName || "",
       lastName: user?.lastName || "",
       nationality: user?.nationality || "",
-      birthDate: user?.birthDate || "",
+      birthDate: user?.birthDate ? user.birthDate.split("T")[0] : "",
       gender: user?.gender || "",
     },
   });
@@ -92,6 +138,7 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
       <div className="w-full flex flex-col gap-5">
         {/* Row 1: First Name, Last Name, Nationality */}
         <div className="w-full flex items-center gap-5">
+          {/* FirstName */}
           <div className="w-1/3 min-w-[200px]">
             <FormField
               control={form.control}
@@ -121,6 +168,7 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
             />
           </div>
 
+          {/* LastName */}
           <div className="w-1/3 min-w-[200px]">
             <FormField
               control={form.control}
@@ -150,6 +198,7 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
             />
           </div>
 
+          {/* Nationality */}
           <div className="w-1/3 min-w-[200px]">
             <FormField
               disabled={staticNationalityList.length === 0}
@@ -193,6 +242,7 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
 
         {/* Row 2: Birth Date, Gender */}
         <div className="w-full flex items-center gap-5">
+          {/* gender */}
           <div className="w-1/3 min-w-[200px]">
             <FormField
               control={form.control}
@@ -237,6 +287,7 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
             />
           </div>
 
+          {/* Birthdate */}
           <div className="w-1/3 min-w-[200px]">
             <FormField
               control={form.control}
