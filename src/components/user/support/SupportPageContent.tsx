@@ -5,8 +5,6 @@ import SupportHeroSection from "./SupportHeroSection";
 import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
 import SupportContactMethods from "./SupportContactMethods";
 import SupportFAQ from "./SupportFAQ";
-import HelpSection from "@/components/shared/HelpSection";
-import SupportQuickLicks from "./SupportQuickLicks";
 
 const SupportPageContent = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -21,7 +19,7 @@ const SupportPageContent = () => {
       <MaxWidthWrapper className="mt-5 py-8">
         <SupportContactMethods />
         <SupportFAQ searchQuery={searchQuery} />
-        <HelpSection
+        {/* <HelpSection
           title="Still need help?"
           description="Can't find what you're looking for? Our support team is ready to assist you with any questions or concerns."
           primaryAction={{
@@ -32,8 +30,8 @@ const SupportPageContent = () => {
             label: "View All Articles",
             onClick: () => console.log("View All Articles clicked"),
           }}
-        />
-        <SupportQuickLicks />
+        /> */}
+        {/* <SupportQuickLicks /> */}
       </MaxWidthWrapper>
     </div>
   );
