@@ -145,6 +145,7 @@ export const API_ENDPOINTS = {
     PROFILE: `${API_URL}/api/v1/user`,
     NATIONALITY_STATIC_LIST: `${API_URL}/api/v1/nationality/all-static`,
     UPDATE_PROFILE: `${API_URL}/api/v1/user/update`,
+    CONTEXT: `${API_URL}/api/v1/user-context`,
   },
   VERIFY_EMAIL: {
     VERIFY: `${API_URL}/api/v1/authentication/verify-email`,

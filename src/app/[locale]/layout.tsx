@@ -21,6 +21,7 @@ import {
 } from "@/constants/metadata.constant";
 import { Locale } from "@/types/locale";
 import ReduxLocaleSync from "@/components/ReduxLocaleSync";
+import UserContextHydrator from "@/components/hydrators/UserContextHydrator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -94,7 +95,9 @@ export default async function LocaleLayout({
                     <GeneralContextProvider>
                       <ReduxProvider>
                         <ReduxLocaleSync />
-                        {children}
+                        <UserContextHydrator locale={locale}>
+                          {children}
+                        </UserContextHydrator>
                       </ReduxProvider>
                     </GeneralContextProvider>
                   </NuqsAdapter>

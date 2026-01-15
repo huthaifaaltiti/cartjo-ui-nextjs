@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import Link from "next/link";
+import { Currency } from "@/enums/currency.enum";
 
 const CartOrderStatus: React.FC = () => {
   const t = useTranslations("routes.cart.components.CartOrderStatus");
@@ -20,14 +21,19 @@ const CartOrderStatus: React.FC = () => {
 
       <div className="flex justify-between mb-2 text-gray-700">
         <span>
-          {t("subtotal")} ({totalItemsCount} items)
+          {t("subtotal")} ({totalItemsCount}{" "}
+          {t(totalItemsCount === 1 ? "item" : "items")})
         </span>
-        <span>${totalAmount?.toFixed(2)}</span>
+        <span>
+          {Currency.JOD} {totalAmount?.toFixed(2)}
+        </span>
       </div>
 
       <div className="flex justify-between font-bold text-lg mb-4 border-t pt-2">
         <span>{t("total")}</span>
-        <span>${totalAmount.toFixed(2)}</span>
+        <span>
+          {Currency.JOD} {totalAmount.toFixed(2)}
+        </span>
       </div>
 
       <Link href={"/checkout"}>

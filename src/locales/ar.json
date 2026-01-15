@@ -2106,6 +2106,20 @@
       "errors": {
         "failedLoadData": "فشل تحميل بياناتك، يرجى المحاولة لاحقًا!"
       },
+      "components": {
+        "UserContextDashboard": {
+          "welcomeTitle": "مرحباً بعودتك!",
+          "welcomeBack": "قم بإدارة حسابك، واطلع على نشاطك، واستخدم الإجراءات السريعة من الشريط الجانبي.",
+          "wishlistItems": "عناصر قائمة الأمنيات",
+          "cartItems": "عناصر السلة",
+          "accountInfoTitle": "معلومات الحساب",
+          "fullName": "الاسم الكامل",
+          "memberSince": "عضو منذ",
+          "preferredLang": "اللغة المفضلة",
+          "errorUnknown": "خطأ غير معروف",
+          "noData": "لا توجد بيانات مستخدم متاحة"
+        }
+      },
       "layout": {
         "components": {
           "UserInfoRow": {
@@ -2428,6 +2442,8 @@
           "removedFromCartLabel": "تمت الإزالة من العربة"
         },
         "CartOrderStatus": {
+          "items": "عناصر",
+          "item": "عنصر",
           "title": "ملخص الطلب",
           "subtotal": "المجموع الفرعي",
           "total": "المجموع",

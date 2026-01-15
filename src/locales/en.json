@@ -2107,6 +2107,20 @@
       "errors": {
         "failedLoadData": "Failed to load your details, please try again later!"
       },
+      "components": {
+        "UserContextDashboard": {
+          "welcomeTitle": "Welcome back!",
+          "welcomeBack": "Manage your account, view your activity, and access quick actions from the sidebar.",
+          "wishlistItems": "Wishlist Items",
+          "cartItems": "Cart Items",
+          "accountInfoTitle": "Account Information",
+          "fullName": "Full Name",
+          "memberSince": "Member Since",
+          "preferredLang": "Preferred Language",
+          "errorUnknown": "Unknown error",
+          "noData": "No user data available"
+        }
+      },
       "layout": {
         "components": {
           "UserInfoRow": {
@@ -2117,7 +2131,8 @@
             "quickActions": {
               "orders": "Orders",
               "returns": "Returns",
-              "wishlist": "Wishlist"
+              "wishlist": "Wishlist",
+              "cart": "Cart"
             }
           },
           "UserAccountMenu": {
@@ -2434,6 +2449,8 @@
           "removedFromCartLabel": "Removed from cart"
         },
         "CartOrderStatus": {
+          "items":"Items",
+          "item":"Item",
           "title": "Order Summary",
           "subtotal": "Subtotal",
           "total": "Total",

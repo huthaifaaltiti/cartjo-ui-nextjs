@@ -25,6 +25,7 @@ import ProductTitle from "@/components/shared/card/ProductTitle";
 import ProductPrice from "@/components/shared/card/ProductPrice";
 import ProductRating from "@/components/shared/card/ProductRating";
 import SendWishlistItemToCartBtn from "./SendWishlistItemToCartBtn";
+import { incCartItemsCountByOne } from "@/redux/slices/cart";
 
 const WishlistProductCard = ({ item: product }: { item: Product }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,9 +38,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
 
   const title = isArabic ? product?.name?.ar : product?.name?.en;
 
-  const [isWishListed] = useState(
-    product?.isWishListed || false
-  );
+  const [isWishListed] = useState(product?.isWishListed || false);
   const [isHovered, setIsHovered] = useState(false);
   const [isWishListing, setIsWishListing] = useState(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
@@ -122,6 +121,8 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
           description: response.message,
           dismissText: t("general.toast.dismissText"),
         });
+
+        dispatch(incCartItemsCountByOne());
       }
     } catch (error) {
       showErrorToast({

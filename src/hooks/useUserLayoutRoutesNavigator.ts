@@ -10,6 +10,7 @@ import {
   Power,
   // Settings,
   ShoppingBag,
+  ShoppingCart,
   Undo2,
   User,
 } from "lucide-react";
@@ -48,6 +49,13 @@ export function useUserLayoutRoutesNavigator(type: UserRouteType) {
           "routes.user.layout.components.UserQuickActions.quickActions.wishlist"
         ),
         path: "/wishlist",
+      },
+      {
+        icon: ShoppingCart,
+        label: t(
+          "routes.user.layout.components.UserQuickActions.quickActions.cart"
+        ),
+        path: "/cart",
       },
     ],
     [UserRouteType.USER_ACCOUNT]: [
