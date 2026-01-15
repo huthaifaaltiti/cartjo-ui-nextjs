@@ -55,9 +55,7 @@ const ProductRowCard = ({
 
   useEffect(() => {
     const foundItem = items?.find((i) => i._id === item._id);
-    foundItem || item?.isWishListed
-      ? setIsWishListed(true)
-      : setIsWishListed(false);
+    setIsWishListed(Boolean(foundItem || item?.isWishListed));
   }, [items, item]);
 
   const formatPrice = (price: number) => {
