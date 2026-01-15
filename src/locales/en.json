@@ -2038,7 +2038,7 @@
             },
             "phone": {
               "title": "Phone Support",
-              "availability": "Mon-Fri, 9AM-6PM EST"
+              "availability": "Sat-Thu, 9AM-6PM AST"
             }
           }
         },
@@ -2054,36 +2054,36 @@
           },
           "faqs": {
             "trackOrder": {
-              "q": "How do I track my order?",
-              "a": "You can track your order by logging into your account and visiting the 'Orders' section. Click on the order you want to track to see real-time updates."
+              "q": "How can I track my order?",
+              "a": "You can track your order by logging into your account and visiting the 'Orders' section. Click on the order you want to track to view real-time updates."
             },
             "returnPolicy": {
               "q": "What is your return policy?",
-              "a": "We offer a 30-day return policy for most items. Products must be unused and in original packaging. Free return shipping for defective items."
+              "a": "We offer a return policy upon receipt of the order for most products. Products must be unused and in their original packaging. Products are mostly returned in cases of breakage or damage, and the amount is refunded to the customer if prepaid."
             },
             "shippingTime": {
               "q": "How long does shipping take?",
-              "a": "Standard shipping takes 3-5 business days. Express shipping is available for 1-2 day delivery. International orders typically arrive within 7-14 days."
+              "a": "Standard shipping takes 1 to 5 business days. International orders usually arrive within 7-14 days."
             },
             "paymentMethods": {
               "q": "What payment methods do you accept?",
-              "a": "We accept all major credit cards (Visa, Mastercard, Amex), PayPal, Apple Pay, and Google Pay. All transactions are secure and encrypted."
+              "a": "Cash on Delivery. Other payment methods will be available soon via CliQ, major credit cards (Visa, MasterCard, Amex), PayPal, Apple Pay, and Google Pay. All transactions are secure and encrypted."
             },
             "updateAccount": {
               "q": "How do I change my account information?",
-              "a": "Log into your account and navigate to Settings. From there you can update your email, password, shipping addresses, and payment methods."
+              "a": "Log in to your account and navigate to 'Account Information'."
             },
             "internationalShipping": {
               "q": "Do you ship internationally?",
-              "a": "Yes, we ship to over 50 countries worldwide. International shipping costs and delivery times vary by destination."
+              "a": "Yes, we ship to most countries worldwide. International shipping costs and times vary depending on the destination."
             },
             "cancelOrder": {
-              "q": "How do I cancel an order?",
-              "a": "Orders can be cancelled within 1 hour of placement. Go to your order history, select the order, and click 'Cancel Order'. After 1 hour, please contact support."
+              "q": "How can I cancel an order?",
+              "a": "Orders cannot be canceled once they are completed. However, the user can contact customer support for assistance."
             },
             "damagedItem": {
               "q": "What if I receive a damaged item?",
-              "a": "We're sorry to hear that! Please contact us within 48 hours with photos of the damaged item. We'll send a replacement or issue a full refund immediately."
+              "a": "We are sorry to hear that! Please contact us within one hour of receiving the order with photos of the damaged product. We will send you a replacement or issue a full refund immediately."
             }
           },
           "noResults": "No results found. Try a different search term or contact support."
