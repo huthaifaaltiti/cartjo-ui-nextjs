@@ -23,6 +23,7 @@ type PersonalFormValues = {
   lastName: string;
   gender: string;
   birthDate: string;
+  nationality: string;
 };
 
 // Define form type
@@ -89,6 +90,7 @@ export const UserProfileContextProvider = ({
         countryCode: "+962",
         gender: personalValues.gender,
         birthDate: personalValues.birthDate,
+        nationality: personalValues.nationality,
         lang: locale,
       };
 

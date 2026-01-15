@@ -34,6 +34,7 @@ import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
 import { Calendar24 } from "@/components/shared/Calendar24";
+import { MEDIA_CONFIG } from "@/config/media.config";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string
@@ -329,10 +330,10 @@ const CreateBannerForm = () => {
                       onChange={handleImageChange_ar}
                       onError={handleImageError}
                       label={""}
-                      maxSizeInMB={2}
+                      maxSizeInMB={MEDIA_CONFIG.BANNER.IMAGE.MAX_SIZE}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
+                      accept={MEDIA_CONFIG.BANNER.IMAGE.ALLOWED_TYPES}
                     />
                     <FormMessage />
                   </FormItem>
@@ -357,10 +358,10 @@ const CreateBannerForm = () => {
                       onChange={handleImageChange_en}
                       onError={handleImageError}
                       label={""}
-                      maxSizeInMB={2}
+                      maxSizeInMB={MEDIA_CONFIG.BANNER.IMAGE.MAX_SIZE}
                       size="sm"
                       variant="rounded"
-                      accept="image/png, image/jpeg, image/jpg, image/gif, image/webp"
+                      accept={MEDIA_CONFIG.BANNER.IMAGE.ALLOWED_TYPES}
                     />
                     <FormMessage />
                   </FormItem>

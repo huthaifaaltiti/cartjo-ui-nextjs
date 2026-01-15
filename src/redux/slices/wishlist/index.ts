@@ -13,6 +13,7 @@ interface WishlistState {
   itemsCount: number;
   loading: boolean;
   error: string | null;
+  hydrated: boolean;
 }
 
 const initialState: WishlistState = {
@@ -20,6 +21,7 @@ const initialState: WishlistState = {
   itemsCount: 0,
   loading: false,
   error: null,
+  hydrated: false,
 };
 
 const wishlistSlice = createSlice({
@@ -28,10 +30,18 @@ const wishlistSlice = createSlice({
 
   reducers: {
     resetWishlistState: () => ({ ...initialState }),
-
     setWishlistItems: (state, action: PayloadAction<Product[]>) => {
       state.items = action.payload;
       state.itemsCount = action.payload.length;
+    },
+    setWishlistItemsCount: (state, action: PayloadAction<number>) => {
+      state.itemsCount = action.payload;
+    },
+    hydrateWishlistCounters: (state, action: PayloadAction<number>) => {
+      if (state.hydrated) return;
+
+      state.itemsCount = action.payload;
+      state.hydrated = true;
     },
   },
 
@@ -133,5 +143,10 @@ const wishlistSlice = createSlice({
   },
 });
 
-export const { resetWishlistState, setWishlistItems } = wishlistSlice.actions;
+export const {
+  resetWishlistState,
+  setWishlistItems,
+  setWishlistItemsCount,
+  hydrateWishlistCounters,
+} = wishlistSlice.actions;
 export default wishlistSlice.reducer;

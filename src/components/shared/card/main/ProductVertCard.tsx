@@ -1,9 +1,9 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { Product } from "@/types/product.type";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { DataResponse } from "@/types/service-response.type";
@@ -35,13 +35,15 @@ const ProductVertCard = ({
   item: Product;
   isArabic: boolean;
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { items } = useSelector((state: RootState) => state.wishlist);
+
   const title = isArabic ? item?.name?.ar : item?.name?.en;
 
   const router = useRouter();
 
   const locale = useLocale();
   const t = useTranslations();
-  const dispatch = useDispatch<AppDispatch>();
 
   const [isWishListed, setIsWishListed] = useState<boolean>(
     item?.isWishListed || false
@@ -51,6 +53,11 @@ const ProductVertCard = ({
   const [isAddToCartLoading, setIsAddToCartLoading] = useState<boolean>(false);
 
   const { accessToken } = useAuthContext();
+
+  useEffect(() => {
+    const foundItem = items?.find((i) => i._id === item._id);
+    setIsWishListed(Boolean(foundItem || item?.isWishListed));
+  }, [items, item]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {

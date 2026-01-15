@@ -1,0 +1,1 @@
+export const REGISTRATION_MIN_AGE = 18

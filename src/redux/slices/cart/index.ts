@@ -19,6 +19,7 @@ interface CartState {
   itemsCount: number;
   totalItemsCount: number;
   loading: boolean;
+  hydrated: boolean;
 }
 
 const initialState: CartState = {
@@ -27,6 +28,7 @@ const initialState: CartState = {
   itemsCount: 0,
   totalItemsCount: 0,
   loading: false,
+  hydrated: false,
 };
 
 const cartSlice = createSlice({
@@ -34,7 +36,6 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     resetCartState: () => ({ ...initialState }),
-
     setCartItems: (state, action: PayloadAction<CartItem[]>) => {
       state.items = action.payload;
       state.totalItemsCount = state.items.reduce(
@@ -46,6 +47,18 @@ const cartSlice = createSlice({
         (acc, i) => acc + i.quantity * (i.price ?? 0),
         0
       );
+    },
+    setCartItemsCount: (state, action: PayloadAction<number>) => {
+      state.totalItemsCount = action.payload;
+    },
+    incCartItemsCountByOne: (state) => {
+      state.totalItemsCount++;
+    },
+    hydrateCartCounters: (state, action: PayloadAction<number>) => {
+      if (state.hydrated) return;
+
+      state.totalItemsCount = action.payload;
+      state.hydrated = true;
     },
   },
   extraReducers: (builder) => {
@@ -84,8 +97,8 @@ const cartSlice = createSlice({
         0
       );
 
-      state.itemsCount = state.items.length ?? 0;
-      state.totalItemsCount = state.items.reduce(
+      state.itemsCount = payloadList.length ?? 0;
+      state.totalItemsCount = payloadList.reduce(
         (acc, i) => acc + i.quantity,
         0
       );
@@ -148,6 +161,12 @@ const cartSlice = createSlice({
   },
 });
 
-export const { resetCartState, setCartItems } = cartSlice.actions;
+export const {
+  resetCartState,
+  setCartItems,
+  setCartItemsCount,
+  incCartItemsCountByOne,
+  hydrateCartCounters,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

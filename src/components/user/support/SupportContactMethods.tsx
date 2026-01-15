@@ -5,6 +5,9 @@ import { CheckCircle, Clock, Mail, Phone } from "lucide-react";
 const SupportContactMethods = () => {
   const t = useTranslations();
 
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
+  const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_PHONE;
+
   const contactMethods = [
     // {
     //   icon: MessageCircle,
@@ -19,11 +22,11 @@ const SupportContactMethods = () => {
       title: t(
         "routes.support.components.contactSection.contactMethods.email.title"
       ),
-      description: "support@yourstore.com",
+      description: supportEmail,
       availability: t(
         "routes.support.components.contactSection.contactMethods.email.availability"
       ),
-      action: () => (window.location.href = "mailto:support@yourstore.com"),
+      action: () => (window.location.href = `mailto:${supportEmail}`),
       available: true,
     },
     {
@@ -31,12 +34,12 @@ const SupportContactMethods = () => {
       title: t(
         "routes.support.components.contactSection.contactMethods.phone.title"
       ),
-      description: "+1 (555) 123-4567",
+      description: supportPhone,
       availability: t(
         "routes.support.components.contactSection.contactMethods.phone.availability"
       ),
-      action: () => (window.location.href = "tel:+15551234567"),
-      available: false,
+      action: () => (window.location.href = `tel:${supportPhone}`),
+      available: true,
     },
   ];
 
@@ -70,11 +73,15 @@ const SupportContactMethods = () => {
                   </span>
                 )}
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg rtl:text-right ltr:text-left font-semibold text-gray-900 mb-2">
                 {method.title}
               </h3>
-              <p className="text-gray-600 mb-2">{method.description}</p>
-              <p className="text-sm text-gray-500">{method.availability}</p>
+              <p className="text-gray-600 mb-2 rtl:text-right ltr:text-left">
+                {method.description}
+              </p>
+              <p className="text-sm text-gray-500 rtl:text-right ltr:text-left">
+                {method.availability}
+              </p>
             </button>
           );
         })}

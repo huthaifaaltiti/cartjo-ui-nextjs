@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { Product } from "@/types/product.type";
 import { useLocale, useTranslations } from "next-intl";
 import {
@@ -12,8 +12,8 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import { addItemToServer } from "@/redux/slices/cart/actions";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import {
   addWishlistItem,
   removeWishlistItem,
@@ -40,6 +40,8 @@ const ProductRowCard = ({
   const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
+  const { items } = useSelector((state: RootState) => state.wishlist);
+
   const locale = useLocale();
   const { accessToken } = useAuthContext();
   const t = useTranslations();
@@ -50,6 +52,11 @@ const ProductRowCard = ({
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isWishListLoading, setIsWishListLoading] = useState<boolean>(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const foundItem = items?.find((i) => i._id === item._id);
+    setIsWishListed(Boolean(foundItem || item?.isWishListed));
+  }, [items, item]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
