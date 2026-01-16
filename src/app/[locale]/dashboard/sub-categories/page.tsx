@@ -1,5 +1,4 @@
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { fetchSubCategories } from "@/hooks/react-query/useSubCategoriesQuery";
 import { fetchCategories } from "@/hooks/react-query/useCategoriesQuery";
 import { Category } from "@/types/category.type";
