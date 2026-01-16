@@ -17,12 +17,12 @@ export default async function Page() {
   if (accessToken) {
     const catsResp = await fetchCategories({
       token: accessToken,
-      limit: PAGINATION_LIMITS.CATEGORIES,
+      limit: 100,
     });
 
     const subCatsResp = await fetchSubCategories({
       token: accessToken,
-      limit: PAGINATION_LIMITS.SUB_CATEGORIES,
+      limit: 200,
     });
 
     categories = catsResp?.data || [];
