@@ -112,7 +112,7 @@ const editFormSchema = (
       .array(z.string())
       .min(1, {
         message: t(
-          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.required"
+          "routes.dashboard.routes.products.components.EditProductForm.validations.type.required"
         ),
       })
       .refine(
@@ -161,6 +161,8 @@ const EditProductForm = ({
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
 
+  const [deletedImages, setDeletedImages] = useState<string[]>([]);
+  const [initialImages] = useState<string[]>(product?.images || []);
   const [prodImages, setProdImages] = useState<{
     mainImage: { file: File | null; url: string };
     images: { files: File[]; urls: string[] };
@@ -232,18 +234,38 @@ const EditProductForm = ({
     files?: File[] | null;
     urls?: string[] | null;
   }) => {
-    const files = data.files ?? [];
+    const newFiles = data.files ?? [];
     const urls = data.urls ?? [];
 
-    setProdImages((prev) => ({
-      ...prev,
-      images: {
-        files,
-        urls,
-      },
-    }));
+    setProdImages((prev) => {
+      // merge files by reference-safe comparison
+      const mergedFiles = [
+        ...prev.images.files,
+        ...newFiles.filter(
+          (f) =>
+            !prev.images.files.some(
+              (pf) =>
+                pf.name === f.name &&
+                pf.size === f.size &&
+                pf.lastModified === f.lastModified
+            )
+        ),
+      ];
 
-    form.setValue("images", urls);
+      return {
+        ...prev,
+        images: {
+          files: mergedFiles,
+          urls,
+        },
+      };
+    });
+
+    const removed = initialImages.filter(
+      (originalUrl) => !urls.includes(originalUrl)
+    );
+
+    setDeletedImages(removed);
   };
 
   const formSchema = editFormSchema(t, activeTypeHintConfigsList);
@@ -314,11 +336,15 @@ const EditProductForm = ({
         formData.append("mainImage", prodImages.mainImage.file);
       }
 
-      if (prodImages.images?.files?.length) {
+      if (prodImages.images.files.length) {
         prodImages.images.files.forEach((file) => {
           formData.append("images", file);
         });
       }
+
+      deletedImages.forEach((url) => {
+        formData.append("deletedImages[]", url);
+      });
 
       // Handle numeric fields explicitly (only once)
       if (data.availableCount !== undefined) {
@@ -398,17 +424,6 @@ const EditProductForm = ({
       tags.map((tag) => tag.text)
     );
   }, [form, tags]);
-
-  useEffect(() => {
-    const subscription = form.watch((value, { name, type }) => {
-      console.log(
-        `📝 Form value changed (field: ${name}, type: ${type}):`,
-        value
-      );
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form]);
 
   useEffect(() => {
     if (product && prodCat && prodSubCat) {

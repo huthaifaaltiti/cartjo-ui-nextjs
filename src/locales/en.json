@@ -983,6 +983,9 @@
                 "price": {
                   "min": "Price must be at least 1"
                 },
+                "type": {
+                  "required": "Type is required"
+                },
                 "totalAmountCount": {
                   "min": "Total amount count must be at least 1"
                 },
@@ -1106,6 +1109,9 @@
                 "subCategory": {
                   "required": "SubCategory is required"
                 },
+                "type": {
+                  "required": "Type is required"
+                },
                 "tags": {
                   "min": "Add one tag at least"
                 },
@@ -1169,7 +1175,7 @@
                 "failedCreation": "Logo creation failed"
               }
             },
-            "EditCategoryForm": {
+            "EditLogoForm": {
               "fields": {
                 "logoImage": {
                   "label": "Logo image",
