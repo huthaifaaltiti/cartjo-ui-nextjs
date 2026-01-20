@@ -111,7 +111,7 @@ const createFormSchema = (
       .array(z.string())
       .min(1, {
         message: t(
-          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.required"
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.type.required"
         ),
       })
       .refine(
@@ -213,18 +213,32 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
     files?: File[] | null;
     urls?: string[] | null;
   }) => {
-    const files = data.files ?? [];
+    const newFiles = data.files ?? [];
     const urls = data.urls ?? [];
 
-    setProdImages((prev) => ({
-      ...prev,
-      images: {
-        files,
-        urls,
-      },
-    }));
+    setProdImages((prev) => {
+      // merge files by reference-safe comparison
+      const mergedFiles = [
+        ...prev.images.files,
+        ...newFiles.filter(
+          (f) =>
+            !prev.images.files.some(
+              (pf) =>
+                pf.name === f.name &&
+                pf.size === f.size &&
+                pf.lastModified === f.lastModified
+            )
+        ),
+      ];
 
-    form.setValue("images", urls);
+      return {
+        ...prev,
+        images: {
+          files: mergedFiles,
+          urls,
+        },
+      };
+    });
   };
 
   const formSchema = createFormSchema(t, activeTypeHintConfigsList);
