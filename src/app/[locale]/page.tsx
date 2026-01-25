@@ -20,8 +20,15 @@ import HomeShowcase from "@/components/user/home/HomeShowcase";
 import SelectedCategoriesItems from "@/components/user/home/SelectedCategoriesItems";
 import Footer from "@/components/Footer";
 import { Locale } from "@/types/locale";
+import { DataResponse } from "@/types/service-response.type";
+import { Logo } from "@/types/logo";
+import { getActiveLogoQueryOptions } from "@/hooks/react-query/useLogosQuery";
 
-export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
   const { locale } = await params;
 
   const token = await getAccessTokenFromServerSession();
@@ -31,28 +38,32 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
     queryClient.fetchQuery(getActiveCategoriesQueryOptions(locale || "en")),
     queryClient.prefetchQuery(
       getActiveShowcasesQueryOptions(
-        PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE
-      )
+        PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE,
+      ),
     ),
     queryClient.prefetchQuery(getActiveBannersQueryOptions(locale || "en")),
   ]);
 
   const categories = categoriesResult?.data ?? [];
   const activeCategories = categories.filter(
-    (c: Category) => c.isActive && !c.isDeleted
+    (c: Category) => c.isActive && !c.isDeleted,
   );
 
   const randomCategories = getRandomItems(
     activeCategories,
-    SELECTED_CATEGORIES_COUNT
+    SELECTED_CATEGORIES_COUNT,
   );
 
   await Promise.all(
     randomCategories.map((c: Category) =>
       queryClient.prefetchQuery(
-        getCategoriesPicksQueryOptions(c._id, "en", token ?? "")
-      )
-    )
+        getCategoriesPicksQueryOptions(c._id, "en", token ?? ""),
+      ),
+    ),
+  );
+
+  await queryClient.prefetchQuery<DataResponse<Logo>>(
+    getActiveLogoQueryOptions({ token, lang: locale }),
   );
 
   const dehydratedState = dehydrate(queryClient);
