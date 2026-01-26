@@ -92,6 +92,7 @@
       "updatedBy": "Updated By",
       "notFound": "Not Found",
       "&": "&",
+      "or": "or",
       "clearDate": "Clear Date"
     },
     "date": {
@@ -344,11 +345,12 @@
     "auth": {
       "components": {
         "AuthTabs": {
-          "login": "Log In",
+          "login": "Sign In",
           "register": "New User?",
           "components": {
             "login": {
-              "hint": "If you have an account with CartJO, sign in with your identifier.",
+              "preHint": "Access your account or create a new one instantly with Google.",
+              "hint": "Use your CartJO credentials to sign in manually",
               "dataSet": {
                 "username": {
                   "label": "Account Identifier",
@@ -368,7 +370,7 @@
                 }
               },
               "actions": {
-                "proceed": "Log In"
+                "proceed": "Sign In"
               },
               "validations": {
                 "identifier": {
@@ -381,11 +383,22 @@
                 }
               },
               "api": {
-                "loginFailed": "Login failed"
+                "loginFailed": "Login failed",
+                "loginSuccess": "Log In Successfully"
+              },
+              "errors": {
+                "google": {
+                  "noCode": "Google authentication failed. Please try again.",
+                  "emailNotProvided": "Your Google account does not have an email address.",
+                  "authFailed": "Unable to authenticate with Google. Please try again later.",
+                  "loginFailed": "Google login failed. Please try again.",
+                  "unknown": "Something went wrong while signing in with Google."
+                }
               }
             },
             "register": {
               "hint": "There are many advantages to creating an account: the payment process is faster, shipment tracking is possible and much more.",
+              "formTitle": "Fill up CartJO registration form",
               "note": "Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our",
               "termsAndConditions": "Terms & Conditions.",
               "privacyPolicy": "privacy policy",
@@ -436,7 +449,9 @@
                 }
               },
               "actions": {
-                "proceed": "Register"
+                "proceed": "Sign up",
+                "signUpWithGoogle": "Sign Up with Google",
+                "signInWithGoogle": "Sign In with Google"
               },
               "validations": {
                 "firstName": {

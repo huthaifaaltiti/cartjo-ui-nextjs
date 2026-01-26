@@ -50,6 +50,7 @@ const LoginForm = () => {
   const { reVerify } = useVerifyEmail();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [googleHandled, setGoogleHandled] = useState(false);
 
   const [resend] = useQueryState("resend", {
     defaultValue: false,
@@ -63,6 +64,64 @@ const LoginForm = () => {
     defaultValue: "",
     parse: (value) => String(value),
   });
+  const [authToken] = useQueryState("authToken", {
+    defaultValue: "",
+    parse: (value) => String(value),
+  });
+  const [authError] = useQueryState("authError", {
+    defaultValue: "",
+  });
+
+  const authErrorMessages: Record<string, string> = {
+    GOOGLE_NO_CODE: t(
+      "routes.auth.components.AuthTabs.components.login.errors.google.noCode",
+    ),
+    GOOGLE_EMAIL_MISSING: t(
+      "routes.auth.components.AuthTabs.components.login.errors.google.emailMissing",
+    ),
+    GOOGLE_AUTH_FAILED: t(
+      "routes.auth.components.AuthTabs.components.login.errors.google.failed",
+    ),
+  };
+
+  useEffect(() => {
+    if (!authError) return;
+
+    showErrorToast({
+      title: t("general.toast.title.error"),
+      description:
+        authErrorMessages[authError] || t("general.toast.defaultError"),
+      dismissText: t("general.toast.dismissText"),
+    });
+
+    // clean URL
+    router.replace("/auth", { scroll: false });
+  }, [authError, router, t]);
+
+  useEffect(() => {
+    if (!authToken || googleHandled) return;
+
+    setGoogleHandled(true);
+
+    signIn("credentials", {
+      token: authToken,
+      redirect: false,
+    }).then((res) => {
+      if (res?.ok) {
+        router.replace(redirectTo || "/");
+
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+          description: t(
+            "routes.auth.components.AuthTabs.components.login.api.loginSuccess",
+          ),
+          dismissText: t("general.toast.dismissText"),
+        });
+      } else {
+        router.replace("/auth?error=google_login_failed");
+      }
+    });
+  }, [authToken, googleHandled, redirectTo, router]);
 
   useEffect(() => {
     dispatch(resetLoginState());
@@ -120,12 +179,12 @@ const LoginForm = () => {
       .string()
       .min(3, {
         message: t(
-          "routes.auth.components.AuthTabs.components.login.validations.identifier.min"
+          "routes.auth.components.AuthTabs.components.login.validations.identifier.min",
         ),
       })
       .max(50, {
         message: t(
-          "routes.auth.components.AuthTabs.components.login.validations.identifier.max"
+          "routes.auth.components.AuthTabs.components.login.validations.identifier.max",
         ),
       })
       .refine(
@@ -135,13 +194,13 @@ const LoginForm = () => {
           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), // email pattern
         {
           message: t(
-            "routes.auth.components.AuthTabs.components.login.validations.identifier.pattern"
+            "routes.auth.components.AuthTabs.components.login.validations.identifier.pattern",
           ),
-        }
+        },
       ),
     password: z.string().min(6, {
       message: t(
-        "routes.auth.components.AuthTabs.components.login.validations.password.min"
+        "routes.auth.components.AuthTabs.components.login.validations.password.min",
       ),
     }),
   });
@@ -179,7 +238,7 @@ const LoginForm = () => {
             <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
               <FormLabel className={"text-sm font-normal"}>
                 {t(
-                  "routes.auth.components.AuthTabs.components.login.dataSet.username.label"
+                  "routes.auth.components.AuthTabs.components.login.dataSet.username.label",
                 )}
               </FormLabel>
               <FormControl>
@@ -190,14 +249,14 @@ const LoginForm = () => {
                       : "placeholder:text-left"
                   }`}
                   placeholder={t(
-                    "routes.auth.components.AuthTabs.components.login.dataSet.username.placeholder"
+                    "routes.auth.components.AuthTabs.components.login.dataSet.username.placeholder",
                   )}
                   {...field}
                 />
               </FormControl>
               <FormDescription className="text-xs text-text-primary-100">
                 {t(
-                  "routes.auth.components.AuthTabs.components.login.dataSet.username.desc"
+                  "routes.auth.components.AuthTabs.components.login.dataSet.username.desc",
                 )}
               </FormDescription>
               <FormMessage />
@@ -214,7 +273,7 @@ const LoginForm = () => {
               <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
                 <FormLabel className="text-sm text-text-primary-400 font-normal">
                   {t(
-                    "routes.auth.components.AuthTabs.components.login.dataSet.password.label"
+                    "routes.auth.components.AuthTabs.components.login.dataSet.password.label",
                   )}
                 </FormLabel>
                 <FormControl>
@@ -224,7 +283,7 @@ const LoginForm = () => {
                       type={showPassword ? "text" : "password"}
                       className={`placeholder:text-xs text-xs`}
                       placeholder={t(
-                        "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder"
+                        "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder",
                       )}
                       {...field}
                     />
@@ -252,10 +311,10 @@ const LoginForm = () => {
           withAnimate={true}
           dir={dir}
           label={t(
-            "routes.auth.components.AuthTabs.components.login.actions.proceed"
+            "routes.auth.components.AuthTabs.components.login.actions.proceed",
           )}
           loadingLabel={t(
-            "routes.auth.components.AuthTabs.components.login.actions.proceed"
+            "routes.auth.components.AuthTabs.components.login.actions.proceed",
           )}
         />
       </form>
