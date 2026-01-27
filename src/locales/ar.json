@@ -369,7 +369,8 @@
                 }
               },
               "api": {
-                "loginFailed": "فشل تسجيل الدخول"
+                "loginFailed": "فشل تسجيل الدخول",
+                 "loginSuccess": "تم تسجيل الدخول بنجاح"
               }
             },
             "register": {
@@ -2141,7 +2142,8 @@
             "quickActions": {
               "orders": "الطلبات",
               "returns": "المرتجعات",
-              "wishlist": "قائمة الرغبات"
+              "wishlist": "قائمة الرغبات",
+              "cart": "عربة المنتجات"
             }
           },
           "UserAccountMenu": {

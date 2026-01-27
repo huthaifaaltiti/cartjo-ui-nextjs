@@ -54,7 +54,7 @@ const UserProfileContent = ({
           message={
             error?.message ||
             t(
-              "routes.user.layout.routes.profile.components.UserProfileContent.errors.failed"
+              "routes.user.layout.routes.profile.components.UserProfileContent.errors.failed",
             )
           }
         />
@@ -66,8 +66,12 @@ const UserProfileContent = ({
     return (
       <div className={containerClass}>
         <NoData
-          title={t("routes.user.layout.routes.profile.components.UserProfileContent.noData.title")}
-          description={t("routes.user.layout.routes.profile.components.UserProfileContent.noData.desc")}
+          title={t(
+            "routes.user.layout.routes.profile.components.UserProfileContent.noData.title",
+          )}
+          description={t(
+            "routes.user.layout.routes.profile.components.UserProfileContent.noData.desc",
+          )}
         />
       </div>
     );
