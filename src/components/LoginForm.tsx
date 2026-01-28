@@ -50,7 +50,6 @@ const LoginForm = () => {
   const { reVerify } = useVerifyEmail();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [googleHandled, setGoogleHandled] = useState(false);
 
   const [resend] = useQueryState("resend", {
     defaultValue: false,
@@ -64,64 +63,6 @@ const LoginForm = () => {
     defaultValue: "",
     parse: (value) => String(value),
   });
-  const [authToken] = useQueryState("authToken", {
-    defaultValue: "",
-    parse: (value) => String(value),
-  });
-  const [authError] = useQueryState("authError", {
-    defaultValue: "",
-  });
-
-  const authErrorMessages: Record<string, string> = {
-    GOOGLE_NO_CODE: t(
-      "routes.auth.components.AuthTabs.components.login.errors.google.noCode",
-    ),
-    GOOGLE_EMAIL_MISSING: t(
-      "routes.auth.components.AuthTabs.components.login.errors.google.emailMissing",
-    ),
-    GOOGLE_AUTH_FAILED: t(
-      "routes.auth.components.AuthTabs.components.login.errors.google.failed",
-    ),
-  };
-
-  useEffect(() => {
-    if (!authError) return;
-
-    showErrorToast({
-      title: t("general.toast.title.error"),
-      description:
-        authErrorMessages[authError] || t("general.toast.defaultError"),
-      dismissText: t("general.toast.dismissText"),
-    });
-
-    // clean URL
-    router.replace("/auth", { scroll: false });
-  }, [authError, router, t]);
-
-  useEffect(() => {
-    if (!authToken || googleHandled) return;
-
-    setGoogleHandled(true);
-
-    signIn("credentials", {
-      token: authToken,
-      redirect: false,
-    }).then((res) => {
-      if (res?.ok) {
-        router.replace(redirectTo || "/");
-
-        showSuccessToast({
-          title: t("general.toast.title.success"),
-          description: t(
-            "routes.auth.components.AuthTabs.components.login.api.loginSuccess",
-          ),
-          dismissText: t("general.toast.dismissText"),
-        });
-      } else {
-        router.replace("/auth?error=google_login_failed");
-      }
-    });
-  }, [authToken, googleHandled, redirectTo, router]);
 
   useEffect(() => {
     dispatch(resetLoginState());
@@ -132,6 +73,8 @@ const LoginForm = () => {
         description: message,
         dismissText: t("general.toast.dismissText"),
       });
+
+      console.log({ token });
 
       // Sign/NextAuth
       signIn("credentials", { token, redirect: false }).then((res) => {

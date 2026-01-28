@@ -549,6 +549,19 @@
               "redirectingMessage": "Redirecting to login page."
             }
           }
+        },
+        "callback": {
+          "components": {
+            "AuthCallbackView": {
+              "providers": {
+                "google": "Google",
+                "default": "your account"
+              },
+              "loading": "Signing you in with {provider}…",
+              "success": "Login successful! Redirecting…",
+              "error": "Authentication failed. Redirecting…"
+            }
+          }
         }
       }
     },

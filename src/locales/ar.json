@@ -526,6 +526,19 @@
               "redirectingMessage": "يتم الآن تحويلك إلى صفحة تسجيل الدخول."
             }
           }
+        },
+        "callback": {
+          "components": {
+            "AuthCallbackView": {
+              "providers": {
+                "google": "جوجل",
+                "default": "حسابك"
+              },
+              "loading": "تسجيل الدخول باستخدام {provider}…",
+              "success": "تم تسجيل الدخول بنجاح! إعادة التوجيه…",
+              "error": "فشل المصادقة. إعادة التوجيه…"
+            }
+          }
         }
       }
     },
