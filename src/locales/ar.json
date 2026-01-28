@@ -90,6 +90,7 @@
       "updatedBy": "تم التحديث بواسطة",
       "notFound": "غير موجود",
       "&": "و",
+      "or": "أو",
       "clearDate": "أعد ضبط التاريخ والوقت"
     },
     "date": {
@@ -334,7 +335,8 @@
           "register": "مستخدم جديد؟",
           "components": {
             "login": {
-              "hint": "إذا كان لديك حساب لدى كارت جو، قم بتسجيل الدخول باستخدام المعرَّف الخاص بك.",
+              "preHint": "يمكنك الوصول إلى حسابك أو إنشاء حساب جديد على الفور باستخدام جوجل.",
+              "hint": "استخدم بيانات اعتماد كارت جو الخاصة بك لتسجيل الدخول يدويًا",
               "dataSet": {
                 "username": {
                   "label": "معرَّف المستخدم",
@@ -367,11 +369,13 @@
                 }
               },
               "api": {
-                "loginFailed": "فشل تسجيل الدخول"
+                "loginFailed": "فشل تسجيل الدخول",
+                "loginSuccess": "تم تسجيل الدخول بنجاح"
               }
             },
             "register": {
               "hint": "هناك العديد من المزايا لإنشاء حساب؛ عمليّات دفع مالية أسرع، تَتبُّع الشحنة ممكن، وأكثر من ذلك بكثير.",
+              "formTitle": "املأ نموذج التسجيل الخاص بنا",
               "note": "سيتم استخدام بياناتك الشخصية لدعم تجربتك في جميع أنحاء هذا الموقع، لإدارة الوصول إلى حسابك، ولأغراض أخرى موصوفة في",
               "privacyPolicy": "سياسة الخصوصية الخاصة بنا",
               "termsAndConditions": "الشروط والأحكام.",
@@ -422,7 +426,9 @@
                 }
               },
               "actions": {
-                "proceed": "التسجيل"
+                "proceed": "التسجيل",
+                "signUpWithGoogle": "التسجيل باستخدام جوجل",
+                "signInWithGoogle": "تسجيل الدخول باستخدام جوجل"
               },
               "validations": {
                 "firstName": {
@@ -518,6 +524,19 @@
               "backButton": "رجوع",
               "resetButton": "إعادة تعيين كلمة المرور",
               "redirectingMessage": "يتم الآن تحويلك إلى صفحة تسجيل الدخول."
+            }
+          }
+        },
+        "callback": {
+          "components": {
+            "AuthCallbackView": {
+              "providers": {
+                "google": "جوجل",
+                "default": "حسابك"
+              },
+              "loading": "تسجيل الدخول باستخدام {provider}…",
+              "success": "تم تسجيل الدخول بنجاح! إعادة التوجيه…",
+              "error": "فشل المصادقة. إعادة التوجيه…"
             }
           }
         }
@@ -2136,7 +2155,8 @@
             "quickActions": {
               "orders": "الطلبات",
               "returns": "المرتجعات",
-              "wishlist": "قائمة الرغبات"
+              "wishlist": "قائمة الرغبات",
+              "cart": "عربة المنتجات"
             }
           },
           "UserAccountMenu": {
@@ -2202,6 +2222,46 @@
               },
               "UserProfilePersonalInfo": {
                 "title": "المعلومات الشخصية"
+              },
+              "UserProfilePasswordInfo": {
+                "title": "كلمة مرور الحساب"
+              },
+              "UserProfilePasswordInfoContent": {
+                "dataSet": {
+                  "currentPassword": {
+                    "label": "كلمة المرور الحالية",
+                    "placeholder": "كلمة المرور الحالية",
+                    "desc": "كلمة المرور الحالية"
+                  },
+                  "newPassword": {
+                    "label": "كلمة المرور الجديدة",
+                    "placeholder": "كلمة المرور الجديدة",
+                    "desc": "كلمة المرور الجديدة"
+                  },
+                  "confirmPassword": {
+                    "label": "تأكيد كلمة المرور",
+                    "placeholder": "تأكيد كلمة المرور",
+                    "desc": "تأكيد كلمة المرور"
+                  }
+                },
+                "actions": {
+                  "proceed": "تسجيل"
+                },
+                "validations": {
+                  "currentPassword": {
+                    "required": "كلمة المرور الحالية مطلوبة"
+                  },
+                  "newPassword": {
+                    "doesNotMatch": "كلمتا المرور غير متطابقتين",
+                    "required": "كلمة المرور الجديدة مطلوبة"
+                  },
+                  "confirmPassword": {
+                    "doesNotMatch": "كلمتا المرور غير متطابقتين"
+                  }
+                },
+                "api": {
+                  "registrationFailed": "فشل التسجيل"
+                }
               },
               "UserProfilePersonalInfoContent": {
                 "dataSet": {

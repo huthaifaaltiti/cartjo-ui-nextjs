@@ -13,6 +13,7 @@ import ErrorMessage from "@/components/shared/ErrorMessage";
 import { useTranslations } from "next-intl";
 import UserProfileSubmitBtnLoading from "./UserProfileSubmitBtnLoading";
 import NoData from "@/components/shared/NoData";
+import UserProfilePasswordInfo from "./personal-info/UserProfilePasswordInfo";
 
 const UserProfileContent = ({
   userId,
@@ -54,7 +55,7 @@ const UserProfileContent = ({
           message={
             error?.message ||
             t(
-              "routes.user.layout.routes.profile.components.UserProfileContent.errors.failed"
+              "routes.user.layout.routes.profile.components.UserProfileContent.errors.failed",
             )
           }
         />
@@ -66,8 +67,12 @@ const UserProfileContent = ({
     return (
       <div className={containerClass}>
         <NoData
-          title={t("routes.user.layout.routes.profile.components.UserProfileContent.noData.title")}
-          description={t("routes.user.layout.routes.profile.components.UserProfileContent.noData.desc")}
+          title={t(
+            "routes.user.layout.routes.profile.components.UserProfileContent.noData.title",
+          )}
+          description={t(
+            "routes.user.layout.routes.profile.components.UserProfileContent.noData.desc",
+          )}
         />
       </div>
     );
@@ -79,6 +84,7 @@ const UserProfileContent = ({
         <UserProfileContextProvider>
           <UserProfileContactInfo user={user!} />
           <UserProfilePersonalInfo user={user!} />
+          <UserProfilePasswordInfo />
           <UserProfileSubmitBtn />
         </UserProfileContextProvider>
       </div>

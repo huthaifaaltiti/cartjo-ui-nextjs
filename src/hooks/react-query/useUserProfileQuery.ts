@@ -21,11 +21,13 @@ export const fetchMyProfile = async ({
 
   if (lang) url.searchParams.append("lang", lang.toString());
 
-  return fetcher<DataResponse<User>>(url, {
+  const response = await fetcher<DataResponse<User>>(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  
+  return response;
 };
 
 export const useUserProfileQuery = (userId: string | null | undefined) => {
