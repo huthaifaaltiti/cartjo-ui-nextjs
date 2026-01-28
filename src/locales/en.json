@@ -2220,6 +2220,46 @@
               "UserProfilePersonalInfo": {
                 "title": "Personal Information"
               },
+              "UserProfilePasswordInfo": {
+                "title": "Account Password"
+              },
+              "UserProfilePasswordInfoContent": {
+                "dataSet": {
+                  "currentPassword": {
+                    "label": "Current Password",
+                    "placeholder": "Current Password",
+                    "desc": "Current Password"
+                  },
+                  "newPassword": {
+                    "label": "New Password",
+                    "placeholder": "New Password",
+                    "desc": "New Password"
+                  },
+                  "confirmPassword": {
+                    "label": "Confirm Password",
+                    "placeholder": "Confirm Password",
+                    "desc": "Confirm Password"
+                  }
+                },
+                "actions": {
+                  "proceed": "Register"
+                },
+                "validations": {
+                  "currentPassword": {
+                    "required": "Current password is required"
+                  },
+                  "newPassword": {
+                    "doesNotMatch": "Passwords does not match",
+                    "required": "New password is required"
+                  },
+                  "confirmPassword": {
+                    "doesNotMatch": "Passwords does not match"
+                  }
+                },
+                "api": {
+                  "registrationFailed": "Registration failed"
+                }
+              },
               "UserProfilePersonalInfoContent": {
                 "dataSet": {
                   "firstName": {
@@ -2470,8 +2510,8 @@
           "removedFromCartLabel": "Removed from cart"
         },
         "CartOrderStatus": {
-          "items":"Items",
-          "item":"Item",
+          "items": "Items",
+          "item": "Item",
           "title": "Order Summary",
           "subtotal": "Subtotal",
           "total": "Total",

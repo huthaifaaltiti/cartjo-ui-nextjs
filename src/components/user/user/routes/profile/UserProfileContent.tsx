@@ -13,6 +13,7 @@ import ErrorMessage from "@/components/shared/ErrorMessage";
 import { useTranslations } from "next-intl";
 import UserProfileSubmitBtnLoading from "./UserProfileSubmitBtnLoading";
 import NoData from "@/components/shared/NoData";
+import UserProfilePasswordInfo from "./personal-info/UserProfilePasswordInfo";
 
 const UserProfileContent = ({
   userId,
@@ -83,6 +84,7 @@ const UserProfileContent = ({
         <UserProfileContextProvider>
           <UserProfileContactInfo user={user!} />
           <UserProfilePersonalInfo user={user!} />
+          <UserProfilePasswordInfo />
           <UserProfileSubmitBtn />
         </UserProfileContextProvider>
       </div>

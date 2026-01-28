@@ -370,7 +370,7 @@
               },
               "api": {
                 "loginFailed": "فشل تسجيل الدخول",
-                 "loginSuccess": "تم تسجيل الدخول بنجاح"
+                "loginSuccess": "تم تسجيل الدخول بنجاح"
               }
             },
             "register": {
@@ -2209,6 +2209,46 @@
               },
               "UserProfilePersonalInfo": {
                 "title": "المعلومات الشخصية"
+              },
+              "UserProfilePasswordInfo": {
+                "title": "كلمة مرور الحساب"
+              },
+              "UserProfilePasswordInfoContent": {
+                "dataSet": {
+                  "currentPassword": {
+                    "label": "كلمة المرور الحالية",
+                    "placeholder": "كلمة المرور الحالية",
+                    "desc": "كلمة المرور الحالية"
+                  },
+                  "newPassword": {
+                    "label": "كلمة المرور الجديدة",
+                    "placeholder": "كلمة المرور الجديدة",
+                    "desc": "كلمة المرور الجديدة"
+                  },
+                  "confirmPassword": {
+                    "label": "تأكيد كلمة المرور",
+                    "placeholder": "تأكيد كلمة المرور",
+                    "desc": "تأكيد كلمة المرور"
+                  }
+                },
+                "actions": {
+                  "proceed": "تسجيل"
+                },
+                "validations": {
+                  "currentPassword": {
+                    "required": "كلمة المرور الحالية مطلوبة"
+                  },
+                  "newPassword": {
+                    "doesNotMatch": "كلمتا المرور غير متطابقتين",
+                    "required": "كلمة المرور الجديدة مطلوبة"
+                  },
+                  "confirmPassword": {
+                    "doesNotMatch": "كلمتا المرور غير متطابقتين"
+                  }
+                },
+                "api": {
+                  "registrationFailed": "فشل التسجيل"
+                }
               },
               "UserProfilePersonalInfoContent": {
                 "dataSet": {

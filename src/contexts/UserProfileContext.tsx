@@ -26,6 +26,12 @@ type PersonalFormValues = {
   nationality: string;
 };
 
+type AccountPasswordFormValues = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
 // Define form type
 type FormControls<T> = {
   trigger: () => Promise<boolean>;
@@ -42,11 +48,14 @@ type UserProfileContextProps = {
   setPersonalForm: React.Dispatch<
     React.SetStateAction<FormControls<PersonalFormValues> | undefined>
   >;
+  setPasswordInfo: React.Dispatch<
+    React.SetStateAction<FormControls<AccountPasswordFormValues> | undefined>
+  >;
   isSubmitting: boolean;
 };
 
 const UserProfileContext = createContext<UserProfileContextProps | undefined>(
-  undefined
+  undefined,
 );
 
 type UserProfileContextProviderProps = {
@@ -66,20 +75,31 @@ export const UserProfileContextProvider = ({
   const [personalForm, setPersonalForm] = useState<
     FormControls<PersonalFormValues> | undefined
   >(undefined);
+  const [passwordInfo, setPasswordInfo] = useState<
+    FormControls<AccountPasswordFormValues> | undefined
+  >(undefined);
 
   const handleSubmitAll = async (): Promise<DataResponse<User> | void> => {
-    if (!contactForm || !personalForm) return;
+    if (!contactForm || !personalForm || !passwordInfo) return;
 
     try {
-      const [contactValues, personalValues, contactValid, personalValid] =
-        await Promise.all([
-          contactForm.getValues(),
-          personalForm.getValues(),
-          contactForm.trigger(),
-          personalForm.trigger(),
-        ]);
+      const [
+        contactValues,
+        personalValues,
+        contactValid,
+        personalValid,
+        passwordInfoValid,
+        passwordInfoValues,
+      ] = await Promise.all([
+        contactForm.getValues(),
+        personalForm.getValues(),
+        contactForm.trigger(),
+        personalForm.trigger(),
+        passwordInfo.trigger(),
+        passwordInfo.getValues(),
+      ]);
 
-      if (!contactValid || !personalValid) return;
+      if (!contactValid || !personalValid || !passwordInfoValid) return;
 
       const url = `${API_ENDPOINTS.USER.UPDATE_PROFILE}/${userId}`;
       const body = {
@@ -91,6 +111,8 @@ export const UserProfileContextProvider = ({
         gender: personalValues.gender,
         birthDate: personalValues.birthDate,
         nationality: personalValues.nationality,
+        newPassword: passwordInfoValues.newPassword,
+        currentPassword: passwordInfoValues.currentPassword,
         lang: locale,
       };
 
@@ -136,6 +158,7 @@ export const UserProfileContextProvider = ({
         setContactForm,
         setPersonalForm,
         isSubmitting,
+        setPasswordInfo,
       }}
     >
       {children}
@@ -148,7 +171,7 @@ export const useUserProfileContext = () => {
 
   if (!context) {
     throw new Error(
-      "UserProfileContext must be used within a UserProfileContextProvider"
+      "UserProfileContext must be used within a UserProfileContextProvider",
     );
   }
 
