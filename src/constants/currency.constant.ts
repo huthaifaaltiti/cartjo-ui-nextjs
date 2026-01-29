@@ -1,6 +1,18 @@
 export const Currency = {
-  JOD: { code: "JOD", labelAr: "دينار أردني", labelEn: "JO Dinar" },
-  USD: { code: "USD", labelAr: "دولار أمريكي", labelEn: "US Dollar" },
+  JOD: {
+    code: "JOD",
+    labelAr: "دينار أردني",
+    labelEn: "JO Dinar",
+    shortAr: "دأ",
+    shortEn: "JD",
+  },
+  USD: {
+    code: "USD",
+    labelAr: "دولار أمريكي",
+    labelEn: "US Dollar",
+    shortAr: "دإ",
+    shortEn: "US",
+  },
 } as const;
 
 export type CurrencyKey = keyof typeof Currency;
