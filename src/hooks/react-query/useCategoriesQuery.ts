@@ -8,6 +8,8 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
+import { useAuthContext } from "../useAuthContext";
+// import { handleUnauthorizedResponse } from "@/utils/handleUnauthorizedResponse";
 
 interface FetchCategoriesParams {
   token: string | null;
@@ -46,6 +48,8 @@ export const fetchCategories = async ({
 }: FetchCategoriesParams): Promise<DataListResponse<Category>> => {
   const url = new URL(`${API_ENDPOINTS.DASHBOARD.CATEGORIES.GET_ALL}`);
 
+  console.log({token})
+
   url.searchParams.append("limit", limit.toString());
   if (lang) url.searchParams.append("lang", lang);
   if (lastId) url.searchParams.append("lastId", lastId);
@@ -57,17 +61,22 @@ export const fetchCategories = async ({
     },
   });
 
+  console.log({res})
+
+  // handleUnauthorizedResponse(res, lang, "/auth?redirectTo=/dashboard/categories&resend=true");
+
   if (!res.ok) throw new Error("Could not retrieve categories");
 
   const resObj = await res.json();
+
+  console.log({resObj})
 
   return resObj;
 };
 
 export const useCategoriesQuery = (search?: string) => {
-  const { data: session } = useSession();
-  const locale = useLocale();
-  const accessToken = (session as CustomSession)?.accessToken;
+
+  const {accessToken, locale} = useAuthContext()
 
   return useInfiniteQuery<DataListResponse<Category>>({
     queryKey: ["categories", search],

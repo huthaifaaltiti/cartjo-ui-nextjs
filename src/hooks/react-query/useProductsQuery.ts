@@ -9,6 +9,7 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { CustomSession } from "@/lib/authOptions";
 import { useAuthContext } from "../useAuthContext";
+// import { handleUnauthorizedResponse } from "@/utils/handleUnauthorizedResponse";
 
 export const fetchProducts = async ({
   token,
@@ -29,6 +30,12 @@ export const fetchProducts = async ({
       Authorization: `Bearer ${token}`,
     },
   });
+
+  // handleUnauthorizedResponse(
+  //   resp,
+  //   lang,
+  //   "/auth?redirectTo=/dashboard/products&resend=true",
+  // );
 
   if (!resp.ok) throw new Error("Could not retrieve products");
 

@@ -8,6 +8,7 @@ import { CustomSession } from "@/lib/authOptions";
 import { Banner } from "@/types/banner.type";
 import { DataListResponse } from "@/types/service-response.type";
 import { Locale } from "@/types/locale";
+// import { handleUnauthorizedResponse } from "@/utils/handleUnauthorizedResponse";
 
 interface FetchActiveBannersParams {
   lang?: Locale | string;
@@ -57,7 +58,7 @@ export const fetchBanners = async ({
     },
   });
 
-  console.log({res})
+  // handleUnauthorizedResponse(res, lang, "/auth?redirectTo=/dashboard/banners&resend=true");
 
   if (!res.ok) throw new Error("Could not retrieve banners");
 

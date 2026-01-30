@@ -8,13 +8,29 @@ import NoLoggedUserState from "../../shared/NoLoggedUserState";
 import ManageDashboard from "../ManageDashboard";
 import RegularUserLoggedState from "../../shared/RegularUserLoggedState";
 import LoadingSpinner from "../../shared/LoadingSpinner";
+import { useRouter } from "next/navigation";
 
 const AuthUserDashboard = () => {
   const t = useTranslations();
+  const router = useRouter();
   const { data: sessionData, status } = useSession();
 
   const session = sessionData as ExtendedSession | null;
   const canManage = session?.user?.canManage ?? false;
+
+  // useEffect(() => {
+  //   if (status === "unauthenticated") {
+  //     router.replace("/auth");
+  //     return;
+  //   }
+
+  //   if (sessionData?.expires) {
+  //     const expiresAt = new Date(sessionData.expires);
+  //     if (expiresAt < new Date()) {
+  //       router.replace("/auth");
+  //     }
+  //   }
+  // }, [status, sessionData, router]);
 
   if (status === "loading") {
     return (

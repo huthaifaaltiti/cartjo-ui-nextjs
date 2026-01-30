@@ -10,7 +10,8 @@ export const API_ENDPOINTS = {
       VERIFY_CODE: "verify-reset-password-code",
       RESET_PASSWORD: "reset-password",
     },
-    GOOGLE:`${API_URL}/api/v1/authentication/google`
+    GOOGLE:`${API_URL}/api/v1/authentication/google`,
+    REFRESH_TOKEN:`${API_URL}/api/v1/authentication/refresh-token`
   },
   AUTHORIZATION: { LOGIN: `${API_URL}/api/v1/authorization/login` },
   DASHBOARD: {

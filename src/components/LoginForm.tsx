@@ -39,7 +39,9 @@ const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     status: loginStatus,
-    token,
+    accessToken,
+    refreshToken,
+    expiresInToken,
     message,
     isLoading,
   } = useSelector((state: RootState) => state.login);
@@ -65,19 +67,30 @@ const LoginForm = () => {
   });
 
   useEffect(() => {
-    dispatch(resetLoginState());
 
-    if (loginStatus === "success" && token) {
+
+    if (loginStatus === "success" && accessToken) {
       showSuccessToast({
         title: t("general.toast.title.success"),
         description: message,
         dismissText: t("general.toast.dismissText"),
       });
 
-      console.log({ token });
+      console.log({ accessToken });
 
       // Sign/NextAuth
-      signIn("credentials", { token, redirect: false }).then((res) => {
+      signIn("credentials", 
+        
+        // { token, redirect: false }
+{
+  redirect: false,
+  token:accessToken,
+  accessToken,
+  refreshToken,
+  expiresIn: expiresInToken,
+}
+
+      ).then((res) => {
         if (res?.ok) {
           if (resend && redirectTo) {
             router.push(redirectTo);
@@ -102,8 +115,9 @@ const LoginForm = () => {
         description: message,
         dismissText: t("general.toast.dismissText"),
       });
+          dispatch(resetLoginState());
     }
-  }, [loginStatus, token, message]);
+  }, [loginStatus, accessToken, refreshToken, expiresInToken, message]);
 
   useEffect(() => {
     if (status === "authenticated") {

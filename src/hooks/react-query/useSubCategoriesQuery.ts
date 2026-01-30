@@ -10,6 +10,7 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { CustomSession } from "@/lib/authOptions";
+// import { handleUnauthorizedResponse } from "@/utils/handleUnauthorizedResponse";
 
 interface FetchSubCategoriesParams {
   token: string;
@@ -41,6 +42,12 @@ export const fetchSubCategories = async ({
       Authorization: `Bearer ${token}`,
     },
   });
+
+  // handleUnauthorizedResponse(
+  //   res,
+  //   lang,
+  //   "/auth?redirectTo=/dashboard/sub-categories&resend=true",
+  // );
 
   const resObj = await res.json();
 

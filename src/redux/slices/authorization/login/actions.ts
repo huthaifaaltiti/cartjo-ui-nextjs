@@ -12,7 +12,9 @@ export interface LoginPayload {
 }
 
 export interface LoginResponse extends BaseResponse {
-  token?: string;
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
 }
 
 export const login = createAsyncThunk<
@@ -23,16 +25,19 @@ export const login = createAsyncThunk<
   LOGIN.LOGIN,
   async ({ identifier, password, lang = "en" }, { rejectWithValue }) => {
     try {
-      const response = await fetcher<LoginResponse>(
-        API_ENDPOINTS.AUTH.LOGIN,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ identifier, password, lang }),
-        }
-      );
+      const response = await fetcher<LoginResponse>(API_ENDPOINTS.AUTH.LOGIN, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier, password, lang }),
+      });
 
-      if (!response.token) {
+      console.log({response})
+
+      if (
+        !response.isSuccess ||
+        !response.accessToken ||
+        !response.refreshToken
+      ) {
         return rejectWithValue(response);
       }
 
@@ -40,10 +45,8 @@ export const login = createAsyncThunk<
     } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message:
-          error instanceof Error ? error.message : "Login failed",
+        message: error instanceof Error ? error.message : "Login failed",
       });
     }
-  }
+  },
 );
-

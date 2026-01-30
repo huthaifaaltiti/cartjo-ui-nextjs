@@ -6,6 +6,9 @@ export interface LoginState {
   error: object | null;
   message: string;
   token?: string | undefined;
+  accessToken?: string | undefined;
+  refreshToken?: string | undefined;
+  expiresInToken?: number | undefined;
   status?: "idle" | "loading" | "success" | "error";
 }
 
@@ -14,6 +17,9 @@ const initialState: LoginState = {
   error: null,
   message: "",
   token: undefined,
+  accessToken: undefined,
+  refreshToken: undefined,
+  expiresInToken: undefined,
   status: "idle",
 };
 
@@ -30,18 +36,24 @@ const loginSlice = createSlice({
         state.status = "loading";
       })
       .addCase(login.fulfilled, (state, { payload }) => {
-        const { token, message } = payload;
-
         state.isLoading = false;
         state.status = "success";
-        state.message = message;
-        state.token = token;
+        state.message = payload.message;
+
+        state.token = payload.accessToken;
+        state.accessToken = payload.accessToken;
+        state.refreshToken = payload.refreshToken;
+        state.expiresInToken = payload.expiresIn;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.status = "error";
         state.message = action.payload?.message || "Authentication failed";
+
         state.token = undefined;
+        state.accessToken = undefined;
+        state.refreshToken = undefined;
+        state.expiresInToken = undefined;
       });
   },
 });
