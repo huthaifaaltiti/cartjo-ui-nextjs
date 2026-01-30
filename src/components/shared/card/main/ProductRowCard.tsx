@@ -258,7 +258,7 @@ const ProductRowCard = ({
 
         <div className="space-y-3">
           <div className="w-full flex items-center justify-between gap-1">
-            <ProductPrice item={item} formatPrice={formatPrice} />
+            <ProductPrice item={item} formatPrice={formatPrice} isArabic={isArabic} />
             <ProductRating rating={item.ratings} />
           </div>
 
