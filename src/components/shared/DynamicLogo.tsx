@@ -1,49 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchActiveLogo } from "@/hooks/react-query/useLogosQuery";
+import { useEffect } from "react";
+import { useActiveLogoQuery } from "@/hooks/react-query/useLogosQuery";
 import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
 import StaticLogo from "./StaticLogo";
 import CustomImage from "../admin/shared/CustomImage";
 
 export default function DynamicLogo() {
-  const { changeLogo, setChangeLogo, accessToken, locale } =
-    useHomeEffectsContext();
+  const { changeLogo, setChangeLogo } = useHomeEffectsContext();
 
-  const [logo, setLogo] = useState<{ url: string | null; altText: string }>({
-    url: "",
-    altText: "",
-  });
+  const { data, isError, refetch } = useActiveLogoQuery();
 
   useEffect(() => {
-    const getActiveLogo = async () => {
-      if (!accessToken) return;
+    if (!changeLogo) return;
 
-      try {
-        const res = await fetchActiveLogo({ token: accessToken, lang: locale });
+    refetch().finally(() => {
+      setChangeLogo(false);
+    });
+  }, [changeLogo, refetch, setChangeLogo]);
 
-        if (res?.isSuccess) {
-          setLogo(() => ({
-            url: res?.data?.media?.url ?? null,
-            altText: res?.data?.altText ?? "Web app logo",
-          }));
+  const logoUrl = data?.data?.media?.url;
+  const altText = data?.data?.altText ?? "Web app logo";
 
-          setChangeLogo(false);
-        }
-      } catch (error) {
-        console.error("Failed to fetch active logo:", error);
-      }
-    };
-
-    getActiveLogo();
-  }, [accessToken, locale, changeLogo]);
-
-  if (!logo?.url) return <StaticLogo />;
+  if (isError) return <StaticLogo />;
+  if (!logoUrl) return null;
 
   return (
     <CustomImage
-      src={logo.url}
-      alt={logo.altText}
+      src={logoUrl}
+      alt={altText}
       fill={false}
       height={40}
       width={120}

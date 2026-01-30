@@ -74,6 +74,8 @@ const LoginForm = () => {
         dismissText: t("general.toast.dismissText"),
       });
 
+      console.log({ token });
+
       // Sign/NextAuth
       signIn("credentials", { token, redirect: false }).then((res) => {
         if (res?.ok) {
@@ -120,12 +122,12 @@ const LoginForm = () => {
       .string()
       .min(3, {
         message: t(
-          "routes.auth.components.AuthTabs.components.login.validations.identifier.min"
+          "routes.auth.components.AuthTabs.components.login.validations.identifier.min",
         ),
       })
       .max(50, {
         message: t(
-          "routes.auth.components.AuthTabs.components.login.validations.identifier.max"
+          "routes.auth.components.AuthTabs.components.login.validations.identifier.max",
         ),
       })
       .refine(
@@ -135,13 +137,13 @@ const LoginForm = () => {
           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), // email pattern
         {
           message: t(
-            "routes.auth.components.AuthTabs.components.login.validations.identifier.pattern"
+            "routes.auth.components.AuthTabs.components.login.validations.identifier.pattern",
           ),
-        }
+        },
       ),
     password: z.string().min(6, {
       message: t(
-        "routes.auth.components.AuthTabs.components.login.validations.password.min"
+        "routes.auth.components.AuthTabs.components.login.validations.password.min",
       ),
     }),
   });
@@ -179,7 +181,7 @@ const LoginForm = () => {
             <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
               <FormLabel className={"text-sm font-normal"}>
                 {t(
-                  "routes.auth.components.AuthTabs.components.login.dataSet.username.label"
+                  "routes.auth.components.AuthTabs.components.login.dataSet.username.label",
                 )}
               </FormLabel>
               <FormControl>
@@ -190,14 +192,14 @@ const LoginForm = () => {
                       : "placeholder:text-left"
                   }`}
                   placeholder={t(
-                    "routes.auth.components.AuthTabs.components.login.dataSet.username.placeholder"
+                    "routes.auth.components.AuthTabs.components.login.dataSet.username.placeholder",
                   )}
                   {...field}
                 />
               </FormControl>
               <FormDescription className="text-xs text-text-primary-100">
                 {t(
-                  "routes.auth.components.AuthTabs.components.login.dataSet.username.desc"
+                  "routes.auth.components.AuthTabs.components.login.dataSet.username.desc",
                 )}
               </FormDescription>
               <FormMessage />
@@ -214,7 +216,7 @@ const LoginForm = () => {
               <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
                 <FormLabel className="text-sm text-text-primary-400 font-normal">
                   {t(
-                    "routes.auth.components.AuthTabs.components.login.dataSet.password.label"
+                    "routes.auth.components.AuthTabs.components.login.dataSet.password.label",
                   )}
                 </FormLabel>
                 <FormControl>
@@ -224,7 +226,7 @@ const LoginForm = () => {
                       type={showPassword ? "text" : "password"}
                       className={`placeholder:text-xs text-xs`}
                       placeholder={t(
-                        "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder"
+                        "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder",
                       )}
                       {...field}
                     />
@@ -252,10 +254,10 @@ const LoginForm = () => {
           withAnimate={true}
           dir={dir}
           label={t(
-            "routes.auth.components.AuthTabs.components.login.actions.proceed"
+            "routes.auth.components.AuthTabs.components.login.actions.proceed",
           )}
           loadingLabel={t(
-            "routes.auth.components.AuthTabs.components.login.actions.proceed"
+            "routes.auth.components.AuthTabs.components.login.actions.proceed",
           )}
         />
       </form>

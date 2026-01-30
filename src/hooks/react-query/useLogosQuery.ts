@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 import { Logo } from "@/types/logo";
@@ -7,6 +7,7 @@ import { CustomSession } from "@/lib/authOptions";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { useAuthContext } from "../useAuthContext";
 
 interface FetchLogosParams {
   token: string | null;
@@ -62,6 +63,33 @@ export const fetchActiveLogo = async ({
   const resObj = await res.json();
 
   return resObj;
+};
+
+export const getActiveLogoQueryOptions = ({
+  token,
+  lang = "en",
+}: FetchLogosParams) => ({
+  queryKey: ["activeLogo", token, lang],
+  queryFn: () => {
+    if (!token) throw new Error("No access token found");
+
+    return fetchActiveLogo({
+      token,
+      lang,
+    });
+  },
+  initialPageParam: undefined,
+  staleTime: STALE_TIME,
+  gcTime: GC_TIME,
+  // enabled: !!token,
+});
+
+export const useActiveLogoQuery = () => {
+  const { accessToken, locale } = useAuthContext();
+
+  return useQuery<DataResponse<Logo>>(
+    getActiveLogoQueryOptions({ lang: locale, token: accessToken }),
+  );
 };
 
 export const useLogosQuery = (search?: string) => {
