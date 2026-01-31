@@ -141,7 +141,8 @@
       }
     },
     "buttons": {
-      "downloadReceiptPDF": "Download Receipt (PDF)"
+      "downloadReceiptPDF": "Download Receipt (PDF)",
+      "updateItem": "Update Item"
     }
   },
   "errors": {
