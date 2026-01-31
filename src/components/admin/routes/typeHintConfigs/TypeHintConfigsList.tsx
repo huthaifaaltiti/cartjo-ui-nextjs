@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import InfiniteScrollList, { GRID_TYPE } from "../../../shared/InfiniteScrollList";
+import InfiniteScrollList, { GRID_TYPE, LAYOUT_TYPE } from "../../../shared/InfiniteScrollList";
 import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
 import { TypeHintConfig } from "@/types/typeHintConfig.type";
 import { useTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintConfigsQuery";
@@ -43,7 +43,7 @@ const TypeHintConfigsList = ({ initialData }: TypeHintConfigsListProps) => {
       list={typeHintConfigs}
       fetchNextPage={fetchNextPage}
       ListItemCard={TypeHintConfigCard}
-      layout="grid"
+      layout={LAYOUT_TYPE.GRID}
       gridType={GRID_TYPE.WIDE}
       cardProps={{
         deleteTypeHintConfig,

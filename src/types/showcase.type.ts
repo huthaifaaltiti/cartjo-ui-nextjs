@@ -12,6 +12,7 @@ export interface Showcase {
   items: Product[];
   startDate: Date;
   endDate: Date;
+  isSystem: boolean;
   isActive: boolean;
   isDeleted: boolean;
   unDeletedBy: null | Actor;

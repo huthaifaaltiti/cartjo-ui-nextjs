@@ -98,20 +98,22 @@ const TypeHintConfigCard = ({
         )}
       </div>
 
-      <div className="mt-auto">
-        <TypeHintConfigCardActions
-          cardItem={typeHintConfig}
-          deleteFn={deleteTypeHintConfig}
-          unDeleteFn={unDeleteTypeHintConfig}
-          accessToken={accessToken}
-          switchUserActiveStatusFn={switchTypeHintConfigActiveStatus}
-          queryKey={queryKey}
-          showEditButton={true}
-          renderEditForm={() => (
-            <EditTypeHintConfigForm typeHintConfig={typeHintConfig} />
-          )}
-        />
-      </div>
+      {!typeHintConfig.isSystem && (
+        <div className="mt-auto">
+          <TypeHintConfigCardActions
+            cardItem={typeHintConfig}
+            deleteFn={deleteTypeHintConfig}
+            unDeleteFn={unDeleteTypeHintConfig}
+            accessToken={accessToken}
+            switchUserActiveStatusFn={switchTypeHintConfigActiveStatus}
+            queryKey={queryKey}
+            showEditButton={true}
+            renderEditForm={() => (
+              <EditTypeHintConfigForm typeHintConfig={typeHintConfig} />
+            )}
+          />
+        </div>
+      )}
     </div>
   );
 };

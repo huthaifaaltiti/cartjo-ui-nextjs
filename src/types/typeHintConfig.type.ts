@@ -11,6 +11,7 @@ export interface TypeHintConfig {
   priority: number;
   startDate: Date | null;
   endDate: Date | null;
+  isSystem: boolean;
   isActive: boolean;
   isDeleted: boolean;
   deletedAt: Date | null;
