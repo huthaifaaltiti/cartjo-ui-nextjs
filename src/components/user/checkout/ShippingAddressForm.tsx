@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -52,14 +53,14 @@ const shippingFormSchema = (t: (key: string) => string) =>
         lng: z.number(),
         name: z.string(),
       })
-      .refine((val) => !!val, { message: t("errors.mapLocationRequired") }),
+      .optional(),
   });
 
 type FormData = z.infer<ReturnType<typeof shippingFormSchema>>;
 
 const ShippingAddressForm = ({ onComplete }: ShippingAddressFormProps) => {
   const t = useTranslations("routes.checkout.components.ShippingAddressForm");
-  const { isArabic } = useSelector((state: RootState) => state.general);
+  const { isArabic, dir } = useSelector((state: RootState) => state.general);
 
   const formSchema = shippingFormSchema(t);
   const form = useForm<FormData>({
@@ -156,7 +157,11 @@ const ShippingAddressForm = ({ onComplete }: ShippingAddressFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("city")}</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                dir={dir}
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+              >
                 <FormControl>
                   <SelectTrigger className="h-11">
                     <SelectValue placeholder={t("city")} />
@@ -188,6 +193,9 @@ const ShippingAddressForm = ({ onComplete }: ShippingAddressFormProps) => {
                   onChange={(loc) => handleLocationChange(loc)}
                 />
                 <FormMessage />
+                <FormDescription className="text-xs text-text-primary-100">
+                  {t("locationHint")}
+                </FormDescription>
               </FormItem>
             )}
           />

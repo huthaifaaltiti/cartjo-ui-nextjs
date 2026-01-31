@@ -93,11 +93,7 @@ const editFormSchema = (
         "routes.dashboard.routes.products.components.EditProductForm.validations.desc_en.minChars",
       ),
     }),
-    price: z.number().min(1, {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.price.min",
-      ),
-    }),
+    price: z.number(),
     currency: z.enum(currencyValues as [string, ...string[]], {
       message: t(
         "routes.dashboard.routes.products.components.EditProductForm.validations.currency.notSupported",
@@ -1051,7 +1047,7 @@ const EditProductForm = ({
           >
             {registerMutation.isPending
               ? t("general.loadingStates.loadingApi")
-              : t("general.buttons.updateItem")}
+              : t("general.actions.updateItem")}
           </Button>
         </form>
       </Form>

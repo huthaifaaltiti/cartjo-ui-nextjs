@@ -68,18 +68,10 @@ export default function PaymentForm({
     if (!paymentData || !verifiedOrder || !shippingAddress || tokenReceived) return;
 
     const handleAPSResponse = async (event: MessageEvent) => {
-      console.log('inside handleAPSResponse')
 
-      console.log(event.origin.includes("payfort.com"))
-
-      console.log({event})
-      // Security: verify origin is from PayFort
-      // if (!event.origin.includes("payfort.com")) return;
 
       try {
         const responseData = event.data;
-
-        console.log({responseData})
         
         // Check if this is the tokenization response
         if (responseData.service_command === "TOKENIZATION") {

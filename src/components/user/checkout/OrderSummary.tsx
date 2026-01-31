@@ -11,7 +11,9 @@ import BackToHomePage from "@/components/shared/BackToHomePage";
 export default function OrderSummary() {
   const t = useTranslations("routes.checkout.components.OrderSummary");
   const { totalAmount } = useSelector((state: RootState) => state.cart);
-  const { currency } = useSelector((state: RootState) => state.orders);
+  const { currency, shippingAddress, deliveryCost } = useSelector(
+    (state: RootState) => state.orders,
+  );
   const { isArabic } = useSelector((state: RootState) => state.general);
 
   const { user, isSessionLoading, isAuthenticated } = useAuthContext();
@@ -29,6 +31,12 @@ export default function OrderSummary() {
       isArabic ? Currency[currency].labelAr : Currency[currency].labelEn
     }`;
 
+  const formatCurrency = (amount: number) =>
+    `${amount} ${isArabic ? Currency[currency].labelAr : Currency[currency].labelEn}`;
+
+  const getTotalWithDelivery = (): string =>
+    formatCurrency(totalAmount + (deliveryCost || 0));
+
   return (
     <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-8">
       <h2 className="text-2xl font-bold mb-6">{t("orderSummary")}</h2>
@@ -39,6 +47,25 @@ export default function OrderSummary() {
             <span>{t("subtotal")}</span>
             <span>{getTotalAmountWithCurrency()}</span>
           </div>
+
+          {/* Delivery Cost Message */}
+          {shippingAddress && (
+            <div className="flex justify-between text-sm text-slate-700 pt-2">
+              <span>
+                {t("deliveryCostMessage", {
+                  cost: formatCurrency(deliveryCost || 0),
+                })}
+              </span>
+            </div>
+          )}
+
+          {/* Total */}
+          {shippingAddress && (
+            <div className="flex justify-between font-semibold pt-2 border-t">
+              <span>{t("total")}</span>
+              <span>{getTotalWithDelivery()}</span>
+            </div>
+          )}
 
           {
             <div className="pt-4 border-t flex items-center gap-1">
