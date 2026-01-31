@@ -59,78 +59,78 @@ for (const key in Currency) {
 
 const editFormSchema = (
   t: (key: string) => string,
-  activeTypeHintConfigsList: string[]
+  activeTypeHintConfigsList: string[],
 ) =>
   z.object({
     mainImage: z.string().min(2, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.mainImage.required"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.mainImage.required",
       ),
     }),
     images: z.array(z.string()).optional(),
     name_ar: z.string().min(2, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.name_ar.minChars"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.name_ar.minChars",
       ),
     }),
     name_en: z.string().min(2, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.name_en.minChars"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.name_en.minChars",
       ),
     }),
     categoryId: z.string().min(1, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.category.required"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.category.required",
       ),
     }),
     description_ar: z.string().min(20, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.desc_ar.minChars"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.desc_ar.minChars",
       ),
     }),
     description_en: z.string().min(20, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.desc_en.minChars"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.desc_en.minChars",
       ),
     }),
     price: z.number().min(1, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.price.min"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.price.min",
       ),
     }),
     currency: z.enum(currencyValues as [string, ...string[]], {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.currency.notSupported"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.currency.notSupported",
       ),
     }),
     totalAmountCount: z.number().min(1, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.totalAmountCount.min"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.totalAmountCount.min",
       ),
     }),
     typeHint: z
       .array(z.string())
       .min(1, {
         message: t(
-          "routes.dashboard.routes.products.components.EditProductForm.validations.type.required"
+          "routes.dashboard.routes.products.components.EditProductForm.validations.type.required",
         ),
       })
       .refine(
         (values) => values.every((v) => activeTypeHintConfigsList.includes(v)),
         {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid",
           ),
-        }
+        },
       ),
     subCategoryId: z.string().min(1, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.subCategory.required"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.subCategory.required",
       ),
     }),
     tags: z.array(z.string()).min(1, {
       message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.tags.min"
+        "routes.dashboard.routes.products.components.EditProductForm.validations.tags.min",
       ),
     }),
     availableCount: z.number().optional(),
@@ -182,7 +182,7 @@ const EditProductForm = ({
       id: tag,
       text: tag,
       className: "",
-    })) || []
+    })) || [],
   );
 
   const prodTagsSuggestions = PRODUCTS_TAGS_SUGGESTIONS.map((sug) => {
@@ -194,10 +194,10 @@ const EditProductForm = ({
   });
 
   const prodCat = categories?.filter(
-    (cat) => cat?._id === product?.categoryId?._id
+    (cat) => cat?._id === product?.categoryId?._id,
   )[0];
   const prodSubCat = prodCat?.subCategories?.filter(
-    (subCat) => subCat?._id === product?.subCategoryId?._id
+    (subCat) => subCat?._id === product?.subCategoryId?._id,
   )[0];
 
   const handleTagsChange = (newTags: string[]) => {
@@ -247,8 +247,8 @@ const EditProductForm = ({
               (pf) =>
                 pf.name === f.name &&
                 pf.size === f.size &&
-                pf.lastModified === f.lastModified
-            )
+                pf.lastModified === f.lastModified,
+            ),
         ),
       ];
 
@@ -262,7 +262,7 @@ const EditProductForm = ({
     });
 
     const removed = initialImages.filter(
-      (originalUrl) => !urls.includes(originalUrl)
+      (originalUrl) => !urls.includes(originalUrl),
     );
 
     setDeletedImages(removed);
@@ -293,7 +293,7 @@ const EditProductForm = ({
 
   const selectedCategoryId = form.watch("categoryId");
   const selectedCategory: Category | undefined = categories.find(
-    (cat) => cat._id === (selectedCategoryId || prodCat?._id)
+    (cat) => cat._id === (selectedCategoryId || prodCat?._id),
   );
 
   const subCategories = selectedCategory?.subCategories || [];
@@ -363,7 +363,7 @@ const EditProductForm = ({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -421,7 +421,7 @@ const EditProductForm = ({
   useEffect(() => {
     form.setValue(
       "tags",
-      tags.map((tag) => tag.text)
+      tags.map((tag) => tag.text),
     );
   }, [form, tags]);
 
@@ -445,7 +445,7 @@ const EditProductForm = ({
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.products.components.EditProductForm.fields.mainImage.label"
+                      "routes.dashboard.routes.products.components.EditProductForm.fields.mainImage.label",
                     )}
                   </FormLabel>
                   <ImageUploader
@@ -477,7 +477,7 @@ const EditProductForm = ({
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.products.components.EditProductForm.fields.images.label"
+                      "routes.dashboard.routes.products.components.EditProductForm.fields.images.label",
                     )}
                   </FormLabel>
                   <ImageUploader
@@ -514,14 +514,14 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.name_ar.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.name_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.name_ar.placeholder"
+                          "routes.dashboard.routes.products.components.EditProductForm.fields.name_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -541,14 +541,14 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.name_en.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.name_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.name_en.placeholder"
+                          "routes.dashboard.routes.products.components.EditProductForm.fields.name_en.placeholder",
                         )}
                         {...field}
                       />
@@ -575,14 +575,14 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.desc_ar.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.desc_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         className={`${getInputClassName()} min-h-11`}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.desc_ar.placeholder"
+                          "routes.dashboard.routes.products.components.EditProductForm.fields.desc_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -602,14 +602,14 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.desc_en.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.desc_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         className={`${getInputClassName()} min-h-11`}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.desc_en.placeholder"
+                          "routes.dashboard.routes.products.components.EditProductForm.fields.desc_en.placeholder",
                         )}
                         {...field}
                       />
@@ -636,7 +636,7 @@ const EditProductForm = ({
                   <FormItem className="text-left">
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.category.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.category.label",
                       )}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
@@ -644,7 +644,7 @@ const EditProductForm = ({
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.products.components.EditProductForm.fields.category.placeholder"
+                              "routes.dashboard.routes.products.components.EditProductForm.fields.category.placeholder",
                             )}
                           />
                         </SelectTrigger>
@@ -678,7 +678,7 @@ const EditProductForm = ({
                     <FormItem className="text-left mt-4">
                       <FormLabel className="text-sm font-normal">
                         {t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.subCategory.label"
+                          "routes.dashboard.routes.products.components.EditProductForm.fields.subCategory.label",
                         )}
                       </FormLabel>
                       <Select
@@ -689,7 +689,7 @@ const EditProductForm = ({
                           <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                             <SelectValue
                               placeholder={t(
-                                "routes.dashboard.routes.products.components.EditProductForm.fields.subCategory.placeholder"
+                                "routes.dashboard.routes.products.components.EditProductForm.fields.subCategory.placeholder",
                               )}
                             />
                           </SelectTrigger>
@@ -729,7 +729,7 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.price.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.price.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -738,7 +738,7 @@ const EditProductForm = ({
                         step="any"
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.price.placeholder"
+                          "routes.dashboard.routes.products.components.EditProductForm.fields.price.placeholder",
                         )}
                         min={0}
                         {...field}
@@ -767,7 +767,7 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.currency.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.currency.label",
                       )}
                     </FormLabel>
                     <Select
@@ -779,7 +779,7 @@ const EditProductForm = ({
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.products.components.EditProductForm.fields.currency.placeholder"
+                              "routes.dashboard.routes.products.components.EditProductForm.fields.currency.placeholder",
                             )}
                           />
                         </SelectTrigger>
@@ -818,7 +818,7 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.totalAmountCount.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.totalAmountCount.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -826,7 +826,7 @@ const EditProductForm = ({
                         type="number"
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.totalAmountCount.placeholder"
+                          "routes.dashboard.routes.products.components.EditProductForm.fields.totalAmountCount.placeholder",
                         )}
                         min={0}
                         {...field}
@@ -855,7 +855,7 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.label",
                       )}
                     </FormLabel>
 
@@ -866,7 +866,7 @@ const EditProductForm = ({
                         field.onChange(
                           exists
                             ? field.value.filter((v) => v !== value)
-                            : [...field.value, value]
+                            : [...field.value, value],
                         );
                       }}
                     >
@@ -874,7 +874,7 @@ const EditProductForm = ({
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.placeholder"
+                              "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.placeholder",
                             )}
                           />
                         </SelectTrigger>
@@ -885,8 +885,8 @@ const EditProductForm = ({
                           ?.filter(
                             (th) =>
                               !SYSTEM_GENERATED_HINTS.includes(
-                                th as SystemGeneratedHint
-                              )
+                                th as SystemGeneratedHint,
+                              ),
                           )
                           ?.map((th) => (
                             <SelectItem
@@ -937,7 +937,7 @@ const EditProductForm = ({
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.products.components.EditProductForm.fields.tags.label"
+                      "routes.dashboard.routes.products.components.EditProductForm.fields.tags.label",
                     )}
                   </FormLabel>
                   <div
@@ -949,7 +949,7 @@ const EditProductForm = ({
                       tags={tags}
                       suggestions={prodTagsSuggestions}
                       placeholder={t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.tags.placeholder"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.tags.placeholder",
                       )}
                       maxTags={3}
                       onTagsChange={handleTagsChange}
@@ -978,7 +978,7 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.availableCount.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.availableCount.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -986,7 +986,7 @@ const EditProductForm = ({
                         type="number"
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.availableCount.placeholder"
+                          "routes.dashboard.routes.products.components.EditProductForm.fields.availableCount.placeholder",
                         )}
                         min={0}
                         {...field}
@@ -1015,7 +1015,7 @@ const EditProductForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.discountRate.label"
+                        "routes.dashboard.routes.products.components.EditProductForm.fields.discountRate.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -1023,7 +1023,7 @@ const EditProductForm = ({
                         type="number"
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.discountRate.placeholder"
+                          "routes.dashboard.routes.products.components.EditProductForm.fields.discountRate.placeholder",
                         )}
                         min={0}
                         {...field}
@@ -1051,9 +1051,7 @@ const EditProductForm = ({
           >
             {registerMutation.isPending
               ? t("general.loadingStates.loadingApi")
-              : t(
-                  "routes.auth.components.AuthTabs.components.register.actions.proceed"
-                )}
+              : t("general.buttons.updateItem")}
           </Button>
         </form>
       </Form>
