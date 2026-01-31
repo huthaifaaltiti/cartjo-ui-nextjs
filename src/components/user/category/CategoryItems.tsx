@@ -12,6 +12,7 @@ import CategoryProductCard from "./CategoryProductCard";
 import PriceRange from "../used-filters/PriceRange";
 import RatingRange from "../used-filters/RatingRange";
 import DateRangeWithDaysNum from "../used-filters/DateRangeWithDaysNum";
+import GridItemsSkeleton from "@/components/shared/loaders/GridItemsSkeleton";
 
 const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   const t = useTranslations();
@@ -47,14 +48,13 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
       defaultValue: 0,
       parse: (value) => Number(value),
       serialize: (value) => String(value),
-    }
+    },
   );
 
   const {
     data,
     isLoading,
     isFetching,
-    isFetched,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
@@ -68,7 +68,7 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
     ratingFrom,
     createdFrom,
     createdTo,
-    beforeNumOfDays
+    beforeNumOfDays,
   );
 
   const categoryProducts = useMemo(() => {
@@ -83,7 +83,7 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
       setPriceTo(to);
       refetch();
     },
-    [refetch, setPriceFrom, setPriceTo]
+    [refetch, setPriceFrom, setPriceTo],
   );
 
   const handleApplyRangeFilter = useCallback(
@@ -91,7 +91,7 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
       setRatingFrom(from);
       refetch();
     },
-    [refetch, setRatingFrom]
+    [refetch, setRatingFrom],
   );
 
   const handleApplyDateFilter = useCallback(
@@ -99,7 +99,7 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
       filterType: "dateRange" | "daysBefore",
       createdFromValue?: string,
       createdToValue?: string,
-      beforeNumOfDaysValue?: number
+      beforeNumOfDaysValue?: number,
     ) => {
       if (filterType === "dateRange") {
         setCreatedFrom(createdFromValue || "");
@@ -112,23 +112,23 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
       }
       refetch();
     },
-    [refetch, setCreatedFrom, setCreatedTo, setBeforeNumOfDays]
+    [refetch, setCreatedFrom, setCreatedTo, setBeforeNumOfDays],
   );
 
-  const showLoader =
-    (!isLoading &&
-      !isFetching &&
-      !isFetched &&
-      !isError &&
-      !data?.pages[0]?.isSuccess) ||
-    isLoading ||
-    isFetching;
-  const showError = isFetched && isError && error?.message;
-  const showNoData = !showLoader && !showError && categoryProducts.length === 0;
-  const showData = !showLoader && !showError && categoryProducts.length > 0;
+  const showError = isError && error?.message;
+  const showNoData = !isFetching && !showError && categoryProducts.length === 0;
+  const showData = categoryProducts.length > 0;
+  const showLoader = isLoading;
 
-  const containerClass = "w-full pt-5";
+  const containerClass = "w-full py-5";
 
+  if (showLoader) {
+    return (
+      <div className={containerClass}>
+        <GridItemsSkeleton />
+      </div>
+    );
+  }
 
   if (showError) {
     return (
