@@ -65,7 +65,9 @@
       "cancel": "Cancel",
       "goBack": "Go Back",
       "tryAgain": "Try Again",
-      "search": "Search"
+      "search": "Search",
+      "createItem": "Create Item",
+      "updateItem": "Update Item"
     },
     "others": {
       "unknown": "Unknown",
@@ -141,8 +143,7 @@
       }
     },
     "buttons": {
-      "downloadReceiptPDF": "Download Receipt (PDF)",
-      "updateItem": "Update Item"
+      "downloadReceiptPDF": "Download Receipt (PDF)"
     }
   },
   "errors": {
@@ -1012,9 +1013,6 @@
                 "desc_en": {
                   "minChars": "English desc must be at least 20 characters long"
                 },
-                "price": {
-                  "min": "Price must be at least 1"
-                },
                 "type": {
                   "required": "Type is required"
                 },
@@ -1125,9 +1123,6 @@
                 },
                 "desc_en": {
                   "minChars": "English desc must be at least 20 characters long"
-                },
-                "price": {
-                  "min": "Price must be at least 1"
                 },
                 "totalAmountCount": {
                   "min": "Total amount count must be at least 1"

@@ -65,7 +65,9 @@
       "cancel": "إلغاء",
       "goBack": "الرجوع",
       "tryAgain": "حاول مرة أخرى",
-      "search": "بحث"
+      "search": "بحث",
+      "updateItem": "تعديل العنصر",
+      "createItem": "إنشاء العنصر"
     },
     "others": {
       "unknown": "غير معروف",
@@ -138,8 +140,7 @@
       }
     },
     "buttons": {
-      "downloadReceiptPDF": "تنزيل الإيصال (PDF)",
-      "updateItem": "تعديل العنصر"
+      "downloadReceiptPDF": "تنزيل الإيصال (PDF)"
     }
   },
   "errors": {
