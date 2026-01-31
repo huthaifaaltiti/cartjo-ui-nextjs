@@ -148,7 +148,7 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
       <div className={containerClass}>
         <div className="w-full flex flex-col gap-4 mt-5">
           {/* Filters */}
-          <div className="w-full flex items-center gap-4 border-y border-grey-50/20 py-1">
+          <div className="w-full flex items-center flex-wrap gap-4 border-y border-grey-50/20 py-1">
             <PriceRange
               setPriceFrom={setPriceFrom}
               setPriceTo={setPriceTo}
@@ -186,7 +186,7 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
       <div className={containerClass}>
         <div className="w-full flex flex-col gap-4 mt-5">
           {/* Filters */}
-          <div className="w-full flex items-center gap-4 border-y border-grey-50/20 py-1">
+          <div className="w-full flex items-center flex-wrap gap-4 border-y border-grey-50/20 py-1">
             <PriceRange
               setPriceFrom={setPriceFrom}
               setPriceTo={setPriceTo}
