@@ -69,7 +69,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
           productId: product?._id,
           lang: locale,
           token: accessToken,
-        })
+        }),
       ).unwrap();
 
       if (response.isSuccess) {
@@ -112,7 +112,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
           productId: product?._id,
           lang: locale,
           token: accessToken,
-        })
+        }),
       ).unwrap();
 
       if (response.isSuccess) {
@@ -152,7 +152,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
     }
 
     router.push(
-      `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${product._id}`
+      `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${product._id}`,
     );
   }, [product, isArabic]);
 
@@ -193,7 +193,11 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
 
         <div className="space-y-3">
           <div className="w-full flex items-center justify-between gap-1">
-            <ProductPrice item={product} formatPrice={formatPrice} />
+            <ProductPrice
+              item={product}
+              formatPrice={formatPrice}
+              isArabic={isArabic}
+            />
             <ProductRating rating={product.ratings} />
           </div>
 
