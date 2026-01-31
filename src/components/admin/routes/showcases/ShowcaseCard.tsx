@@ -171,18 +171,20 @@ const ShowcaseCard = ({
         </div>
       )}
 
-      <div className="mt-auto">
-        <ShowcasesCardActions
-          cardItem={showcase}
-          deleteFn={deleteShowcase}
-          unDeleteFn={unDeleteShowcase}
-          accessToken={accessToken}
-          switchUserActiveStatusFn={switchShowcaseActiveStatus}
-          queryKey={queryKey}
-          showEditButton={true}
-          renderEditForm={() => <EditShowcaseForm showcase={showcase} />}
-        />
-      </div>
+      {!showcase.isSystem && (
+        <div className="mt-auto">
+          <ShowcasesCardActions
+            cardItem={showcase}
+            deleteFn={deleteShowcase}
+            unDeleteFn={unDeleteShowcase}
+            accessToken={accessToken}
+            switchUserActiveStatusFn={switchShowcaseActiveStatus}
+            queryKey={queryKey}
+            showEditButton={true}
+            renderEditForm={() => <EditShowcaseForm showcase={showcase} />}
+          />
+        </div>
+      )}
     </div>
   );
 };
