@@ -339,6 +339,9 @@
     "AddToCartButton": {
       "add": "ADD TO CART",
       "adding": "ADDING..."
+    },
+    "ProductPrice": {
+      "save": "Save"
     }
   },
   "routes": {

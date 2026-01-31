@@ -86,7 +86,7 @@ const HomeShowcaseContent = () => {
   if (showData) {
     return (
       <div className="w-full h-full bg-gradient-to-b from-gray-100 to-white-50">
-        <div className="w-full max-w-max py-10 flex flex-col gap-8">
+        <div className="w-full py-10 flex flex-col gap-8">
           {activeShowcasesList?.map((actSho, i) => {
             const layoutType = showcaseLayouts[i];
 

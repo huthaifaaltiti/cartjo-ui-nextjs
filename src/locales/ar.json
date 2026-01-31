@@ -325,6 +325,9 @@
     "AddToCartButton": {
       "add": "أضف إلى السلة",
       "adding": "جارٍ الإضافة..."
+    },
+    "ProductPrice": {
+      "save": "احفظ لغاية"
     }
   },
   "routes": {

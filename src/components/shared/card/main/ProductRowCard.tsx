@@ -47,7 +47,7 @@ const ProductRowCard = ({
   const t = useTranslations();
 
   const [isWishListed, setIsWishListed] = useState<boolean>(
-    item?.isWishListed || false
+    item?.isWishListed || false,
   );
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isWishListLoading, setIsWishListLoading] = useState<boolean>(false);
@@ -84,7 +84,7 @@ const ProductRowCard = ({
           product: item,
           lang: locale,
           token: accessToken,
-        })
+        }),
       ).unwrap();
 
       if (response.isSuccess) {
@@ -126,7 +126,7 @@ const ProductRowCard = ({
           productId: item?._id,
           lang: locale,
           token: accessToken,
-        })
+        }),
       ).unwrap();
 
       if (response.isSuccess) {
@@ -172,7 +172,7 @@ const ProductRowCard = ({
           quantity: 1,
           lang: locale,
           token: accessToken,
-        })
+        }),
       ).unwrap();
 
       if (response.isSuccess) {
@@ -210,7 +210,7 @@ const ProductRowCard = ({
     }
 
     router.push(
-      `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${item._id}`
+      `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${item._id}`,
     );
   }, [item, isArabic]);
 
@@ -258,7 +258,11 @@ const ProductRowCard = ({
 
         <div className="space-y-3">
           <div className="w-full flex items-center justify-between gap-1">
-            <ProductPrice item={item} formatPrice={formatPrice} />
+            <ProductPrice
+              item={item}
+              formatPrice={formatPrice}
+              isArabic={isArabic}
+            />
             <ProductRating rating={item.ratings} />
           </div>
 
