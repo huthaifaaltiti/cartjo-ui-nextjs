@@ -2345,6 +2345,9 @@
               "failedLoadData": "فشل تحميل بيانات طلباتك"
             },
             "components": {
+              "SearchUserOrders": {
+                "placeholder": "ابحث عن رقم الطلب أو الرقم المرجعي للتاجر"
+              },
               "UserOrderCard": {
                 "orderRef": "مرجع الطلب",
                 "items": "عناصر",
