@@ -28,12 +28,12 @@ export const getOrders = createAsyncThunk<
   ORDER_CONSTANTS.getOrders,
   async (
     { lang = "en", token, limit = 10, lastId, search },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const url = new URL(
         API_ENDPOINTS.ORDER.GetAll,
-        process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
+        process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL,
       );
       url.searchParams.set("lang", String(lang));
       url.searchParams.set("limit", String(limit));
@@ -59,7 +59,7 @@ export const getOrders = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const getOrder = createAsyncThunk<
@@ -92,7 +92,7 @@ export const getOrder = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const changePaymentStatus = createAsyncThunk<
@@ -109,7 +109,7 @@ export const changePaymentStatus = createAsyncThunk<
   async ({ orderId, status, lang = "en", token }, { rejectWithValue }) => {
     try {
       const url = new URL(
-        API_ENDPOINTS.ORDER.ChangePaymentStatus.replace(":id", orderId)
+        API_ENDPOINTS.ORDER.ChangePaymentStatus.replace(":id", orderId),
       );
 
       const response = await fetcher<DataResponse<Order>>(url.toString(), {
@@ -131,7 +131,7 @@ export const changePaymentStatus = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 // POST delete order -> expects body: { lang }
@@ -145,7 +145,7 @@ export const deleteOrder = createAsyncThunk<
     try {
       const url = new URL(
         API_ENDPOINTS.ORDER.Delete.replace(":id", id),
-        process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
+        process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL,
       );
 
       const response = await fetcher<DataResponse<Order>>(url.toString(), {
@@ -167,7 +167,7 @@ export const deleteOrder = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 // POST restore order -> expects body: { lang }
@@ -181,7 +181,7 @@ export const restoreOrder = createAsyncThunk<
     try {
       const url = new URL(
         API_ENDPOINTS.ORDER.UnDelete.replace(":id", id),
-        process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
+        process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL,
       );
 
       const response = await fetcher<DataResponse<Order>>(url.toString(), {
@@ -203,7 +203,7 @@ export const restoreOrder = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 // POST create order -> body same as your API expects
@@ -211,6 +211,7 @@ export const createOrder = createAsyncThunk<
   DataResponse<Order>,
   {
     amount: number;
+    deliveryCost: number;
     currency: string;
     email: string;
     merchantReference: string;
@@ -227,7 +228,7 @@ export const createOrder = createAsyncThunk<
 
     const url = new URL(
       API_ENDPOINTS.ORDER.Create,
-      process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL
+      process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL,
     );
 
     const response = await fetcher<DataResponse<Order>>(url.toString(), {
@@ -281,7 +282,7 @@ export const getMyOrder = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const changeDeliveryStatus = createAsyncThunk<
@@ -298,7 +299,7 @@ export const changeDeliveryStatus = createAsyncThunk<
   async ({ orderId, status, lang = "en", token }, { rejectWithValue }) => {
     try {
       const url = new URL(
-        API_ENDPOINTS.ORDER.ChangeDeliveryStatus.replace(":id", orderId)
+        API_ENDPOINTS.ORDER.ChangeDeliveryStatus.replace(":id", orderId),
       );
 
       const response = await fetcher<DataResponse<Order>>(url.toString(), {
@@ -320,5 +321,5 @@ export const changeDeliveryStatus = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );

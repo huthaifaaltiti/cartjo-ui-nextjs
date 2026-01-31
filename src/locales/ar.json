@@ -218,6 +218,17 @@
       "noData": "لم يتم العثور على أي بنرات نشطة",
       "checkLater": "تحقق لاحقًا لعرض بنرات جديدة"
     },
+    "LocationPicker": {
+      "searchPlaceholder": "ابحث عن موقع...",
+      "useMyLocation": "استخدم موقعي الحالي",
+      "gettingLocation": "جارٍ تحديد الموقع...",
+      "geoNotSupported": "ميزة تحديد الموقع غير مدعومة في متصفحك",
+      "geoPermissionDenied": "يرجى السماح بالوصول إلى الموقع من إعدادات المتصفح",
+      "geoUnavailable": "معلومات الموقع غير متوفرة حالياً",
+      "geoTimeout": "انتهت مهلة طلب تحديد الموقع",
+      "geoUnknown": "حدث خطأ غير معروف",
+      "geoFailed": "تعذر الحصول على موقعك"
+    },
     "filters": {
       "actions": {
         "apply": "تطبيق",
@@ -2549,6 +2560,41 @@
         "failedLoadData": "فشل في تحميل تفاصيل الطلب"
       },
       "components": {
+        "ShippingAddressForm": {
+          "title": "عنوان الشحن",
+          "fullName": "الاسم الكامل",
+          "phone": "رقم الهاتف",
+          "country": "الدولة",
+          "city": "المدينة",
+          "town": "المنطقة / الحي",
+          "street": "الشارع",
+          "building": "المبنى (اختياري)",
+          "extraInfo": "معلومات إضافية (اختياري)",
+          "location": "موقع الخريطة",
+          "locationHint": "يُستخدم موقع الخريطة لضمان توصيل طلبك بدقة إلى العنوان الصحيح.",
+          "continueToPayment": "المتابعة إلى الدفع",
+          "selected": "تم الاختيار",
+          "errors": {
+            "fullNameRequired": "الاسم الكامل مطلوب",
+            "phoneRequired": "رقم الهاتف مطلوب",
+            "phoneInvalid": "رقم الهاتف غير صحيح",
+            "countryRequired": "الدولة مطلوبة",
+            "cityRequired": "المدينة مطلوبة",
+            "townRequired": "المنطقة / الحي مطلوب",
+            "streetRequired": "الشارع مطلوب",
+            "mapLocationRequired": "يرجى تحديد الموقع على الخريطة"
+          }
+        },
+        "PaymentMethodSelector": {
+          "select": "اختر طريقة الدفع",
+          "card": {
+            "label": "بطاقة ائتمان",
+            "unavailable": "غير متوفر حالياً"
+          },
+          "cash": {
+            "label": "الدفع عند الاستلام"
+          }
+        },
         "PaymentForm": {
           "paymentDetails": "تفاصيل الدفع",
           "securePurchase": "أكمل عملية الشراء بأمان",
@@ -2574,6 +2620,7 @@
         },
         "OrderSummary": {
           "orderSummary": "ملخص الطلب",
+          "deliveryCostMessage": "تكلفة التوصيل لموقعك ستكون {cost}",
           "subtotal": "الإجمالي الفرعي",
           "total": "المجموع",
           "billingTo": "الفوترة إلى",

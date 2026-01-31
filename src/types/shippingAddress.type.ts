@@ -9,5 +9,5 @@ export interface ShippingAddress {
   street: string;
   building?: string;
   additionalInfo?: string;
-  mapLocation: MapLocation;
+  mapLocation?: MapLocation;
 }

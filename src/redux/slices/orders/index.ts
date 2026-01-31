@@ -9,6 +9,9 @@ import {
   getOrders,
 } from "./actions";
 import { Currency } from "@/enums/currency.enum";
+import { PaymentMethods } from "@/enums/paymentMethods.enum";
+import { ShippingAddress } from "@/types/shippingAddress.type";
+import { jordanCities } from "@/constants/jordanCities.constant";
 
 interface OrderState {
   items: Order[];
@@ -19,6 +22,10 @@ interface OrderState {
   searchQuery: string;
   queryKey: string;
   currency: Currency;
+  deliveryCost: number;
+  paymentMethod: PaymentMethods;
+  shippingAddress: ShippingAddress | null;
+  totalOrderCost: number;
 }
 
 const initialState: OrderState = {
@@ -30,6 +37,10 @@ const initialState: OrderState = {
   selectedOrder: null,
   searchQuery: "",
   queryKey: "orders",
+  deliveryCost: 0,
+  shippingAddress: null,
+  paymentMethod: PaymentMethods.Cash,
+  totalOrderCost: 0,
 };
 
 const orderSlice = createSlice({
@@ -46,6 +57,15 @@ const orderSlice = createSlice({
     },
     setOrdersSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
+    },
+    setOrderShippingAddress: (
+      state,
+      action: PayloadAction<ShippingAddress>,
+    ) => {
+      state.shippingAddress = action.payload;
+      state.deliveryCost =
+        jordanCities.find((c) => c.value === action.payload.city)
+          ?.deliveryCost ?? 0;
     },
   },
   extraReducers: (builder) => {
@@ -94,7 +114,7 @@ const orderSlice = createSlice({
       if (!updated) return;
 
       state.items = state.items.map((o) =>
-        o._id === updated._id ? updated : o
+        o._id === updated._id ? updated : o,
       );
     });
     builder.addCase(changePaymentStatus.rejected, (state, action) => {
@@ -116,7 +136,7 @@ const orderSlice = createSlice({
       if (!updated) return;
 
       state.items = state.items.map((o) =>
-        o._id === updated._id ? updated : o
+        o._id === updated._id ? updated : o,
       );
     });
     builder.addCase(changeDeliveryStatus.rejected, (state, action) => {
@@ -147,6 +167,7 @@ export const {
   setOrdersItems,
   setSelectedOrder,
   setOrdersSearchQuery,
+  setOrderShippingAddress,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;
