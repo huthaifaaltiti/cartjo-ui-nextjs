@@ -9,6 +9,7 @@ export interface Order {
   userId: string;
   items: OrderItem[];
   amount: number;
+  deliveryCost: number;
   currency: Currency;
   paymentStatus: string;
   paymentMethod: string;
