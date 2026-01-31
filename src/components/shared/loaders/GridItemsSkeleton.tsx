@@ -10,7 +10,7 @@ const GridItemsSkeleton = ({ count = 8 }: { count?: number }) => {
   return (
     <div className="w-full pt-5">
       {/* Filters skeleton */}
-      <div className="w-full flex items-center gap-4 border-y border-grey-50/20 py-3 mb-6">
+      <div className="w-full flex items-center flex-wrap gap-4 border-y border-grey-50/20 py-3 mb-6">
         <Skeleton className="h-9 w-32" />
         <Skeleton className="h-9 w-32" />
         <Skeleton className="h-9 w-48" />

@@ -156,7 +156,7 @@ const SubCategoryItems = ({
       <div className={containerClass}>
         <div className="w-full flex flex-col gap-4">
           {/* Filters */}
-          <div className="w-full flex items-center gap-4 border-b border-grey-50/20 py-1">
+          <div className="w-full flex items-center flex-wrap gap-4 border-b border-grey-50/20 py-1">
             <PriceRange
               setPriceFrom={setPriceFrom}
               setPriceTo={setPriceTo}
@@ -194,7 +194,7 @@ const SubCategoryItems = ({
       <div className={containerClass}>
         <div className="w-full flex flex-col gap-4">
           {/* Filters */}
-          <div className="w-full flex items-center gap-4 border-b border-grey-50/20 py-1">
+          <div className="w-full flex items-center flex-wrap gap-4 border-b border-grey-50/20 py-1">
             <PriceRange
               setPriceFrom={setPriceFrom}
               setPriceTo={setPriceTo}
