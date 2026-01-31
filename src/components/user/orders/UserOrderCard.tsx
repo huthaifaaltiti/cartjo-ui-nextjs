@@ -89,7 +89,7 @@ const UserOrderCard = ({
               <span className="text-sm text-gray-600"> {t("total")}</span>
               <div className="flex items-center gap-3">
                 <span className="font-bold text-grey-600">
-                  {item.amount.toFixed(2)}
+                  {(item.amount + item.deliveryCost).toFixed(2)}
                   <span className="text-xs">
                     {" "}
                     {currencyLabeler(item.currency, isArabic)}

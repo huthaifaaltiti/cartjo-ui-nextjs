@@ -139,6 +139,16 @@ const UserOrderDetailedCard = ({ itemId }: { itemId: string }) => {
                 </span>
               </p>
             </div>
+            <div className="text-right">
+              <p className="text-sm text-blue-100">{t("deliveryCost")}</p>
+              <p className="text-3xl font-bold text-blue-200">
+                {order.deliveryCost}
+                <span className="text-sm">
+                  {" "}
+                  {currencyLabeler(order.currency, isArabic)}
+                </span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -300,12 +310,15 @@ const UserOrderDetailedCard = ({ itemId }: { itemId: string }) => {
             <span>{t("shipping")}</span>
             <span className="font-semibold text-grey-600 text-xs">
               {t("shippingCost")}
+              <span className="font-semibold">
+                {" "}{order.deliveryCost} {order.currency}
+              </span>
             </span>
           </div>
           <div className="border-t-2 border-gray-300 pt-3 flex justify-between text-lg font-bold text-gray-900">
             <span>{t("total")}</span>
             <span className="text-blue-500">
-              {order.amount} {order.currency}
+              {order.amount + order.deliveryCost} {order.currency}
             </span>
           </div>
         </div>
