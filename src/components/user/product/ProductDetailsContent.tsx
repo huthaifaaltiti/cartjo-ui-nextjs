@@ -257,7 +257,7 @@ const ProductDetailsContent = ({ product }: Props) => {
 
         {/* PRODUCT INFO */}
         <div className="space-y-6">
-          <h1 className="text-4xl font-bold">{title}</h1>
+          <h1 className="text-4xl font-bold first-letter-capital">{title}</h1>
 
           <div className="flex items-center gap-2">
             <div className="flex">{renderStars(product.ratings)}</div>
@@ -294,7 +294,7 @@ const ProductDetailsContent = ({ product }: Props) => {
             <h3 className="text-lg font-semibold">
               {t("routes.product.components.ProductDetailsContent.desc")}
             </h3>
-            <p className="text-gray-700">{description}</p>
+            <p className="text-gray-700 first-letter-capital">{description}</p>
           </div>
 
           {/* QUANTITY + ADD TO CART */}
