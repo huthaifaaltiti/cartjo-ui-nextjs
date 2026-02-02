@@ -2033,6 +2033,13 @@
         "RecProductsData": {
           "title": "قد يعجبك أيضًا",
           "subTitle": "اطلع على هذه المنتجات الشائعة من مجموعتنا"
+        },
+        "ProductDetailsContent": {
+          "review": "تقييم",
+          "reviews": "تقييمات",
+          "desc": "وصف المنتج",
+          "inStock": "متوفر",
+          "available": "متاح"
         }
       }
     },
