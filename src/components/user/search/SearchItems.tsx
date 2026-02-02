@@ -5,14 +5,16 @@ import { useTranslations } from "next-intl";
 import { useQueryState } from "nuqs";
 import { useSearchProductsQuery } from "@/hooks/react-query/useSearchQuery";
 import { Product } from "@/types/product.type";
-import { FetchError } from "@/types/common";
-import InfiniteScrollList, { GRID_TYPE } from "@/components/shared/InfiniteScrollList";
+import InfiniteScrollList, {
+  GRID_TYPE,
+} from "@/components/shared/InfiniteScrollList";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import SearchProductCard from "./SearchProductCard";
 import MainSearchBar from "@/components/MainSearchBar";
 import NoSearchText from "./NoSearchText";
 import NoSearchItemsFound from "./NoSearchItemsFound";
 import SearchQueryFilters from "../SearchQueryFilters";
+import SearchItemsLoading from "./SearchItemsLoading";
 
 const SearchItems = () => {
   const t = useTranslations();
@@ -58,14 +60,13 @@ const SearchItems = () => {
       defaultValue: 0,
       parse: (value) => Number(value),
       serialize: (value) => String(value),
-    }
+    },
   );
 
   const {
     data,
     isLoading,
     isFetching,
-    isFetched,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
@@ -82,7 +83,7 @@ const SearchItems = () => {
     createdFrom,
     createdTo,
     beforeNumOfDays,
-    typeHint
+    typeHint,
   );
 
   const searchProducts = useMemo(() => {
@@ -97,7 +98,7 @@ const SearchItems = () => {
       setPriceTo(to);
       refetch();
     },
-    [refetch, setPriceFrom, setPriceTo]
+    [refetch, setPriceFrom, setPriceTo],
   );
 
   const handleApplyRangeFilter = useCallback(
@@ -105,7 +106,7 @@ const SearchItems = () => {
       setRatingFrom(from);
       refetch();
     },
-    [refetch, setRatingFrom]
+    [refetch, setRatingFrom],
   );
 
   const handleApplyDateFilter = useCallback(
@@ -113,7 +114,7 @@ const SearchItems = () => {
       filterType: "dateRange" | "daysBefore",
       createdFromValue?: string,
       createdToValue?: string,
-      beforeNumOfDaysValue?: number
+      beforeNumOfDaysValue?: number,
     ) => {
       if (filterType === "dateRange") {
         setCreatedFrom(createdFromValue || "");
@@ -126,7 +127,7 @@ const SearchItems = () => {
       }
       refetch();
     },
-    [refetch, setCreatedFrom, setCreatedTo, setBeforeNumOfDays]
+    [refetch, setCreatedFrom, setCreatedTo, setBeforeNumOfDays],
   );
 
   const handleClearFilters = useCallback(() => {
@@ -147,21 +148,13 @@ const SearchItems = () => {
     setBeforeNumOfDays,
   ]);
 
-  const notFoundItem = error && (error as FetchError).status === 404;
-  const isSuccess = data?.pages?.[0]?.isSuccess ?? false;
-  const hasData = !!searchProducts?.length;
   const isEmptySearch = !q?.trim() && !typeHint.trim();
+  const showError = isError && error?.message;
+  const showNoData = !isFetching && !showError && searchProducts.length === 0;
+  const showData = searchProducts.length > 0;
+  const showLoader = isLoading;
 
-  const showLoader =
-    !isEmptySearch &&
-    ((!isFetched && (isLoading || isFetching)) || isLoading || isFetching);
-  const showError = !isEmptySearch && isFetched && isError && !notFoundItem;
-  const showNoData =
-    !isEmptySearch && isFetched && !isError && !hasData && !showLoader;
-  const showData =
-    !isEmptySearch && isFetched && !isError && hasData && isSuccess;
-
-  const containerClass = "w-full my-3";
+  const containerClass = "w-full my-3 mb-5";
 
   if (isEmptySearch) {
     return (
@@ -171,13 +164,13 @@ const SearchItems = () => {
     );
   }
 
-  // if (showLoader) {
-  //   return (
-  //     <div className={containerClass}>
-  //       <SearchItemsLoading />
-  //     </div>
-  //   );
-  // }
+  if (showLoader) {
+    return (
+      <div className={containerClass}>
+        <SearchItemsLoading />
+      </div>
+    );
+  }
 
   if (showError) {
     return (
@@ -246,7 +239,7 @@ const SearchItems = () => {
             onApplyDateFilter={handleApplyDateFilter}
             onClearFilters={handleClearFilters}
           />
-          
+
           <InfiniteScrollList
             isLoading={isLoading}
             isFetchingNextPage={isFetchingNextPage}
