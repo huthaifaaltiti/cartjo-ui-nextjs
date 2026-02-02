@@ -23,6 +23,7 @@ import { addItemToServer } from "@/redux/slices/cart/actions";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import Image from "next/image";
+import { Currency } from "@/constants/currency.constant";
 
 interface Props {
   product: Product;
@@ -40,6 +41,9 @@ const ProductDetailsContent = ({ product }: Props) => {
   const description = isArabic
     ? product.description.ar
     : product.description.en;
+  const productCurrency = isArabic
+    ? Currency[product.currency].labelAr
+    : Currency[product.currency].labelEn;
 
   // STATES
   const [isWishListing, setIsWishListing] = useState(false);
@@ -94,7 +98,7 @@ const ProductDetailsContent = ({ product }: Props) => {
           productId: product._id,
           lang: locale,
           token: accessToken,
-        })
+        }),
       ).unwrap();
 
       if (response.isSuccess) {
@@ -135,7 +139,7 @@ const ProductDetailsContent = ({ product }: Props) => {
           product,
           lang: locale,
           token: accessToken,
-        })
+        }),
       ).unwrap();
 
       if (response.isSuccess) {
@@ -180,7 +184,7 @@ const ProductDetailsContent = ({ product }: Props) => {
           quantity: quantity, // 👍 use selected quantity
           lang: locale,
           token: accessToken,
-        })
+        }),
       ).unwrap();
 
       if (response.isSuccess) {
@@ -206,15 +210,17 @@ const ProductDetailsContent = ({ product }: Props) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
         {/* IMAGES */}
         <div className="space-y-4">
-          <div className="aspect-square overflow-hidden rounded-xl bg-gray-100 relative group">
+          <div className="h-[500px] w-full bg-gray-100 overflow-hidden rounded-xl relative group">
             <Image
               src={selectedImage}
               alt={product.name.en}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              width={800}
+              height={800}
             />
 
             {product.discountRate > 0 && (
-              <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              <div className="absolute top-3 left-3 bg-red-500 text-white-50 px-3 py-1 rounded-full text-sm font-semibold">
                 -{product.discountRate}%
               </div>
             )}
@@ -226,18 +232,24 @@ const ProductDetailsContent = ({ product }: Props) => {
             />
           </div>
 
-          <div className="flex space-x-2 overflow-x-auto pb-2">
+          <div className="flex gap-2 overflow-x-auto pb-2">
             {[product.mainImage, ...product.images].map((image, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(image)}
-                className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 ${
+                className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 bg-gray-100 ${
                   selectedImage === image
                     ? "border-blue-500"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
-                <Image src={image} alt={title} className="w-full h-full object-cover" />
+                <Image
+                  src={image}
+                  alt={title}
+                  className="w-full h-full object-cover"
+                  width={80}
+                  height={80}
+                />
               </button>
             ))}
           </div>
@@ -245,35 +257,44 @@ const ProductDetailsContent = ({ product }: Props) => {
 
         {/* PRODUCT INFO */}
         <div className="space-y-6">
-          <h1 className="text-4xl font-bold">{title}</h1>
+          <h1 className="text-4xl font-bold first-letter-capital">{title}</h1>
 
           <div className="flex items-center gap-2">
             <div className="flex">{renderStars(product.ratings)}</div>
             <span className="text-gray-600 text-sm">
-              ({product.ratings} reviews)
+              ({product.ratings}{" "}
+              {t(
+                `routes.product.components.ProductDetailsContent.${product.ratings > 1 ? "reviews" : "review"}`,
+              )}
+              )
             </span>
           </div>
 
           <div>
             <div className="flex items-center gap-3">
               <span className="text-4xl font-bold">
-                {discountedPrice.toFixed(2)} {product.currency}
+                {discountedPrice.toFixed(2)}
+                <span className="text-sm"> {productCurrency}</span>
               </span>
 
               {product.discountRate > 0 && (
                 <span className="text-2xl text-gray-500 line-through">
-                  {product.price.toFixed(2)} {product.currency}
+                  {product.price.toFixed(2)} {productCurrency}
                 </span>
               )}
             </div>
             <p className="text-green-600 text-sm">
-              ✓ In stock ({product.availableCount} available)
+              ✓ {t("routes.product.components.ProductDetailsContent.inStock")} (
+              {product.availableCount}{" "}
+              {t("routes.product.components.ProductDetailsContent.available")})
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold">Description</h3>
-            <p className="text-gray-700">{description}</p>
+            <h3 className="text-lg font-semibold">
+              {t("routes.product.components.ProductDetailsContent.desc")}
+            </h3>
+            <p className="text-gray-700 first-letter-capital">{description}</p>
           </div>
 
           {/* QUANTITY + ADD TO CART */}

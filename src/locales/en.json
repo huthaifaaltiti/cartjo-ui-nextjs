@@ -2026,6 +2026,13 @@
         "RecProductsData": {
           "title": "You Might Also Like",
           "subTitle": "Check out these popular products from our collection"
+        },
+        "ProductDetailsContent": {
+          "review": "Review",
+          "reviews": "Reviews",
+          "desc": "Description",
+          "inStock": "In stock",
+          "available": "Available"
         }
       }
     },

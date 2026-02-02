@@ -3,10 +3,10 @@
 import { memo } from "react";
 
 const Skeleton = ({ className }: { className: string }) => (
-  <div className={`animate-pulse bg-gray-200 rounded ${className}`} />
+  <div className={`animate-pulse bg-gray-100 rounded ${className}`} />
 );
 
-const GridItemsSkeleton = ({ count = 8 }: { count?: number }) => {
+const GridItemsSkeleton = ({ count = 10 }: { count?: number }) => {
   return (
     <div className="w-full pt-5">
       {/* Filters skeleton */}
@@ -17,11 +17,11 @@ const GridItemsSkeleton = ({ count = 8 }: { count?: number }) => {
       </div>
 
       {/* Products grid skeleton */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="w-full grid grid-cols-2 max-[300px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
         {Array.from({ length: count }).map((_, idx) => (
           <div
             key={idx}
-            className="border rounded-xl p-3 flex flex-col gap-3"
+            className="w-full border border-grey-50/20 rounded-xl p-3 flex flex-col gap-3"
           >
             {/* Image */}
             <Skeleton className="h-[23vh] sm:h-[22vh] max-[500px]:h-[18vh]" />
