@@ -16,7 +16,7 @@ export default function ProductImage({
 }: ProductImageProps) {
   return (
     <div className="h-full w-full relative">
-      <div className="h-full w-full rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 relative">
+      <div className="h-full w-full rounded-xl overflow-hidden bg-white-500 relative">
         {(isLoading || !src) && <LoadingShimmerEffect />}
 
         <ImageWithFallback
