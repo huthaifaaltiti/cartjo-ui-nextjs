@@ -584,7 +584,7 @@
           "dashboard": "Dashboard"
         },
         "MainSearchBar": {
-          "placeholder": "Search for products, categories, or anything.."
+          "placeholder": "Search for products, categories, or anything"
         },
         "SelectedCategoriesItemsHeader": {
           "title": "Featured Products",

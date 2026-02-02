@@ -19,6 +19,7 @@ export default function ProductTitle({
         transition-all
         ${isHovered && !isLoading ? "text-primary-600" : "text-gray-900"}
         ${isLoading ? "opacity-70" : ""}
+        first-letter-capital
       `}
     >
       {title}
