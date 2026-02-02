@@ -92,11 +92,7 @@ const createFormSchema = (
         "routes.dashboard.routes.products.components.CreateProductForm.validations.desc_en.minChars"
       ),
     }),
-    price: z.number().min(1, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.price.min"
-      ),
-    }),
+    price: z.number(),
     currency: z.enum(currencyValues as [string, ...string[]], {
       message: t(
         "routes.dashboard.routes.products.components.CreateProductForm.validations.currency.notSupported"
@@ -415,7 +411,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.products.components.CreateProductForm.fields.mainImage.label"
+                      "routes.dashboard.routes.products.components.CreateProductForm.fields.mainImage.label",
                     )}
                   </FormLabel>
                   <ImageUploader
@@ -447,7 +443,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.products.components.CreateProductForm.fields.images.label"
+                      "routes.dashboard.routes.products.components.CreateProductForm.fields.images.label",
                     )}
                   </FormLabel>
                   <ImageUploader
@@ -484,14 +480,14 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.name_ar.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.name_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.name_ar.placeholder"
+                          "routes.dashboard.routes.products.components.CreateProductForm.fields.name_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -511,14 +507,14 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.name_en.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.name_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.name_en.placeholder"
+                          "routes.dashboard.routes.products.components.CreateProductForm.fields.name_en.placeholder",
                         )}
                         {...field}
                       />
@@ -545,14 +541,14 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_ar.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         className={`${getInputClassName()} min-h-11`}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_ar.placeholder"
+                          "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -572,14 +568,14 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_en.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         className={`${getInputClassName()} min-h-11`}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_en.placeholder"
+                          "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_en.placeholder",
                         )}
                         {...field}
                       />
@@ -606,7 +602,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className="text-left">
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.category.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.category.label",
                       )}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
@@ -614,7 +610,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.products.components.CreateProductForm.fields.category.placeholder"
+                              "routes.dashboard.routes.products.components.CreateProductForm.fields.category.placeholder",
                             )}
                           />
                         </SelectTrigger>
@@ -648,7 +644,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     <FormItem className="text-left mt-4">
                       <FormLabel className="text-sm font-normal">
                         {t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.subCategory.label"
+                          "routes.dashboard.routes.products.components.CreateProductForm.fields.subCategory.label",
                         )}
                       </FormLabel>
                       <Select
@@ -659,7 +655,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                           <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                             <SelectValue
                               placeholder={t(
-                                "routes.dashboard.routes.products.components.CreateProductForm.fields.subCategory.placeholder"
+                                "routes.dashboard.routes.products.components.CreateProductForm.fields.subCategory.placeholder",
                               )}
                             />
                           </SelectTrigger>
@@ -699,7 +695,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.price.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.price.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -708,7 +704,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         step="any"
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.price.placeholder"
+                          "routes.dashboard.routes.products.components.CreateProductForm.fields.price.placeholder",
                         )}
                         min={0}
                         {...field}
@@ -737,7 +733,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.currency.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.currency.label",
                       )}
                     </FormLabel>
                     <Select
@@ -749,7 +745,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.products.components.CreateProductForm.fields.currency.placeholder"
+                              "routes.dashboard.routes.products.components.CreateProductForm.fields.currency.placeholder",
                             )}
                           />
                         </SelectTrigger>
@@ -788,7 +784,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.totalAmountCount.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.totalAmountCount.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -796,7 +792,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         type="number"
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.totalAmountCount.placeholder"
+                          "routes.dashboard.routes.products.components.CreateProductForm.fields.totalAmountCount.placeholder",
                         )}
                         min={0}
                         {...field}
@@ -825,7 +821,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.label",
                       )}
                     </FormLabel>
 
@@ -836,7 +832,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         field.onChange(
                           exists
                             ? field.value.filter((v) => v !== value)
-                            : [...field.value, value]
+                            : [...field.value, value],
                         );
                       }}
                     >
@@ -844,7 +840,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.placeholder"
+                              "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.placeholder",
                             )}
                           />
                         </SelectTrigger>
@@ -855,8 +851,8 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                           ?.filter(
                             (th) =>
                               !SYSTEM_GENERATED_HINTS.includes(
-                                th as SystemGeneratedHint
-                              )
+                                th as SystemGeneratedHint,
+                              ),
                           )
                           ?.map((th) => (
                             <SelectItem
@@ -907,7 +903,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.products.components.CreateProductForm.fields.tags.label"
+                      "routes.dashboard.routes.products.components.CreateProductForm.fields.tags.label",
                     )}
                   </FormLabel>
                   <div
@@ -919,7 +915,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                       tags={tags}
                       suggestions={prodTagsSuggestions}
                       placeholder={t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.tags.placeholder"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.tags.placeholder",
                       )}
                       maxTags={3}
                       onTagsChange={handleTagsChange}
@@ -948,7 +944,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.availableCount.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.availableCount.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -956,7 +952,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         type="number"
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.availableCount.placeholder"
+                          "routes.dashboard.routes.products.components.CreateProductForm.fields.availableCount.placeholder",
                         )}
                         min={0}
                         {...field}
@@ -985,7 +981,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.discountRate.label"
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.discountRate.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -993,7 +989,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                         type="number"
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.discountRate.placeholder"
+                          "routes.dashboard.routes.products.components.CreateProductForm.fields.discountRate.placeholder",
                         )}
                         min={0}
                         {...field}
@@ -1021,9 +1017,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
           >
             {registerMutation.isPending
               ? t("general.loadingStates.loadingApi")
-              : t(
-                  "routes.auth.components.AuthTabs.components.register.actions.proceed"
-                )}
+              : t("general.actions.createItem")}
           </Button>
         </form>
       </Form>

@@ -21,6 +21,7 @@ const MainSearchBar = () => {
     parse: (value) => String(value),
     serialize: (value) => String(value),
   });
+  const [typeHint] = useQueryState("typeHint");
 
   const [inputValue, setInputValue] = useState<string>(q || mainSearchQuery);
 
@@ -29,7 +30,11 @@ const MainSearchBar = () => {
     setMainSearchQuery(trimmedQuery);
 
     if (trimmedQuery) {
-      router.push(`/${locale}/search?q=${encodeURIComponent(trimmedQuery)}`);
+      const params = new URLSearchParams();
+      params.set("q", trimmedQuery);
+      if (typeHint) params.set("typeHint", typeHint);
+
+      router.push(`/${locale}/search?${params.toString()}`);
     } else {
       setQ("");
     }
@@ -44,7 +49,14 @@ const MainSearchBar = () => {
   const handleClear = () => {
     setInputValue("");
     setMainSearchQuery("");
-    setQ("");
+
+    const params = new URLSearchParams();
+    if (typeHint) {
+      params.set("typeHint", typeHint);
+      router.push(`/${locale}/search?${params.toString()}`);
+    } else {
+      setQ("");
+    }
   };
 
   return (

@@ -65,7 +65,9 @@
       "cancel": "Cancel",
       "goBack": "Go Back",
       "tryAgain": "Try Again",
-      "search": "Search"
+      "search": "Search",
+      "createItem": "Create Item",
+      "updateItem": "Update Item"
     },
     "others": {
       "unknown": "Unknown",
@@ -1011,9 +1013,6 @@
                 "desc_en": {
                   "minChars": "English desc must be at least 20 characters long"
                 },
-                "price": {
-                  "min": "Price must be at least 1"
-                },
                 "type": {
                   "required": "Type is required"
                 },
@@ -1124,9 +1123,6 @@
                 },
                 "desc_en": {
                   "minChars": "English desc must be at least 20 characters long"
-                },
-                "price": {
-                  "min": "Price must be at least 1"
                 },
                 "totalAmountCount": {
                   "min": "Total amount count must be at least 1"
@@ -2030,6 +2026,13 @@
         "RecProductsData": {
           "title": "You Might Also Like",
           "subTitle": "Check out these popular products from our collection"
+        },
+        "ProductDetailsContent": {
+          "review": "Review",
+          "reviews": "Reviews",
+          "desc": "Description",
+          "inStock": "In stock",
+          "available": "Available"
         }
       }
     },
@@ -2375,6 +2378,7 @@
                 "transactionId": "Transaction ID",
                 "merchantRef": "Merchant Reference",
                 "totalAmount": "Total Amount",
+                "deliveryCost": "Delivery Cost",
                 "orderItems": "Order Items",
                 "qty": "Qty",
                 "rating": "Rating",
@@ -2430,6 +2434,7 @@
                 "transactionId": "Transaction ID",
                 "merchantRef": "Merchant Reference",
                 "totalAmount": "Total Amount",
+                "deliveryCost": "Delivery Cost",
                 "orderItems": "Order Items",
                 "qty": "Qty",
                 "rating": "Rating",
@@ -2559,6 +2564,16 @@
         "failedLoadData": "Failed to checkout order details"
       },
       "components": {
+        "PaymentMethodSelector": {
+          "select": "Select Payment Method",
+          "card": {
+            "label": "Credit / Debit Card",
+            "unavailable": "Unavailable"
+          },
+          "cash": {
+            "label": "Cash on Delivery"
+          }
+        },
         "PaymentForm": {
           "paymentDetails": "Payment Details",
           "securePurchase": "Complete your purchase securely",
@@ -2584,6 +2599,7 @@
         },
         "OrderSummary": {
           "orderSummary": "Order Summary",
+          "deliveryCostMessage": "The delivery cost for your location will be {cost}",
           "subtotal": "Subtotal",
           "total": "Total",
           "billingTo": "Billing to",
@@ -2600,6 +2616,7 @@
           "building": "Building (Optional)",
           "extraInfo": "Additional Information (Optional)",
           "location": "Map Location",
+          "locationHint": "Map location is used to accurately deliver your order to the correct address.",
           "continueToPayment": "Continue to Payment",
           "selected": "Selected",
           "errors": {

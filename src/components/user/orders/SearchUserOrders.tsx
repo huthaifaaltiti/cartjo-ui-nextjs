@@ -11,7 +11,9 @@ import SearchBar from "@/components/shared/SearchBar";
 const SearchUserOrders = () => {
   const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
-  const { searchQuery } = useSelector((state: RootState) => state.orders);
+  const { searchQuery, items } = useSelector(
+    (state: RootState) => state.orders,
+  );
 
   const [sq, setSq] = useQueryState("sq", {
     defaultValue: "",
@@ -32,10 +34,11 @@ const SearchUserOrders = () => {
     <div className="w-full px-2 md:px-0">
       <SearchBar
         placeholder={t(
-          "routes.user.layout.routes.orders.components.SearchUserOrders.placeholder"
+          "routes.user.layout.routes.orders.components.SearchUserOrders.placeholder",
         )}
         searchQuery={searchQuery || sq}
         setSearchQuery={(val) => dispatch(setOrdersSearchQuery(val))}
+        disabled={items.length < 10}
       />
     </div>
   );

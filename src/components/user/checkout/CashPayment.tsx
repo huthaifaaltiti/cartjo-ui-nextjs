@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -12,7 +12,10 @@ import { Currency } from "@/enums/currency.enum";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { ShippingAddress } from "@/types/shippingAddress.type";
 import { showSuccessToast } from "@/components/shared/CustomToast";
-import { resetOrdersState } from "@/redux/slices/orders";
+import {
+  resetOrdersState,
+  setOrderShippingAddress,
+} from "@/redux/slices/orders";
 import { resetCartState } from "@/redux/slices/cart";
 
 export default function CashPayment() {
@@ -20,6 +23,7 @@ export default function CashPayment() {
   const t = useTranslations("");
 
   const { totalAmount, items } = useSelector((state: RootState) => state.cart);
+  const { deliveryCost } = useSelector((state: RootState) => state.orders);
   const { accessToken, user, locale } = useAuthContext();
 
   const [error, setError] = useState<string | null>(null);
@@ -55,6 +59,7 @@ export default function CashPayment() {
       const result = await dispatch(
         createOrder({
           amount: totalAmount,
+          deliveryCost,
           currency: Currency.JOD,
           email: user!.email,
           merchantReference,
@@ -63,7 +68,7 @@ export default function CashPayment() {
           shippingAddress,
           lang: locale,
           token: accessToken,
-        })
+        }),
       ).unwrap();
 
       if (result) {
@@ -94,6 +99,10 @@ export default function CashPayment() {
       setCashOrderProcessing(false);
     }
   };
+
+  useEffect(() => {
+    if (shippingAddress) dispatch(setOrderShippingAddress(shippingAddress));
+  }, [shippingAddress]);
 
   return (
     <>

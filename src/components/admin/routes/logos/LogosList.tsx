@@ -4,7 +4,10 @@ import { memo } from "react";
 import { Logo } from "@/types/logo";
 import { useLogosQuery } from "@/hooks/react-query/useLogosQuery";
 import { useLogos } from "@/contexts/LogosContext";
-import InfiniteScrollList from "../../../shared/InfiniteScrollList";
+import InfiniteScrollList, {
+  GRID_TYPE,
+  LAYOUT_TYPE,
+} from "../../../shared/InfiniteScrollList";
 import LogoCard from "./LogoCard";
 
 type LogosListProps = {
@@ -41,6 +44,8 @@ const LogosList = ({ initialLogos }: LogosListProps) => {
       list={logos}
       fetchNextPage={fetchNextPage}
       ListItemCard={LogoCard}
+      layout={LAYOUT_TYPE.GRID}
+      gridType={GRID_TYPE.WIDE}
       cardProps={{
         deleteLogo,
         unDeleteLogo,

@@ -3,7 +3,7 @@
 import { memo } from "react";
 import { useBannersQuery } from "@/hooks/react-query/useBannersQuery";
 import { Banner } from "@/types/banner.type";
-import InfiniteScrollList, { GRID_TYPE } from "../../../shared/InfiniteScrollList";
+import InfiniteScrollList, { GRID_TYPE, LAYOUT_TYPE } from "../../../shared/InfiniteScrollList";
 import { useBanners } from "@/contexts/Banners.context";
 import BannerCard from "./BannerCard";
 
@@ -43,7 +43,7 @@ const BannersList = ({ initialBanners }: BannersListProps) => {
       list={banners}
       fetchNextPage={fetchNextPage}
       ListItemCard={BannerCard}
-      layout="grid"
+      layout={LAYOUT_TYPE.GRID}
       gridType={GRID_TYPE.WIDE}
       cardProps={{
         deleteBanner,

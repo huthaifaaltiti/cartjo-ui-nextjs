@@ -65,7 +65,9 @@
       "cancel": "إلغاء",
       "goBack": "الرجوع",
       "tryAgain": "حاول مرة أخرى",
-      "search": "بحث"
+      "search": "بحث",
+      "updateItem": "تعديل العنصر",
+      "createItem": "إنشاء العنصر"
     },
     "others": {
       "unknown": "غير معروف",
@@ -215,6 +217,17 @@
       "failedLoad": "فشل في تحميل البنرات",
       "noData": "لم يتم العثور على أي بنرات نشطة",
       "checkLater": "تحقق لاحقًا لعرض بنرات جديدة"
+    },
+    "LocationPicker": {
+      "searchPlaceholder": "ابحث عن موقع...",
+      "useMyLocation": "استخدم موقعي الحالي",
+      "gettingLocation": "جارٍ تحديد الموقع...",
+      "geoNotSupported": "ميزة تحديد الموقع غير مدعومة في متصفحك",
+      "geoPermissionDenied": "يرجى السماح بالوصول إلى الموقع من إعدادات المتصفح",
+      "geoUnavailable": "معلومات الموقع غير متوفرة حالياً",
+      "geoTimeout": "انتهت مهلة طلب تحديد الموقع",
+      "geoUnknown": "حدث خطأ غير معروف",
+      "geoFailed": "تعذر الحصول على موقعك"
     },
     "filters": {
       "actions": {
@@ -2020,6 +2033,13 @@
         "RecProductsData": {
           "title": "قد يعجبك أيضًا",
           "subTitle": "اطلع على هذه المنتجات الشائعة من مجموعتنا"
+        },
+        "ProductDetailsContent": {
+          "review": "تقييم",
+          "reviews": "تقييمات",
+          "desc": "وصف المنتج",
+          "inStock": "متوفر",
+          "available": "متاح"
         }
       }
     },
@@ -2343,6 +2363,9 @@
               "failedLoadData": "فشل تحميل بيانات طلباتك"
             },
             "components": {
+              "SearchUserOrders": {
+                "placeholder": "ابحث عن رقم الطلب أو الرقم المرجعي للتاجر"
+              },
               "UserOrderCard": {
                 "orderRef": "مرجع الطلب",
                 "items": "عناصر",
@@ -2362,6 +2385,7 @@
                 "transactionId": "رقم المعاملة",
                 "merchantRef": "مرجع التاجر",
                 "totalAmount": "المبلغ الإجمالي",
+                "deliveryCost": "تكلفة التوصيل",
                 "orderItems": "عناصر الطلب",
                 "qty": "الكمية",
                 "rating": "التقييم",
@@ -2415,6 +2439,7 @@
                 "transactionId": "رقم العملية",
                 "merchantRef": "الرقم المرجعي للتاجر",
                 "totalAmount": "المبلغ الإجمالي",
+                "deliveryCost": "تكلفة التوصيل",
                 "orderItems": "عناصر الطلب",
                 "qty": "الكمية",
                 "rating": "التقييم",
@@ -2544,6 +2569,41 @@
         "failedLoadData": "فشل في تحميل تفاصيل الطلب"
       },
       "components": {
+        "ShippingAddressForm": {
+          "title": "عنوان الشحن",
+          "fullName": "الاسم الكامل",
+          "phone": "رقم الهاتف",
+          "country": "الدولة",
+          "city": "المدينة",
+          "town": "المنطقة / الحي",
+          "street": "الشارع",
+          "building": "المبنى (اختياري)",
+          "extraInfo": "معلومات إضافية (اختياري)",
+          "location": "موقع الخريطة",
+          "locationHint": "يُستخدم موقع الخريطة لضمان توصيل طلبك بدقة إلى العنوان الصحيح.",
+          "continueToPayment": "المتابعة إلى الدفع",
+          "selected": "تم الاختيار",
+          "errors": {
+            "fullNameRequired": "الاسم الكامل مطلوب",
+            "phoneRequired": "رقم الهاتف مطلوب",
+            "phoneInvalid": "رقم الهاتف غير صحيح",
+            "countryRequired": "الدولة مطلوبة",
+            "cityRequired": "المدينة مطلوبة",
+            "townRequired": "المنطقة / الحي مطلوب",
+            "streetRequired": "الشارع مطلوب",
+            "mapLocationRequired": "يرجى تحديد الموقع على الخريطة"
+          }
+        },
+        "PaymentMethodSelector": {
+          "select": "اختر طريقة الدفع",
+          "card": {
+            "label": "بطاقة ائتمان",
+            "unavailable": "غير متوفر حالياً"
+          },
+          "cash": {
+            "label": "الدفع عند الاستلام"
+          }
+        },
         "PaymentForm": {
           "paymentDetails": "تفاصيل الدفع",
           "securePurchase": "أكمل عملية الشراء بأمان",
@@ -2569,6 +2629,7 @@
         },
         "OrderSummary": {
           "orderSummary": "ملخص الطلب",
+          "deliveryCostMessage": "تكلفة التوصيل لموقعك ستكون {cost}",
           "subtotal": "الإجمالي الفرعي",
           "total": "المجموع",
           "billingTo": "الفوترة إلى",

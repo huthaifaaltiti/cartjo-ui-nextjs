@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-type SearchBarProps = {
+type SearchBarProps = React.InputHTMLAttributes<HTMLInputElement> & {
   placeholder: string;
   searchQuery: string;
   className?: string;
@@ -14,9 +14,10 @@ const SearchBar = ({
   setSearchQuery,
   onKeyDown,
   className,
+  ...props
 }: SearchBarProps) => {
   const defaultClassName =
-    "w-full px-4 py-2 text-sm border border-gray-300 bg-white-50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500";
+    "w-full px-4 py-2 text-sm border border-gray-300 bg-white-50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:cursor-not-allowed";
 
   return (
     <div className="w-full">
@@ -27,6 +28,7 @@ const SearchBar = ({
         placeholder={placeholder}
         className={className ? className : defaultClassName}
         onKeyDown={onKeyDown}
+        {...props}
       />
     </div>
   );

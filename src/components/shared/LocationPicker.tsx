@@ -108,7 +108,6 @@ function UseMyLocationButton({
   const [loading, setLoading] = useState(false);
 
   const handleClick = () => {
-    console.log({ navigator });
     if (!navigator.geolocation) {
       alert(t("geoNotSupported"));
       return;
@@ -158,7 +157,7 @@ function UseMyLocationButton({
     <button
       onClick={handleClick}
       disabled={loading}
-      className="absolute bottom-4 right-4 z-[1000] bg-blue-600 text-white-50 px-4 py-2 rounded-lg shadow hover:bg-blue-700 text-sm disabled:opacity-50"
+      className="absolute bottom-5 right-4 z-[1000] bg-blue-600 text-white-50 px-4 py-2 rounded-lg shadow hover:bg-blue-700 text-sm disabled:opacity-50"
     >
       {loading ? t("gettingLocation") : t("useMyLocation")}
     </button>

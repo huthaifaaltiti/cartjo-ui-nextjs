@@ -6,6 +6,16 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import FoundItemsCount from "./FoundItemsCount";
 
+export const LAYOUT_TYPE = {
+  GRID: "grid",
+  LIST: "list",
+} as const;
+
+export const GRID_TYPE = {
+  WIDE: "wide",
+  NARROW: "narrow",
+} as const;
+
 type Props<T, P extends object = Record<string, unknown>> = {
   isLoading: boolean;
   isFetchingNextPage: boolean;
@@ -20,11 +30,6 @@ type Props<T, P extends object = Record<string, unknown>> = {
   showNumFoundItems?: boolean;
 };
 
-export const GRID_TYPE = {
-  WIDE: "wide",
-  NARROW: "narrow",
-} as const;
-
 function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
   isLoading,
   isFetchingNextPage,
@@ -34,7 +39,7 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
   fetchNextPage,
   ListItemCard,
   cardProps,
-  layout = "grid",
+  layout = LAYOUT_TYPE.GRID,
   gridType = GRID_TYPE.NARROW,
   showNumFoundItems = true,
 }: Props<T, P>) {
@@ -55,7 +60,7 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
         fetchNextPage();
       }
     },
-    [fetchNextPage, hasNextPage, isFetchingNextPage]
+    [fetchNextPage, hasNextPage, isFetchingNextPage],
   );
 
   useEffect(() => {
@@ -84,7 +89,7 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
 
       <div
         className={
-          layout === "grid"
+          layout === LAYOUT_TYPE.GRID
             ? gridType === GRID_TYPE.NARROW
               ? "w-full grid grid-cols-2 max-[300px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center"
               : "grid gap-4 md:grid-cols-2 lg:grid-cols-3"
