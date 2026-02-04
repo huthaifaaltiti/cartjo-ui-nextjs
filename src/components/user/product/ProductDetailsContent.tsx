@@ -210,11 +210,11 @@ const ProductDetailsContent = ({ product }: Props) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
         {/* IMAGES */}
         <div className="space-y-4">
-          <div className="h-[500px] w-full bg-gray-100 overflow-hidden rounded-xl relative group">
+          <div className="h-[500px] w-full bg-white-100 overflow-hidden rounded-xl relative group">
             <Image
               src={selectedImage}
               alt={product.name.en}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
               width={800}
               height={800}
             />
@@ -237,7 +237,7 @@ const ProductDetailsContent = ({ product }: Props) => {
               <button
                 key={index}
                 onClick={() => setSelectedImage(image)}
-                className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 bg-gray-100 ${
+                className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 bg-white-100 ${
                   selectedImage === image
                     ? "border-blue-500"
                     : "border-gray-200 hover:border-gray-300"
@@ -246,7 +246,7 @@ const ProductDetailsContent = ({ product }: Props) => {
                 <Image
                   src={image}
                   alt={title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   width={80}
                   height={80}
                 />

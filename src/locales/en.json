@@ -584,7 +584,7 @@
           "dashboard": "Dashboard"
         },
         "MainSearchBar": {
-          "placeholder": "Search for products, categories, or anything.."
+          "placeholder": "Search for products, categories, or anything"
         },
         "SelectedCategoriesItemsHeader": {
           "title": "Featured Products",
@@ -2030,7 +2030,7 @@
         "ProductDetailsContent": {
           "review": "Review",
           "reviews": "Reviews",
-          "desc": "Description",
+          "desc": "Item Description",
           "inStock": "In stock",
           "available": "Available"
         }
