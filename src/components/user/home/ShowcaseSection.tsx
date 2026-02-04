@@ -35,7 +35,7 @@ const ShowcaseSection = ({
           </p>
         </div>
 
-        <Link href={uri} target="_blank">
+        <Link href={uri}>
           <Button
             variant="default"
             className="bg-white-50 rounded-[20px] border border-gray-100 shadow-none flex items-center gap-1 group text-xs sm:text-sm md:text-base lg:text-sm font-bold hover:shadow transition-all px-3 py-1 sm:px-4 sm:py-2"

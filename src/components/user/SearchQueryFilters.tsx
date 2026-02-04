@@ -53,8 +53,8 @@ const SearchQueryFilters = ({
   const t = useTranslations();
 
   return (
-    <div className="w-full flex items-center justify-between gap-4 py-1">
-      <div className="w-auto flex items-center gap-4">
+    <div className="w-full flex items-first justify-between gap-2 py-1">
+      <div className="w-auto flex items-center gap-2 flex-wrap">
         <PriceRange
           setPriceFrom={setPriceFrom}
           setPriceTo={setPriceTo}

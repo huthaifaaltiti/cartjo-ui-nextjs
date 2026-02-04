@@ -83,6 +83,7 @@
       "button_text": "نص الزر",
       "button_link": "رابط الزر",
       "created_by": "أنشأه",
+      "characters": "حروف",
       "key": "مفتاح",
       "priority": "أولوية",
       "logoTitle": "كارت جو",
@@ -572,7 +573,7 @@
           "dashboard": "لوحة التحكم"
         },
         "MainSearchBar": {
-          "placeholder": "ابحث عن منتجات أو تصنيفات أو أيّة أشياء أخرى.."
+          "placeholder": "ابحث عن منتجات أو تصنيفات أو أيّة أشياء أخرى"
         },
         "SelectedCategoriesItemsHeader": {
           "title": "المنتجات المميزة",

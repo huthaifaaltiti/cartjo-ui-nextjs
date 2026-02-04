@@ -63,9 +63,6 @@ body {
   }
 }
 
-.first-letter-capital {
-  text-transform: lowercase;
-}
 .first-letter-capital::first-letter {
   text-transform: uppercase;
 }
