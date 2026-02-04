@@ -2030,7 +2030,7 @@
         "ProductDetailsContent": {
           "review": "Review",
           "reviews": "Reviews",
-          "desc": "Description",
+          "desc": "Item Description",
           "inStock": "In stock",
           "available": "Available"
         }

@@ -24,7 +24,7 @@ const SelectedCategoriesItemsContent = ({
 
   const results = useQueries({
     queries: randomCategories.map((category) =>
-      getCategoriesPicksQueryOptions(category._id, locale, accessToken ?? "")
+      getCategoriesPicksQueryOptions(category._id, locale, accessToken ?? ""),
     ),
   });
 
@@ -51,7 +51,7 @@ const SelectedCategoriesItemsContent = ({
                   categoryName: isArabic
                     ? category?.name?.ar
                     : category?.name?.en,
-                }
+                },
               )}
             />
 
@@ -65,7 +65,7 @@ const SelectedCategoriesItemsContent = ({
                   message={
                     error?.message ||
                     t(
-                      "routes.home.components.SelectedCategoriesItemsContent.err"
+                      "routes.home.components.SelectedCategoriesItemsContent.err",
                     )
                   }
                 />
@@ -74,17 +74,17 @@ const SelectedCategoriesItemsContent = ({
               <div className={containerClass}>
                 <NoData
                   title={t(
-                    "routes.home.components.SelectedCategoriesItemsContent.noDataHeader"
+                    "routes.home.components.SelectedCategoriesItemsContent.noDataHeader",
                   )}
                   description={t(
-                    "routes.home.components.SelectedCategoriesItemsContent.noDataMsg"
+                    "routes.home.components.SelectedCategoriesItemsContent.noDataMsg",
                   )}
                 />
               </div>
             ) : (
-              <ul className="w-full grid grid-cols-2 max-[300px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
+              <ul className="w-ful grid grid-cols-2 max-[300px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
                 {data.data.map((p) => (
-                  <li key={p._id}>
+                  <li key={p._id} className="w-full">
                     <ShowcaseProductVertCard item={p} isArabic={isArabic} />
                   </li>
                 ))}
