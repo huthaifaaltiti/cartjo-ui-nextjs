@@ -362,7 +362,6 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   });
 
   const onSubmit = (values: FormData) => {
-    console.log({ values });
     registerMutation.mutate(values);
   };
 
@@ -386,17 +385,6 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
       tags.map((tag) => tag.text)
     );
   }, [form, tags]);
-
-  useEffect(() => {
-    const subscription = form.watch((value, { name, type }) => {
-      console.log(
-        `📝 Form value changed (field: ${name}, type: ${type}):`,
-        value
-      );
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form]);
 
   return (
     <div className="space-y-6 max-h-[80vh] overflow-y-auto">

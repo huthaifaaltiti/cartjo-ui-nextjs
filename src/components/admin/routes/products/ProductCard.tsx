@@ -58,8 +58,6 @@ const DashboardProductCard = ({
     [data]
   );
 
-  console.log({ product });
-
   const [showActions, setShowActions] = useState(false);
 
   const allImages = [product.mainImage, ...product.images];

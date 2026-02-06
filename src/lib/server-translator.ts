@@ -39,8 +39,6 @@ const getTranslation = (
 export const createTranslator = (locale: string) => {
   const localeData = getLocaleData(locale);
 
-  console.log("createTranslator", locale);
-
   return (key: string, defaultValue: string = key) =>
     getTranslation(localeData, key, defaultValue);
 };
