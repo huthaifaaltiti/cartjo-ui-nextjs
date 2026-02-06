@@ -19,8 +19,6 @@ export const fetchSuggestedProducts = async ({
 }: FetchSuggestedProductsProps): Promise<DataListResponse<Product>> => {
   const url = new URL(API_ENDPOINTS.PRODUCT.SUGGESTED);
 
-  console.log("fetchSuggestedProducts");
-
   if (lang) url.searchParams.append("lang", lang.toString());
   if (limit) url.searchParams.append("limit", limit.toString());
 
