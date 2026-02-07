@@ -396,7 +396,6 @@ const EditProductForm = ({
   });
 
   const onSubmit = (values: FormData) => {
-    console.log({ values });
     registerMutation.mutate(values);
   };
 

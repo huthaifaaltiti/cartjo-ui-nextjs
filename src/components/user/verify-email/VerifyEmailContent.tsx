@@ -25,11 +25,11 @@ export default function VerifyEmailContent({
 }) {
   const t = useTranslations("");
   const router = useRouter();
-  const { isArabic } = useGeneralContext()
+  const { isArabic } = useGeneralContext();
   const dispatch = useDispatch<AppDispatch>();
 
   const { status, message, isSuccess } = useSelector(
-    (state: RootState) => state.verifyEmail.verify
+    (state: RootState) => state.verifyEmail.verify,
   );
 
   const [token] = useQueryState("token", {
@@ -46,10 +46,10 @@ export default function VerifyEmailContent({
             key: "verify",
             status: "error",
             message: t(
-              "routes.verifyEmail.components.VerifyEmailContent.noToken"
+              "routes.verifyEmail.components.VerifyEmailContent.noToken",
             ),
             isSuccess: false,
-          })
+          }),
         );
         return;
       }
@@ -75,7 +75,7 @@ export default function VerifyEmailContent({
             </h1>
             <p className="text-xs text-gray-500 mt-1">
               {t(
-                "routes.verifyEmail.components.VerifyEmailContent.logoSubtitle"
+                "routes.verifyEmail.components.VerifyEmailContent.logoSubtitle",
               )}
             </p>
           </div>
@@ -90,12 +90,12 @@ export default function VerifyEmailContent({
               </div>
               <h2 className="text-2xl font-bold text-gray-800 mb-3">
                 {t(
-                  "routes.verifyEmail.components.VerifyEmailContent.verifyingEmail"
+                  "routes.verifyEmail.components.VerifyEmailContent.verifyingEmail",
                 )}
               </h2>
               <p className="text-gray-600 mb-6">
                 {t(
-                  "routes.verifyEmail.components.VerifyEmailContent.verifyingEmailDesc"
+                  "routes.verifyEmail.components.VerifyEmailContent.verifyingEmailDesc",
                 )}
               </p>
               <div className="flex items-center justify-center gap-2">
@@ -122,7 +122,7 @@ export default function VerifyEmailContent({
               </div>
               <h2 className="text-2xl font-bold text-gray-800 mb-3">
                 {t(
-                  "routes.verifyEmail.components.VerifyEmailContent.emailVerifiedTitle"
+                  "routes.verifyEmail.components.VerifyEmailContent.emailVerifiedTitle",
                 )}
               </h2>
               <p className="text-gray-600 mb-6">{message}</p>
@@ -132,13 +132,13 @@ export default function VerifyEmailContent({
                   <Mail className="w-5 h-5 text-purple-600" />
                   <p className="text-sm font-medium text-gray-700">
                     {t(
-                      "routes.verifyEmail.components.VerifyEmailContent.emailVerifiedDesc"
+                      "routes.verifyEmail.components.VerifyEmailContent.emailVerifiedDesc",
                     )}
                   </p>
                 </div>
                 <p className="text-xs text-gray-600">
                   {t(
-                    "routes.verifyEmail.components.VerifyEmailContent.emailVerifiedExtra"
+                    "routes.verifyEmail.components.VerifyEmailContent.emailVerifiedExtra",
                   )}
                 </p>
               </div>
@@ -146,7 +146,7 @@ export default function VerifyEmailContent({
               <div className="bg-gray-50 rounded-lg p-4 mb-6">
                 <p className="text-sm text-gray-600 mb-2">
                   {t(
-                    "routes.verifyEmail.components.VerifyEmailContent.redirectingToLogin"
+                    "routes.verifyEmail.components.VerifyEmailContent.redirectingToLogin",
                   )}
                 </p>
 
@@ -166,7 +166,7 @@ export default function VerifyEmailContent({
                 className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white-50 py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
               >
                 {t(
-                  "routes.verifyEmail.components.VerifyEmailContent.continueToLogin"
+                  "routes.verifyEmail.components.VerifyEmailContent.continueToLogin",
                 )}
                 <ArrowRight className="w-5 h-5" />
               </button>
@@ -180,14 +180,14 @@ export default function VerifyEmailContent({
               </div>
               <h2 className="text-2xl font-bold text-gray-800 mb-3">
                 {t(
-                  "routes.verifyEmail.components.VerifyEmailContent.verificationFailedTitle"
+                  "routes.verifyEmail.components.VerifyEmailContent.verificationFailedTitle",
                 )}
               </h2>
 
               <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
                 <p className="text-sm text-red-800 font-medium mb-2">
                   {t(
-                    "routes.verifyEmail.components.VerifyEmailContent.commonReasons"
+                    "routes.verifyEmail.components.VerifyEmailContent.commonReasons",
                   )}
                 </p>
                 <ul
@@ -197,17 +197,17 @@ export default function VerifyEmailContent({
                 >
                   <li>
                     {t(
-                      "routes.verifyEmail.components.VerifyEmailContent.linkExpired"
+                      "routes.verifyEmail.components.VerifyEmailContent.linkExpired",
                     )}
                   </li>
                   <li>
                     {t(
-                      "routes.verifyEmail.components.VerifyEmailContent.linkUsed"
+                      "routes.verifyEmail.components.VerifyEmailContent.linkUsed",
                     )}
                   </li>
                   <li>
                     {t(
-                      "routes.verifyEmail.components.VerifyEmailContent.invalidLink"
+                      "routes.verifyEmail.components.VerifyEmailContent.invalidLink",
                     )}
                   </li>
                 </ul>
@@ -220,7 +220,7 @@ export default function VerifyEmailContent({
                   className="w-full h-12 bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-colors duration-200"
                 >
                   {t(
-                    "routes.verifyEmail.components.VerifyEmailContent.contactSupport"
+                    "routes.verifyEmail.components.VerifyEmailContent.contactSupport",
                   )}
                 </Button>
               </div>

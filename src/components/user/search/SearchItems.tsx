@@ -15,6 +15,7 @@ import NoSearchText from "./NoSearchText";
 import NoSearchItemsFound from "./NoSearchItemsFound";
 import SearchQueryFilters from "../SearchQueryFilters";
 import SearchItemsLoading from "./SearchItemsLoading";
+import RecommendedProducts from "../product/recommended-products/RecommendedProducts";
 
 const SearchItems = () => {
   const t = useTranslations();
@@ -158,8 +159,9 @@ const SearchItems = () => {
 
   if (isEmptySearch) {
     return (
-      <div className={containerClass}>
+      <div className={`${containerClass} flex flex-col gap-12`}>
         <NoSearchText />
+        <RecommendedProducts />
       </div>
     );
   }
@@ -176,7 +178,6 @@ const SearchItems = () => {
     return (
       <div className={containerClass}>
         <MainSearchBar />
-
         <ErrorMessage
           message={
             error?.message || t("routes.search.components.SearchItems.failed")

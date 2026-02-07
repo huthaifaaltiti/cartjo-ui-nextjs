@@ -113,8 +113,6 @@ const EditCategoryForm = ({ category }: Props) => {
     url: category?.media?.en?.url || "",
   });
 
-  console.log({categoryImage_ar, categoryImage_en})
-
   const formSchema = editFormSchema(t);
 
   const form = useForm<FormData>({

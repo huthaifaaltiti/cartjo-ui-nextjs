@@ -100,7 +100,6 @@ export const ShowcasesContextProvider = ({
     isActive: boolean,
     showcaseId: string
   ): Promise<BaseResponse> => {
-    console.log({ lang });
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.SHOWCASES.SWITCH_ACTIVE_STATUS}/${showcaseId}`,
       {
