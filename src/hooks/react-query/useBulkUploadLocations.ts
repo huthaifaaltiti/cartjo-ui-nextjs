@@ -10,7 +10,6 @@ export const useBulkUploadLocations = () => {
 
   return useMutation({
     mutationFn: async (file: File) => {
-      console.log(session);
       const token = (session as CustomSession)?.accessToken;
 
       const formData = new FormData();

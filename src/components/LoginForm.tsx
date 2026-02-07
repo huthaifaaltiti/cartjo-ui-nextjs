@@ -74,8 +74,6 @@ const LoginForm = () => {
         dismissText: t("general.toast.dismissText"),
       });
 
-      console.log({ token });
-
       // Sign/NextAuth
       signIn("credentials", { token, redirect: false }).then((res) => {
         if (res?.ok) {

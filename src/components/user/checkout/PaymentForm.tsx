@@ -101,8 +101,6 @@ export default function PaymentForm({
   const processPaymentWithToken = async (token_name: string) => {
     if (!verifiedOrder || !accessToken || !shippingAddress || !paymentData) return;
 
-    console.log('processPaymentWithToken')
-
     try {
       const url = new URL(API_ENDPOINTS.CHECKOUT.SUBMIT_PAYMENT);
 
