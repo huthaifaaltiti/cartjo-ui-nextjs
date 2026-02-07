@@ -10,13 +10,13 @@ interface WishlistButtonProps {
 export default function WishlistButton({
   isWishListed,
   isLoading,
-  onClick,
+  onClick
 }: WishlistButtonProps) {
   return (
     <button
       onClick={onClick}
       disabled={isLoading}
-      className={`absolute top-2 left-2 z-20 p-2 rounded-full backdrop-blur-sm transition-all duration-300 ${
+      className={`absolute top-2 ltr:left-2 rtl:right-2 z-20 p-2 rounded-full backdrop-blur-sm transition-all duration-300 ${
         isWishListed
           ? "bg-primary-50 shadow-md sm:scale-105 scale-100"
           : "bg-white-50/80 hover:bg-white-50 shadow-sm hover:shadow-md"
