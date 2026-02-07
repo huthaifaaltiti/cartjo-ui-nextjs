@@ -45,17 +45,14 @@ export const fetchLogos = async ({
 };
 
 export const fetchActiveLogo = async ({
-  token,
   lang = "en",
-}: FetchLogosParams): Promise<DataResponse<Logo>> => {
+}: Partial<FetchLogosParams>): Promise<DataResponse<Logo>> => {
   const url = new URL(`${API_ENDPOINTS.DASHBOARD.LOGOS.ACTIVE}`);
 
   if (lang) url.searchParams.append("lang", lang);
 
   const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    next:{revalidate:3600}
   });
 
   if (!res.ok) throw new Error("Could not retrieve active logo");
@@ -66,22 +63,16 @@ export const fetchActiveLogo = async ({
 };
 
 export const getActiveLogoQueryOptions = ({
-  token,
   lang = "en",
-}: FetchLogosParams) => ({
-  queryKey: ["activeLogo", token, lang],
-  queryFn: () => {
-    if (!token) throw new Error("No access token found");
-
-    return fetchActiveLogo({
-      token,
+}: Partial<FetchLogosParams>) => ({
+  queryKey: ["activeLogo", lang],
+  queryFn: () =>
+    fetchActiveLogo({
       lang,
-    });
-  },
+    }),
   initialPageParam: undefined,
   staleTime: STALE_TIME,
   gcTime: GC_TIME,
-  // enabled: !!token,
 });
 
 export const useActiveLogoQuery = () => {

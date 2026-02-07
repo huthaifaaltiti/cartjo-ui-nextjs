@@ -63,24 +63,22 @@ export default async function Home({
   );
 
   await queryClient.prefetchQuery<DataResponse<Logo>>(
-    getActiveLogoQueryOptions({ token, lang: locale }),
+    getActiveLogoQueryOptions({ lang: locale }),
   );
 
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <>
+    <HydrationBoundary state={dehydratedState}>
       <HomeContextProvider>
         <TopBar />
         <MainHeader />
-        <HydrationBoundary state={dehydratedState}>
-          <HeroSection />
-          <CategoriesCarousel />
-          <HomeShowcase />
-          <SelectedCategoriesItems randomCategories={randomCategories} />
-        </HydrationBoundary>
+        <HeroSection />
+        <CategoriesCarousel />
+        <HomeShowcase />
+        <SelectedCategoriesItems randomCategories={randomCategories} />
       </HomeContextProvider>
       <Footer locale={locale} />
-    </>
+    </HydrationBoundary>
   );
 }

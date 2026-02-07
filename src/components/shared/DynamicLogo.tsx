@@ -8,7 +8,6 @@ import CustomImage from "../admin/shared/CustomImage";
 
 export default function DynamicLogo() {
   const { changeLogo, setChangeLogo } = useHomeEffectsContext();
-
   const { data, isError, refetch } = useActiveLogoQuery();
 
   useEffect(() => {
@@ -22,8 +21,7 @@ export default function DynamicLogo() {
   const logoUrl = data?.data?.media?.url;
   const altText = data?.data?.altText ?? "Web app logo";
 
-  if (isError) return <StaticLogo />;
-  if (!logoUrl) return null;
+  if (isError || !logoUrl) return <StaticLogo />;
 
   return (
     <CustomImage
@@ -32,7 +30,8 @@ export default function DynamicLogo() {
       fill={false}
       height={40}
       width={120}
-      loading="lazy"
+      loading="eager"
+      priority
     />
   );
 }
