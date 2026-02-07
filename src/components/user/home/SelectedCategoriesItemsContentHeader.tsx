@@ -30,7 +30,6 @@ export default function SelectedCategoriesItemsContentHeader({
           pathname: `/${locale}/${category?.slug || category?.name}`,
           query: { c_id: `${category?._id}` },
         }}
-        target="_blank"
       >
         <Button
           variant="default"
