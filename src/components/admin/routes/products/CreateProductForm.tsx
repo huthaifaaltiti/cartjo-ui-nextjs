@@ -50,6 +50,11 @@ import {
   SystemGeneratedHint,
 } from "@/config/typeHint.config";
 import { MEDIA_CONFIG } from "@/config/media.config";
+import ProductVariantForm, {
+  ProductVariantFormRef,
+} from "./ProductVariantForm";
+import { ProductVariantAttributeKey } from "@/enums/productVariantAttributeKey.enum";
+import { validationConfig } from "@/config/validationConfig";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -57,79 +62,130 @@ for (const key in Currency) {
 }
 
 const createFormSchema = (
-  t: (key: string) => string,
-  activeTypeHintConfigsList: string[]
+  t: (key: string, params?: Record<string, number>) => string,
+  activeTypeHintConfigsList: string[],
 ) =>
   z.object({
     mainImage: z.string().min(2, {
       message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.mainImage.required"
+        "routes.dashboard.routes.products.components.CreateProductForm.validations.mainImage.required",
       ),
     }),
-    images: z.array(z.string()).optional(),
-    name_ar: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.name_ar.minChars"
-      ),
-    }),
-    name_en: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.name_en.minChars"
-      ),
-    }),
-    categoryId: z.string().min(1, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.category.required"
-      ),
-    }),
-    description_ar: z.string().min(20, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.desc_ar.minChars"
-      ),
-    }),
-    description_en: z.string().min(20, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.desc_en.minChars"
-      ),
-    }),
-    price: z.number(),
-    currency: z.enum(currencyValues as [string, ...string[]], {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.currency.notSupported"
-      ),
-    }),
-    totalAmountCount: z.number().min(1, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.totalAmountCount.min"
-      ),
-    }),
-    typeHint: z
-      .array(z.string())
-      .min(1, {
+    name_ar: z
+      .string()
+      .min(validationConfig.product.name.ar.minCharacters, {
         message: t(
-          "routes.dashboard.routes.products.components.CreateProductForm.validations.type.required"
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.name_ar.minChars",
+          { count: validationConfig.product.name.ar.minCharacters },
+        ),
+      })
+      .max(validationConfig.product.name.ar.maxCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.name_ar.maxChars",
+          { count: validationConfig.product.name.ar.maxCharacters },
+        ),
+      }),
+    name_en: z
+      .string()
+      .min(validationConfig.product.name.en.minCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.name_en.minChars",
+          { count: validationConfig.product.name.en.minCharacters },
+        ),
+      })
+      .max(validationConfig.product.name.en.maxCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.name_en.maxChars",
+          { count: validationConfig.product.name.en.maxCharacters },
+        ),
+      }),
+    description_ar: z
+      .string()
+      .min(validationConfig.product.description.ar.minCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.desc_ar.minChars",
+          { count: validationConfig.product.description.ar.minCharacters },
+        ),
+      })
+      .max(validationConfig.product.description.ar.maxCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.desc_ar.maxChars",
+          { count: validationConfig.product.description.ar.maxCharacters },
+        ),
+      }),
+    description_en: z
+      .string()
+      .min(validationConfig.product.description.en.minCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.desc_en.minChars",
+          { count: validationConfig.product.description.en.minCharacters },
+        ),
+      })
+      .max(validationConfig.product.description.en.maxCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.desc_en.maxChars",
+          { count: validationConfig.product.description.en.maxCharacters },
+        ),
+      }),
+    typeHints: z
+      .array(z.string())
+      .min(validationConfig.product.typeHints.min, {
+        message: t(
+          "routes.dashboard.routes.products.components.CreateProductForm.validations.type.min",
+          { count: validationConfig.product.typeHints.min },
         ),
       })
       .refine(
         (values) => values.every((v) => activeTypeHintConfigsList.includes(v)),
         {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid",
           ),
-        }
+        },
       ),
+    categoryId: z.string().min(1, {
+      message: t(
+        "routes.dashboard.routes.products.components.CreateProductForm.validations.category.required",
+      ),
+    }),
     subCategoryId: z.string().min(1, {
       message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.subCategory.required"
+        "routes.dashboard.routes.products.components.CreateProductForm.validations.subCategory.required",
       ),
     }),
-    tags: z.array(z.string()).min(1, {
+    tags: z.array(z.string()).min(validationConfig.product.tags.min, {
       message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.tags.min"
+        "routes.dashboard.routes.products.components.CreateProductForm.validations.tags.min",
+        { count: validationConfig.product.tags.min },
       ),
     }),
-    availableCount: z.number().optional(),
-    discountRate: z.number().optional(),
+    variants: z.array(
+      z.object({
+        sku: z.string().optional(),
+        description_ar: z.string(),
+        description_en: z.string(),
+        price: z.number(),
+        currency: z.nativeEnum(Currency),
+        discountRate: z.number(),
+        totalAmountCount: z.number(),
+        mainImage: z.object({
+          file: z.instanceof(File).nullable(),
+          url: z.string(),
+        }),
+        images: z
+          .object({
+            files: z.array(z.instanceof(File)),
+            urls: z.array(z.string()),
+          })
+          .optional(),
+        attributes: z.array(
+          z.object({
+            key: z.nativeEnum(ProductVariantAttributeKey),
+            value: z.string(),
+          }),
+        ),
+      }),
+    ),
   });
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
@@ -150,6 +206,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
 
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
+  const variantFormRef = useRef<ProductVariantFormRef>(null);
 
   const [prodImages, setProdImages] = useState<{
     mainImage: { file: File | null; url: string };
@@ -185,10 +242,6 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
     setTags(updatedTags);
   };
 
-  const handleTagClick = (index: number) => {
-    console.log("The tag at index " + index + " was clicked");
-  };
-
   const handleMainImageChange = (data: {
     file?: File | null;
     url?: string;
@@ -205,64 +258,27 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
     form.setValue("mainImage", url);
   };
 
-  const handleImagesChange = (data: {
-    files?: File[] | null;
-    urls?: string[] | null;
-  }) => {
-    const newFiles = data.files ?? [];
-    const urls = data.urls ?? [];
-
-    setProdImages((prev) => {
-      // merge files by reference-safe comparison
-      const mergedFiles = [
-        ...prev.images.files,
-        ...newFiles.filter(
-          (f) =>
-            !prev.images.files.some(
-              (pf) =>
-                pf.name === f.name &&
-                pf.size === f.size &&
-                pf.lastModified === f.lastModified
-            )
-        ),
-      ];
-
-      return {
-        ...prev,
-        images: {
-          files: mergedFiles,
-          urls,
-        },
-      };
-    });
-  };
-
   const formSchema = createFormSchema(t, activeTypeHintConfigsList);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       mainImage: "",
-      images: [],
       name_ar: "",
       name_en: "",
       categoryId: "",
       subCategoryId: "",
       description_ar: "",
       description_en: "",
-      price: 0,
-      currency: Currency.JOD ?? "",
-      totalAmountCount: 0,
-      typeHint: [],
+      typeHints: [],
       tags: [],
-      availableCount: 0,
-      discountRate: 0,
+      variants: [],
     },
   });
 
   const selectedCategoryId = form.watch("categoryId");
   const selectedCategory: Category | undefined = categories.find(
-    (cat) => cat._id === selectedCategoryId
+    (cat) => cat._id === selectedCategoryId,
   );
 
   const subCategories = selectedCategory?.subCategories || [];
@@ -279,46 +295,90 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
-      // Exclude fields that need special handling
-      const excludedFields = [
-        "images",
-        "mainImage",
-        "availableCount",
-        "discountRate",
-      ];
+      // Basic Fields
+      formData.append("name_ar", data.name_ar);
+      formData.append("name_en", data.name_en);
+      formData.append("description_ar", data.description_ar);
+      formData.append("description_en", data.description_en);
+      formData.append("categoryId", data.categoryId);
+      formData.append("subCategoryId", data.subCategoryId);
 
-      Object.entries(data).forEach(([key, value]) => {
-        if (excludedFields.includes(key)) return;
+      // typeHints[]
+      if (data?.typeHints && data?.typeHints?.length > 0) {
+        data.typeHints.forEach((type) => {
+          formData.append("typeHints[]", type);
+        });
+      }
 
-        if (Array.isArray(value)) {
-          value.forEach((item) => {
-            formData.append(`${key}[]`, String(item));
-          });
-        } else {
-          formData.append(key, String(value));
-        }
-      });
+      // tags[]
+      if (data.tags && data.tags?.length > 0) {
+        data.tags.forEach((tag) => {
+          formData.append("tags[]", tag);
+        });
+      }
 
-      formData.append("lang", locale);
-
+      // Product Main Image
       if (prodImages.mainImage?.file) {
         formData.append("mainImage", prodImages.mainImage.file);
       }
 
-      if (prodImages.images?.files?.length) {
-        prodImages.images.files.forEach((file) => {
-          formData.append("images", file);
+      // Variants
+      if (data?.variants && data?.variants?.length > 0) {
+        data.variants.forEach((variant, index) => {
+          if (variant?.sku)
+            formData.append(`variants[${index}][sku]`, variant?.sku);
+
+          if (variant?.description_ar)
+            formData.append(
+              `variants[${index}][description_ar]`,
+              variant?.description_ar,
+            );
+          if (variant?.description_en)
+            formData.append(
+              `variants[${index}][description_en]`,
+              variant?.description_en,
+            );
+          formData.append(`variants[${index}][price]`, String(variant.price));
+          formData.append(`variants[${index}][currency]`, variant.currency);
+          formData.append(
+            `variants[${index}][discountRate]`,
+            String(variant.discountRate),
+          );
+          formData.append(
+            `variants[${index}][totalAmountCount]`,
+            String(variant.totalAmountCount),
+          );
+
+          // Attributes
+          variant.attributes.forEach((attr, attrIndex) => {
+            formData.append(
+              `variants[${index}][attributes][${attrIndex}][key]`,
+              attr.key,
+            );
+            formData.append(
+              `variants[${index}][attributes][${attrIndex}][value]`,
+              attr.value,
+            );
+          });
+
+          // Variant Main Image
+          if (variant.mainImage?.file) {
+            formData.append(
+              `variant_${index}_mainImage`,
+              variant.mainImage.file,
+            );
+          }
+
+          // Variant Images
+          if (variant.images?.files?.length) {
+            variant.images.files.forEach((file) => {
+              formData.append(`variant_${index}_images`, file);
+            });
+          }
         });
       }
 
-      // Handle numeric fields explicitly (only once)
-      if (data.availableCount !== undefined) {
-        formData.append("availableCount", String(data.availableCount));
-      }
-
-      if (data.discountRate !== undefined) {
-        formData.append("discountRate", String(data.discountRate));
-      }
+      formData.append("lang", locale);
 
       const response = await fetch(API_ENDPOINTS.DASHBOARD.PRODUCTS.CREATE, {
         method: "POST",
@@ -330,7 +390,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData?.message || "Product's creation failed");
+        throw new Error(errorData?.message || "Product creation failed");
       }
 
       return response.json();
@@ -362,6 +422,9 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   });
 
   const onSubmit = (values: FormData) => {
+    const isValid = variantFormRef.current?.validateAll();
+    if (!isValid) return;
+
     registerMutation.mutate(values);
   };
 
@@ -382,14 +445,19 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   useEffect(() => {
     form.setValue(
       "tags",
-      tags.map((tag) => tag.text)
+      tags.map((tag) => tag.text),
     );
   }, [form, tags]);
 
   return (
     <div className="space-y-6 max-h-[80vh] overflow-y-auto">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit, (errors) => {
+            console.log("ZOD VALIDATION ERRORS:", errors);
+          })}
+          className="space-y-6"
+        >
           {/* mainImage */}
           <div className="w-full flex items-center gap-5">
             <FormField
@@ -415,37 +483,6 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     variant="rounded"
                     accept={MEDIA_CONFIG.PRODUCT.IMAGE.ALLOWED_TYPES}
                     multiple={false}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* images */}
-          <div className="w-full flex items-center gap-5">
-            <FormField
-              control={form.control}
-              name="images"
-              render={() => (
-                <FormItem className={getFormItemClassName()}>
-                  <FormLabel className="text-sm font-normal">
-                    {t(
-                      "routes.dashboard.routes.products.components.CreateProductForm.fields.images.label",
-                    )}
-                  </FormLabel>
-                  <ImageUploader
-                    ref={imagesUploaderRef}
-                    value={prodImages.images.urls}
-                    onChange={handleImagesChange}
-                    onError={handleImageError}
-                    label={" "}
-                    maxSizeInMB={MEDIA_CONFIG.PRODUCT.IMAGE.MAX_SIZE}
-                    size="sm"
-                    variant="rounded"
-                    accept={MEDIA_CONFIG.PRODUCT.IMAGE.ALLOWED_TYPES}
-                    multiple={true}
-                    maxImages={3}
                   />
                   <FormMessage />
                 </FormItem>
@@ -622,130 +659,40 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
             </div>
 
             {/* subCategory */}
-            {subCategories.length > 0 && (
-              <div className="flex-1">
-                {" "}
-                <FormField
-                  control={form.control}
-                  name="subCategoryId"
-                  render={({ field }) => (
-                    <FormItem className="text-left mt-4">
-                      <FormLabel className="text-sm font-normal">
-                        {t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.subCategory.label",
-                        )}
-                      </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
-                            <SelectValue
-                              placeholder={t(
-                                "routes.dashboard.routes.products.components.CreateProductForm.fields.subCategory.placeholder",
-                              )}
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {subCategories.map((sub: SubCategory) => (
-                            <SelectItem
-                              key={sub._id}
-                              value={sub._id}
-                              className="cursor-pointer capitalize"
-                            >
-                              {isArabic ? sub.name.ar : sub.name.en}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
-          </div>
-
-          {/* price & currency */}
-          <div
-            className={`flex gap-5 ${
-              isArabic ? "flex-row-reverse" : "flex-row"
-            }`}
-          >
-            {/* price */}
             <div className="flex-1">
+              {" "}
               <FormField
                 control={form.control}
-                name="price"
+                name="subCategoryId"
                 render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
+                  <FormItem className="text-left">
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.price.label",
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="any"
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.price.placeholder",
-                        )}
-                        min={0}
-                        {...field}
-                        onChange={(e) => {
-                          const value =
-                            e.target.value === ""
-                              ? 0
-                              : parseFloat(e.target.value);
-                          field.onChange(value);
-                        }}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* currency */}
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="currency"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.currency.label",
+                        "routes.dashboard.routes.products.components.CreateProductForm.fields.subCategory.label",
                       )}
                     </FormLabel>
                     <Select
-                      disabled
                       onValueChange={field.onChange}
                       value={field.value}
+                      disabled={subCategories.length === 0}
                     >
                       <FormControl>
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.products.components.CreateProductForm.fields.currency.placeholder",
+                              "routes.dashboard.routes.products.components.CreateProductForm.fields.subCategory.placeholder",
                             )}
                           />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Object.values(Currency)?.map((curr, i) => (
+                        {subCategories.map((sub: SubCategory) => (
                           <SelectItem
-                            key={`Currency_${i}`}
-                            value={curr}
+                            key={sub._id}
+                            value={sub._id}
                             className="cursor-pointer capitalize"
                           >
-                            {curr}
+                            {isArabic ? sub.name.ar : sub.name.en}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -758,131 +705,84 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
           </div>
 
           {/* total amount & type hint */}
-          <div
-            className={`flex gap-5 ${
-              isArabic ? "flex-row-reverse" : "flex-row"
-            }`}
-          >
-            {/* total amount */}
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="totalAmountCount"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.totalAmountCount.label",
-                      )}
-                    </FormLabel>
+          {/* typeHints */}
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="typeHints"
+              render={({ field }) => (
+                <FormItem className={getFormItemClassName()}>
+                  <FormLabel className="text-sm font-normal">
+                    {t(
+                      "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.label",
+                    )}
+                  </FormLabel>
+
+                  <Select
+                    value={field.value?.[0] ?? ""}
+                    onValueChange={(value) => {
+                      const exists = field.value.includes(value);
+                      field.onChange(
+                        exists
+                          ? field.value.filter((v) => v !== value)
+                          : [...field.value, value],
+                      );
+                    }}
+                  >
                     <FormControl>
-                      <Input
-                        type="number"
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.totalAmountCount.placeholder",
-                        )}
-                        min={0}
-                        {...field}
-                        onChange={(e) => {
-                          const value =
-                            e.target.value === ""
-                              ? 0
-                              : parseInt(e.target.value, 10);
-                          field.onChange(value);
-                        }}
-                        value={field.value || ""}
-                      />
+                      <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
+                        <SelectValue
+                          placeholder={t(
+                            "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.placeholder",
+                          )}
+                        />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
 
-            {/* typeHint */}
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="typeHint"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.label",
-                      )}
-                    </FormLabel>
-
-                    <Select
-                      value={field.value?.[0] ?? ""}
-                      onValueChange={(value) => {
-                        const exists = field.value.includes(value);
-                        field.onChange(
-                          exists
-                            ? field.value.filter((v) => v !== value)
-                            : [...field.value, value],
-                        );
-                      }}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
-                          <SelectValue
-                            placeholder={t(
-                              "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.placeholder",
-                            )}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-
-                      <SelectContent>
-                        {activeTypeHintConfigsList
-                          ?.filter(
-                            (th) =>
-                              !SYSTEM_GENERATED_HINTS.includes(
-                                th as SystemGeneratedHint,
-                              ),
-                          )
-                          ?.map((th) => (
-                            <SelectItem
-                              key={th}
-                              value={th}
-                              className={`cursor-pointer capitalize ${
-                                field.value.includes(th) ? "font-semibold" : ""
-                              }`}
-                            >
-                              {th}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-
-                    {/* selected hints preview */}
-                    {field.value.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {field.value.map((th) => (
-                          <span
+                    <SelectContent>
+                      {activeTypeHintConfigsList
+                        ?.filter(
+                          (th) =>
+                            !SYSTEM_GENERATED_HINTS.includes(
+                              th as SystemGeneratedHint,
+                            ),
+                        )
+                        ?.map((th) => (
+                          <SelectItem
                             key={th}
-                            className="text-xs px-2 py-1 rounded bg-primary-100 text-primary-700"
+                            value={th}
+                            className={`cursor-pointer capitalize ${
+                              field.value.includes(th) ? "font-semibold" : ""
+                            }`}
                           >
                             {th}
-                          </span>
+                          </SelectItem>
                         ))}
-                      </div>
-                    )}
+                    </SelectContent>
+                  </Select>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                  {/* selected hints preview */}
+                  {field.value.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {field.value.map((th) => (
+                        <span
+                          key={th}
+                          className="text-xs px-2 py-1 rounded bg-primary-100 text-primary-700"
+                        >
+                          {th}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           {/* tags */}
-          <div
-            className={`flex gap-5 ${
-              isArabic ? "flex-row-reverse" : "flex-row"
-            }`}
-          >
+          <div>
             {/* tags */}
             <FormField
               control={form.control}
@@ -905,9 +805,9 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                       placeholder={t(
                         "routes.dashboard.routes.products.components.CreateProductForm.fields.tags.placeholder",
                       )}
-                      maxTags={3}
+                      maxTags={5}
                       onTagsChange={handleTagsChange}
-                      onTagClick={handleTagClick}
+                      onTagClick={() => {}}
                     />
                   </div>
                   <FormMessage />
@@ -916,86 +816,24 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
             />
           </div>
 
-          {/* available amount & discount rate */}
-          <div
-            className={`flex gap-5 ${
-              isArabic ? "flex-row-reverse" : "flex-row"
-            }`}
-          >
-            {/* availableCount */}
-            <div className="flex-1">
-              <FormField
-                disabled
-                control={form.control}
-                name="availableCount"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.availableCount.label",
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.availableCount.placeholder",
-                        )}
-                        min={0}
-                        {...field}
-                        onChange={(e) => {
-                          const value =
-                            e.target.value === ""
-                              ? undefined
-                              : parseInt(e.target.value, 10);
-                          field.onChange(value);
-                        }}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* discount rate */}
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="discountRate"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.discountRate.label",
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.products.components.CreateProductForm.fields.discountRate.placeholder",
-                        )}
-                        min={0}
-                        {...field}
-                        onChange={(e) => {
-                          const value =
-                            e.target.value === ""
-                              ? undefined
-                              : parseFloat(e.target.value);
-                          field.onChange(value);
-                        }}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+          {/* Product Variants */}
+          <div className="w-full">
+            <FormField
+              control={form.control}
+              name="variants"
+              render={({ field }) => (
+                <FormItem className={getFormItemClassName()}>
+                  <FormControl>
+                    <ProductVariantForm
+                      variants={field.value}
+                      setVariants={field.onChange}
+                      ref={variantFormRef}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <Button
