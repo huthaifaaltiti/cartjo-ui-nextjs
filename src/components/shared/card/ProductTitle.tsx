@@ -10,7 +10,6 @@ export default function ProductTitle({
   return (
     <h3
       className={`
-        min-h-[60px] sm:min-h-[70px] md:min-h-[75px]
         font-semibold
         text-gray-900
         text-sm sm:text-md md:text-lg

@@ -12,7 +12,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Currency } from "@/enums/currency.enum";
 import { ProductVariantAttributeKey } from "@/enums/productVariantAttributeKey.enum";
-import { Group, Loader2, Pencil, Plus, Save } from "lucide-react";
+import { CirclePlus, Group, Loader2, Plus, Save } from "lucide-react";
 import {
   memo,
   useState,
@@ -70,6 +70,10 @@ const createEmptyVariant = (): Variant => ({
   price: 0,
   currency: Currency.JOD,
   discountRate: 0,
+  ratingsAverage: 1,
+  ratingsCount: 0,
+  isActive: true,
+  isDeleted: false,
   totalAmountCount: 0,
   mainImage: {
     file: null,
@@ -117,20 +121,18 @@ const ProductVariantForm = forwardRef<
   const queryClient = useQueryClient();
 
   const { accessToken } = useAuthContext();
-  const [editingVariantIndex, setEditingVariantIndex] = useState<number | null>(
-    null,
-  );
+
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [deletedImages, setDeletedImages] = useState<string[]>([]);
 
-  const initialVariantRef = useRef<Variant | null>(null);
+  const initialVariantsRef = useRef<Variant[]>([]);
 
   useEffect(() => {
     if (isEditMode && variants?.[0]) {
-      initialVariantRef.current = JSON.parse(JSON.stringify(variants[0]));
+      initialVariantsRef.current = JSON.parse(JSON.stringify(variants));
     }
-  }, [isEditMode, variants]);
+  }, [isEditMode]);
 
   useEffect(() => {
     if (!variants || variants.length === 0) {
@@ -249,6 +251,9 @@ const ProductVariantForm = forwardRef<
         const sellingTypes = variant.attributes.filter(
           (a) => a.key === ProductVariantAttributeKey.SELLING_TYPE,
         );
+        const sizes = variant.attributes.filter(
+          (a) => a.key === ProductVariantAttributeKey.SIZE,
+        );
 
         if (sellingTypes.length === 0) {
           if (!attributeErrors[0]) attributeErrors[0] = {};
@@ -269,6 +274,20 @@ const ProductVariantForm = forwardRef<
 
               attributeErrors[attrIndex]!.key = t(
                 "validations.attributes.singleSellingType",
+              );
+            }
+          });
+        }
+
+        if (sizes.length > 1) {
+          variant.attributes.forEach((attr, attrIndex) => {
+            if (attr.key === ProductVariantAttributeKey.SIZE && attrIndex > 0) {
+              if (!attributeErrors[attrIndex]) {
+                attributeErrors[attrIndex] = {};
+              }
+
+              attributeErrors[attrIndex]!.key = t(
+                "validations.attributes.singleSize",
               );
             }
           });
@@ -496,14 +515,24 @@ const ProductVariantForm = forwardRef<
 
       const variant = variants[variantIndex];
 
-      const formData = getChangedPayload(variant);
+      const hasId: boolean = !!variant?.variantId || false;
+
+      const formData = getChangedPayload(variant, variantIndex);
       if (!formData) return;
       formData.append("lang", locale);
 
-      const url = `${API_ENDPOINTS.DASHBOARD.PRODUCTS.EDIT}/${productId}/variant/${variant?.variantId}`;
+      if (!hasId) {
+        formData.append("currency", variant.currency);
+      }
+
+      const url = hasId
+        ? `${API_ENDPOINTS.DASHBOARD.PRODUCTS.EDIT}/${productId}/variant/${variant?.variantId}`
+        : `${API_ENDPOINTS.DASHBOARD.PRODUCTS.CREATE}/${productId}/variant`;
+
+      const method = hasId ? "PUT" : "POST";
 
       const response = await fetch(url, {
-        method: "PUT",
+        method,
         body: formData,
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -518,8 +547,6 @@ const ProductVariantForm = forwardRef<
           description: responseObj.message,
           dismissText: tg("toast.dismissText"),
         });
-
-        setEditingVariantIndex(null);
 
         await invalidateQuery(queryClient, queryKey);
       } else {
@@ -536,8 +563,8 @@ const ProductVariantForm = forwardRef<
     }
   };
 
-  const getChangedPayload = (variant: Variant) => {
-    const initial = initialVariantRef.current;
+  const getChangedPayload = (variant: Variant, variantIndex: number) => {
+    const initial = initialVariantsRef.current[variantIndex];
     if (!initial) return null;
 
     const formData = new FormData();
@@ -554,6 +581,11 @@ const ProductVariantForm = forwardRef<
     // Price
     if (variant.price !== initial.price) {
       formData.append("price", String(variant.price));
+    }
+
+    // Currency
+    if (variant.currency !== initial.currency) {
+      formData.append("currency", String(variant.currency));
     }
 
     // Discount
@@ -721,7 +753,7 @@ const ProductVariantForm = forwardRef<
                       />
                     )}
 
-                    {editingVariantIndex === variantIndex && (
+                    {isEditMode && variant?.variantId && productId && (
                       <Button
                         type="button"
                         variant="ghost"
@@ -733,30 +765,35 @@ const ProductVariantForm = forwardRef<
                       </Button>
                     )}
 
-                    {isEditMode && (
+                    {!variant?.variantId && (
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => setEditingVariantIndex(variantIndex)}
+                        onClick={() => handleSaveVariant(variantIndex)}
+                        disabled={loadingIndex === variantIndex}
                       >
-                        <Pencil className="h-4 w-4" />
+                        <CirclePlus className="h-4 w-4" />
                       </Button>
                     )}
                   </div>
                 </div>
-                <div className="w-auto flex items-center gap-2">
-                  <StatusBadge
-                    status={
-                      variant.isDeleted ? Statuses.DELETED : Statuses.UNDELETED
-                    }
-                  />
-                  <StatusBadge
-                    status={
-                      variant.isActive ? Statuses.ACTIVE : Statuses.UN_ACTIVE
-                    }
-                  />
-                </div>
+                {variant?.variantId && productId && isEditMode && (
+                  <div className="w-auto flex items-center gap-2">
+                    <StatusBadge
+                      status={
+                        variant.isDeleted
+                          ? Statuses.DELETED
+                          : Statuses.UNDELETED
+                      }
+                    />
+                    <StatusBadge
+                      status={
+                        variant.isActive ? Statuses.ACTIVE : Statuses.UN_ACTIVE
+                      }
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="p-4 space-y-4">
@@ -1041,7 +1078,7 @@ const ProductVariantForm = forwardRef<
 
                 {/* Attributes */}
                 <ProductVariantAttributesSection
-                  isDisabled={!variant?.isActive}
+                  isDisabled={isEditMode && !variant?.isActive}
                   variant={variant}
                   variantIndex={variantIndex}
                   updateAttribute={updateAttribute}

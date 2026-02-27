@@ -360,6 +360,9 @@
     },
     "ProductPrice": {
       "save": "احفظ لغاية"
+    },
+    "DiscountBadge": {
+      "save": "احفظ لغاية"
     }
   },
   "routes": {
@@ -970,6 +973,7 @@
                   "min": "يجب أن يحتوي الخيار على سمة واحدة على الأقل",
                   "sellingTypeRequired": "سمة 'نوع البيع' مطلوبة",
                   "singleSellingType": "يُسمح بسمة 'نوع بيع' واحدة فقط",
+                  "singleSize": "يسمح بسمة حجم واحدة فقط",
                   "value": {
                     "required": "قيمة السمة مطلوبة"
                   }

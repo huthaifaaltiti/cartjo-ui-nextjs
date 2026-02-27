@@ -167,6 +167,8 @@ const createFormSchema = (
         price: z.number(),
         currency: z.nativeEnum(Currency),
         discountRate: z.number(),
+        ratingsAverage: z.number(),
+        ratingsCount: z.number(),
         totalAmountCount: z.number(),
         mainImage: z.object({
           file: z.instanceof(File).nullable(),

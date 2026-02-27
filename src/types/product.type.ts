@@ -20,7 +20,8 @@ export interface Product {
   tags: string[];
   random: number;
   viewCount: number;
-  ratings: number;
+  ratingsAverage: number;
+  ratingsCount: number;
   totalSellCount: number;
   weeklyViewCount: number;
   favoriteCount: number;
@@ -57,8 +58,9 @@ export interface Variant {
   deletedBy?: string;
   deletedAt?: Date | null;
   unDeletedAt?: Date | null;
-
   description_ar: string;
+  ratingsAverage: number;
+  ratingsCount: number;
   description_en: string;
   price: number;
   currency: Currency;
@@ -83,8 +85,11 @@ export interface VariantServer extends Omit<Variant, "mainImage" | "images"> {
   price: number;
   currency: Currency;
   discountRate: number;
+  priceAfterDiscount: number;
   totalAmountCount: number;
   availableCount: number;
+  ratingsAverage: number;
+  ratingsCount: number;
   mainImage: Media;
   images?: Media[];
   isActive: boolean;

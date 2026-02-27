@@ -362,6 +362,9 @@
     },
     "ProductPrice": {
       "save": "Save"
+    },
+    "DiscountBadge": {
+      "save": "Save"
     }
   },
   "routes": {
@@ -974,6 +977,7 @@
                   "min": "Variant should have at least one attribute",
                   "sellingTypeRequired": "Attribute with selling-type is required",
                   "singleSellingType": "Only one selling-type attribute is allowed",
+                  "singleSize": "Only one single size attribute is allowed",
                   "value": {
                     "required": "Attribute value is required"
                   }
