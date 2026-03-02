@@ -365,6 +365,9 @@
     },
     "DiscountBadge": {
       "save": "Save"
+    },
+    "ProductVertCard": {
+      "selectVariant": "Please select a product's variant"
     }
   },
   "routes": {

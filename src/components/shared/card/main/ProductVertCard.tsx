@@ -86,12 +86,23 @@ const ProductVertCard = ({
       return;
     }
 
+    if (!currentVariant?.variantId) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("components.ProductVertCard.selectVariant"),
+        dismissText: t("general.toast.dismissText"),
+      });
+      
+      return;
+    }
+
     try {
       setIsAddToCartLoading(true);
 
       const response = await dispatch(
         addItemToServer({
           productId: item?._id,
+          variantId: currentVariant?.variantId,
           quantity: 1,
           lang: locale,
           token: accessToken,

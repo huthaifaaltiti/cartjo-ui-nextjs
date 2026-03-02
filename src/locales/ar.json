@@ -363,6 +363,9 @@
     },
     "DiscountBadge": {
       "save": "احفظ لغاية"
+    },
+    "ProductVertCard": {
+      "selectVariant": "الرجاء اختيار نوع المنتج"
     }
   },
   "routes": {
