@@ -96,7 +96,7 @@ const CartProductCard = ({
           removeItemFromServer({
             productId: item?.productId,
             variantId: item?.variant?.variantId,
-            quantity: quantityMount || quantity,
+            quantity: quantityMount ?? quantity,
             lang: locale,
             token: accessToken,
           }),

@@ -17,7 +17,9 @@ import {
 
 const WishlistLayoutHeaderActions: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { itemsCount } = useSelector((state: RootState) => state.wishlist);
+  const { itemsCount, items } = useSelector(
+    (state: RootState) => state.wishlist,
+  );
   const t = useTranslations();
   const { accessToken, locale } = useAuthContext();
   const queryClient = useQueryClient();
@@ -41,11 +43,32 @@ const WishlistLayoutHeaderActions: React.FC = () => {
   const dispatchAction = async (type: "delete" | "cart") => {
     if (type === "delete") {
       return await dispatch(
-        removeAllWishlistItems({ lang: locale, token: accessToken })
+        removeAllWishlistItems({ lang: locale, token: accessToken }),
       ).unwrap();
     } else {
+      const payloadItems = items
+        .map((item) => {
+          const variantId =
+            item.selectedVariantId ||
+            item.variants?.find(
+              (v) => v.isActive && !v.isDeleted && v.isAvailable,
+            )?.variantId;
+
+          if (!variantId) return null;
+
+          return {
+            productId: item._id,
+            variantId,
+          };
+        })
+        .filter(Boolean) as { productId: string; variantId: string }[];
+
       return await dispatch(
-        sendAllWishlistItemsToCart({ lang: locale, token: accessToken })
+        sendAllWishlistItemsToCart({
+          lang: locale,
+          token: accessToken,
+          items: payloadItems,
+        }),
       ).unwrap();
     }
   };
@@ -80,7 +103,7 @@ const WishlistLayoutHeaderActions: React.FC = () => {
             : t(
                 `routes.wishlist.components.WishlistLayoutHeaderActions.${
                   modalState.type === "delete" ? "deleteError" : "wishlistError"
-                }`
+                }`,
               ),
       }));
     } finally {
@@ -93,7 +116,7 @@ const WishlistLayoutHeaderActions: React.FC = () => {
     Icon: React.ElementType,
     labelKey: string,
     loadingLabelKey?: string,
-    disabled = false
+    disabled = false,
   ) => (
     <Button
       variant="default"
@@ -116,7 +139,7 @@ const WishlistLayoutHeaderActions: React.FC = () => {
           PackageMinus,
           "routes.wishlist.components.WishlistLayoutHeaderActions.emptyWishlist",
           "routes.wishlist.components.WishlistLayoutHeaderActions.deleting",
-          itemsCount === 0
+          itemsCount === 0,
         )}
 
         {renderButton(
@@ -124,7 +147,7 @@ const WishlistLayoutHeaderActions: React.FC = () => {
           Box,
           "routes.wishlist.components.WishlistLayoutHeaderActions.sendToCart",
           "routes.wishlist.components.WishlistLayoutHeaderActions.sendingToCart",
-          itemsCount === 0
+          itemsCount === 0,
         )}
       </div>
 
@@ -133,21 +156,21 @@ const WishlistLayoutHeaderActions: React.FC = () => {
         title={t(
           modalState.type === "delete"
             ? "routes.wishlist.components.WishlistLayoutHeaderActions.confirmDeleteTitle"
-            : "routes.wishlist.components.WishlistLayoutHeaderActions.sendToCart"
+            : "routes.wishlist.components.WishlistLayoutHeaderActions.sendToCart",
         )}
         txt={t(
           modalState.type === "delete"
             ? "routes.wishlist.components.WishlistLayoutHeaderActions.confirmDeleteMessage"
             : "routes.wishlist.components.WishlistLayoutHeaderActions.confirmCartItemsMessage",
-          { count: itemsCount }
+          { count: itemsCount },
         )}
         submitText={t(
           modalState.type === "delete"
             ? "routes.wishlist.components.WishlistLayoutHeaderActions.confirmDelete"
-            : "routes.wishlist.components.WishlistLayoutHeaderActions.confirmCart"
+            : "routes.wishlist.components.WishlistLayoutHeaderActions.confirmCart",
         )}
         cancelText={t(
-          "routes.wishlist.components.WishlistLayoutHeaderActions.cancel"
+          "routes.wishlist.components.WishlistLayoutHeaderActions.cancel",
         )}
         variant="danger"
         onSubmit={handleConfirm}

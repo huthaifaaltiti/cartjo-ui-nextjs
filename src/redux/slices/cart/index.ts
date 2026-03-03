@@ -8,6 +8,7 @@ import {
 } from "./actions";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
+import { sendAllWishlistItemsToCart } from "../wishlist/actions";
 
 interface ServerCartItem extends CartItem {
   productId: string;
@@ -166,6 +167,12 @@ const cartSlice = createSlice({
       })
       .addCase(wishlistItems.rejected, (state) => {
         state.loading = false;
+      })
+
+      // Send all wishlist items to cart
+      .addCase(sendAllWishlistItemsToCart.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        updateCartState(state, payload);
       });
   },
 });
