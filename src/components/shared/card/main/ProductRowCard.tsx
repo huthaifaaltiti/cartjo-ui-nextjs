@@ -27,8 +27,8 @@ import ProductTitle from "../ProductTitle";
 import ProductPrice from "../ProductPrice";
 import AddToCartButton from "../AddToCartButton";
 import ProductVariantDescription from "../ProductVariantDescription";
-import { extractVariantDetails } from "@/utils/productVariant.utils";
 import ItemRatingStats from "../ItemRatingStats";
+import ProductVariantSelector from "../ProductVariantSelector";
 
 const ProductRowCard = ({
   item,
@@ -176,12 +176,23 @@ const ProductRowCard = ({
       return;
     }
 
+    if (!currentVariant?.variantId) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("components.ProductVertCard.selectVariant"),
+        dismissText: t("general.toast.dismissText"),
+      });
+
+      return;
+    }
+
     try {
       setIsAddToCartLoading(true);
 
       const response = await dispatch(
         addItemToServer({
           productId: item?._id,
+          variantId: currentVariant?.variantId,
           quantity: 1,
           lang: locale,
           token: accessToken,
@@ -286,79 +297,11 @@ const ProductRowCard = ({
 
         {/* Variant Selector */}
         {activeVariants.length > 0 && (
-          <div className="relative my-2">
-            <div className="flex gap-1.5 overflow-x-auto scrollbar-none scroll-smooth snap-x snap-mandatory px-0.5 pb-0.5">
-              {activeVariants.map((variant) => {
-                const { sellingType, size, colors } =
-                  extractVariantDetails(variant);
-                const isSelected = selectedVariantId === variant?.variantId;
-                const isUnavailable = !variant.isAvailable;
-
-                // Color-only variant → show swatch circles
-                if (colors.length > 0 && !size && !sellingType) {
-                  return (
-                    <button
-                      key={variant.variantId}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (isUnavailable) return;
-                        setSelectedVariantId(variant.variantId);
-                      }}
-                      disabled={isUnavailable}
-                      title={isUnavailable ? "Out of stock" : colors[0]}
-                      className={`relative flex-shrink-0 w-7 h-7 rounded-full border-2 transition-all snap-start ${
-                        isSelected
-                          ? "border-primary-50 scale-110 shadow-sm"
-                          : "border-transparent hover:border-gray-400"
-                      } ${isUnavailable ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
-                      style={{ backgroundColor: colors[0] }}
-                    >
-                      {isUnavailable && (
-                        <span className="absolute inset-0 flex items-center justify-center rounded-full overflow-hidden">
-                          <span className="block w-full h-px bg-white/80 rotate-45" />
-                        </span>
-                      )}
-                    </button>
-                  );
-                }
-
-                // Text-based variant (size, selling type, or both)
-                const label = [sellingType, size].filter(Boolean).join(" · ");
-
-                return (
-                  <button
-                    key={variant.variantId}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (isUnavailable) return;
-                      setSelectedVariantId(variant.variantId);
-                    }}
-                    disabled={isUnavailable}
-                    title={isUnavailable ? "Out of stock" : undefined}
-                    className={`relative flex-shrink-0 snap-start inline-flex items-center gap-1 px-2.5 py-1 rounded-md border text-[11px] font-medium transition-all whitespace-nowrap ${isSelected ? "border-primary-50 bg-black text-white" : "border-gray-200 bg-white text-gray-700 hover:border-gray-400"} ${isUnavailable ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
-                  >
-                    {label}
-                    {isUnavailable && (
-                      <span className="absolute inset-0 overflow-hidden rounded-md pointer-events-none">
-                        <span className="absolute top-1/2 left-0 w-full h-px bg-gray-400 rotate-[-18deg] origin-center" />
-                      </span>
-                    )}
-                    {colors.length > 0 && (
-                      <span className="inline-flex gap-0.5 align-middle">
-                        {colors.map((c) => (
-                          <span
-                            key={c}
-                            style={{ backgroundColor: c }}
-                            className="inline-block w-2.5 h-2.5 rounded-full border border-gray-300"
-                          />
-                        ))}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <ProductVariantSelector
+            variants={activeVariants}
+            selectedVariantId={selectedVariantId}
+            onSelect={setSelectedVariantId}
+          />
         )}
 
         <div className="space-y-3">
