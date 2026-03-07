@@ -21,7 +21,7 @@
         "warning": "Warning"
       },
       "description": {
-        "loginRequired": "Login required!"
+        "loginRequired": "You're not logged in. Please sign in to continue."
       },
       "dismissText": "Dismiss"
     },
@@ -152,6 +152,11 @@
       "downloadReceiptPDF": "Download Receipt (PDF)"
     },
     "attributes": {
+      "labels": {
+        "size": "Size",
+        "type": "Type",
+        "sku": "SKU"
+      },
       "size": {
         "small": "Small",
         "medium": "Medium",
@@ -368,6 +373,9 @@
     },
     "ProductVertCard": {
       "selectVariant": "Please select a product's variant"
+    },
+    "StarRow": {
+      "reviews": "reviews"
     }
   },
   "routes": {
@@ -2174,6 +2182,16 @@
           "desc": "Item Description",
           "inStock": "In stock",
           "available": "Available"
+        },
+        "VariantDetailsSelector":{
+          "select":"Select Variant"
+        },
+        "ProductDetailsAddToCartButton":{
+          "add": "Add to Cart",
+          "added": "Added!"
+        },
+        "ProductDetailsSubtotal": {
+          "subtotal": "Subtotal"
         }
       }
     },

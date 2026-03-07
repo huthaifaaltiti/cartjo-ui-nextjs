@@ -1,6 +1,7 @@
 import { Currency } from "@/constants/currency.constant";
 import { VariantServer } from "@/types/product.type";
 import { useTranslations } from "next-intl";
+import DiscountSmallPercentBadge from "./DiscountSmallPercentBadge";
 
 export default function ProductPrice({
   item,
@@ -34,9 +35,7 @@ export default function ProductPrice({
           <span className="text-xs sm:text-sm text-slate-400 line-through">
             {withCurrency(price)}
           </span>
-          <span className="text-xs font-semibold text-white-50 bg-emerald-500 py-0.5 px-1 rounded-full animate-bounce">
-            -{discountRate}%
-          </span>
+          <DiscountSmallPercentBadge discountRate={discountRate} />
         </div>
       )}
 

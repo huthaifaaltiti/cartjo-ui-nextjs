@@ -23,6 +23,7 @@ import { Locale } from "@/types/locale";
 import { DataResponse } from "@/types/service-response.type";
 import { Logo } from "@/types/logo";
 import { getActiveLogoQueryOptions } from "@/hooks/react-query/useLogosQuery";
+import ReduxInitializer from "@/components/ReduxInitializer";
 
 export default async function Home({
   params,
@@ -71,12 +72,14 @@ export default async function Home({
   return (
     <HydrationBoundary state={dehydratedState}>
       <HomeContextProvider>
-        <TopBar />
-        <MainHeader />
-        <HeroSection />
-        <CategoriesCarousel />
-        <HomeShowcase />
-        <SelectedCategoriesItems randomCategories={randomCategories} />
+        <ReduxInitializer>
+          <TopBar />
+          <MainHeader />
+          <HeroSection />
+          <CategoriesCarousel />
+          <HomeShowcase />
+          <SelectedCategoriesItems randomCategories={randomCategories} />
+        </ReduxInitializer>
       </HomeContextProvider>
       <Footer locale={locale} />
     </HydrationBoundary>

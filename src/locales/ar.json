@@ -150,6 +150,11 @@
       "downloadReceiptPDF": "تنزيل الإيصال (PDF)"
     },
     "attributes": {
+      "labels": {
+        "size": "الحجم",
+        "type": "النوع",
+        "sku": "رمز المنتج"
+      },
       "size": {
         "small": "صغير",
         "medium": "متوسط",
@@ -366,6 +371,9 @@
     },
     "ProductVertCard": {
       "selectVariant": "الرجاء اختيار نوع المنتج"
+    },
+    "StarRow": {
+      "reviews": "تعليقات"
     }
   },
   "routes": {
@@ -2142,6 +2150,16 @@
           "desc": "وصف المنتج",
           "inStock": "متوفر",
           "available": "متاح"
+        },
+        "VariantDetailsSelector":{
+          "select":"اختر النوع"
+        },
+        "ProductDetailsAddToCartButton": {
+          "add": "أضف إلى السلة",
+          "added": "تمت الإضافة"
+        },
+        "ProductDetailsSubtotal": {
+          "subtotal": "المجموع الفرعي"
         }
       }
     },

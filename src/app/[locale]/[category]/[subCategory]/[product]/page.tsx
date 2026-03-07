@@ -1,5 +1,6 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import {
+  getActiveCategoriesQueryOptions,
   getProductQueryOptions,
   getSearchProductCommentsQueryOptions,
   getSuggestedProductsQueryOptions,
@@ -34,15 +35,19 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery<DataListResponse<Product>>(
-    getSuggestedProductsQueryOptions(locale, 5)
+    getSuggestedProductsQueryOptions(locale, 5),
   );
 
   await queryClient.prefetchQuery<DataResponse<Product>>(
-    getProductQueryOptions(locale, productId, token)
+    getProductQueryOptions(locale, productId, token),
   );
 
   await queryClient.prefetchInfiniteQuery<DataListResponse<Comment>>(
-    getSearchProductCommentsQueryOptions(locale, productId)
+    getSearchProductCommentsQueryOptions(locale, productId),
+  );
+
+  await queryClient.prefetchQuery(
+    getActiveCategoriesQueryOptions(locale || "en"),
   );
 
   const dehydratedState = dehydrate(queryClient);
