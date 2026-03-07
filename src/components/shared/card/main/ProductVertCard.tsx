@@ -29,6 +29,7 @@ import ProductPrice from "../ProductPrice";
 import ProductVariantDescription from "../ProductVariantDescription";
 import ItemRatingStats from "../ItemRatingStats";
 import ProductVariantSelector from "../ProductVariantSelector";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 const ProductVertCard = ({
   item,
@@ -43,6 +44,7 @@ const ProductVertCard = ({
   const { items } = useSelector((state: RootState) => state.wishlist);
   const { locale } = useSelector((state: RootState) => state.general);
   const t = useTranslations();
+  const { requireAuth } = useRequireAuth();
 
   const title = isArabic ? item?.name?.ar : item?.name?.en;
 
@@ -77,14 +79,7 @@ const ProductVertCard = ({
     }).format(price);
 
   const handleAddToCart = async (): Promise<DataResponse<Cart> | undefined> => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-      return;
-    }
+    if (!requireAuth()) return;
 
     if (!currentVariant?.variantId) {
       showWarningToast({
@@ -181,8 +176,11 @@ const ProductVertCard = ({
     }
   }, [locale, accessToken, item, t, dispatch]);
 
-  const handleWishListedItemState = () =>
+  const handleWishListedItemState = () => {
+    if (!requireAuth()) return;
+    
     isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
+  };
 
   const handleGoToProductPage = useCallback(() => {
     let categorySlug, subCategorySlug;

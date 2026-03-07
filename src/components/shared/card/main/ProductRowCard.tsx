@@ -29,6 +29,7 @@ import AddToCartButton from "../AddToCartButton";
 import ProductVariantDescription from "../ProductVariantDescription";
 import ItemRatingStats from "../ItemRatingStats";
 import ProductVariantSelector from "../ProductVariantSelector";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 const ProductRowCard = ({
   item,
@@ -47,6 +48,7 @@ const ProductRowCard = ({
   const locale = useLocale();
   const { accessToken } = useAuthContext();
   const t = useTranslations();
+  const { requireAuth } = useRequireAuth();
 
   const activeVariants: VariantServer[] =
     item.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [];
@@ -162,19 +164,14 @@ const ProductRowCard = ({
     }
   }, [locale, accessToken, item, t]);
 
-  const handleWishListedItemState = () =>
+  const handleWishListedItemState = () => {
+    if (!requireAuth()) return;
+
     isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
+  };
 
   const handleAddToCart = async (): Promise<DataResponse<Cart> | undefined> => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-
-      return;
-    }
+    if (!requireAuth()) return;
 
     if (!currentVariant?.variantId) {
       showWarningToast({
