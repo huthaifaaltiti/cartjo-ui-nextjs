@@ -2154,6 +2154,7 @@
           "submit": "Submit Review",
           "submitting": "Submitting...",
           "enterComment": "Please enter a comment",
+          "enterRating": "Please rate our item from (1 to 5)",
           "submitCommentFailed": "Failed to submit comment"
         },
         "EditComment": {

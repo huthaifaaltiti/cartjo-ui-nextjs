@@ -32,6 +32,11 @@ const AddComment = ({ productId, refetch }: AddCommentProps) => {
       return;
     }
 
+    if (!rating) {
+      setError(t("routes.product.components.AddComment.enterRating"));
+      return;
+    }
+
     try {
       setIsSubmitting(true);
 
@@ -121,7 +126,7 @@ const AddComment = ({ productId, refetch }: AddCommentProps) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder={t(
-              "routes.product.components.AddComment.shareThoughts"
+              "routes.product.components.AddComment.shareThoughts",
             )}
             rows={4}
             disabled={isSubmitting}

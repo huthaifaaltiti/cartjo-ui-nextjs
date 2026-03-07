@@ -2121,6 +2121,7 @@
           "shareThoughts": "شارك أفكارك حول هذا المنتج..",
           "submit": "إرسال المراجعة",
           "submitting": "جارٍ الإرسال...",
+          "enterRating": "يرجى تقييم المنتج من (١ إلى ٥)",
           "enterComment": "يرجى إدخال تعليق",
           "submitCommentFailed": "فشل في إرسال التعليق"
         },
