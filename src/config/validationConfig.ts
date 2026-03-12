@@ -114,5 +114,11 @@ export const validationConfig = {
         max: 10,
       },
     },
+    comment: {
+      commentMinChars: 10,
+      commentMaxChars: 1000,
+      ratingMin: 1,
+      ratingMax: 5,
+    },
   },
 };

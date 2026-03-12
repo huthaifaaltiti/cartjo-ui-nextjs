@@ -23,7 +23,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { CustomSession } from "@/lib/authOptions";
 import { showWarningToast } from "@/components/shared/CustomToast";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export function useRequireAuth() {
   const router = useRouter();
@@ -31,6 +31,7 @@ export function useRequireAuth() {
   const searchParams = useSearchParams();
   const { data, status } = useSession();
   const t = useTranslations("");
+  const locale = useLocale()
 
 
   const buildRedirectPath = () => {
@@ -51,11 +52,12 @@ export function useRequireAuth() {
   const redirectToLogin = (withRedirect: boolean = true) => {
     if (withRedirect) {
       const redirectTo = buildRedirectPath();
-      router.push(`/auth?redirectTo=${redirectTo}&resend=true`);
-      return;
+
+      router.push(`/${locale}/auth?redirectTo=${redirectTo}&resend=true`);
+    } else {
+      router.push(`${locale}/auth?resend=false`);
     }
 
-    router.push("/auth?resend=false");
   };
 
   const isAuthenticated = () => {

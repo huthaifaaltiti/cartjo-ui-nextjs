@@ -374,8 +374,9 @@
     "ProductVertCard": {
       "selectVariant": "Please select a product's variant"
     },
-    "StarRow": {
-      "reviews": "reviews"
+    "ReviewsCount": {
+      "review": "Review",
+      "reviews": "Reviews"
     }
   },
   "routes": {
@@ -2153,8 +2154,12 @@
           "shareThoughts": "Share your thoughts about this product..",
           "submit": "Submit Review",
           "submitting": "Submitting...",
-          "enterComment": "Please enter a comment",
+          "enterComment": "Please enter a comment. Your feedback is valuable to us!",
+          "commentMinChars": "Comment must be at least {min} characters",
+          "commentMaxChars": "Comment must be at most {max} characters",
           "enterRating": "Please rate our item from (1 to 5)",
+          "ratingMin": "Rating must be at least {min}",
+          "ratingMax": "Rating must be at most {max}",
           "submitCommentFailed": "Failed to submit comment"
         },
         "EditComment": {

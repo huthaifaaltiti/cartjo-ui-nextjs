@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
@@ -25,12 +25,15 @@ import {
 import ProductBreadcrumb from "./product-details/ProductBreadcrumb";
 import ProductImageGallery from "./product-details/ProductImageGallery";
 import ProductInfoSection from "./product-details/ProductInfoSection";
+import { setSelectedServerVariant } from "@/redux/slices/product";
 
 const ProductDetailsContent = ({ product }: { product: Product }) => {
   const t = useTranslations("");
   const dispatch = useDispatch<AppDispatch>();
   const { requireAuth } = useRequireAuth();
   const { accessToken: token } = useAuthContext();
+
+  console.log({product})
 
   const pathname = usePathname();
   const pathnameSections = pathname.split("/").slice(2);
@@ -50,6 +53,12 @@ const ProductDetailsContent = ({ product }: { product: Product }) => {
   const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
 
   const variant = product.variants[selectedVariantIdx];
+
+  useEffect(() => {
+    if (variant?.variantId) {
+      dispatch(setSelectedServerVariant(variant));
+    }
+  }, [product, variant]);
 
   const handleAddToCart = useCallback(async (): Promise<
     DataResponse<Cart> | undefined

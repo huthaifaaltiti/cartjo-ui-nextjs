@@ -372,8 +372,9 @@
     "ProductVertCard": {
       "selectVariant": "الرجاء اختيار نوع المنتج"
     },
-    "StarRow": {
-      "reviews": "تعليقات"
+    "ReviewsCount": {
+      "reviews": "تعليقات",
+      "review": "تعليق"
     }
   },
   "routes": {
@@ -2118,11 +2119,15 @@
           "writeReview": "اكتب مراجعة",
           "yourRating": "تقييمك",
           "yourComment": "تعليقك",
-          "shareThoughts": "شارك أفكارك حول هذا المنتج..",
+          "shareThoughts": "شاركنا رأيك حول هذا المنتج..",
           "submit": "إرسال المراجعة",
-          "submitting": "جارٍ الإرسال...",
-          "enterRating": "يرجى تقييم المنتج من (١ إلى ٥)",
-          "enterComment": "يرجى إدخال تعليق",
+          "submitting": "جاري الإرسال...",
+          "enterComment": "يرجى إدخال تعليق. ملاحظاتك مهمة بالنسبة لنا!",
+          "commentMinChars": "يجب أن يحتوي التعليق على {min} أحرف على الأقل",
+          "commentMaxChars": "يجب ألا يتجاوز التعليق {max} حرفًا",
+          "enterRating": "يرجى تقييم المنتج من (1 إلى 5)",
+          "ratingMin": "يجب أن يكون التقييم على الأقل {min}",
+          "ratingMax": "يجب ألا يتجاوز التقييم {max}",
           "submitCommentFailed": "فشل في إرسال التعليق"
         },
         "EditComment": {
