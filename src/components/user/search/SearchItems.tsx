@@ -64,6 +64,14 @@ const SearchItems = () => {
     },
   );
 
+  const hasActiveFilters =
+    priceFrom > 0 ||
+    priceTo > 0 ||
+    ratingFrom > 0 ||
+    !!createdFrom ||
+    !!createdTo ||
+    beforeNumOfDays > 0;
+
   const {
     data,
     isLoading,
@@ -193,6 +201,7 @@ const SearchItems = () => {
         <div className="w-full flex flex-col gap-4">
           <MainSearchBar />
           <SearchQueryFilters
+            hasActiveFilters={hasActiveFilters}
             priceFrom={priceFrom}
             priceTo={priceTo}
             ratingFrom={ratingFrom}
@@ -223,6 +232,7 @@ const SearchItems = () => {
           <MainSearchBar />
 
           <SearchQueryFilters
+            hasActiveFilters={hasActiveFilters}
             priceFrom={priceFrom}
             priceTo={priceTo}
             ratingFrom={ratingFrom}

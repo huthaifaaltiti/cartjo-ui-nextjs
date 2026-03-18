@@ -27,9 +27,11 @@ interface FiltersProps {
     filterType: "dateRange" | "daysBefore",
     createdFromValue?: string,
     createdToValue?: string,
-    beforeNumOfDaysValue?: number
+    beforeNumOfDaysValue?: number,
   ) => void;
   onClearFilters: () => void;
+
+  hasActiveFilters: boolean;
 }
 
 const SearchQueryFilters = ({
@@ -49,6 +51,7 @@ const SearchQueryFilters = ({
   onApplyRangeFilter,
   onApplyDateFilter,
   onClearFilters,
+  hasActiveFilters,
 }: FiltersProps) => {
   const t = useTranslations();
 
@@ -80,10 +83,11 @@ const SearchQueryFilters = ({
 
       {/* Clear All Filters */}
       <Button
+        disabled={!hasActiveFilters}
         variant="outline"
         size="sm"
         onClick={onClearFilters}
-        className="flex items-center gap-2 text-text-primary-100 hover:text-text-primary-100 transition-all"
+        className="flex items-center gap-2 text-text-primary-100 hover:text-text-primary-100 transition-all cursor-pointer disabled:cursor-not-allowed disabled:hover:text-text-primary-100"
       >
         <img
           src={assets.image.svg.clear_filters_grey}
