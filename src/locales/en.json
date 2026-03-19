@@ -155,7 +155,8 @@
       "labels": {
         "size": "Size",
         "type": "Type",
-        "sku": "SKU"
+        "sku": "SKU",
+        "colors": "Colors"
       },
       "size": {
         "small": "Small",
