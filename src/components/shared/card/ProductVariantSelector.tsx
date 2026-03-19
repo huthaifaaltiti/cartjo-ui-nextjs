@@ -3,6 +3,7 @@
 import { memo } from "react";
 import { VariantServer } from "@/types/product.type";
 import { extractVariantDetails } from "@/utils/productVariant.utils";
+import { useTranslations } from "next-intl";
 
 interface ProductVariantSelectorProps {
   variants: VariantServer[];
@@ -17,6 +18,8 @@ const ProductVariantSelector = ({
   onSelect,
   className = "",
 }: ProductVariantSelectorProps) => {
+  const tg = useTranslations("general");
+
   if (!variants?.length) return null;
 
   return (
@@ -62,8 +65,13 @@ const ProductVariantSelector = ({
             );
           }
 
-          // ✅ Text-based variant
-          const label = [sellingType, size].filter(Boolean).join(" · ");
+          const translatedSellingType = sellingType
+            ? tg(`attributes.sellingType.${sellingType.toLowerCase()}`)
+            : null;
+          const translatedSize = size ? `${tg("attributes.labels.size")}: ${size}` : null;
+
+          // Text-based variant
+          const label = [translatedSellingType, translatedSize].filter(Boolean).join(" · ");
 
           return (
             <button
