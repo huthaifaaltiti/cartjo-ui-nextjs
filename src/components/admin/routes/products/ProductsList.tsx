@@ -3,9 +3,11 @@
 import { memo } from "react";
 import { Product } from "@/types/product.type";
 import { useProductsQuery } from "@/hooks/react-query/useProductsQuery";
-import InfiniteScrollList, { GRID_TYPE } from "../../../shared/InfiniteScrollList";
+import InfiniteScrollList, {
+  GRID_TYPE,
+} from "../../../shared/InfiniteScrollList";
 import { useProducts } from "@/contexts/Products.context";
-import ProductCard from "./ProductCard";
+import DashboardProductCard from "./DashboardProductCard";
 
 type ProductsListProps = {
   initialProducts: Product[];
@@ -42,7 +44,7 @@ const ProductsList = ({ initialProducts }: ProductsListProps) => {
       error={error}
       list={products}
       fetchNextPage={fetchNextPage}
-      ListItemCard={ProductCard}
+      ListItemCard={DashboardProductCard}
       layout="grid"
       gridType={GRID_TYPE.WIDE}
       cardProps={{

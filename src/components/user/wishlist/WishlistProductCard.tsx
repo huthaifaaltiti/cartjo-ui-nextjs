@@ -1,9 +1,9 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Product } from "@/types/product.type";
+import { Product, VariantServer } from "@/types/product.type";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import {
   showErrorToast,
@@ -23,9 +23,12 @@ import DiscountBadge from "@/components/shared/card/DiscountBadge";
 import ProductImage from "@/components/shared/card/ProductImage";
 import ProductTitle from "@/components/shared/card/ProductTitle";
 import ProductPrice from "@/components/shared/card/ProductPrice";
-import ProductRating from "@/components/shared/card/ProductRating";
 import SendWishlistItemToCartBtn from "./SendWishlistItemToCartBtn";
 import { incCartItemsCountByOne } from "@/redux/slices/cart";
+import ProductVariantDescription from "@/components/shared/card/ProductVariantDescription";
+import ItemRatingStats from "@/components/shared/card/ItemRatingStats";
+import ProductVariantSelector from "@/components/shared/card/ProductVariantSelector";
+import { setWishlistItemSelectedVariant } from "@/redux/slices/wishlist";
 
 const WishlistProductCard = ({ item: product }: { item: Product }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,10 +41,32 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
 
   const title = isArabic ? product?.name?.ar : product?.name?.en;
 
+  const activeVariants: VariantServer[] =
+    product.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [];
+
   const [isWishListed] = useState(product?.isWishListed || false);
   const [isHovered, setIsHovered] = useState(false);
   const [isWishListing, setIsWishListing] = useState(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
+    activeVariants[0]?.variantId ?? null,
+  );
+
+  const currentVariant = useMemo(
+    () => activeVariants.find((v) => v.variantId === selectedVariantId) ?? null,
+    [activeVariants, selectedVariantId],
+  );
+
+  const handleVariantSelect = (variantId: string) => {
+    setSelectedVariantId(variantId);
+
+    dispatch(
+      setWishlistItemSelectedVariant({
+        productId: product._id,
+        variantId,
+      }),
+    );
+  };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -104,12 +129,23 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
       return;
     }
 
+    if (!currentVariant?.variantId) {
+      showWarningToast({
+        title: t("general.toast.title.warning"),
+        description: t("components.ProductVertCard.selectVariant"),
+        dismissText: t("general.toast.dismissText"),
+      });
+
+      return;
+    }
+
     try {
       setIsAddToCartLoading(true);
 
       const response = await dispatch(
         sendWishlistItemToCart({
           productId: product?._id,
+          variantId: currentVariant?.variantId,
           lang: locale,
           token: accessToken,
         }),
@@ -164,7 +200,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
         onClick={handleWishListedItemState}
       />
 
-      <DiscountBadge discount={product.discountRate} />
+      <DiscountBadge discount={currentVariant?.discountRate ?? 0} />
 
       <div
         className="w-full h-[23vh] sm:h-[22vh] max-[500px]:h-[18vh] max-[400px]:h-[16vh] max-[350px]:h-[14vh]"
@@ -172,10 +208,10 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <ProductImage
-          src={product.mainImage}
+          src={currentVariant?.mainImage?.url || product?.mainImage?.url}
           alt={title}
           isHovered={isHovered}
-          isLoading={isAddToCartLoading}
+          isLoading={isAddToCartLoading || isWishListing}
         />
       </div>
 
@@ -191,17 +227,49 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
           />
         </div>
 
+        {/* Variant description */}
+        <div>
+          {currentVariant && (
+            <ProductVariantDescription
+              desc={
+                isArabic
+                  ? currentVariant?.description?.ar
+                  : currentVariant?.description?.en
+              }
+              isHovered={isHovered}
+              isLoading={isAddToCartLoading || isWishListing}
+            />
+          )}
+        </div>
+
+        {/* Variant Selector */}
+        <ProductVariantSelector
+          variants={activeVariants}
+          selectedVariantId={selectedVariantId}
+          onSelect={handleVariantSelect}
+        />
+
         <div className="space-y-3">
           <div className="w-full flex items-center justify-between gap-1">
-            <ProductPrice
-              item={product}
-              formatPrice={formatPrice}
-              isArabic={isArabic}
+            {currentVariant && (
+              <ProductPrice
+                item={currentVariant}
+                formatPrice={formatPrice}
+                isArabic={isArabic}
+              />
+            )}
+            <ItemRatingStats
+              ratingAverage={
+                currentVariant?.ratingsAverage ?? product.ratingsAverage ?? 0
+              }
+              ratingCount={
+                currentVariant?.ratingsCount ?? product.ratingsCount ?? 0
+              }
             />
-            <ProductRating rating={product.ratings} />
           </div>
 
           <SendWishlistItemToCartBtn
+            isDisabled={!currentVariant?.variantId || isAddToCartLoading}
             isLoading={isAddToCartLoading}
             handleOnClick={handleSendWishListItemToCart}
           />

@@ -8,18 +8,20 @@ import LoadingProductButton from "@/components/shared/loaders/LoadingProduct";
 const SendWishlistItemToCartBtn = ({
   handleOnClick,
   isLoading,
+  isDisabled,
 }: {
   handleOnClick: () => void;
   isLoading: boolean;
+  isDisabled: boolean;
 }) => {
   const t = useTranslations();
 
   return (
     <button
       onClick={handleOnClick}
-      disabled={isLoading}
+      disabled={isDisabled || isLoading}
       className={`w-full h-auto group/btn relative overflow-hidden font-semibold py-2 px-1 rounded-xl transition-all duration-300 transform shadow-lg flex items-center justify-center gap-3 disabled:cursor-not-allowed ${
-        isLoading
+        isLoading || isDisabled
           ? "bg-primary-400 text-white-50 scale-105 shadow-2xl"
           : "bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white-50 hover:scale-105 active:scale-95 hover:shadow-xl"
       }`}

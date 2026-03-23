@@ -1,7 +1,7 @@
-import { memo } from "react";
+import AnimatedManagedDashboard from "./AnimatedManagedDashboard";
 
 const ManageDashboard = () => {
-  return <div>ManageDashboard </div>;
+  return <AnimatedManagedDashboard />;
 };
 
-export default memo(ManageDashboard);
+export default ManageDashboard;
