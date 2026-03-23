@@ -12,7 +12,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-8">
       {/* Modal Box */}
-      <div className="bg-white-50 rounded-xl p-6 w-full max-w-xl max-h-[calc(100vh-100px)] relative shadow-lg flex flex-col">
+      <div className="bg-white-50 rounded-xl p-6 w-full max-w-4xl max-h-[calc(100vh-100px)] relative shadow-lg flex flex-col">
         {/* Close Button */}
         <button
           className="absolute top-3 ltr:right-4 rtl:left-4 text-gray-700 hover:text-black-300 transition-all"

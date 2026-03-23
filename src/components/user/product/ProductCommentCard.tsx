@@ -17,6 +17,7 @@ import {
   showWarningToast,
 } from "@/components/shared/CustomToast";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
+import { containsArabic } from "@/utils/text/containsArabic";
 
 const StarRating = ({
   rating,
@@ -83,7 +84,7 @@ const ProductCommentCard = ({
       showWarningToast({
         title: t("general.toast.title.warning"),
         description: t(
-          "routes.product.components.ProductCommentCard.contentRequired"
+          "routes.product.components.ProductCommentCard.contentRequired",
         ),
         dismissText: t("general.toast.dismissText"),
       });
@@ -95,7 +96,7 @@ const ProductCommentCard = ({
       const response = await updateComment(
         comment?._id,
         content.trim(),
-        rating || undefined
+        rating || undefined,
       );
 
       if (response.isSuccess) {
@@ -160,7 +161,7 @@ const ProductCommentCard = ({
         setDeleteError(
           error instanceof Error
             ? error.message
-            : t("routes.product.components.ProductCommentCard.deleteError")
+            : t("routes.product.components.ProductCommentCard.deleteError"),
         );
       }
     } finally {
@@ -198,7 +199,7 @@ const ProductCommentCard = ({
               {comment.isPurchasedProduct && (
                 <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full font-medium">
                   {t(
-                    "routes.product.components.ProductCommentCard.verifiedPurchase"
+                    "routes.product.components.ProductCommentCard.verifiedPurchase",
                   )}
                 </span>
               )}
@@ -261,7 +262,9 @@ const ProductCommentCard = ({
           onCancel={handleCancelEdit}
         />
       ) : (
-        <p className="text-gray-700 text-sm leading-relaxed ml-13">
+        <p
+          className={`text-gray-700 text-sm leading-relaxed ml-13 ${containsArabic(comment.content) ? "font-[var(--font-noto-kufi)] text-right" : "font-sans text-left"}`}
+        >
           {comment.content}
         </p>
       )}
@@ -269,13 +272,13 @@ const ProductCommentCard = ({
       <ConfirmationModal
         isOpen={isDeleteDialogOpen}
         title={t(
-          "routes.product.components.ProductCommentCard.confirmDeleteTitle"
+          "routes.product.components.ProductCommentCard.confirmDeleteTitle",
         )}
         txt={t(
-          "routes.product.components.ProductCommentCard.confirmDeleteMessage"
+          "routes.product.components.ProductCommentCard.confirmDeleteMessage",
         )}
         submitText={t(
-          "routes.product.components.ProductCommentCard.confirmDelete"
+          "routes.product.components.ProductCommentCard.confirmDelete",
         )}
         cancelText={t("routes.product.components.ProductCommentCard.cancel")}
         variant="danger"

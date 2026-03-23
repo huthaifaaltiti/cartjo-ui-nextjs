@@ -19,7 +19,6 @@ import {
   CircleDollarSign,
   Truck,
 } from "lucide-react";
-import OrderDetailedCardItem from "./OrderDetailedCardItem";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import ReceiptHiddenLayout from "./ReceiptHiddenLayout";
@@ -27,6 +26,7 @@ import NoOrderDetailedCardData from "./NoOrderDetailedCardData";
 import { OrderItem } from "@/types/orderItem.type";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { Statuses } from "@/enums/statuses.enum";
+import OrderItemCard from "@/components/shared/OrderItemCard";
 
 type Props = { orderId: string };
 
@@ -34,7 +34,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
   const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
   const { selectedOrder, loading, error } = useSelector(
-    (state: RootState) => state.orders
+    (state: RootState) => state.orders,
   );
   const { accessToken, locale } = useAuthContext();
 
@@ -44,7 +44,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
     if (!orderId) return;
     const getOrderDetails = async () => {
       await dispatch(
-        getOrder({ id: orderId, lang: locale, token: accessToken })
+        getOrder({ id: orderId, lang: locale, token: accessToken }),
       );
     };
     getOrderDetails();
@@ -104,7 +104,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
               0,
               0,
               pageCanvas.width,
-              pageCanvas.height
+              pageCanvas.height,
             );
           }
 
@@ -173,7 +173,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
   if (showData) {
     const totalItems: number = selectedOrder.items.reduce(
       (sum: number, product: OrderItem) => sum + (product.quantity || 0),
-      0
+      0,
     );
 
     return (
@@ -182,7 +182,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
         <div className="sticky top-0 z-10 border-b bg-white-50 px-6 py-4 flex items-center justify-between gap-4">
           <h2 className="text-2xl font-bold text-gray-900">
             {t(
-              "routes.dashboard.routes.orders.components.OrderDetailedCard.orderDetails"
+              "routes.dashboard.routes.orders.components.OrderDetailedCard.orderDetails",
             ) || "Order Details"}
           </h2>
 
@@ -241,7 +241,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
                 <p className="text-sm text-gray-600">
                   {totalItems}{" "}
                   {t(
-                    "routes.dashboard.routes.orders.components.OrderDetailedCard.items"
+                    "routes.dashboard.routes.orders.components.OrderDetailedCard.items",
                   )}
                 </p>
               </div>
@@ -253,7 +253,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
                 <div>
                   <p className="text-xs font-medium text-gray-500">
                     {t(
-                      "routes.dashboard.routes.orders.components.OrderDetailedCard.transactionId"
+                      "routes.dashboard.routes.orders.components.OrderDetailedCard.transactionId",
                     )}
                   </p>
                   <p className="text-sm font-semibold text-gray-900">
@@ -268,7 +268,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
                   <div>
                     <p className="text-xs font-medium text-gray-500">
                       {t(
-                        "routes.dashboard.routes.orders.components.OrderDetailedCard.reference"
+                        "routes.dashboard.routes.orders.components.OrderDetailedCard.reference",
                       )}
                     </p>
                     <p className="text-sm font-semibold text-gray-900">
@@ -283,7 +283,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
                 <div>
                   <p className="text-xs font-medium text-gray-500">
                     {t(
-                      "routes.dashboard.routes.orders.components.OrderDetailedCard.paymentMethod"
+                      "routes.dashboard.routes.orders.components.OrderDetailedCard.paymentMethod",
                     )}
                   </p>
                   <p className="text-sm font-semibold capitalize text-gray-900">
@@ -300,7 +300,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
               <User className="h-5 w-5 text-gray-700" />
               <h3 className="text-lg font-semibold text-gray-900">
                 {t(
-                  "routes.dashboard.routes.orders.components.OrderDetailedCard.customerInfo"
+                  "routes.dashboard.routes.orders.components.OrderDetailedCard.customerInfo",
                 )}
               </h3>
             </div>
@@ -336,7 +336,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
               <MapPin className="h-5 w-5 text-gray-700" />
               <h3 className="text-lg font-semibold text-gray-900">
                 {t(
-                  "routes.dashboard.routes.orders.components.OrderDetailedCard.shippingAddress"
+                  "routes.dashboard.routes.orders.components.OrderDetailedCard.shippingAddress",
                 ) || "Shipping Address"}
               </h3>
             </div>
@@ -364,16 +364,17 @@ const OrderDetailedCard = ({ orderId }: Props) => {
               <ShoppingBag className="h-5 w-5 text-gray-700" />
               <h3 className="text-lg font-semibold text-gray-900">
                 {t(
-                  "routes.dashboard.routes.orders.components.OrderDetailedCard.orderItems"
+                  "routes.dashboard.routes.orders.components.OrderDetailedCard.orderItems",
                 ) || "Order Items"}
               </h3>
             </div>
             <div className="space-y-3">
               {selectedOrder.items.map((product: OrderItem, index: number) => (
-                <OrderDetailedCardItem
+                <OrderItemCard
                   key={index}
-                  product={product}
-                  selectedOrder={selectedOrder}
+                  item={product}
+                  order={selectedOrder}
+                  showVariant={!!selectedOrder}
                 />
               ))}
             </div>
@@ -401,7 +402,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
                       day: "numeric",
                       hour: "2-digit",
                       minute: "2-digit",
-                    }
+                    },
                   )}
                 </span>
               </p>
@@ -420,7 +421,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
                         day: "numeric",
                         hour: "2-digit",
                         minute: "2-digit",
-                      }
+                      },
                     )}
                   </span>
                 </p>

@@ -24,17 +24,6 @@ import {
 import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { isArabicLocale } from "@/config/locales.config";
-import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
-import { tagStyledClassName } from "@/constants/tagsInputStyles";
-import { useHandleApiError } from "@/hooks/useHandleApiError";
-import { invalidateQuery } from "@/utils/queryUtils";
-import { User } from "@/types/user";
-import { Category } from "@/types/category.type";
-import { Currency } from "@/enums/currency.enum";
-import { Product } from "@/types/product.type";
-import { SubCategory } from "@/types/subCategory";
 import { useProducts } from "@/contexts/Products.context";
 import {
   Select,
@@ -43,22 +32,38 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import TagsInput from "@/components/shared/TagsInput";
+import { User } from "@/types/user";
+import { Category } from "@/types/category.type";
+import { Currency } from "@/enums/currency.enum";
+import { Textarea } from "@/components/ui/textarea";
+import { SubCategory } from "@/types/subCategory";
+import { isArabicLocale } from "@/config/locales.config";
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { invalidateQuery } from "@/utils/queryUtils";
+import { PRODUCTS_TAGS_SUGGESTIONS } from "@/constants/productTags";
+import { tagStyledClassName } from "@/constants/tagsInputStyles";
+import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { useActiveTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintConfigsQuery";
 import {
   SYSTEM_GENERATED_HINTS,
   SystemGeneratedHint,
 } from "@/config/typeHint.config";
 import { MEDIA_CONFIG } from "@/config/media.config";
+import ProductVariantForm, {
+  ProductVariantFormRef,
+} from "./ProductVariantForm";
+import { validationConfig } from "@/config/validationConfig";
+import { Product, Variant, VariantServer } from "@/types/product.type";
+import { containsArabic } from "@/utils/text/containsArabic";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
   currencyValues.push(Currency[key as keyof typeof Currency]);
 }
 
-const editFormSchema = (
-  t: (key: string) => string,
+const createdFormSchema = (
+  t: (key: string, params?: Record<string, number>) => string,
   activeTypeHintConfigsList: string[],
 ) =>
   z.object({
@@ -67,48 +72,68 @@ const editFormSchema = (
         "routes.dashboard.routes.products.components.EditProductForm.validations.mainImage.required",
       ),
     }),
-    images: z.array(z.string()).optional(),
-    name_ar: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.name_ar.minChars",
-      ),
-    }),
-    name_en: z.string().min(2, {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.name_en.minChars",
-      ),
-    }),
-    categoryId: z.string().min(1, {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.category.required",
-      ),
-    }),
-    description_ar: z.string().min(20, {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.desc_ar.minChars",
-      ),
-    }),
-    description_en: z.string().min(20, {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.desc_en.minChars",
-      ),
-    }),
-    price: z.number(),
-    currency: z.enum(currencyValues as [string, ...string[]], {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.currency.notSupported",
-      ),
-    }),
-    totalAmountCount: z.number().min(1, {
-      message: t(
-        "routes.dashboard.routes.products.components.EditProductForm.validations.totalAmountCount.min",
-      ),
-    }),
-    typeHint: z
-      .array(z.string())
-      .min(1, {
+    name_ar: z
+      .string()
+      .min(validationConfig.product.name.ar.minCharacters, {
         message: t(
-          "routes.dashboard.routes.products.components.EditProductForm.validations.type.required",
+          "routes.dashboard.routes.products.components.EditProductForm.validations.name_ar.minChars",
+          { count: validationConfig.product.name.ar.minCharacters },
+        ),
+      })
+      .max(validationConfig.product.name.ar.maxCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.EditProductForm.validations.name_ar.maxChars",
+          { count: validationConfig.product.name.ar.maxCharacters },
+        ),
+      }),
+    name_en: z
+      .string()
+      .min(validationConfig.product.name.en.minCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.EditProductForm.validations.name_en.minChars",
+          { count: validationConfig.product.name.en.minCharacters },
+        ),
+      })
+      .max(validationConfig.product.name.en.maxCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.EditProductForm.validations.name_en.maxChars",
+          { count: validationConfig.product.name.en.maxCharacters },
+        ),
+      }),
+    description_ar: z
+      .string()
+      .min(validationConfig.product.description.ar.minCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.EditProductForm.validations.desc_ar.minChars",
+          { count: validationConfig.product.description.ar.minCharacters },
+        ),
+      })
+      .max(validationConfig.product.description.ar.maxCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.EditProductForm.validations.desc_ar.maxChars",
+          { count: validationConfig.product.description.ar.maxCharacters },
+        ),
+      }),
+    description_en: z
+      .string()
+      .min(validationConfig.product.description.en.minCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.EditProductForm.validations.desc_en.minChars",
+          { count: validationConfig.product.description.en.minCharacters },
+        ),
+      })
+      .max(validationConfig.product.description.en.maxCharacters, {
+        message: t(
+          "routes.dashboard.routes.products.components.EditProductForm.validations.desc_en.maxChars",
+          { count: validationConfig.product.description.en.maxCharacters },
+        ),
+      }),
+    typeHints: z
+      .array(z.string())
+      .min(validationConfig.product.typeHints.min, {
+        message: t(
+          "routes.dashboard.routes.products.components.EditProductForm.validations.type.min",
+          { count: validationConfig.product.typeHints.min },
         ),
       })
       .refine(
@@ -119,34 +144,64 @@ const editFormSchema = (
           ),
         },
       ),
+    categoryId: z.string().min(1, {
+      message: t(
+        "routes.dashboard.routes.products.components.EditProductForm.validations.category.required",
+      ),
+    }),
     subCategoryId: z.string().min(1, {
       message: t(
         "routes.dashboard.routes.products.components.EditProductForm.validations.subCategory.required",
       ),
     }),
-    tags: z.array(z.string()).min(1, {
+    tags: z.array(z.string()).min(validationConfig.product.tags.min, {
       message: t(
         "routes.dashboard.routes.products.components.EditProductForm.validations.tags.min",
+        { count: validationConfig.product.tags.min },
       ),
     }),
-    availableCount: z.number().optional(),
-    discountRate: z.number().optional(),
   });
 
-type FormData = z.infer<ReturnType<typeof editFormSchema>>;
+type FormData = z.infer<ReturnType<typeof createdFormSchema>>;
 
 type CreateSubCategoryFormProps = {
-  categories: Category[];
   product: Product;
+  categories: Category[];
 };
+
+const mapServerVariantToFormVariant = (
+  serverVariant: VariantServer,
+): Variant => ({
+  variantId: serverVariant?.variantId || undefined,
+  sku: serverVariant.sku || "",
+  description_ar: serverVariant.description?.ar || "",
+  description_en: serverVariant.description?.en || "",
+  price: serverVariant.price,
+  currency: serverVariant.currency,
+  discountRate: serverVariant.discountRate,
+  totalAmountCount: serverVariant.totalAmountCount,
+  ratingsAverage: serverVariant.ratingsAverage || 1,
+  ratingsCount: serverVariant.ratingsCount || 0,
+  availableCount: serverVariant.availableCount,
+  isActive: serverVariant?.isActive ?? false,
+  isDeleted: serverVariant?.isDeleted ?? false,
+  mainImage: {
+    file: null,
+    url: serverVariant.mainImage?.url || "",
+  },
+  images: {
+    files: [],
+    urls: serverVariant.images?.map((img) => img.url) || [],
+  },
+  attributes: serverVariant.attributes || [],
+});
 
 const EditProductForm = ({
   categories,
   product,
 }: CreateSubCategoryFormProps) => {
-  const t = useTranslations();
+  const t = useTranslations("");
   const locale = useLocale();
-  const isArabic = isArabicLocale(locale);
   const { token, queryKey } = useProducts();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
@@ -154,22 +209,29 @@ const EditProductForm = ({
   const { data: activeTypeHintConfigsList = [] } =
     useActiveTypeHintConfigsQuery();
 
+  const isArabic = isArabicLocale(locale);
+
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
+  const variantFormRef = useRef<ProductVariantFormRef>(null);
 
-  const [deletedImages, setDeletedImages] = useState<string[]>([]);
-  const [initialImages] = useState<string[]>(product?.images || []);
+  const [variants, setVariants] = useState<Variant[]>(
+    product?.variants
+      ? product.variants.map(mapServerVariantToFormVariant)
+      : [],
+  );
+
   const [prodImages, setProdImages] = useState<{
     mainImage: { file: File | null; url: string };
     images: { files: File[]; urls: string[] };
   }>({
     mainImage: {
       file: null,
-      url: product?.mainImage || "",
+      url: product?.mainImage?.url || "",
     },
     images: {
       files: [],
-      urls: product?.images || [],
+      urls: [],
     },
   });
 
@@ -189,13 +251,6 @@ const EditProductForm = ({
     };
   });
 
-  const prodCat = categories?.filter(
-    (cat) => cat?._id === product?.categoryId?._id,
-  )[0];
-  const prodSubCat = prodCat?.subCategories?.filter(
-    (subCat) => subCat?._id === product?.subCategoryId?._id,
-  )[0];
-
   const handleTagsChange = (newTags: string[]) => {
     const updatedTags = newTags.map((text, index) => ({
       id: `tag-${index}`,
@@ -204,10 +259,6 @@ const EditProductForm = ({
     }));
 
     setTags(updatedTags);
-  };
-
-  const handleTagClick = (index: number) => {
-    console.log("The tag at index " + index + " was clicked");
   };
 
   const handleMainImageChange = (data: {
@@ -226,70 +277,26 @@ const EditProductForm = ({
     form.setValue("mainImage", url);
   };
 
-  const handleImagesChange = (data: {
-    files?: File[] | null;
-    urls?: string[] | null;
-  }) => {
-    const newFiles = data.files ?? [];
-    const urls = data.urls ?? [];
-
-    setProdImages((prev) => {
-      // merge files by reference-safe comparison
-      const mergedFiles = [
-        ...prev.images.files,
-        ...newFiles.filter(
-          (f) =>
-            !prev.images.files.some(
-              (pf) =>
-                pf.name === f.name &&
-                pf.size === f.size &&
-                pf.lastModified === f.lastModified,
-            ),
-        ),
-      ];
-
-      return {
-        ...prev,
-        images: {
-          files: mergedFiles,
-          urls,
-        },
-      };
-    });
-
-    const removed = initialImages.filter(
-      (originalUrl) => !urls.includes(originalUrl),
-    );
-
-    setDeletedImages(removed);
-  };
-
-  const formSchema = editFormSchema(t, activeTypeHintConfigsList);
+  const formSchema = createdFormSchema(t, activeTypeHintConfigsList);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      mainImage: product?.mainImage || "",
-      images: product?.images || [],
-      name_ar: product?.name.ar || "",
-      name_en: product?.name.en || "",
-      categoryId: prodCat?._id || "",
-      subCategoryId: prodSubCat?._id || "",
-      description_ar: product?.description.ar || "",
-      description_en: product?.description.en || "",
-      price: Number(product?.price) || 0,
-      currency: product?.currency || "",
-      totalAmountCount: product?.totalAmountCount || 0,
-      typeHint: product?.typeHint ?? [],
-      tags: product?.tags || [],
-      availableCount: product?.availableCount || 0,
-      discountRate: product?.discountRate || 0,
+      mainImage: product?.mainImage?.url || "",
+      name_ar: product?.name?.ar || "",
+      name_en: product?.name?.en || "",
+      categoryId: product?.categoryId?._id || "",
+      subCategoryId: product?.subCategoryId?._id || "",
+      description_ar: product?.description?.ar || "",
+      description_en: product?.description?.en || "",
+      typeHints: product?.typeHints ?? [],
+      tags: product?.tags ?? [],
     },
   });
 
   const selectedCategoryId = form.watch("categoryId");
   const selectedCategory: Category | undefined = categories.find(
-    (cat) => cat._id === (selectedCategoryId || prodCat?._id),
+    (cat) => cat._id === selectedCategoryId,
   );
 
   const subCategories = selectedCategory?.subCategories || [];
@@ -306,50 +313,42 @@ const EditProductForm = ({
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
 
-      // Exclude fields that need special handling
-      const excludedFields = [
-        "images",
-        "mainImage",
-        "availableCount",
-        "discountRate",
-      ];
+      if (data.name_ar !== product.name.ar)
+        formData.append("name_ar", data.name_ar);
+      if (data.name_en !== product.name.en)
+        formData.append("name_en", data.name_en);
+      if (data.description_ar !== product.description.ar)
+        formData.append("description_ar", data.description_ar);
+      if (data.description_en !== product.description.en)
+        formData.append("description_en", data.description_en);
 
-      Object.entries(data).forEach(([key, value]) => {
-        if (excludedFields.includes(key)) return;
+      if (data.categoryId !== product.categoryId?._id)
+        formData.append("categoryId", data.categoryId);
+      if (data.subCategoryId !== product.subCategoryId?._id)
+        formData.append("subCategoryId", data.subCategoryId);
 
-        if (Array.isArray(value)) {
-          value.forEach((item) => {
-            formData.append(`${key}[]`, String(item));
-          });
-        } else {
-          formData.append(key, String(value));
-        }
-      });
+      const areTypeHintsEqual =
+        product.typeHints.length === data.typeHints.length &&
+        product.typeHints.every((th) => data.typeHints.includes(th));
 
-      formData.append("lang", locale);
+      if (!areTypeHintsEqual) {
+        data.typeHints.forEach((th) => {
+          formData.append("typeHints[]", th);
+        });
+      }
 
+      // tags
+      const changedTags = data.tags.filter(
+        (tag) => !product.tags.includes(tag),
+      );
+      changedTags.forEach((tag) => formData.append("tags[]", tag));
+
+      // Product Main Image
       if (prodImages.mainImage?.file) {
         formData.append("mainImage", prodImages.mainImage.file);
       }
 
-      if (prodImages.images.files.length) {
-        prodImages.images.files.forEach((file) => {
-          formData.append("images", file);
-        });
-      }
-
-      deletedImages.forEach((url) => {
-        formData.append("deletedImages[]", url);
-      });
-
-      // Handle numeric fields explicitly (only once)
-      if (data.availableCount !== undefined) {
-        formData.append("availableCount", String(data.availableCount));
-      }
-
-      if (data.discountRate !== undefined) {
-        formData.append("discountRate", String(data.discountRate));
-      }
+      formData.append("lang", locale);
 
       const response = await fetch(
         `${API_ENDPOINTS.DASHBOARD.PRODUCTS.EDIT}/${product?._id}`,
@@ -364,7 +363,7 @@ const EditProductForm = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData?.message || "Product's creation failed");
+        throw new Error(errorData?.message || "Product updating failed");
       }
 
       return response.json();
@@ -409,28 +408,19 @@ const EditProductForm = ({
   const getFormItemClassName = () => (isArabic ? "text-right" : "text-left");
 
   useEffect(() => {
-    // form.setValue() or form.resetField()
-    form.setValue("subCategoryId", "");
-  }, [form, selectedCategoryId]);
-
-  useEffect(() => {
     form.setValue(
       "tags",
       tags.map((tag) => tag.text),
     );
   }, [form, tags]);
 
-  useEffect(() => {
-    if (product && prodCat && prodSubCat) {
-      form.setValue("categoryId", prodCat._id);
-      form.setValue("subCategoryId", prodSubCat._id);
-    }
-  }, [form, product, prodCat, prodSubCat]);
-
   return (
-    <div className="space-y-6 max-h-[80vh] overflow-y-auto">
+    <div className="relative max-h-[80vh] overflow-y-auto">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 pb-20"
+        >
           {/* mainImage */}
           <div className="w-full flex items-center gap-5">
             <FormField
@@ -463,37 +453,6 @@ const EditProductForm = ({
             />
           </div>
 
-          {/* images */}
-          <div className="w-full flex items-center gap-5">
-            <FormField
-              control={form.control}
-              name="images"
-              render={() => (
-                <FormItem className={getFormItemClassName()}>
-                  <FormLabel className="text-sm font-normal">
-                    {t(
-                      "routes.dashboard.routes.products.components.EditProductForm.fields.images.label",
-                    )}
-                  </FormLabel>
-                  <ImageUploader
-                    ref={imagesUploaderRef}
-                    value={prodImages.images.urls}
-                    onChange={handleImagesChange}
-                    onError={handleImageError}
-                    label={""}
-                    maxSizeInMB={MEDIA_CONFIG.PRODUCT.IMAGE.MAX_SIZE}
-                    size="sm"
-                    variant="rounded"
-                    accept={MEDIA_CONFIG.PRODUCT.IMAGE.ALLOWED_TYPES}
-                    multiple={true}
-                    maxImages={3}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
           {/* names */}
           <div
             className={`flex gap-5 ${
@@ -514,7 +473,12 @@ const EditProductForm = ({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className={getInputClassName()}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.name_ar.placeholder",
                         )}
@@ -541,7 +505,12 @@ const EditProductForm = ({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className={getInputClassName()}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.name_en.placeholder",
                         )}
@@ -575,7 +544,12 @@ const EditProductForm = ({
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        className={`${getInputClassName()} min-h-11`}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`min-h-11 ${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.desc_ar.placeholder",
                         )}
@@ -602,7 +576,12 @@ const EditProductForm = ({
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        className={`${getInputClassName()} min-h-11`}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`min-h-11 ${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.desc_en.placeholder",
                         )}
@@ -670,7 +649,7 @@ const EditProductForm = ({
                   control={form.control}
                   name="subCategoryId"
                   render={({ field }) => (
-                    <FormItem className="text-left mt-4">
+                    <FormItem className="text-left">
                       <FormLabel className="text-sm font-normal">
                         {t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.subCategory.label",
@@ -679,6 +658,7 @@ const EditProductForm = ({
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
+                        disabled={subCategories.length === 0}
                       >
                         <FormControl>
                           <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
@@ -709,221 +689,85 @@ const EditProductForm = ({
             )}
           </div>
 
-          {/* price & currency */}
-          <div
-            className={`flex gap-5 ${
-              isArabic ? "flex-row-reverse" : "flex-row"
-            }`}
-          >
-            {/* price */}
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.price.label",
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="any"
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.price.placeholder",
-                        )}
-                        min={0}
-                        {...field}
-                        onChange={(e) => {
-                          const value =
-                            e.target.value === ""
-                              ? 0
-                              : parseFloat(e.target.value);
-                          field.onChange(value);
-                        }}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* currency */}
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="currency"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.currency.label",
-                      )}
-                    </FormLabel>
-                    <Select
-                      disabled
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
-                          <SelectValue
-                            placeholder={t(
-                              "routes.dashboard.routes.products.components.EditProductForm.fields.currency.placeholder",
-                            )}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {Object.values(Currency)?.map((curr, i) => (
-                          <SelectItem
-                            key={`Currency_${i}`}
-                            value={curr}
-                            className="cursor-pointer capitalize"
-                          >
-                            {curr}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-
           {/* total amount & type hint */}
-          <div
-            className={`flex gap-5 ${
-              isArabic ? "flex-row-reverse" : "flex-row"
-            }`}
-          >
-            {/* total amount */}
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="totalAmountCount"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.totalAmountCount.label",
-                      )}
-                    </FormLabel>
+          {/* typeHints */}
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="typeHints"
+              render={({ field }) => (
+                <FormItem className={getFormItemClassName()}>
+                  <FormLabel className="text-sm font-normal">
+                    {t(
+                      "routes.dashboard.routes.products.components.EditProductForm.fields.typeHint.label",
+                    )}
+                  </FormLabel>
+
+                  <Select
+                    value={field.value?.[0] ?? ""}
+                    onValueChange={(value) => {
+                      const exists = field.value.includes(value);
+                      field.onChange(
+                        exists
+                          ? field.value.filter((v) => v !== value)
+                          : [...field.value, value],
+                      );
+                    }}
+                  >
                     <FormControl>
-                      <Input
-                        type="number"
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.totalAmountCount.placeholder",
-                        )}
-                        min={0}
-                        {...field}
-                        onChange={(e) => {
-                          const value =
-                            e.target.value === ""
-                              ? 0
-                              : parseInt(e.target.value, 10);
-                          field.onChange(value);
-                        }}
-                        value={field.value || ""}
-                      />
+                      <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
+                        <SelectValue
+                          placeholder={t(
+                            "routes.dashboard.routes.products.components.EditProductForm.fields.typeHint.placeholder",
+                          )}
+                        />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
 
-            {/* typeHint */}
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="typeHint"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.label",
-                      )}
-                    </FormLabel>
-
-                    <Select
-                      value={field.value?.[0] ?? ""}
-                      onValueChange={(value) => {
-                        const exists = field.value.includes(value);
-                        field.onChange(
-                          exists
-                            ? field.value.filter((v) => v !== value)
-                            : [...field.value, value],
-                        );
-                      }}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
-                          <SelectValue
-                            placeholder={t(
-                              "routes.dashboard.routes.products.components.CreateProductForm.fields.typeHint.placeholder",
-                            )}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-
-                      <SelectContent>
-                        {activeTypeHintConfigsList
-                          ?.filter(
-                            (th) =>
-                              !SYSTEM_GENERATED_HINTS.includes(
-                                th as SystemGeneratedHint,
-                              ),
-                          )
-                          ?.map((th) => (
-                            <SelectItem
-                              key={th}
-                              value={th}
-                              className={`cursor-pointer capitalize ${
-                                field.value.includes(th) ? "font-semibold" : ""
-                              }`}
-                            >
-                              {th}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-
-                    {/* selected hints preview */}
-                    {field.value.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {field.value.map((th) => (
-                          <span
+                    <SelectContent>
+                      {activeTypeHintConfigsList
+                        ?.filter(
+                          (th) =>
+                            !SYSTEM_GENERATED_HINTS.includes(
+                              th as SystemGeneratedHint,
+                            ),
+                        )
+                        ?.map((th) => (
+                          <SelectItem
                             key={th}
-                            className="text-xs px-2 py-1 rounded bg-primary-100 text-primary-700"
+                            value={th}
+                            className={`cursor-pointer capitalize ${
+                              field.value.includes(th) ? "font-semibold" : ""
+                            }`}
                           >
                             {th}
-                          </span>
+                          </SelectItem>
                         ))}
-                      </div>
-                    )}
+                    </SelectContent>
+                  </Select>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                  {/* selected hints preview */}
+                  {field.value.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {field.value.map((th) => (
+                        <span
+                          key={th}
+                          className="text-xs px-2 py-1 rounded bg-primary-100 text-primary-700"
+                        >
+                          {th}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           {/* tags */}
-          <div
-            className={`flex gap-5 ${
-              isArabic ? "flex-row-reverse" : "flex-row"
-            }`}
-          >
+          <div>
             {/* tags */}
             <FormField
               control={form.control}
@@ -946,9 +790,9 @@ const EditProductForm = ({
                       placeholder={t(
                         "routes.dashboard.routes.products.components.EditProductForm.fields.tags.placeholder",
                       )}
-                      maxTags={3}
+                      maxTags={5}
                       onTagsChange={handleTagsChange}
-                      onTagClick={handleTagClick}
+                      onTagClick={() => {}}
                     />
                   </div>
                   <FormMessage />
@@ -957,97 +801,31 @@ const EditProductForm = ({
             />
           </div>
 
-          {/* available amount & discount rate */}
-          <div
-            className={`flex gap-5 ${
-              isArabic ? "flex-row-reverse" : "flex-row"
-            }`}
-          >
-            {/* availableCount */}
-            <div className="flex-1">
-              <FormField
-                disabled
-                control={form.control}
-                name="availableCount"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.availableCount.label",
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.availableCount.placeholder",
-                        )}
-                        min={0}
-                        {...field}
-                        onChange={(e) => {
-                          const value =
-                            e.target.value === ""
-                              ? undefined
-                              : parseInt(e.target.value, 10);
-                          field.onChange(value);
-                        }}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* discount rate */}
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="discountRate"
-                render={({ field }) => (
-                  <FormItem className={getFormItemClassName()}>
-                    <FormLabel className="text-sm font-normal">
-                      {t(
-                        "routes.dashboard.routes.products.components.EditProductForm.fields.discountRate.label",
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        className={getInputClassName()}
-                        placeholder={t(
-                          "routes.dashboard.routes.products.components.EditProductForm.fields.discountRate.placeholder",
-                        )}
-                        min={0}
-                        {...field}
-                        onChange={(e) => {
-                          const value =
-                            e.target.value === ""
-                              ? undefined
-                              : parseFloat(e.target.value);
-                          field.onChange(value);
-                        }}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+          {/* Product Variants */}
+          <div className="w-full">
+            <ProductVariantForm
+              variants={variants}
+              setVariants={setVariants}
+              ref={variantFormRef}
+              productId={product?._id}
+              isEditMode
+            />
           </div>
 
-          <Button
-            type="submit"
-            disabled={registerMutation.isPending}
-            className="w-full min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 disabled:opacity-50 transition-all"
-          >
-            {registerMutation.isPending
-              ? t("general.loadingStates.loadingApi")
-              : t("general.actions.updateItem")}
-          </Button>
+          {/* Submit action */}
+          <div className="sticky bottom-0 left-0 w-full bg-white-50 border-t p-4 flex justify-start">
+            <Button
+              type="submit"
+              disabled={registerMutation.isPending}
+              className="min-h-10 bg-primary-500 text-white-50 hover:bg-primary-400 disabled:opacity-50 transition-all"
+            >
+              {registerMutation.isPending
+                ? t("general.loadingStates.loadingApi")
+                : t(
+                    "routes.dashboard.routes.products.components.EditProductForm.actions.update",
+                  )}
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

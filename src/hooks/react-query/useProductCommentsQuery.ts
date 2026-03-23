@@ -6,6 +6,7 @@ import { Locale } from "@/types/locale";
 import { fetcher } from "@/utils/fetcher";
 import { Comment } from "@/types/comment.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
+import { Locale as LocaleEnum } from "@/enums/locale.enum";
 
 interface FetchProductCommentsProps {
   lang?: Locale | string;
@@ -13,6 +14,37 @@ interface FetchProductCommentsProps {
   lastId?: string;
   productId: string;
 }
+
+export const getProductCommentsQueryOptions = (
+  locale: string,
+  productId: string,
+) => {
+  return {
+    queryKey: ["publicProductComments", locale, productId],
+    queryFn: async ({ pageParam }: { pageParam: unknown }) => {
+      if (!productId) throw new Error("No productId found");
+
+      return fetchProductComments({
+        lang: locale,
+        limit: PAGINATION_LIMITS.PUBLIC_PRODUCT_COMMENTS_ITEMS,
+        lastId: typeof pageParam === "string" ? pageParam : undefined,
+        productId,
+      });
+    },
+    initialPageParam: undefined as string | undefined,
+
+    getNextPageParam: (lastPage: DataListResponse<Comment>) => {
+      if (!lastPage?.data?.length) return undefined;
+
+      const lastComment = lastPage.data[lastPage.data.length - 1];
+      return lastComment?._id;
+    },
+
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    enabled: !!productId,
+  };
+};
 
 export const fetchProductComments = async ({
   lang = "en",
@@ -32,30 +64,9 @@ export const fetchProductComments = async ({
 
 export const useProductCommentsQuery = (
   productId: string,
-  lang?: Locale | string
+  lang?: Locale | string,
 ) => {
-  return useInfiniteQuery<DataListResponse<Comment>>({
-    queryKey: ["publicProductComments", lang, productId],
-    queryFn: ({ pageParam }) => {
-      if (!productId) throw new Error("No productId found");
-
-      return fetchProductComments({
-        lang,
-        limit: PAGINATION_LIMITS.CATEGORIES,
-        lastId: pageParam as string,
-        productId,
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      if (lastPage.data && lastPage.data.length > 0) {
-        const lastCategory = lastPage.data[lastPage.data.length - 1];
-        return lastCategory._id;
-      }
-      return undefined;
-    },
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!productId,
-  });
+  return useInfiniteQuery<DataListResponse<Comment>>(
+    getProductCommentsQueryOptions(lang || LocaleEnum.EN, productId),
+  );
 };

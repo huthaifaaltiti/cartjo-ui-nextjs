@@ -39,10 +39,11 @@ export const removeWishlistItem = createAsyncThunk<
     } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error instanceof Error ? error.message : "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const addWishlistItem = createAsyncThunk<
@@ -76,23 +77,25 @@ export const addWishlistItem = createAsyncThunk<
     } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error instanceof Error ? error.message : "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const sendWishlistItemToCart = createAsyncThunk<
   DataResponse<Cart>,
   {
     productId: string;
+    variantId: string;
     lang?: Locale | string;
     token: string;
   },
   { rejectValue: BaseResponse }
 >(
   WISHLIST_CONSTANTS.sendItemToCart,
-  async ({ productId, lang = "en", token }, { rejectWithValue }) => {
+  async ({ productId, variantId, lang = "en", token }, { rejectWithValue }) => {
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.SEND_TO_CART);
 
@@ -102,7 +105,7 @@ export const sendWishlistItemToCart = createAsyncThunk<
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ productId, lang }),
+        body: JSON.stringify({ productId, variantId, lang }),
       });
 
       if (!response.isSuccess) {
@@ -113,10 +116,11 @@ export const sendWishlistItemToCart = createAsyncThunk<
     } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error instanceof Error ? error.message : "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const removeAllWishlistItems = createAsyncThunk<
@@ -149,10 +153,11 @@ export const removeAllWishlistItems = createAsyncThunk<
     } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error instanceof Error ? error.message : "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const sendAllWishlistItemsToCart = createAsyncThunk<
@@ -160,11 +165,12 @@ export const sendAllWishlistItemsToCart = createAsyncThunk<
   {
     lang?: Locale | string;
     token: string;
+    items: { productId: string; variantId: string }[];
   },
   { rejectValue: BaseResponse }
 >(
   WISHLIST_CONSTANTS.sendAllItemsToCart,
-  async ({ lang = "en", token }, { rejectWithValue }) => {
+  async ({ lang = "en", token, items }, { rejectWithValue }) => {
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.SEND_ALL_TO_CART);
 
@@ -174,7 +180,7 @@ export const sendAllWishlistItemsToCart = createAsyncThunk<
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ lang }),
+        body: JSON.stringify({ lang, items }),
       });
 
       if (!response.isSuccess) {
@@ -185,8 +191,9 @@ export const sendAllWishlistItemsToCart = createAsyncThunk<
     } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message: error instanceof Error ? error.message : "Something went wrong",
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );

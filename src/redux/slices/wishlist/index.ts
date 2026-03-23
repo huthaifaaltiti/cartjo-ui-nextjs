@@ -8,8 +8,11 @@ import {
   sendWishlistItemToCart,
 } from "./actions";
 
+interface WishlistItem extends Product {
+  selectedVariantId?: string | null;
+}
 interface WishlistState {
-  items: Product[];
+  items: WishlistItem[];
   itemsCount: number;
   loading: boolean;
   error: string | null;
@@ -43,6 +46,18 @@ const wishlistSlice = createSlice({
       state.itemsCount = action.payload;
       state.hydrated = true;
     },
+    setWishlistItemSelectedVariant: (
+      state,
+      action: PayloadAction<{ productId: string; variantId: string }>,
+    ) => {
+      const item = state.items.find(
+        (i) => i._id.toString() === action.payload.productId.toString(),
+      );
+
+      if (item) {
+        item.selectedVariantId = action.payload.variantId;
+      }
+    },
   },
 
   extraReducers: (builder) => {
@@ -57,7 +72,7 @@ const wishlistSlice = createSlice({
 
         state.loading = false;
         state.items = state.items.filter(
-          (i) => i._id.toString() !== removedProductId.toString()
+          (i) => i._id.toString() !== removedProductId.toString(),
         );
         state.itemsCount = state.items.length ?? 0;
       })
@@ -101,7 +116,7 @@ const wishlistSlice = createSlice({
 
         state.loading = false;
         state.items = state.items.filter(
-          (i) => i._id.toString() !== sentProductId.toString()
+          (i) => i._id.toString() !== sentProductId.toString(),
         );
         state.itemsCount = state.items.length ?? 0;
       })
@@ -148,5 +163,6 @@ export const {
   setWishlistItems,
   setWishlistItemsCount,
   hydrateWishlistCounters,
+  setWishlistItemSelectedVariant,
 } = wishlistSlice.actions;
 export default wishlistSlice.reducer;

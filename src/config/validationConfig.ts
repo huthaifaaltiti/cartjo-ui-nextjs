@@ -47,4 +47,78 @@ export const validationConfig = {
     linkBtnTextMinChars: 5,
     linkMaxChars: 255,
   },
+  product: {
+    name: {
+      ar: {
+        minCharacters: 10,
+        maxCharacters: 300,
+      },
+      en: {
+        minCharacters: 10,
+        maxCharacters: 300,
+      },
+    },
+    description: {
+      ar: {
+        minCharacters: 10,
+        maxCharacters: 1000,
+      },
+      en: {
+        minCharacters: 10,
+        maxCharacters: 1000,
+      },
+    },
+    typeHints: {
+      min: 1,
+      max: 10,
+    },
+    tags: {
+      min: 1,
+      max: 10,
+    },
+    variant: {
+      description: {
+        ar: {
+          minCharacters: 10,
+          maxCharacters: 1000,
+        },
+        en: {
+          minCharacters: 10,
+          maxCharacters: 1000,
+        },
+      },
+      price: {
+        min: 0.05,
+        max: 1000000,
+      },
+      discountRate: {
+        min: 0,
+        max: 100,
+      },
+      availableCount: {
+        min: 1,
+      },
+      totalAmountCount: {
+        min: 1,
+      },
+      sku: {
+        minCharacters: 15,
+        maxCharacters: 100,
+      },
+      typeHints: {
+        min: 1,
+        max: 10,
+      },
+      tags: {
+        min: 1,
+        max: 10,
+      },
+    },
+    comment: {
+      commentMinChars: 10,
+      commentMaxChars: 1000,
+      ratingMin: 1,
+      ratingMax: 5,
+    },
+  },
 };

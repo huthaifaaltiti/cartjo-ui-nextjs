@@ -1,5 +1,6 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import {
+  getActiveCategoriesQueryOptions,
   getProductQueryOptions,
   getSearchProductCommentsQueryOptions,
   getSuggestedProductsQueryOptions,
@@ -13,6 +14,8 @@ import { DataListResponse, DataResponse } from "@/types/service-response.type";
 import { Comment } from "@/types/comment.type";
 import { PublicProductContextProvider } from "@/contexts/PublicProduct.context";
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
+import { getProductCommentsQueryOptions } from "@/hooks/react-query/useProductCommentsQuery";
+import { Locale as LocaleEnum } from "@/enums/locale.enum";
 
 interface PageProps {
   params: Promise<{
@@ -34,15 +37,23 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery<DataListResponse<Product>>(
-    getSuggestedProductsQueryOptions(locale, 5)
+    getSuggestedProductsQueryOptions(locale, 5),
   );
 
   await queryClient.prefetchQuery<DataResponse<Product>>(
-    getProductQueryOptions(locale, productId, token)
+    getProductQueryOptions(locale, productId, token),
   );
 
   await queryClient.prefetchInfiniteQuery<DataListResponse<Comment>>(
-    getSearchProductCommentsQueryOptions(locale, productId)
+    getSearchProductCommentsQueryOptions(locale, productId),
+  );
+
+  await queryClient.prefetchInfiniteQuery<DataListResponse<Comment>>(
+    getProductCommentsQueryOptions(locale || LocaleEnum.EN, productId),
+  );
+
+  await queryClient.prefetchQuery(
+    getActiveCategoriesQueryOptions(locale || LocaleEnum.EN),
   );
 
   const dehydratedState = dehydrate(queryClient);

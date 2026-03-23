@@ -10,6 +10,7 @@ import { createContext, ReactNode, useContext } from "react";
 type ContextProps = {
   addComment: (
     productId: string,
+    variantId: string,
     content: string,
     rating?: number
   ) => Promise<DataResponse<Comment>>;
@@ -32,6 +33,7 @@ export const PublicProductContextProvider = ({ children }: ProviderProps) => {
 
   const addComment = async (
     productId: string,
+    variantId: string,
     content: string,
     rating?: number
   ): Promise<DataResponse<Comment>> => {
@@ -40,12 +42,10 @@ export const PublicProductContextProvider = ({ children }: ProviderProps) => {
     const body: Record<string, unknown> = {
       lang: locale,
       productId,
+      variantId,
       content,
+      rating
     };
-
-    if (rating) {
-      body.rating = String(rating);
-    }
 
     return fetcher<DataResponse<Comment>>(
       url,
@@ -57,7 +57,6 @@ export const PublicProductContextProvider = ({ children }: ProviderProps) => {
         },
         body: JSON.stringify(body),
       },
-      // locale
     );
   };
 

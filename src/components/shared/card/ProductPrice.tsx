@@ -1,54 +1,57 @@
 import { Currency } from "@/constants/currency.constant";
-import { Product } from "@/types/product.type";
+import { VariantServer } from "@/types/product.type";
 import { useTranslations } from "next-intl";
+import DiscountSmallPercentBadge from "./DiscountSmallPercentBadge";
 
 export default function ProductPrice({
   item,
   formatPrice,
   isArabic,
 }: {
-  item: Product;
+  item: VariantServer;
   formatPrice: (v: number) => string;
   isArabic: boolean;
 }) {
   const t = useTranslations("components.ProductPrice");
 
-  const { price, discountRate, currency } = item;
-  const discountedPrice =
-    discountRate > 0 ? price - (discountRate / 100) * price : price;
+  const {
+    price = 0,
+    priceAfterDiscount = 0,
+    discountRate = 0,
+    currency,
+  } = item;
 
-  const productCurrency = isArabic
-    ? Currency[currency].shortAr
-    : Currency[currency].shortEn;
+  const hasDiscount =
+    discountRate > 0 && priceAfterDiscount > 0 && priceAfterDiscount < price;
+  const finalPrice = hasDiscount ? priceAfterDiscount : price;
+  const currencyLabel = Currency[currency]?.[isArabic ? "shortAr" : "shortEn"];
+  const withCurrency = (amount: number) =>
+    `${formatPrice(amount)} ${currencyLabel}`;
 
   return (
-    <div>
-      {discountRate > 0 ? (
-        <div className="space-y-1">
-          {/* Discounted Price */}
-          <div className="font-bold text-green-600 text-lg sm:text-xl md:text-2xl flex flex-row-reverse items-end justify-end">
-            <span className="text-sm sm:text-base">{productCurrency}</span>
-            {formatPrice(discountedPrice)}
-          </div>
-
-          {/* Original Price + Savings */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs sm:text-sm md:text-base text-gray-400 line-through flex flex-row-reverse items-end justify-end">
-              <span>{productCurrency}</span>
-              <span>{formatPrice(price)}</span>
-            </span>
-
-            <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-              {t("save")} {formatPrice(price - discountedPrice)}{" "}
-              {productCurrency}{" "}
-            </span>
-          </div>
+    <div className="flex flex-col gap-1 w-full">
+      {hasDiscount && (
+        <div className="flex items-center gap-2">
+          <span className="text-xs sm:text-sm text-slate-400 line-through">
+            {withCurrency(price)}
+          </span>
+          <DiscountSmallPercentBadge discountRate={discountRate} />
         </div>
-      ) : (
-        <div className="flex items-end rtl:flex-row-reverse ltr:flex-row-reverse font-bold text-gray-900 text-lg sm:text-xl md:text-2xl">
-          <span className="text-xs sm:text-sm">{productCurrency}</span>
-          {formatPrice(price)}
-        </div>
+      )}
+
+      <div className="flex items-baseline gap-1.5">
+        <span className="text-lg sm:text-xl md:text-2xl font-black text-slate-900 tracking-tight">
+          {formatPrice(finalPrice)}
+        </span>
+        <span className="text-xs sm:text-sm font-medium text-slate-500 uppercase">
+          {currencyLabel}
+        </span>
+      </div>
+
+      {hasDiscount && (
+        <span className="text-xs text-emerald-600 font-medium">
+          {t("save")} {withCurrency(price - priceAfterDiscount)}
+        </span>
       )}
     </div>
   );
