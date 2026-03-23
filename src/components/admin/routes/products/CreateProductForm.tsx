@@ -55,6 +55,7 @@ import ProductVariantForm, {
 } from "./ProductVariantForm";
 import { ProductVariantAttributeKey } from "@/enums/productVariantAttributeKey.enum";
 import { validationConfig } from "@/config/validationConfig";
+import { containsArabic } from "@/utils/text/containsArabic";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -512,7 +513,12 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className={getInputClassName()}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.CreateProductForm.fields.name_ar.placeholder",
                         )}
@@ -539,7 +545,12 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className={getInputClassName()}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.CreateProductForm.fields.name_en.placeholder",
                         )}
@@ -573,7 +584,12 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        className={`${getInputClassName()} min-h-11`}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`${getInputClassName()} min-h-11 ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_ar.placeholder",
                         )}
@@ -600,7 +616,12 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        className={`${getInputClassName()} min-h-11`}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`${getInputClassName()} min-h-11 ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.CreateProductForm.fields.desc_en.placeholder",
                         )}

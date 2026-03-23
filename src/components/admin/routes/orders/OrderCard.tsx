@@ -6,6 +6,7 @@ import OrderCardActions from "./OrderCardActions";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { Statuses } from "@/enums/statuses.enum";
 import { CircleDollarSign, Truck } from "lucide-react";
+import Variant from "@/components/shared/Variant";
 
 type OrderCardProps = {
   item: Order;
@@ -18,7 +19,7 @@ const OrderCard = ({ item }: OrderCardProps) => {
 
   const totalItems = item.items.reduce(
     (sum, product) => sum + product.quantity,
-    0
+    0,
   );
 
   return (
@@ -61,14 +62,14 @@ const OrderCard = ({ item }: OrderCardProps) => {
         <div>
           <p className="text-xs text-gray-600">
             {t(
-              "routes.dashboard.routes.orders.components.OrderCard.transactionId"
+              "routes.dashboard.routes.orders.components.OrderCard.transactionId",
             )}
             : {item.transactionId}
           </p>
           {item.merchantReference && (
             <p className="text-xs text-gray-600">
               {t(
-                "routes.dashboard.routes.orders.components.OrderCard.reference"
+                "routes.dashboard.routes.orders.components.OrderCard.reference",
               )}
               : {item.merchantReference}
             </p>
@@ -83,7 +84,7 @@ const OrderCard = ({ item }: OrderCardProps) => {
             </p>
             <p className="text-xs text-gray-600">
               {t(
-                "routes.dashboard.routes.orders.components.OrderCard.paymentMethod"
+                "routes.dashboard.routes.orders.components.OrderCard.paymentMethod",
               )}
               : {item.paymentMethod}
             </p>
@@ -109,7 +110,7 @@ const OrderCard = ({ item }: OrderCardProps) => {
         <div className="rounded-md bg-gray-50 p-3">
           <p className="mb-1 text-xs font-semibold text-gray-700">
             {t(
-              "routes.dashboard.routes.orders.components.OrderCard.shippingAddress"
+              "routes.dashboard.routes.orders.components.OrderCard.shippingAddress",
             )}
             :
           </p>
@@ -133,7 +134,7 @@ const OrderCard = ({ item }: OrderCardProps) => {
         <div className="border-t pt-3">
           <p className="mb-2 text-xs font-semibold text-gray-700">
             {t(
-              "routes.dashboard.routes.orders.components.OrderCard.orderItems"
+              "routes.dashboard.routes.orders.components.OrderCard.orderItems",
             )}
             :
           </p>
@@ -141,19 +142,58 @@ const OrderCard = ({ item }: OrderCardProps) => {
             {item.items.map((product, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between rounded bg-gray-50 p-2"
+                className="flex gap-3 rounded-lg bg-gray-50 p-3 hover:bg-gray-100 transition-colors"
               >
+                {/* Image */}
+                <div className="w-14 h-14 flex-shrink-0">
+                  {(product?.variant?.mainImage?.url ||
+                    product?.mainImage?.url) && (
+                    <img
+                      src={
+                        product?.variant?.mainImage?.url ||
+                        product?.mainImage?.url
+                      }
+                      alt={isArabic ? product?.name?.ar : product?.name?.en}
+                      className="w-14 h-14 object-cover rounded-md"
+                    />
+                  )}
+                </div>
+
+                {/* Content */}
                 <div className="flex-1">
-                  <p className="text-xs font-medium text-gray-900">
+                  <p className="text-xs font-semibold text-gray-900 line-clamp-1">
                     {isArabic ? product?.name?.ar : product?.name?.en}
                   </p>
-                  <p className="text-xs text-gray-600">
-                    {product?.quantity} × {product?.price} {item?.currency}
-                  </p>
+
+                  {(product?.variant?.description || product?.description) && (
+                    <p className="text-[11px] text-gray-600 line-clamp-2">
+                      {isArabic
+                        ? product?.variant?.description?.ar ||
+                          product?.description?.ar
+                        : product?.variant?.description?.en ||
+                          product?.description?.en}
+                    </p>
+                  )}
+
+                  {/* Variant */}
+                  {product?.variant && (
+                    <div className="mt-1">
+                      <Variant variant={product.variant} />
+                    </div>
+                  )}
+
+                  {/* Qty + price */}
+                  <div className="mt-1 flex items-center justify-between">
+                    <span className="text-[11px] text-gray-500">
+                      {product?.quantity} × {product?.price} {item?.currency}
+                    </span>
+
+                    <span className="text-xs font-bold text-gray-900">
+                      {(product?.quantity || 0) * (product?.price || 0)}{" "}
+                      {item?.currency}
+                    </span>
+                  </div>
                 </div>
-                <p className="text-xs font-semibold text-gray-900">
-                  {product?.quantity * product?.price} {item?.currency}
-                </p>
               </div>
             ))}
           </div>

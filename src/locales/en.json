@@ -509,7 +509,7 @@
                   "min": "Password must be at least 8 characters long"
                 },
                 "termsAccepted": {
-                  "required": "You must accept the terms and conditions"
+                  "required": "Please agree to the terms to continue"
                 }
               },
               "api": {
@@ -2053,6 +2053,12 @@
         },
         "BackToDashboardBtn": {
           "label": "Back to dashboard"
+        },
+        "AnimatedManagedDashboard": {
+          "welcome": "Welcome to CartJO's dashboard.",
+          "select": "Select a section from the sidebar to get started.",
+          "ready": "Everything is ready for you.",
+          "desc": "Manage your store's data and settings with ease. From products to orders, everything is just a click away."
         }
       },
       "errors": {
@@ -2190,10 +2196,10 @@
           "inStock": "In stock",
           "available": "Available"
         },
-        "VariantDetailsSelector":{
-          "select":"Select Variant"
+        "VariantDetailsSelector": {
+          "select": "Select Variant"
         },
-        "ProductDetailsAddToCartButton":{
+        "ProductDetailsAddToCartButton": {
           "add": "Add to Cart",
           "added": "Added!"
         },

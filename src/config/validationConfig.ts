@@ -51,21 +51,21 @@ export const validationConfig = {
     name: {
       ar: {
         minCharacters: 10,
-        maxCharacters: 100,
+        maxCharacters: 300,
       },
       en: {
         minCharacters: 10,
-        maxCharacters: 100,
+        maxCharacters: 300,
       },
     },
     description: {
       ar: {
         minCharacters: 10,
-        maxCharacters: 100,
+        maxCharacters: 1000,
       },
       en: {
         minCharacters: 10,
-        maxCharacters: 100,
+        maxCharacters: 1000,
       },
     },
     typeHints: {
@@ -80,16 +80,16 @@ export const validationConfig = {
       description: {
         ar: {
           minCharacters: 10,
-          maxCharacters: 100,
+          maxCharacters: 1000,
         },
         en: {
           minCharacters: 10,
-          maxCharacters: 100,
+          maxCharacters: 1000,
         },
       },
       price: {
         min: 0.05,
-        max: 100000,
+        max: 1000000,
       },
       discountRate: {
         min: 0,
@@ -103,7 +103,7 @@ export const validationConfig = {
       },
       sku: {
         minCharacters: 15,
-        maxCharacters: 50,
+        maxCharacters: 100,
       },
       typeHints: {
         min: 1,

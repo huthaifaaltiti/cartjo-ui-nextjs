@@ -493,9 +493,9 @@ const ProductVariantForm = forwardRef<
 
   const handleImageError = (error: string) => {
     showErrorToast({
-      title: t("general.toast.title.error"),
+      title: tg("toast.title.error"),
       description: error,
-      dismissText: t("general.toast.dismissText"),
+      dismissText: tg("toast.dismissText"),
     });
   };
 
@@ -517,13 +517,12 @@ const ProductVariantForm = forwardRef<
 
       const hasId: boolean = !!variant?.variantId || false;
 
-      const formData = getChangedPayload(variant, variantIndex);
+      const action = hasId ? "UPDATE" : "CREATE";
+
+      const formData = getChangedPayload(variant, variantIndex, action);
+
       if (!formData) return;
       formData.append("lang", locale);
-
-      if (!hasId) {
-        formData.append("currency", variant.currency);
-      }
 
       const url = hasId
         ? `${API_ENDPOINTS.DASHBOARD.PRODUCTS.EDIT}/${productId}/variant/${variant?.variantId}`
@@ -542,6 +541,9 @@ const ProductVariantForm = forwardRef<
       const responseObj = await response.json();
 
       if (responseObj?.isSuccess) {
+        // update the reference used for diff
+        initialVariantsRef.current[variantIndex] = structuredClone(variant);
+
         showSuccessToast({
           title: tg("toast.title.success"),
           description: responseObj.message,
@@ -563,62 +565,87 @@ const ProductVariantForm = forwardRef<
     }
   };
 
-  const getChangedPayload = (variant: Variant, variantIndex: number) => {
-    const initial = initialVariantsRef.current[variantIndex];
-    if (!initial) return null;
-
+  const getChangedPayload = (
+    variant: Variant,
+    variantIndex: number,
+    action: "CREATE" | "UPDATE",
+  ) => {
     const formData = new FormData();
 
-    // Description
-    if (variant.description_ar !== initial.description_ar) {
-      formData.append("description_ar", variant.description_ar);
-    }
+    const initial =
+      action === "UPDATE" ? initialVariantsRef.current[variantIndex] : null;
 
-    if (variant.description_en !== initial.description_en) {
-      formData.append("description_en", variant.description_en);
-    }
+    const isCreate = action === "CREATE" || !initial;
 
-    // Price
-    if (variant.price !== initial.price) {
-      formData.append("price", String(variant.price));
-    }
+    // helper
+    const appendIfChanged = (key: string, value: any, initialValue: any) => {
 
-    // Currency
-    if (variant.currency !== initial.currency) {
-      formData.append("currency", String(variant.currency));
-    }
+      if (isCreate || value !== initialValue) {
+        if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
+      }
+    };
 
-    // Discount
-    if (variant.discountRate !== initial.discountRate) {
-      formData.append("discountRate", String(variant.discountRate));
-    }
+    // 🔹 BASIC FIELDS
+    appendIfChanged(
+      "description_ar",
+      variant.description_ar,
+      initial?.description_ar,
+    );
+    appendIfChanged(
+      "description_en",
+      variant.description_en,
+      initial?.description_en,
+    );
+    appendIfChanged("price", variant.price, initial?.price);
+    appendIfChanged("currency", variant.currency, initial?.currency);
+    appendIfChanged(
+      "discountRate",
+      variant.discountRate,
+      initial?.discountRate,
+    );
+    appendIfChanged(
+      "totalAmountCount",
+      variant.totalAmountCount,
+      initial?.totalAmountCount,
+    );
 
-    // Stock
-    if (variant.totalAmountCount !== initial.totalAmountCount) {
-      formData.append("totalAmountCount", String(variant.totalAmountCount));
-    }
-
-    // Main Image
-    if (
-      variant.mainImage?.file ||
-      variant.mainImage?.url !== initial.mainImage?.url
-    ) {
-      if (variant.mainImage.file) {
+    // MAIN IMAGE
+    if (isCreate) {
+      if (variant.mainImage?.file) {
         formData.append("mainImage", variant.mainImage.file);
+      }
+    } else {
+      if (
+        variant.mainImage?.file ||
+        variant.mainImage?.url !== initial?.mainImage?.url
+      ) {
+        if (variant.mainImage?.file) {
+          formData.append("mainImage", variant.mainImage.file);
+        }
       }
     }
 
-    deletedImages.forEach((url, i) => {
-      formData.append(`deletedImages[${i}]`, url);
-    });
+    // DELETED IMAGES (only update)
+    if (!isCreate) {
+      deletedImages.forEach((url, i) => {
+        formData.append(`deletedImages[${i}]`, url);
+      });
+    }
 
-    variant.images?.files?.forEach((file) => {
-      formData.append("images", file);
-    });
+    // NEW IMAGES
+    if (variant.images?.files?.length) {
+      variant.images.files.forEach((file) => {
+        formData.append("images", file);
+      });
+    }
 
-    // Attributes (send only if changed)
+    // ATTRIBUTES
     const attrsChanged =
-      JSON.stringify(variant.attributes) !== JSON.stringify(initial.attributes);
+      isCreate ||
+      JSON.stringify(variant.attributes) !==
+        JSON.stringify(initial?.attributes);
 
     if (attrsChanged) {
       variant.attributes.forEach((attr, index) => {
@@ -626,11 +653,6 @@ const ProductVariantForm = forwardRef<
         formData.append(`attributes[${index}][value]`, attr.value);
       });
     }
-
-    // variant.attributes.forEach((attr, index) => {
-    //   formData.append(`attributes[${index}][key]`, attr.key);
-    //   formData.append(`attributes[${index}][value]`, attr.value);
-    // });
 
     return formData;
   };
@@ -765,7 +787,7 @@ const ProductVariantForm = forwardRef<
                       </Button>
                     )}
 
-                    {!variant?.variantId && (
+                    {!variant?.variantId && isEditMode && (
                       <Button
                         type="button"
                         variant="ghost"
@@ -870,7 +892,8 @@ const ProductVariantForm = forwardRef<
                       {t("fields.sku.label")}
                     </label>
                     <Input
-                      disabled={isEditMode && !variant?.isActive}
+                      // disabled={isEditMode && !variant?.isActive}
+                      disabled={true}
                       value={variant.sku}
                       onChange={(e) =>
                         updateVariantField(variantIndex, "sku", e.target.value)

@@ -55,6 +55,7 @@ import ProductVariantForm, {
 } from "./ProductVariantForm";
 import { validationConfig } from "@/config/validationConfig";
 import { Product, Variant, VariantServer } from "@/types/product.type";
+import { containsArabic } from "@/utils/text/containsArabic";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -179,6 +180,9 @@ const mapServerVariantToFormVariant = (
   currency: serverVariant.currency,
   discountRate: serverVariant.discountRate,
   totalAmountCount: serverVariant.totalAmountCount,
+  ratingsAverage: serverVariant.ratingsAverage || 1,
+  ratingsCount: serverVariant.ratingsCount || 0,
+  availableCount: serverVariant.availableCount,
   isActive: serverVariant?.isActive ?? false,
   isDeleted: serverVariant?.isDeleted ?? false,
   mainImage: {
@@ -469,7 +473,12 @@ const EditProductForm = ({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className={getInputClassName()}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.name_ar.placeholder",
                         )}
@@ -496,7 +505,12 @@ const EditProductForm = ({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className={getInputClassName()}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.name_en.placeholder",
                         )}
@@ -530,7 +544,12 @@ const EditProductForm = ({
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        className={`${getInputClassName()} min-h-11`}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`min-h-11 ${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.desc_ar.placeholder",
                         )}
@@ -557,7 +576,12 @@ const EditProductForm = ({
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        className={`${getInputClassName()} min-h-11`}
+                        dir={containsArabic(field.value) ? "rtl" : "ltr"}
+                        className={`min-h-11 ${getInputClassName()} ${
+                          containsArabic(field.value)
+                            ? "text-right placeholder:text-right"
+                            : "text-left placeholder:text-left"
+                        }`}
                         placeholder={t(
                           "routes.dashboard.routes.products.components.EditProductForm.fields.desc_en.placeholder",
                         )}

@@ -18,13 +18,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { getMyOrder } from "@/redux/slices/orders/actions";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import { useTranslations } from "next-intl";
 import LoadingSpinner from "@/components/shared/loaders/LoadingSpinner";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { currencyLabeler } from "@/utils/labelers";
 import { Statuses } from "@/enums/statuses.enum";
-import Variant from "@/components/shared/Variant";
+import OrderItemCard from "@/components/shared/OrderItemCard";
 
 const UserOrderDetailedCard = ({ itemId }: { itemId: string }) => {
   const t = useTranslations(
@@ -162,60 +161,14 @@ const UserOrderDetailedCard = ({ itemId }: { itemId: string }) => {
           <h2 className="text-xl font-bold text-gray-800">{t("orderItems")}</h2>
         </div>
         <div className="space-y-4">
-          {order.items.map((item, index) => {
-            const imageSrc =
-              item?.variant?.mainImage?.url ?? item?.mainImage?.url;
-
-            return (
-              <div
-                key={index}
-                className="flex gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
-              >
-                <div className="w-24 h-24">
-                  {imageSrc && (
-                    <ImageWithFallback
-                      width={100}
-                      height={100}
-                      src={imageSrc}
-                      alt={item?.name?.[locale]}
-                      useFill={false}
-                      className="w-24 h-24 object-cover rounded-lg shadow-sm"
-                    />
-                  )}
-                </div>
-                <div className="flex-1 w-full">
-                  <h3 className="font-semibold text-gray-800 mb-1 first-letter-capital">
-                    {item.name[locale]}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-2 line-clamp-2 first-letter-capital">
-                    {item?.variant?.description?.[locale] ||
-                      item?.description?.[locale]}
-                  </p>
-
-                  {selectedOrder && item.variant && (
-                    <Variant variant={item.variant} />
-                  )}
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm text-gray-500">
-                        {t("qty")}:{" "}
-                        <span className="font-semibold text-gray-700">
-                          {item.quantity}
-                        </span>
-                      </span>
-                    </div>
-                    <p className="text-lg font-bold text-blue-500">
-                      {item.price}{" "}
-                      <span className="text-xs">
-                        {currencyLabeler(order.currency, isArabic)}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {order.items.map((item, index) => (
+            <OrderItemCard
+              key={index}
+              item={item}
+              order={order}
+              showVariant={!!selectedOrder}
+            />
+          ))}
         </div>
       </div>
 
