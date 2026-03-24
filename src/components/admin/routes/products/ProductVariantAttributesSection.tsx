@@ -12,13 +12,35 @@ import {
 import { ProductVariantAttributeKey } from "@/enums/productVariantAttributeKey.enum";
 import { SellingType } from "@/enums/sellingType.enum";
 import { Size } from "@/enums/size.enum";
+import { Variant } from "@/types/product.type";
 import { Plus, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
+import { VariantValidationErrors } from "./ProductVariantForm";
 
 interface VariantAttribute {
   key: ProductVariantAttributeKey;
   value: string;
+}
+
+interface ProductVariantAttributesSectionProps {
+  variant: Variant;
+  variantIndex: number;
+  updateAttribute: (
+    variantIndex: number,
+    attrIndex: number,
+    field: keyof VariantAttribute,
+    value: string,
+  ) => void;
+  addAttribute: (variantIndex: number) => void;
+  removeAttribute: (variantIndex: number, attrIndex: number) => void;
+  getAttributeError: (
+    variantIndex: number,
+    attrIndex: number,
+    field: "key" | "value",
+  ) => string | undefined;
+  errors: VariantValidationErrors;
+  isDisabled?: boolean;
 }
 
 const productVariantAttributeKeys = Object.values(
@@ -37,7 +59,7 @@ const ProductVariantAttributesSection = ({
   getAttributeError,
   errors,
   isDisabled,
-}: any) => {
+}: ProductVariantAttributesSectionProps) => {
   const t = useTranslations(
     "routes.dashboard.routes.products.components.ProductVariantAttributesSection",
   );
