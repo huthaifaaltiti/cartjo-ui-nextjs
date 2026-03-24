@@ -178,8 +178,12 @@ const ProductVertCard = ({
 
   const handleWishListedItemState = () => {
     if (!requireAuth()) return;
-    
-    isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
+
+    if (isWishListed) {
+      handleRemoveWishListItem();
+    } else {
+      handleAddWishListItem();
+    }
   };
 
   const handleGoToProductPage = useCallback(() => {

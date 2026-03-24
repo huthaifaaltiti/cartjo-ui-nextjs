@@ -167,7 +167,11 @@ const ProductRowCard = ({
   const handleWishListedItemState = () => {
     if (!requireAuth()) return;
 
-    isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
+    if (isWishListed) {
+      handleRemoveWishListItem();
+    } else {
+      handleAddWishListItem();
+    }
   };
 
   const handleAddToCart = async (): Promise<DataResponse<Cart> | undefined> => {
