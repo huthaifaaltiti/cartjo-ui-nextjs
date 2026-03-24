@@ -44,7 +44,7 @@ import VariantFormActions from "./VariantFormActions";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { Statuses } from "@/enums/statuses.enum";
 
-interface ValidationErrors {
+export interface VariantValidationErrors {
   [variantIndex: number]: {
     sku?: string;
     description_ar?: string;
@@ -123,7 +123,7 @@ const ProductVariantForm = forwardRef<
   const { accessToken } = useAuthContext();
 
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
-  const [errors, setErrors] = useState<ValidationErrors>({});
+  const [errors, setErrors] = useState<VariantValidationErrors>({});
   const [deletedImages, setDeletedImages] = useState<string[]>([]);
 
   const initialVariantsRef = useRef<Variant[]>([]);
@@ -144,7 +144,7 @@ const ProductVariantForm = forwardRef<
     (variant: Variant, index: number) => {
       if (!variant) console.log(index);
 
-      const variantErrors: ValidationErrors[number] = {};
+      const variantErrors: VariantValidationErrors[number] = {};
 
       const v = validationConfig.product.variant;
 
@@ -234,7 +234,7 @@ const ProductVariantForm = forwardRef<
       if (!variant.attributes || variant.attributes.length === 0) {
         variantErrors.attributesArray = t("validations.attributes.min");
       } else {
-        const attributeErrors: ValidationErrors[number]["attributes"] = {};
+        const attributeErrors: VariantValidationErrors[number]["attributes"] = {};
 
         variant.attributes.forEach((attr, attrIndex) => {
           if (!attr.value?.trim()) {
@@ -304,7 +304,7 @@ const ProductVariantForm = forwardRef<
   );
 
   const validateAll = useCallback(() => {
-    const newErrors: ValidationErrors = {};
+    const newErrors: VariantValidationErrors = {};
     let isValid = true;
 
     variants.forEach((variant, index) => {
@@ -427,7 +427,7 @@ const ProductVariantForm = forwardRef<
   );
 
   const getFieldError = (variantIndex: number, field: string) => {
-    return errors[variantIndex]?.[field as keyof ValidationErrors[number]];
+    return errors[variantIndex]?.[field as keyof VariantValidationErrors[number]];
   };
 
   const getAttributeError = (
@@ -578,7 +578,12 @@ const ProductVariantForm = forwardRef<
     const isCreate = action === "CREATE" || !initial;
 
     // helper
-    const appendIfChanged = (key: string, value: any, initialValue: any) => {
+    const appendIfChanged = (
+      key: string,
+      value: string | number | null,
+      initialValue: string | undefined | number | null,
+    ) => {
+      if (value === undefined || value === null) return;
 
       if (isCreate || value !== initialValue) {
         if (value !== undefined && value !== null) {
@@ -655,7 +660,7 @@ const ProductVariantForm = forwardRef<
     }
 
     return formData;
-  };
+  };;
 
   const updateVariantLocally = useCallback(
     (
@@ -716,8 +721,8 @@ const ProductVariantForm = forwardRef<
                       <VariantFormActions
                         productId={productId}
                         variantId={variant?.variantId}
-                        isDeleted={variant?.isDeleted!}
-                        isActive={variant?.isActive!}
+                        isDeleted={variant?.isDeleted ?? false}
+                        isActive={variant?.isActive ?? false}
                         deleteFn={async (token, locale, prodId, varId) => {
                           const resp = await deleteProductVariant(
                             token,
@@ -1118,5 +1123,7 @@ const ProductVariantForm = forwardRef<
     </div>
   );
 });
+
+ProductVariantForm.displayName = "ProductVariantForm";
 
 export default memo(ProductVariantForm);
