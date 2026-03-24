@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import LoadingProductButton from "@/components/shared/loaders/LoadingProduct";
+import { cn } from "@/lib/utils";
 
 interface WishlistButtonProps {
   isWishListed: boolean;
