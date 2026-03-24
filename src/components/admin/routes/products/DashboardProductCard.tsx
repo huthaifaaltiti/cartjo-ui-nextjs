@@ -204,7 +204,7 @@ const DashboardProductCard = ({
               <div className="flex items-center flex-wrap gap-2">
                 {selectedVariant?.attributes?.map((attr, index) => {
                   return (
-                    <span>
+                    <span key={index}>
                       {attr.key === ProductVariantAttributeKey.SELLING_TYPE && (
                         <span
                           key={index}
