@@ -118,6 +118,7 @@
       "delivered": "تم التسليم",
       "failed": "فشل",
       "refunded": "تم الاسترداد",
+      "returned": "تم الاستعادة",
       "canceled": "تم الإلغاء",
       "paid": "مدفوع",
       "deleted": "محذوف",
