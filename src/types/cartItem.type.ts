@@ -1,43 +1,23 @@
-import { Description, Name } from "./common";
-import { Currency } from "@/enums/currency.enum";
-import { Category } from "./category.type";
-import { SubCategory } from "./subCategory";
-import { User } from "./user";
+import { Name } from "./common";
 import { Media } from "./media.type";
+import { VariantServer } from "./product.type";
 
 export interface CartItem {
-  _id: string;
-  __v?: number;
   name: Name;
-  description: Description;
-  images: string[];
-  mediaListIds?: Media[];
-  mainImage: string;
-  mainMediaId: Media;
   price: number;
-  currency: Currency;
-  discountRate: number;
-  ratings: number;
-  totalAmountCount: number;
-  availableCount: number;
-  sellCount: number;
-  favoriteCount: number;
-  typeHint: string[];
-  tags: string[];
+  productId: string;
+  _id?: string;
+  mainImage: Media;
   slug: string;
-  categoryId: Category;
-  subCategoryId: SubCategory;
-  isAvailable: boolean;
-  isActive: boolean;
-  isDeleted: boolean;
-  isWishListed: boolean;
-  deletedAt: Date | null;
-  unDeletedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date | null;
-  createdBy: User | null;
-  updatedBy: string | null;
-  deletedBy: string | null;
-  unDeletedBy: string | null;
+  category: {
+    _id: string;
+    slug: string;
+  };
+  subCategory: {
+    _id: string;
+    slug: string;
+  };
   quantity: number;
+  total: number;
+  variant: VariantServer;
 }

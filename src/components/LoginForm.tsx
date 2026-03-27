@@ -78,7 +78,7 @@ const LoginForm = () => {
       signIn("credentials", { token, redirect: false }).then((res) => {
         if (res?.ok) {
           if (resend && redirectTo) {
-            router.push(redirectTo);
+            router.push(decodeURIComponent(redirectTo));
           } else {
             router.push("/");
           }
@@ -107,10 +107,10 @@ const LoginForm = () => {
     if (status === "authenticated") {
       if (resend && sessionData?.user?.email) {
         reVerify(sessionData.user.email, locale)
-          .then(() => redirectTo && router.push(redirectTo))
+          .then(() => redirectTo && router.push(decodeURIComponent(redirectTo)))
           .catch(console.error);
       } else if (redirectTo) {
-        router.push(redirectTo);
+        router.push(decodeURIComponent(redirectTo));
       }
     }
   }, [status, resend, sessionData, locale, router, redirectTo, reVerify]);

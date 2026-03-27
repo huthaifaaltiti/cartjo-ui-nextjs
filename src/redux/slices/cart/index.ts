@@ -8,9 +8,11 @@ import {
 } from "./actions";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
+import { sendAllWishlistItemsToCart } from "../wishlist/actions";
 
 interface ServerCartItem extends CartItem {
   productId: string;
+  variantId: string;
 }
 
 interface CartState {
@@ -40,12 +42,12 @@ const cartSlice = createSlice({
       state.items = action.payload;
       state.totalItemsCount = state.items.reduce(
         (acc, i) => acc + i.quantity,
-        0
+        0,
       );
       state.itemsCount = state.items.length;
       state.totalAmount = state.items.reduce(
         (acc, i) => acc + i.quantity * (i.price ?? 0),
-        0
+        0,
       );
     },
     setCartItemsCount: (state, action: PayloadAction<number>) => {
@@ -62,6 +64,9 @@ const cartSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    const getKey = (productId: string, variantId: string): string =>
+      `${productId}_${variantId}`;
+
     const updateCartState = (state: CartState, payload: DataResponse<Cart>) => {
       if (!payload.data) return;
 
@@ -77,13 +82,18 @@ const cartSlice = createSlice({
       }
 
       const payloadMap = new Map<string, ServerCartItem>(
-        (payloadList as ServerCartItem[]).map((item) => [item.productId, item])
+        (payloadList as ServerCartItem[]).map((item) => [
+          getKey(item?.productId, item?.variantId),
+          item,
+        ]),
       );
 
       state.items = stateList
-        .filter((i) => payloadMap.has(i._id))
+        .filter((i) => payloadMap.has(`${i.productId}_${i.variant?.variantId}`))
         .map((i) => {
-          const updated = payloadMap.get(i._id);
+          const updated = payloadMap.get(
+            getKey(i?.productId, i.variant?.variantId),
+          );
 
           return {
             ...i,
@@ -94,13 +104,13 @@ const cartSlice = createSlice({
 
       state.totalAmount = state.items.reduce(
         (acc, i) => acc + i.quantity * (i.price ?? 0),
-        0
+        0,
       );
 
       state.itemsCount = payloadList.length ?? 0;
       state.totalItemsCount = payloadList.reduce(
         (acc, i) => acc + i.quantity,
-        0
+        0,
       );
     };
 
@@ -157,6 +167,12 @@ const cartSlice = createSlice({
       })
       .addCase(wishlistItems.rejected, (state) => {
         state.loading = false;
+      })
+
+      // Send all wishlist items to cart
+      .addCase(sendAllWishlistItemsToCart.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        updateCartState(state, payload);
       });
   },
 });

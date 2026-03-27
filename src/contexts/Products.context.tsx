@@ -10,26 +10,45 @@ type ProductsContextType = {
   queryKey: string;
   searchQuery: string;
   setSearchQuery: (searchQuery: string) => void;
+  deleteProductVariant: (
+    token: string | null,
+    locale: string,
+    prodId: string,
+    varId: string,
+  ) => Promise<BaseResponse>;
+  unDeleteProductVariant: (
+    token: string | null,
+    locale: string,
+    prodId: string,
+    varId: string,
+  ) => Promise<BaseResponse>;
   deleteProduct: (
     token: string | null,
     locale: string,
-    prodId: string
+    prodId: string,
   ) => Promise<BaseResponse>;
   unDeleteProduct: (
     token: string | null,
     locale: string,
-    prodId: string
+    prodId: string,
   ) => Promise<BaseResponse>;
   switchProductActiveStatus: (
     token: string | null,
     lang: Locale | string,
     isActive: boolean,
-    prodId: string
+    prodId: string,
+  ) => Promise<BaseResponse>;
+  switchProductVariantActiveStatus: (
+    token: string | null,
+    lang: Locale | string,
+    isActive: boolean,
+    prodId: string,
+    varId: string,
   ) => Promise<BaseResponse>;
 };
 
 const ProductsContext = createContext<ProductsContextType | undefined>(
-  undefined
+  undefined,
 );
 
 type ProductsContextProviderType = {
@@ -47,7 +66,7 @@ export const ProductsContextProvider = ({
   const deleteProduct = async (
     token: string | null,
     locale: string,
-    prodId: string
+    prodId: string,
   ): Promise<BaseResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.PRODUCTS.DELETE}/${prodId}`,
@@ -58,7 +77,7 @@ export const ProductsContextProvider = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ lang: locale }),
-      }
+      },
     );
 
     if (!res.ok) throw new Error("Failed to delete product");
@@ -68,10 +87,90 @@ export const ProductsContextProvider = ({
     return resJson;
   };
 
+  const deleteProductVariant = async (
+    token: string | null,
+    locale: string,
+    prodId: string,
+    varId: string,
+  ): Promise<BaseResponse> => {
+    if (!varId || !prodId) console.warn("No Variant ID or no product ID.");
+
+    const url = `${API_ENDPOINTS.DASHBOARD.PRODUCTS.DELETE}/${prodId}/variant/${varId}`;
+
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ lang: locale }),
+    });
+
+    if (!res.ok) throw new Error("Failed to delete product's variant");
+
+    const resJson = await res.json();
+
+    return resJson;
+  };
+
+  const unDeleteProductVariant = async (
+    token: string | null,
+    locale: string,
+    prodId: string,
+    varId: string,
+  ): Promise<BaseResponse> => {
+    if (!varId || !prodId) console.warn("No Variant ID or no product ID.");
+
+    const url = `${API_ENDPOINTS.DASHBOARD.PRODUCTS.UN_DELETE}/${prodId}/variant/${varId}`;
+
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ lang: locale }),
+    });
+
+    if (!res.ok) throw new Error("Failed to delete product's variant");
+
+    const resJson = await res.json();
+
+    return resJson;
+  };
+
+  const switchProductVariantActiveStatus = async (
+    token: string | null,
+    lang: Locale | string,
+    isActive: boolean,
+    prodId: string,
+    varId: string,
+  ): Promise<BaseResponse> => {
+    if (!varId || !prodId) console.warn("No Variant ID or no product ID.");
+
+    const url = `${API_ENDPOINTS.DASHBOARD.PRODUCTS.SWITCH_ACTIVE_STATUS}/${prodId}/variant/${varId}`;
+
+    const res = await fetch(url, {
+      method: "PUT",
+      body: JSON.stringify({ lang, isActive }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok)
+      throw new Error("Could not switch active status for product's variant");
+
+    const resJson = await res.json();
+
+    return resJson;
+  };
+
   const unDeleteProduct = async (
     token: string | null,
     locale: string,
-    prodId: string
+    prodId: string,
   ): Promise<BaseResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.PRODUCTS.UN_DELETE}/${prodId}`,
@@ -82,7 +181,7 @@ export const ProductsContextProvider = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ lang: locale }),
-      }
+      },
     );
 
     if (!res.ok) throw new Error("Failed to un-delete product");
@@ -96,7 +195,7 @@ export const ProductsContextProvider = ({
     token: string | null,
     lang: Locale | string,
     isActive: boolean,
-    prodId: string
+    prodId: string,
   ): Promise<BaseResponse> => {
     const res = await fetch(
       `${API_ENDPOINTS.DASHBOARD.PRODUCTS.SWITCH_ACTIVE_STATUS}/${prodId}`,
@@ -107,7 +206,7 @@ export const ProductsContextProvider = ({
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     if (!res.ok) throw new Error("Could not switch active status for product");
@@ -127,6 +226,9 @@ export const ProductsContextProvider = ({
         deleteProduct,
         unDeleteProduct,
         switchProductActiveStatus,
+        deleteProductVariant,
+        unDeleteProductVariant,
+        switchProductVariantActiveStatus,
       }}
     >
       {children}
@@ -139,7 +241,7 @@ export const useProducts = () => {
 
   if (context === undefined)
     throw new Error(
-      "Products context should be used within products context provider"
+      "Products context should be used within products context provider",
     );
 
   return context;

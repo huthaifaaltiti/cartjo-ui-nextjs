@@ -7,6 +7,8 @@ import authenticationReducer from "./slices/authentication";
 import wishlistReducer from "./slices/wishlist";
 import ordersReducer from "./slices/orders";
 import loginReducer from "./slices/authorization/login";
+import categoryReducer from "./slices/category";
+import productReducer from "./slices/product";
 
 const allReducers = combineReducers({
   general: generalReducer,
@@ -17,6 +19,8 @@ const allReducers = combineReducers({
   wishlist: wishlistReducer,
   orders: ordersReducer,
   login: loginReducer,
+  category: categoryReducer,
+  product: productReducer,
 });
 
 export default allReducers;

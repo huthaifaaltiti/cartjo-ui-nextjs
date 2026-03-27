@@ -42,7 +42,9 @@
         "inStock": "متوفر",
         "lowStock": "مخزون منخفض",
         "outOfStock": "غير متوفر",
-        "stockItemsCount": "متبقي فقط {count} في المخزون"
+        "stockItemsCount": "متبقي فقط {count} في المخزون",
+        "available": "متاح",
+        "unavailable": "غير متاح"
       }
     },
     "cart": {
@@ -116,8 +118,17 @@
       "delivered": "تم التسليم",
       "failed": "فشل",
       "refunded": "تم الاسترداد",
+      "returned": "تم الاستعادة",
       "canceled": "تم الإلغاء",
-      "paid": "مدفوع"
+      "paid": "مدفوع",
+      "deleted": "محذوف",
+      "undeleted": "مُستردّ",
+      "active": "نشط",
+      "un_active": "غير نشط"
+    },
+    "paymentMethod": {
+      "cash": "نقدا",
+      "card": "بطاقة"
     },
     "info": {
       "name": "الاسم",
@@ -142,6 +153,24 @@
     },
     "buttons": {
       "downloadReceiptPDF": "تنزيل الإيصال (PDF)"
+    },
+    "attributes": {
+      "labels": {
+        "size": "الحجم",
+        "type": "النوع",
+        "sku": "رمز المنتج",
+        "colors": "الألوان"
+      },
+      "size": {
+        "small": "صغير",
+        "medium": "متوسط",
+        "large": "كبير",
+        "inches": "إنش"
+      },
+      "sellingType": {
+        "set": "طقم",
+        "piece": "قطعة"
+      }
     }
   },
   "errors": {
@@ -342,6 +371,16 @@
     },
     "ProductPrice": {
       "save": "احفظ لغاية"
+    },
+    "DiscountBadge": {
+      "save": "احفظ لغاية"
+    },
+    "ProductVertCard": {
+      "selectVariant": "الرجاء اختيار نوع المنتج"
+    },
+    "ReviewsCount": {
+      "reviews": "تعليقات",
+      "review": "تعليق"
     }
   },
   "routes": {
@@ -931,233 +970,310 @@
             "SearchBar": {
               "placeholder": "البحث عن المنتجات"
             },
+            "ProductVariantForm": {
+              "title": "خيارات المنتج",
+              "addVariant": "إضافة خيار جديد",
+              "variant": "خيار",
+              "fields": {
+                "mainImage": { "label": "الصورة الأساسية" },
+                "additionalImages": { "label": "صور إضافية" },
+                "attributes": {
+                  "label": "السمات",
+                  "select": "اختر نوع السمة",
+                  "add": "إضافة سمة"
+                }
+              },
+              "validations": {
+                "variants": {
+                  "min": "يجب أن يحتوي المنتج على خيار واحد على الأقل"
+                },
+                "attributes": {
+                  "min": "يجب أن يحتوي الخيار على سمة واحدة على الأقل",
+                  "sellingTypeRequired": "سمة 'نوع البيع' مطلوبة",
+                  "singleSellingType": "يُسمح بسمة 'نوع بيع' واحدة فقط",
+                  "singleSize": "يسمح بسمة حجم واحدة فقط",
+                  "value": {
+                    "required": "قيمة السمة مطلوبة"
+                  }
+                },
+                "mainImage": {
+                  "required": "الصورة الأساسية مطلوبة"
+                },
+                "description": {
+                  "required": "الوصف مطلوب",
+                  "min": "يجب أن يكون الوصف {count} حروف على الأقل",
+                  "max": "يجب ألا يتجاوز الوصف {count} حرف"
+                },
+                "price": {
+                  "required": "السعر مطلوب",
+                  "min": "يجب أن يكون السعر {value} على الأقل",
+                  "max": "يجب ألا يتجاوز السعر {value}"
+                },
+                "discountRate": {
+                  "min": "لا يمكن أن يقل الخصم عن {value}%",
+                  "max": "لا يمكن أن يتجاوز الخصم {value}%"
+                },
+                "totalAmountCount": {
+                  "required": "كمية المخزون مطلوبة",
+                  "min": "يجب أن تكون الكمية {value} على الأقل"
+                },
+                "sku": {
+                  "min": "يجب أن يكون رمز SKU على الأقل {count} حروف",
+                  "max": "يجب ألا يتجاوز رمز SKU {count} حرف"
+                }
+              }
+            },
+            "ProductVariantAttributesSection": {
+              "header": "سمات الخيار",
+              "addAttribute": "إضافة مفتاح/قيمة",
+              "attributeType": "نوع السمة",
+              "attributeValue": "قيمة السمة",
+              "placeholders": {
+                "selectKey": "اختر النوع",
+                "selectValue": "اختر القيمة",
+                "enterValue": "أدخل القيمة",
+                "colorValue": "أدخل رمز اللون أو اسمه"
+              },
+              "validation": {
+                "attributesRequired": "يجب أن يحتوي المتغير على خاصية واحدة على الأقل",
+                "sellingTypeRequired": "نوع البيع مطلوب",
+                "duplicateSellingType": "مسموح بنوع بيع واحد فقط"
+              }
+            },
             "CreateProductForm": {
               "fields": {
                 "mainImage": {
-                  "label": "الصور الرئيسية للمنتج",
-                  "placeholder": "الصور الرئيسية للمنتج"
-                },
-                "images": {
-                  "label": "صور المنتج",
-                  "placeholder": "صور المنتج"
+                  "label": "الصورة الأساسية للمنتج",
+                  "placeholder": "الصورة الأساسية للمنتج"
                 },
                 "name_ar": {
-                  "label": "الاسم العربي",
-                  "placeholder": "الاسم العربي"
+                  "label": "الاسم (بالعربية)",
+                  "placeholder": "أدخل الاسم بالعربية"
                 },
                 "name_en": {
-                  "label": "الاسم الإنجليزي",
-                  "placeholder": "الاسم الإنجليزي"
+                  "label": "الاسم (بالإنجليزية)",
+                  "placeholder": "أدخل الاسم بالإنجليزية"
                 },
                 "desc_ar": {
-                  "label": "الوصف العربي",
-                  "placeholder": "الوصف العربي"
+                  "label": "الوصف (بالعربية)",
+                  "placeholder": "أدخل الوصف بالعربية"
                 },
                 "desc_en": {
-                  "label": "الوصف الإنجليزي",
-                  "placeholder": "الوصف الإنجليزي"
-                },
-                "price": {
-                  "label": "السعر",
-                  "placeholder": "السعر"
-                },
-                "currency": {
-                  "label": "العملة",
-                  "placeholder": "العملة"
-                },
-                "totalAmountCount": {
-                  "label": "إجمالي عدد الكمية",
-                  "placeholder": "إجمالي عدد الكمية"
+                  "label": "الوصف (بالإنجليزية)",
+                  "placeholder": "أدخل الوصف بالإنجليزية"
                 },
                 "typeHint": {
-                  "label": "تلميح النوع",
-                  "placeholder": "تلميح النوع"
+                  "label": "تلميحات النوع",
+                  "placeholder": "تلميحات النوع"
                 },
                 "category": {
                   "label": "الفئة",
-                  "placeholder": "اختر فئة"
+                  "placeholder": "اختر الفئة"
                 },
                 "subCategory": {
                   "label": "الفئة الفرعية",
-                  "placeholder": "اختر فئة فرعية"
+                  "placeholder": "اختر الفئة الفرعية"
                 },
                 "tags": {
-                  "label": "العلامات",
-                  "placeholder": "إضافة علامات"
+                  "label": "الوسوم",
+                  "placeholder": "أضف وسوم"
                 },
-                "availableCount": {
-                  "label": "الكمية المتاحة",
-                  "placeholder": "الكمية المتاحة"
-                },
-                "discountRate": {
-                  "label": "معدل الخصم",
-                  "placeholder": "معدل الخصم"
+                "variants": {
+                  "mainImage": {
+                    "label": "الصورة الأساسية للخيار",
+                    "placeholder": "الصورة الأساسية للخيار"
+                  },
+                  "images": {
+                    "label": "صور الخيار",
+                    "placeholder": "صور الخيار"
+                  },
+                  "price": {
+                    "label": "سعر الخيار",
+                    "placeholder": "سعر الخيار"
+                  },
+                  "currency": {
+                    "label": "العملة",
+                    "placeholder": "اختر العملة"
+                  },
+                  "totalAmountCount": {
+                    "label": "إجمالي الكمية",
+                    "placeholder": "إجمالي كمية الخيار"
+                  },
+                  "availableCount": {
+                    "label": "الكمية المتوفرة",
+                    "placeholder": "الكمية المتوفرة للخيار"
+                  },
+                  "discountRate": {
+                    "label": "نسبة الخصم",
+                    "placeholder": "نسبة الخصم للخيار"
+                  }
                 }
               },
               "validations": {
                 "mainImage": {
-                  "required": "يجب توفير الصورة الرئيسية للمنتج"
+                  "required": "يجب توفير الصورة الأساسية للمنتج"
                 },
                 "images": {
                   "required": "يجب توفير صور المنتج"
                 },
                 "name_ar": {
-                  "minChars": "يجب أن يتكون الاسم العربي من حرفين على الأقل"
+                  "minChars": "الاسم (بالعربية) يجب أن يكون {count} حروف على الأقل",
+                  "maxChars": "الاسم (بالعربية) يجب أن يكون {count} حروف كحد أقصى"
                 },
                 "name_en": {
-                  "minChars": "يجب أن يتكون الاسم الإنجليزي من حرفين على الأقل"
+                  "minChars": "الاسم (بالإنجليزية) يجب أن يكون {count} حروف على الأقل",
+                  "maxChars": "الاسم (بالإنجليزية) يجب أن يكون {count} حروف كحد أقصى"
                 },
-                "type": {
-                  "required": "يجب أن يتضمن المنتج نوعا"
+                "variants": {
+                  "minLength": "يجب أن يحتوي المنتج على نوع خيار واحد على الأقل. أضف خياراً جديداً.",
+                  "totalAmountCount": {
+                    "min": "يجب أن يكون إجمالي الكمية 1 على الأقل"
+                  },
+                  "currency": {
+                    "notSupported": "اختر إحدى العملات المدعومة"
+                  },
+                  "availableCount": {
+                    "min": "يجب أن تكون الكمية المتوفرة 1 على الأقل"
+                  },
+                  "discountRate": {
+                    "min": "يجب أن تكون قيمة الخصم 1 على الأقل"
+                  },
+                  "tags": {
+                    "min": "أضف وسماً واحداً على الأقل"
+                  }
                 },
                 "category": {
                   "required": "الفئة مطلوبة"
                 },
                 "desc_ar": {
-                  "minChars": "يجب أن يكون الوصف العربي 20 حرفًا على الأقل"
+                  "minChars": "الوصف (بالعربية) يجب أن يكون {count} حروف على الأقل",
+                  "maxChars": "الوصف (بالعربية) يجب أن يكون {count} حروف كحد أقصى"
                 },
                 "desc_en": {
-                  "minChars": "يجب أن يكون الوصف الإنجليزي 20 حرفًا على الأقل"
+                  "minChars": "الوصف (بالإنجليزية) يجب أن يكون {count} حروف على الأقل",
+                  "maxChars": "الوصف (بالإنجليزية) يجب أن يكون {count} حروف كحد أقصى"
                 },
-                "price": {
-                  "min": "يجب أن يكون السعر 1 على الأقل"
-                },
-                "totalAmountCount": {
-                  "min": "يجب أن يكون إجمالي عدد الكمية 1 على الأقل"
-                },
-                "currency": {
-                  "notSupported": "اختر إحدى العملات المدعومة"
+                "type": {
+                  "min": "يجب أن يكون النوع {count} على الأقل"
                 },
                 "typeHint": {
-                  "notSupported": "اختر أحد تلميحات الأنواع المدعومة"
+                  "notSupported": "اختر أحد تلميحات النوع المدعومة"
                 },
                 "subCategory": {
                   "required": "الفئة الفرعية مطلوبة"
                 },
                 "tags": {
-                  "min": "أضف علامة واحدة على الأقل"
-                },
-                "availableCount": {
-                  "min": "يجب أن تكون الكمية المتاحة 1 على الأقل"
-                },
-                "discountRate": {
-                  "min": "يجب أن يكون مبلغ الخصم 1 على الأقل"
+                  "min": "يجب إضافة {count} وسوم على الأقل"
                 }
               }
             },
             "EditProductForm": {
               "fields": {
                 "mainImage": {
-                  "label": "الصور الرئيسية للمنتج",
-                  "placeholder": "الصور الرئيسية للمنتج"
-                },
-                "images": {
-                  "label": "صور المنتج",
-                  "placeholder": "صور المنتج"
+                  "label": "الصورة الأساسية للمنتج",
+                  "placeholder": "الصورة الأساسية للمنتج"
                 },
                 "name_ar": {
-                  "label": "الاسم العربي",
-                  "placeholder": "الاسم العربي"
+                  "label": "الاسم (بالعربية)",
+                  "placeholder": "الاسم (بالعربية)"
                 },
                 "name_en": {
-                  "label": "الاسم الإنجليزي",
-                  "placeholder": "الاسم الإنجليزي"
+                  "label": "الاسم (بالإنجليزية)",
+                  "placeholder": "الاسم (بالإنجليزية)"
                 },
                 "desc_ar": {
-                  "label": "الوصف العربي",
-                  "placeholder": "الوصف العربي"
+                  "label": "الوصف (بالعربية)",
+                  "placeholder": "الوصف (بالعربية)"
                 },
                 "desc_en": {
-                  "label": "الوصف الإنجليزي",
-                  "placeholder": "الوصف الإنجليزي"
-                },
-                "price": {
-                  "label": "السعر",
-                  "placeholder": "السعر"
-                },
-                "currency": {
-                  "label": "العملة",
-                  "placeholder": "العملة"
-                },
-                "totalAmountCount": {
-                  "label": "إجمالي عدد الكمية",
-                  "placeholder": "إجمالي عدد الكمية"
+                  "label": "الوصف (بالإنجليزية)",
+                  "placeholder": "الوصف (بالإنجليزية)"
                 },
                 "typeHint": {
-                  "label": "تلميح النوع",
-                  "placeholder": "تلميح النوع"
+                  "label": "تلميحات النوع",
+                  "placeholder": "تلميحات النوع"
                 },
-                "category": {
-                  "label": "الفئة",
-                  "placeholder": "اختر فئة"
-                },
+                "category": { "label": "الفئة", "placeholder": "اختر الفئة" },
                 "subCategory": {
                   "label": "الفئة الفرعية",
-                  "placeholder": "اختر فئة فرعية"
+                  "placeholder": "اختر الفئة الفرعية"
                 },
-                "tags": {
-                  "label": "العلامات",
-                  "placeholder": "إضافة علامات"
-                },
-                "availableCount": {
-                  "label": "الكمية المتاحة",
-                  "placeholder": "الكمية المتاحة"
-                },
-                "discountRate": {
-                  "label": "معدل الخصم",
-                  "placeholder": "معدل الخصم"
+                "tags": { "label": "الوسوم", "placeholder": "أضف وسوم" },
+                "variants": {
+                  "mainImage": {
+                    "label": "الصورة الأساسية للخيار",
+                    "placeholder": "الصورة الأساسية للخيار"
+                  },
+                  "images": {
+                    "label": "صور الخيار",
+                    "placeholder": "صور الخيار"
+                  },
+                  "price": {
+                    "label": "سعر الخيار",
+                    "placeholder": "سعر الخيار"
+                  },
+                  "currency": {
+                    "label": "العملة",
+                    "placeholder": "عملة الخيار"
+                  },
+                  "totalAmountCount": {
+                    "label": "إجمالي الكمية",
+                    "placeholder": "إجمالي كمية الخيار"
+                  },
+                  "availableCount": {
+                    "label": "الكمية المتوفرة",
+                    "placeholder": "الكمية المتوفرة للخيار"
+                  },
+                  "discountRate": {
+                    "label": "نسبة الخصم",
+                    "placeholder": "نسبة الخصم للخيار"
+                  }
                 }
               },
               "validations": {
-                "mainImage": {
-                  "required": "يجب توفير الصورة الرئيسية للمنتج"
-                },
-                "images": {
-                  "required": "يجب توفير صور المنتج"
-                },
+                "mainImage": { "required": "يجب توفير الصورة الأساسية للمنتج" },
+                "images": { "required": "يجب توفير صور المنتج" },
                 "name_ar": {
-                  "minChars": "يجب أن يتكون الاسم العربي من حرفين على الأقل"
+                  "minChars": "الاسم (بالعربية) يجب أن يكون {count} حروف على الأقل",
+                  "maxChars": "الاسم (بالعربية) يجب أن يكون {count} حروف كحد أقصى"
                 },
                 "name_en": {
-                  "minChars": "يجب أن يتكون الاسم الإنجليزي من حرفين على الأقل"
+                  "minChars": "الاسم (بالإنجليزية) يجب أن يكون {count} حروف على الأقل",
+                  "maxChars": "الاسم (بالإنجليزية) يجب أن يكون {count} حروف كحد أقصى"
                 },
-                "category": {
-                  "required": "الفئة مطلوبة"
+                "variants": {
+                  "minLength": "يجب أن يحتوي المنتج على خيار واحد على الأقل.",
+                  "totalAmountCount": {
+                    "min": "إجمالي الكمية يجب أن يكون 1 على الأقل"
+                  },
+                  "currency": { "notSupported": "اختر عملة مدعومة" },
+                  "availableCount": {
+                    "min": "الكمية المتوفرة يجب أن تكون 1 على الأقل"
+                  },
+                  "discountRate": {
+                    "min": "قيمة الخصم يجب أن تكون 1 على الأقل"
+                  },
+                  "tags": { "min": "أضف وسماً واحداً على الأقل" }
                 },
+                "category": { "required": "الفئة مطلوبة" },
                 "desc_ar": {
-                  "minChars": "يجب أن يكون الوصف العربي 20 حرفًا على الأقل"
-                },
-                "type": {
-                  "required": "يجب أن يتضمن المنتج نوعا"
+                  "minChars": "الوصف (بالعربية) يجب أن يكون {count} حروف على الأقل",
+                  "maxChars": "الوصف (بالعربية) يجب أن يكون {count} حروف كحد أقصى"
                 },
                 "desc_en": {
-                  "minChars": "يجب أن يكون الوصف الإنجليزي 20 حرفًا على الأقل"
+                  "minChars": "الوصف (بالإنجليزية) يجب أن يكون {count} حروف على الأقل",
+                  "maxChars": "الوصف (بالإنجليزية) يجب أن يكون {count} حروف كحد أقصى"
                 },
-                "price": {
-                  "min": "يجب أن يكون السعر 1 على الأقل"
-                },
-                "totalAmountCount": {
-                  "min": "يجب أن يكون إجمالي عدد الكمية 1 على الأقل"
-                },
-                "currency": {
-                  "notSupported": "اختر إحدى العملات المدعومة"
-                },
-                "typeHint": {
-                  "notSupported": "اختر أحد تلميحات الأنواع المدعومة"
-                },
-                "subCategory": {
-                  "required": "الفئة الفرعية مطلوبة"
-                },
-                "tags": {
-                  "min": "أضف علامة واحدة على الأقل"
-                },
-                "availableCount": {
-                  "min": "يجب أن تكون الكمية المتاحة 1 على الأقل"
-                },
-                "discountRate": {
-                  "min": "يجب أن يكون مبلغ الخصم 1 على الأقل"
-                }
+                "subCategory": { "required": "الفئة الفرعية مطلوبة" }
+              },
+              "actions": {
+                "update": "تحديث تفاصيل العنصر"
               }
+            },
+            "DashboardProductCard": {
+              "variant": "النوع",
+              "variantId": "الرقم التعريفي للنوع",
+              "sku": "رمز المنتج"
             }
           }
         },
@@ -1871,6 +1987,38 @@
             },
             "OrderCardDeliveryAction": {
               "title": "اختر حالة التوصيل"
+            },
+            "OrderReceiptButton": {
+              "downloadReceiptPDF": "تحميل الإيصال (PDF)",
+              "preparingPDF": "جاري تجهيز الإيصال...",
+              "generatingPDF": "جاري إنشاء الإيصال...",
+              "savePDF": "اضغط لحفظ الإيصال"
+            },
+            "ReceiptPDF": {
+              "brand": "كارت جو",
+              "receipt": "إيصال",
+              "orderReceipt": "إيصال الطلب",
+              "customer": "العميل",
+              "shippingAddress": "عنوان الشحن",
+              "orderInfo": "معلومات الطلب",
+              "reference": "رمز المرجع",
+              "merchantReference": "مرجع التاجر",
+              "totalItems": "إجمالي العناصر",
+              "items": "عناصر",
+              "product": "المنتج",
+              "quantity": "الكمية",
+              "unitPrice": "سعر الوحدة",
+              "total": "الإجمالي",
+              "sku": "رمز المنتج",
+              "subtotal": "المجموع الفرعي",
+              "deliveryCost": "تكلفة التوصيل",
+              "totalDue": "الإجمالي المستحق",
+              "payment": "الدفع",
+              "delivery": "التوصيل",
+              "paymentMethod": "طريقة الدفع",
+              "thankYou": "!شكرًا لشرائك",
+              "pageOf": "الصفحة {current} من {total}",
+              "site": "cartjo.com"
             }
           }
         }
@@ -1910,6 +2058,12 @@
         },
         "BackToDashboardBtn": {
           "label": "العودة إلى لوحة التحكم"
+        },
+        "AnimatedManagedDashboard": {
+          "welcome": "مرحبًا بك في لوحة تحكم CartJO.",
+          "select": "اختر قسمًا من الشريط الجانبي للبدء.",
+          "ready": "كل شيء جاهز لك.",
+          "desc": "قم بإدارة بيانات متجرك وإعداداته بسهولة. من المنتجات إلى الطلبات، كل شيء على بُعد نقرة واحدة."
         }
       },
       "errors": {
@@ -2009,10 +2163,15 @@
           "writeReview": "اكتب مراجعة",
           "yourRating": "تقييمك",
           "yourComment": "تعليقك",
-          "shareThoughts": "شارك أفكارك حول هذا المنتج..",
+          "shareThoughts": "شاركنا رأيك حول هذا المنتج..",
           "submit": "إرسال المراجعة",
-          "submitting": "جارٍ الإرسال...",
-          "enterComment": "يرجى إدخال تعليق",
+          "submitting": "جاري الإرسال...",
+          "enterComment": "يرجى إدخال تعليق. ملاحظاتك مهمة بالنسبة لنا!",
+          "commentMinChars": "يجب أن يحتوي التعليق على {min} أحرف على الأقل",
+          "commentMaxChars": "يجب ألا يتجاوز التعليق {max} حرفًا",
+          "enterRating": "يرجى تقييم المنتج من (1 إلى 5)",
+          "ratingMin": "يجب أن يكون التقييم على الأقل {min}",
+          "ratingMax": "يجب ألا يتجاوز التقييم {max}",
           "submitCommentFailed": "فشل في إرسال التعليق"
         },
         "EditComment": {
@@ -2041,6 +2200,16 @@
           "desc": "وصف المنتج",
           "inStock": "متوفر",
           "available": "متاح"
+        },
+        "VariantDetailsSelector": {
+          "select": "اختر النوع"
+        },
+        "ProductDetailsAddToCartButton": {
+          "add": "أضف إلى السلة",
+          "added": "تمت الإضافة"
+        },
+        "ProductDetailsSubtotal": {
+          "subtotal": "المجموع الفرعي"
         }
       }
     },

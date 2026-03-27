@@ -1,175 +1,72 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
-import { Minus, Plus, ShoppingCart, Star } from "lucide-react";
+import { memo, useCallback, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslations } from "next-intl";
 import { Product } from "@/types/product.type";
-import { useLocale } from "next-intl";
-import { isArabicLocale } from "@/config/locales.config";
-import WishlistButton from "@/components/shared/card/WishlistButton";
+import { Category } from "@/types/category.type";
+import { DataResponse } from "@/types/service-response.type";
+import { Cart } from "@/types/cart.type";
+import { AppDispatch, RootState } from "@/redux/store";
+import { addItemToServer } from "@/redux/slices/cart/actions";
+import {
+  addWishlistItem,
+  removeWishlistItem,
+} from "@/redux/slices/wishlist/actions";
+import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import {
   showErrorToast,
   showSuccessToast,
   showWarningToast,
 } from "@/components/shared/CustomToast";
-import { useTranslations } from "use-intl";
-import { useAuthContext } from "@/hooks/useAuthContext";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import {
-  addWishlistItem,
-  removeWishlistItem,
-} from "@/redux/slices/wishlist/actions";
-import { addItemToServer } from "@/redux/slices/cart/actions";
-import { DataResponse } from "@/types/service-response.type";
-import { Cart } from "@/types/cart.type";
-import Image from "next/image";
-import { Currency } from "@/constants/currency.constant";
+import ProductBreadcrumb from "./product-details/ProductBreadcrumb";
+import ProductImageGallery from "./product-details/ProductImageGallery";
+import ProductInfoSection from "./product-details/ProductInfoSection";
+import { setSelectedServerVariant } from "@/redux/slices/product";
 
-interface Props {
-  product: Product;
-}
-
-const ProductDetailsContent = ({ product }: Props) => {
-  const t = useTranslations();
-  const locale = useLocale();
-  const isArabic = isArabicLocale(locale);
-
+const ProductDetailsContent = ({ product }: { product: Product }) => {
+  const t = useTranslations("");
   const dispatch = useDispatch<AppDispatch>();
-  const { accessToken } = useAuthContext();
+  const { requireAuth } = useRequireAuth();
+  const { accessToken: token } = useAuthContext();
 
-  const title = isArabic ? product.name.ar : product.name.en;
-  const description = isArabic
-    ? product.description.ar
-    : product.description.en;
-  const productCurrency = isArabic
-    ? Currency[product.currency].labelAr
-    : Currency[product.currency].labelEn;
+  const pathname = usePathname();
+  const pathnameSections = pathname.split("/").slice(2);
 
-  // STATES
-  const [isWishListing, setIsWishListing] = useState(false);
-  const [isWishListed, setIsWishListed] = useState(product.isWishListed);
+  const { data: categoriesResult } = useActiveCategoriesQuery();
+  const { categories } = useSelector((s: RootState) => s.category);
+  const { locale, isArabic } = useSelector((s: RootState) => s.general);
+
+  const allCategories: Category[] =
+    categories?.length > 0 ? categories : (categoriesResult?.data ?? []);
+
+  const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [isWishlisted, setIsWishlisted] = useState(product.isWishListed);
+  const [isWishlisting, setIsWishlisting] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
 
-  const [selectedImage, setSelectedImage] = useState(product.mainImage);
-  const [quantity, setQuantity] = useState(1);
+  const variant = product.variants[selectedVariantIdx];
 
-  // ⭐ Rating Stars
-  const renderStars = (rating: number) =>
-    [...Array(5)].map((_, i) => (
-      <Star
-        key={i}
-        className={`w-4 h-4 sm:w-5 sm:h-5 ${
-          i < rating ? "text-yellow-400 fill-current" : "text-gray-300"
-        }`}
-      />
-    ));
-
-  // 📌 Quantity Change
-  const handleQuantityChange = (action: string) => {
-    if (action === "increase" && quantity < product.availableCount) {
-      setQuantity(quantity + 1);
-    } else if (action === "decrease" && quantity > 1) {
-      setQuantity(quantity - 1);
+  useEffect(() => {
+    if (variant?.variantId) {
+      dispatch(setSelectedServerVariant(variant));
     }
-  };
+  }, [product, variant]);
 
-  // 💰 Discounted Price
-  const discountedPrice =
-    product.discountRate > 0
-      ? product.price * (1 - product.discountRate / 100)
-      : product.price;
+  const handleAddToCart = useCallback(async (): Promise<
+    DataResponse<Cart> | undefined
+  > => {
+    if (!requireAuth()) return;
 
-  // ❤️ Remove from wishlist
-  const handleRemoveWishListItem = useCallback(async () => {
-    if (!accessToken) {
+    if (!variant?.variantId) {
       showWarningToast({
         title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-      return;
-    }
-
-    try {
-      setIsWishListing(true);
-
-      const response = await dispatch(
-        removeWishlistItem({
-          productId: product._id,
-          lang: locale,
-          token: accessToken,
-        }),
-      ).unwrap();
-
-      if (response.isSuccess) {
-        showSuccessToast({
-          title: t("general.toast.title.success"),
-          description: response.message,
-          dismissText: t("general.toast.dismissText"),
-        });
-        setIsWishListed(false);
-      }
-    } catch (error) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to remove item.",
-        dismissText: t("general.toast.dismissText"),
-      });
-    } finally {
-      setIsWishListing(false);
-    }
-  }, [locale, accessToken, product._id, t]);
-
-  // ❤️ Add to wishlist
-  const handleAddWishListItem = useCallback(async () => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-      return;
-    }
-
-    try {
-      setIsWishListing(true);
-
-      const response = await dispatch(
-        addWishlistItem({
-          product,
-          lang: locale,
-          token: accessToken,
-        }),
-      ).unwrap();
-
-      if (response.isSuccess) {
-        showSuccessToast({
-          title: t("general.toast.title.success"),
-          description: response.message,
-          dismissText: t("general.toast.dismissText"),
-        });
-        setIsWishListed(true);
-      }
-    } catch (error) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to add item.",
-        dismissText: t("general.toast.dismissText"),
-      });
-    } finally {
-      setIsWishListing(false);
-    }
-  }, [locale, accessToken, product._id, t, dispatch]);
-
-  const handleWishListedItemState = () =>
-    isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
-
-  // 🛒 ADD TO CART FUNCTION
-  const handleAddToCart = async (): Promise<DataResponse<Cart> | undefined> => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
+        description: t("components.ProductVertCard.selectVariant"),
         dismissText: t("general.toast.dismissText"),
       });
       return;
@@ -180,10 +77,11 @@ const ProductDetailsContent = ({ product }: Props) => {
 
       const response = await dispatch(
         addItemToServer({
-          productId: product._id!,
-          quantity: quantity, // 👍 use selected quantity
+          productId: product._id,
+          variantId: variant.variantId,
+          quantity,
           lang: locale,
-          token: accessToken,
+          token,
         }),
       ).unwrap();
 
@@ -193,142 +91,94 @@ const ProductDetailsContent = ({ product }: Props) => {
           description: response.message,
           dismissText: t("general.toast.dismissText"),
         });
+
+        setAddedToCart(true);
       }
+
+      return response;
     } catch (error) {
       showErrorToast({
         title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to add item.",
+        description: (error as Error)?.message || "Failed to add item to cart.",
         dismissText: t("general.toast.dismissText"),
       });
     } finally {
       setIsAddToCartLoading(false);
     }
+  }, [requireAuth, variant, quantity, locale, token, dispatch, t, product]);
+
+  const handleToggleWishlist = async () => {
+    if (!requireAuth()) return;
+
+    try {
+      setIsWishlisting(true);
+
+      let response;
+
+      if (isWishlisted) {
+        response = await dispatch(
+          removeWishlistItem({
+            productId: product._id,
+            lang: locale,
+            token,
+          }),
+        ).unwrap();
+      } else {
+        response = await dispatch(
+          addWishlistItem({
+            product,
+            lang: locale,
+            token,
+          }),
+        ).unwrap();
+      }
+
+      if (response.isSuccess) {
+        setIsWishlisted(!isWishlisted);
+        showSuccessToast({
+          title: t("general.toast.title.success"),
+          description: response.message,
+          dismissText: t("general.toast.dismissText"),
+        });
+      }
+    } finally {
+      setIsWishlisting(false);
+    }
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-6 sm:py-8 px-3">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
-        {/* IMAGES */}
-        <div className="space-y-4">
-          <div className="h-[500px] w-full bg-white-100 overflow-hidden rounded-xl relative group">
-            <Image
-              src={selectedImage}
-              alt={product.name.en}
-              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
-              width={800}
-              height={800}
-            />
+    <div className="w-full mx-auto px-4 py-8">
+      {allCategories.length > 0 && product && (
+        <ProductBreadcrumb
+          product={product}
+          pathnameSections={pathnameSections}
+          locale={locale}
+          categories={allCategories}
+          isArabic={isArabic}
+        />
+      )}
 
-            {product.discountRate > 0 && (
-              <div className="absolute top-3 left-3 bg-red-500 text-white-50 px-3 py-1 rounded-full text-sm font-semibold">
-                -{product.discountRate}%
-              </div>
-            )}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <ProductImageGallery
+          product={product}
+          variant={variant}
+          isWishlisted={isWishlisted}
+          isWishlisting={isWishlisting}
+          onToggleWishlist={handleToggleWishlist}
+        />
 
-            <WishlistButton
-              isWishListed={isWishListed}
-              isLoading={isWishListing}
-              onClick={handleWishListedItemState}
-            />
-          </div>
-
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {[product.mainImage, ...product.images].map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(image)}
-                className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 bg-white-100 ${
-                  selectedImage === image
-                    ? "border-blue-500"
-                    : "border-gray-200 hover:border-gray-300"
-                }`}
-              >
-                <Image
-                  src={image}
-                  alt={title}
-                  className="w-full h-full object-contain"
-                  width={80}
-                  height={80}
-                />
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* PRODUCT INFO */}
-        <div className="space-y-6">
-          <h1 className="text-4xl font-bold first-letter-capital">{title}</h1>
-
-          <div className="flex items-center gap-2">
-            <div className="flex">{renderStars(product.ratings)}</div>
-            <span className="text-gray-600 text-sm">
-              ({product.ratings}{" "}
-              {t(
-                `routes.product.components.ProductDetailsContent.${product.ratings > 1 ? "reviews" : "review"}`,
-              )}
-              )
-            </span>
-          </div>
-
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="text-4xl font-bold">
-                {discountedPrice.toFixed(2)}
-                <span className="text-sm"> {productCurrency}</span>
-              </span>
-
-              {product.discountRate > 0 && (
-                <span className="text-2xl text-gray-500 line-through">
-                  {product.price.toFixed(2)} {productCurrency}
-                </span>
-              )}
-            </div>
-            <p className="text-green-600 text-sm">
-              ✓ {t("routes.product.components.ProductDetailsContent.inStock")} (
-              {product.availableCount}{" "}
-              {t("routes.product.components.ProductDetailsContent.available")})
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold">
-              {t("routes.product.components.ProductDetailsContent.desc")}
-            </h3>
-            <p className="text-gray-700 first-letter-capital">{description}</p>
-          </div>
-
-          {/* QUANTITY + ADD TO CART */}
-          <div className="flex items-center gap-4">
-            {/* Quantity */}
-            <div className="flex items-center border border-gray-300 rounded-lg">
-              <button
-                onClick={() => handleQuantityChange("decrease")}
-                disabled={quantity <= 1}
-                className="p-2 disabled:opacity-50"
-              >
-                <Minus />
-              </button>
-              <span className="px-4 py-2 font-medium">{quantity}</span>
-              <button
-                onClick={() => handleQuantityChange("increase")}
-                disabled={quantity >= product.availableCount}
-                className="p-2 disabled:opacity-50"
-              >
-                <Plus />
-              </button>
-            </div>
-
-            {/* ADD TO CART BUTTON */}
-            <button
-              onClick={handleAddToCart}
-              disabled={isAddToCartLoading}
-              className="flex-1 bg-blue-600 text-white-50 px-6 py-3 rounded-lg flex items-center justify-center gap-2 font-semibold hover:bg-blue-700 disabled:opacity-50"
-            >
-              {isAddToCartLoading ? "..." : <ShoppingCart />}
-              {t("general.cart.addToCart")}
-            </button>
-          </div>
-        </div>
+        <ProductInfoSection
+          isArabic={isArabic}
+          product={product}
+          variant={variant}
+          selectedVariantIdx={selectedVariantIdx}
+          onVariantChange={setSelectedVariantIdx}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          onAddToCart={handleAddToCart}
+          isAddToCartLoading={isAddToCartLoading}
+          addedToCart={addedToCart}
+        />
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 "use client";
 
-import { memo, useCallback, useEffect, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { Product } from "@/types/product.type";
+import { Product, VariantServer } from "@/types/product.type";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
@@ -24,9 +24,12 @@ import WishlistButton from "../WishlistButton";
 import DiscountBadge from "../DiscountBadge";
 import ProductImage from "../ProductImage";
 import ProductTitle from "../ProductTitle";
-import ProductPrice from "../ProductPrice";
-import ProductRating from "../ProductRating";
 import AddToCartButton from "../AddToCartButton";
+import ProductPrice from "../ProductPrice";
+import ProductVariantDescription from "../ProductVariantDescription";
+import ItemRatingStats from "../ItemRatingStats";
+import ProductVariantSelector from "../ProductVariantSelector";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 const ProductVertCard = ({
   item,
@@ -35,42 +38,53 @@ const ProductVertCard = ({
   item: Product;
   isArabic: boolean;
 }) => {
+  const router = useRouter();
+  const { accessToken } = useAuthContext();
   const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector((state: RootState) => state.wishlist);
+  const { locale } = useSelector((state: RootState) => state.general);
+  const t = useTranslations();
+  const { requireAuth } = useRequireAuth();
 
   const title = isArabic ? item?.name?.ar : item?.name?.en;
 
-  const router = useRouter();
-
-  const locale = useLocale();
-  const t = useTranslations();
+  const activeVariants: VariantServer[] =
+    item.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [];
 
   const [isWishListed, setIsWishListed] = useState<boolean>(
     item?.isWishListed || false,
   );
+
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isWishListing, setIsWishListing] = useState<boolean>(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState<boolean>(false);
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
+    activeVariants[0]?.variantId ?? null,
+  );
 
-  const { accessToken } = useAuthContext();
+  const currentVariant = useMemo(
+    () => activeVariants.find((v) => v.variantId === selectedVariantId) ?? null,
+    [activeVariants, selectedVariantId],
+  );
 
   useEffect(() => {
     const foundItem = items?.find((i) => i._id === item._id);
     setIsWishListed(Boolean(foundItem || item?.isWishListed));
   }, [items, item]);
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     }).format(price);
-  };
 
   const handleAddToCart = async (): Promise<DataResponse<Cart> | undefined> => {
-    if (!accessToken) {
+    if (!requireAuth()) return;
+
+    if (!currentVariant?.variantId) {
       showWarningToast({
         title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
+        description: t("components.ProductVertCard.selectVariant"),
         dismissText: t("general.toast.dismissText"),
       });
 
@@ -83,6 +97,7 @@ const ProductVertCard = ({
       const response = await dispatch(
         addItemToServer({
           productId: item?._id,
+          variantId: currentVariant?.variantId,
           quantity: 1,
           lang: locale,
           token: accessToken,
@@ -92,15 +107,14 @@ const ProductVertCard = ({
       if (response.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
-          description: response?.message,
-
+          description: response.message,
           dismissText: t("general.toast.dismissText"),
         });
       }
     } catch (error) {
       showErrorToast({
         title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to remove item.",
+        description: (error as Error)?.message || "Failed to add item.",
         dismissText: t("general.toast.dismissText"),
       });
     } finally {
@@ -109,15 +123,7 @@ const ProductVertCard = ({
   };
 
   const handleRemoveWishListItem = useCallback(async () => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-
-      return;
-    }
+    if (!accessToken) return;
 
     try {
       setIsWishListing(true);
@@ -131,35 +137,20 @@ const ProductVertCard = ({
       ).unwrap();
 
       if (response.isSuccess) {
+        setIsWishListed(false);
         showSuccessToast({
           title: t("general.toast.title.success"),
           description: response.message,
           dismissText: t("general.toast.dismissText"),
         });
-
-        setIsWishListed(false);
       }
-    } catch (error) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to remove item.",
-        dismissText: t("general.toast.dismissText"),
-      });
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, accessToken, item, t]);
+  }, [locale, accessToken, item, t, dispatch]);
 
   const handleAddWishListItem = useCallback(async () => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-
-      return;
-    }
+    if (!accessToken) return;
 
     try {
       setIsWishListing(true);
@@ -173,27 +164,27 @@ const ProductVertCard = ({
       ).unwrap();
 
       if (response.isSuccess) {
+        setIsWishListed(true);
         showSuccessToast({
           title: t("general.toast.title.success"),
           description: response.message,
           dismissText: t("general.toast.dismissText"),
         });
-
-        setIsWishListed(true);
       }
-    } catch (error) {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: (error as Error)?.message || "Failed to remove item.",
-        dismissText: t("general.toast.dismissText"),
-      });
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, accessToken, item._id, t]);
+  }, [locale, accessToken, item, t, dispatch]);
 
-  const handleWishListedItemState = () =>
-    isWishListed ? handleRemoveWishListItem() : handleAddWishListItem();
+  const handleWishListedItemState = () => {
+    if (!requireAuth()) return;
+
+    if (isWishListed) {
+      handleRemoveWishListItem();
+    } else {
+      handleAddWishListItem();
+    }
+  };
 
   const handleGoToProductPage = useCallback(() => {
     let categorySlug, subCategorySlug;
@@ -217,16 +208,14 @@ const ProductVertCard = ({
   }, [item, isArabic]);
 
   return (
-    <CardWrapper
-      isHovered={isHovered}
-      // isLoading={isAddToCartLoading || isWishListing}
-    >
+    <CardWrapper isHovered={isHovered}>
       <WishlistButton
         isWishListed={isWishListed}
         isLoading={isWishListing}
         onClick={handleWishListedItemState}
       />
-      <DiscountBadge discount={item.discountRate} />
+
+      <DiscountBadge discount={currentVariant?.discountRate ?? 0} />
 
       <div
         className="w-full h-[23vh] sm:h-[22vh] max-[500px]:h-[18vh] max-[400px]:h-[16vh] max-[350px]:h-[14vh]"
@@ -234,7 +223,7 @@ const ProductVertCard = ({
         onMouseLeave={() => setIsHovered(false)}
       >
         <ProductImage
-          src={item.mainImage}
+          src={currentVariant?.mainImage?.url || item?.mainImage?.url}
           alt={title}
           isHovered={isHovered}
           isLoading={isAddToCartLoading || isWishListing}
@@ -253,14 +242,45 @@ const ProductVertCard = ({
           />
         </div>
 
+        {/* Variant description */}
+        <div>
+          {currentVariant && (
+            <ProductVariantDescription
+              desc={
+                isArabic
+                  ? currentVariant?.description?.ar
+                  : currentVariant?.description?.en
+              }
+              isHovered={isHovered}
+              isLoading={isAddToCartLoading || isWishListing}
+            />
+          )}
+        </div>
+
+        {/* Variant Selector */}
+        <ProductVariantSelector
+          variants={activeVariants}
+          selectedVariantId={selectedVariantId}
+          onSelect={setSelectedVariantId}
+        />
+
         <div className="space-y-3">
           <div className="w-full flex items-center justify-between gap-1">
-            <ProductPrice
-              item={item}
-              formatPrice={formatPrice}
-              isArabic={isArabic}
+            {currentVariant && (
+              <ProductPrice
+                item={currentVariant}
+                formatPrice={formatPrice}
+                isArabic={isArabic}
+              />
+            )}
+            <ItemRatingStats
+              ratingAverage={
+                currentVariant?.ratingsAverage ?? item.ratingsAverage ?? 0
+              }
+              ratingCount={
+                currentVariant?.ratingsCount ?? item.ratingsCount ?? 0
+              }
             />
-            <ProductRating rating={item.ratings} />
           </div>
 
           <AddToCartButton

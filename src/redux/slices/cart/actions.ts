@@ -10,6 +10,7 @@ export const addItemToServer = createAsyncThunk<
   DataResponse<Cart>,
   {
     productId: string;
+    variantId: string;
     quantity: number;
     lang?: Locale | string;
     token: string;
@@ -17,7 +18,10 @@ export const addItemToServer = createAsyncThunk<
   { rejectValue: BaseResponse }
 >(
   CART_CONSTANTS.addItem,
-  async ({ productId, quantity, lang = "en", token }, { rejectWithValue }) => {
+  async (
+    { productId, variantId, quantity, lang = "en", token },
+    { rejectWithValue },
+  ) => {
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.CART.ADD);
 
@@ -27,7 +31,7 @@ export const addItemToServer = createAsyncThunk<
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ productId, quantity, lang }),
+        body: JSON.stringify({ productId, variantId, quantity, lang }),
       });
 
       if (!response.isSuccess) {
@@ -42,13 +46,14 @@ export const addItemToServer = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const removeItemFromServer = createAsyncThunk<
   DataResponse<Cart>,
   {
     productId: string;
+    variantId: string;
     quantity: number;
     lang?: Locale | string;
     token: string;
@@ -56,7 +61,10 @@ export const removeItemFromServer = createAsyncThunk<
   { rejectValue: BaseResponse }
 >(
   CART_CONSTANTS.removeItem,
-  async ({ productId, quantity, lang = "en", token }, { rejectWithValue }) => {
+  async (
+    { productId, variantId, quantity, lang = "en", token },
+    { rejectWithValue },
+  ) => {
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.CART.REMOVE);
 
@@ -66,7 +74,7 @@ export const removeItemFromServer = createAsyncThunk<
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ productId, quantity, lang }),
+        body: JSON.stringify({ productId, variantId, quantity, lang }),
       });
 
       if (!response.isSuccess) {
@@ -81,7 +89,7 @@ export const removeItemFromServer = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const removeAllItemsFromServer = createAsyncThunk<
@@ -118,7 +126,7 @@ export const removeAllItemsFromServer = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export const wishlistItems = createAsyncThunk<
@@ -155,5 +163,5 @@ export const wishlistItems = createAsyncThunk<
           error instanceof Error ? error.message : "Something went wrong",
       });
     }
-  }
+  },
 );
