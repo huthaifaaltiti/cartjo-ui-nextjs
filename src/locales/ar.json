@@ -118,12 +118,17 @@
       "delivered": "تم التسليم",
       "failed": "فشل",
       "refunded": "تم الاسترداد",
+      "returned": "تم الاستعادة",
       "canceled": "تم الإلغاء",
       "paid": "مدفوع",
       "deleted": "محذوف",
       "undeleted": "مُستردّ",
       "active": "نشط",
       "un_active": "غير نشط"
+    },
+    "paymentMethod": {
+      "cash": "نقدا",
+      "card": "بطاقة"
     },
     "info": {
       "name": "الاسم",
@@ -1982,6 +1987,38 @@
             },
             "OrderCardDeliveryAction": {
               "title": "اختر حالة التوصيل"
+            },
+            "OrderReceiptButton": {
+              "downloadReceiptPDF": "تحميل الإيصال (PDF)",
+              "preparingPDF": "جاري تجهيز الإيصال...",
+              "generatingPDF": "جاري إنشاء الإيصال...",
+              "savePDF": "اضغط لحفظ الإيصال"
+            },
+            "ReceiptPDF": {
+              "brand": "كارت جو",
+              "receipt": "إيصال",
+              "orderReceipt": "إيصال الطلب",
+              "customer": "العميل",
+              "shippingAddress": "عنوان الشحن",
+              "orderInfo": "معلومات الطلب",
+              "reference": "رمز المرجع",
+              "merchantReference": "مرجع التاجر",
+              "totalItems": "إجمالي العناصر",
+              "items": "عناصر",
+              "product": "المنتج",
+              "quantity": "الكمية",
+              "unitPrice": "سعر الوحدة",
+              "total": "الإجمالي",
+              "sku": "رمز المنتج",
+              "subtotal": "المجموع الفرعي",
+              "deliveryCost": "تكلفة التوصيل",
+              "totalDue": "الإجمالي المستحق",
+              "payment": "الدفع",
+              "delivery": "التوصيل",
+              "paymentMethod": "طريقة الدفع",
+              "thankYou": "!شكرًا لشرائك",
+              "pageOf": "الصفحة {current} من {total}",
+              "site": "cartjo.com"
             }
           }
         }
@@ -2164,8 +2201,8 @@
           "inStock": "متوفر",
           "available": "متاح"
         },
-        "VariantDetailsSelector":{
-          "select":"اختر النوع"
+        "VariantDetailsSelector": {
+          "select": "اختر النوع"
         },
         "ProductDetailsAddToCartButton": {
           "add": "أضف إلى السلة",

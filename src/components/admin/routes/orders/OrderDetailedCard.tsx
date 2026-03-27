@@ -1,8 +1,7 @@
 "use client";
 
-import { memo, useCallback, useEffect, useRef } from "react";
+import { memo, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { isArabicLocale } from "@/config/locales.config";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrder } from "@/redux/slices/orders/actions";
@@ -19,14 +18,12 @@ import {
   CircleDollarSign,
   Truck,
 } from "lucide-react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import ReceiptHiddenLayout from "./ReceiptHiddenLayout";
 import NoOrderDetailedCardData from "./NoOrderDetailedCardData";
 import { OrderItem } from "@/types/orderItem.type";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { Statuses } from "@/enums/statuses.enum";
 import OrderItemCard from "@/components/shared/OrderItemCard";
+import OrderReceiptButton from "./OrderReceiptButton";
 
 type Props = { orderId: string };
 
@@ -37,8 +34,6 @@ const OrderDetailedCard = ({ orderId }: Props) => {
     (state: RootState) => state.orders,
   );
   const { accessToken, locale } = useAuthContext();
-
-  const receiptRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!orderId) return;
@@ -60,77 +55,6 @@ const OrderDetailedCard = ({ orderId }: Props) => {
       document.body.style.height = "";
     };
   }, [orderId]);
-
-  const downloadReceipt = useCallback(async () => {
-    if (!receiptRef.current || !selectedOrder) return;
-
-    try {
-      // ensure images load & allow cross-origin if possible
-      const canvas = await html2canvas(receiptRef.current, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        scrollY: -window.scrollY, // prevent scroll offset issues
-      });
-
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-      // if content longer than one page, add pages
-      if (pdfHeight <= pdf.internal.pageSize.getHeight()) {
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      } else {
-        // split into multiple pages
-        let remainingHeight = canvas.height;
-        const pageHeightPx =
-          (canvas.width * pdf.internal.pageSize.getHeight()) / pdfWidth;
-        let offsetY = 0;
-
-        while (remainingHeight > 0) {
-          const pageCanvas = document.createElement("canvas");
-          pageCanvas.width = canvas.width;
-          pageCanvas.height = Math.min(pageHeightPx, remainingHeight);
-
-          const ctx = pageCanvas.getContext("2d");
-          if (ctx) {
-            ctx.drawImage(
-              canvas,
-              0,
-              offsetY,
-              canvas.width,
-              pageCanvas.height,
-              0,
-              0,
-              pageCanvas.width,
-              pageCanvas.height,
-            );
-          }
-
-          const pageImg = pageCanvas.toDataURL("image/png");
-          const pagePdfHeight =
-            (pageCanvas.height * pdfWidth) / pageCanvas.width;
-          pdf.addImage(pageImg, "PNG", 0, 0, pdfWidth, pagePdfHeight);
-
-          remainingHeight -= pageCanvas.height;
-          offsetY += pageCanvas.height;
-
-          if (remainingHeight > 0) {
-            pdf.addPage();
-          }
-        }
-      }
-
-      const fileName = `order-${selectedOrder?.transactionId}-receipt.pdf`;
-      pdf.save(fileName);
-    } catch (err) {
-      // optionally show toast
-      // console.error("Failed to generate PDF", err);
-      alert(t("general.errors.pdfGeneration") || "Failed to generate PDF.");
-      console.log({ err });
-    }
-  }, [selectedOrder, t]);
 
   const showLoader = loading;
   const showError = !!error;
@@ -178,7 +102,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
 
     return (
       <div className="w-full max-h-[80vh] overflow-y-auto rounded-lg bg-white-50">
-        {/* Sticky header with download button */}
+        {/* Header */}
         <div className="sticky top-0 z-10 border-b bg-white-50 px-6 py-4 flex items-center justify-between gap-4">
           <h2 className="text-2xl font-bold text-gray-900">
             {t(
@@ -186,15 +110,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
             ) || "Order Details"}
           </h2>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={downloadReceipt}
-              className="inline-flex items-center gap-2 rounded-md bg-primary-500 px-4 py-2 text-sm font-medium text-white-50 hover:bg-primary-700"
-              aria-label="Download Receipt"
-            >
-              {t("general.buttons.downloadReceiptPDF")}
-            </button>
-          </div>
+          <OrderReceiptButton selectedOrder={selectedOrder} locale={locale} />
         </div>
 
         <div className="space-y-6 p-6">
@@ -365,7 +281,7 @@ const OrderDetailedCard = ({ orderId }: Props) => {
               <h3 className="text-lg font-semibold text-gray-900">
                 {t(
                   "routes.dashboard.routes.orders.components.OrderDetailedCard.orderItems",
-                ) || "Order Items"}
+                )}
               </h3>
             </div>
             <div className="space-y-3">
@@ -441,13 +357,6 @@ const OrderDetailedCard = ({ orderId }: Props) => {
             </div>
           </div>
         </div>
-
-        <ReceiptHiddenLayout
-          ref={receiptRef}
-          selectedOrder={selectedOrder}
-          t={t}
-          rtl={isArabicLocale(locale)}
-        />
       </div>
     );
   }
