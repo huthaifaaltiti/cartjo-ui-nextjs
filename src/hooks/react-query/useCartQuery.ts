@@ -70,7 +70,7 @@ export const useCartQuery = () => {
 
       const lastProduct =
         lastPage.data.items[lastPage.data.items.length - 1];
-      return lastProduct?._id || undefined;
+      return lastProduct?.productId || lastProduct?._id || undefined;
     },
     initialPageParam: undefined,
     // staleTime: STALE_TIME,
