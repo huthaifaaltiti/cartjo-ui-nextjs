@@ -6,6 +6,7 @@ export interface CartItem {
   name: Name;
   price: number;
   productId: string;
+  _id?: string;
   mainImage: Media;
   slug: string;
   category: {
