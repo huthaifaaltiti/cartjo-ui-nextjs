@@ -74,7 +74,6 @@ function AmountText({
     minWidth,
     maxWidth,
     flex,
-    textAlign,
     fontSize,
     fontSizeAmount,
     fontSizeLabel,
