@@ -33,8 +33,6 @@ const ProductDetailsContent = ({ product }: { product: Product }) => {
   const { requireAuth } = useRequireAuth();
   const { accessToken: token } = useAuthContext();
 
-  console.log({product})
-
   const pathname = usePathname();
   const pathnameSections = pathname.split("/").slice(2);
 
