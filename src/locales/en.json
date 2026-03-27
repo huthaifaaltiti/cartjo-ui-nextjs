@@ -127,6 +127,10 @@
       "active": "Active",
       "un_active": "InActive"
     },
+    "paymentMethod": {
+      "cash": "Cash",
+      "card": "Card"
+    },
     "info": {
       "name": "Name",
       "email": "Email",
@@ -145,11 +149,9 @@
         },
         "items": "Order Items",
         "total": "Total Receipt Amount",
+        "deliveryCost": "Delivery Cost",
         "thanks": "Thank you for your purchase!"
       }
-    },
-    "buttons": {
-      "downloadReceiptPDF": "Download Receipt (PDF)"
     },
     "attributes": {
       "labels": {
@@ -2014,6 +2016,38 @@
             },
             "OrderCardDeliveryAction": {
               "title": "Select Delivery Status"
+            },
+            "OrderReceiptButton": {
+              "downloadReceiptPDF": "Download Receipt (PDF)",
+              "preparingPDF": "Preparing your receipt...",
+              "generatingPDF": "Generating your receipt...",
+              "savePDF": "Click to Save Receipt"
+            },
+            "ReceiptPDF": {
+              "brand": "CartJO",
+              "receipt": "Receipt",
+              "orderReceipt": "ORDER RECEIPT",
+              "customer": "CUSTOMER",
+              "shippingAddress": "SHIPPING ADDRESS",
+              "orderInfo": "ORDER INFO",
+              "reference": "REFERENCE",
+              "merchantReference": "MERCHANT REFERENCE",
+              "totalItems": "TOTAL ITEMS",
+              "items": "ITEMS",
+              "product": "PRODUCT",
+              "quantity": "QTY",
+              "unitPrice": "UNIT PRICE",
+              "total": "TOTAL",
+              "sku": "SKU",
+              "subtotal": "Subtotal",
+              "deliveryCost": "Delivery Cost",
+              "totalDue": "TOTAL DUE",
+              "payment": "Payment",
+              "delivery": "Delivery",
+              "paymentMethod": "PAYMENT METHOD",
+              "thankYou": "THANK YOU FOR YOUR PURCHASE!",
+              "pageOf": "Page {current} of {total}",
+              "site": "cartjo.com"
             }
           }
         }

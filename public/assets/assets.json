@@ -16,6 +16,9 @@
       "computer_security_with_login_password_padlock": "/assets/image/webp/computer-security-with-login-password-padlock.webp",
       "list_of_outstanding_tasks": "/assets/image/webp/list_of_outstanding_tasks.webp",
       "empty_shopping_basket": "/assets/image/webp/empty-shopping-basket.webp"
+    },
+    "png": {
+      "logo_shape_white": "/assets/image/png/logo_white.png"
     }
   }
 }
