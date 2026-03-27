@@ -11,7 +11,6 @@ import {
   User,
   Building2,
   AlertCircle,
-  Star,
   CircleDollarSign,
   Truck,
 } from "lucide-react";
@@ -19,22 +18,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { getMyOrder } from "@/redux/slices/orders/actions";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import { useTranslations } from "next-intl";
 import LoadingSpinner from "@/components/shared/loaders/LoadingSpinner";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { currencyLabeler } from "@/utils/labelers";
 import { Statuses } from "@/enums/statuses.enum";
+import OrderItemCard from "@/components/shared/OrderItemCard";
 
 const UserOrderReturnDetailedCard = ({ itemId }: { itemId: string }) => {
   const t = useTranslations(
-    "routes.user.layout.routes.returns.components.UserOrderReturnDetailedCard"
+    "routes.user.layout.routes.returns.components.UserOrderReturnDetailedCard",
   );
 
   const dispatch = useDispatch<AppDispatch>();
   const { isArabic, locale } = useSelector((state: RootState) => state.general);
   const { selectedOrder, loading, error } = useSelector(
-    (state: RootState) => state.orders
+    (state: RootState) => state.orders,
   );
   const { accessToken, userId } = useAuthContext();
 
@@ -42,7 +41,7 @@ const UserOrderReturnDetailedCard = ({ itemId }: { itemId: string }) => {
     if (!itemId) return;
     const getOrderDetails = async () => {
       await dispatch(
-        getMyOrder({ id: itemId, lang: locale, token: accessToken, userId })
+        getMyOrder({ id: itemId, lang: locale, token: accessToken, userId }),
       );
     };
     getOrderDetails();
@@ -151,48 +150,12 @@ const UserOrderReturnDetailedCard = ({ itemId }: { itemId: string }) => {
         </div>
         <div className="space-y-4">
           {order.items.map((item, index) => (
-            <div
+            <OrderItemCard
               key={index}
-              className="flex gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
-            >
-              <div className="w-24 h-24">
-                <ImageWithFallback
-                  width={100}
-                  height={100}
-                  src={item.productId.mainImage}
-                  alt={item.name[locale]}
-                  useFill={false}
-                  className="w-24 h-24 object-cover rounded-lg shadow-sm"
-                />
-              </div>
-              <div className="flex-1 w-full">
-                <h3 className="font-semibold text-gray-800 mb-1">
-                  {item.name[locale]}
-                </h3>
-                <p className="text-sm text-gray-600 mb-2 line-clamp-2">
-                  {item.productId.description[locale]}
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm text-gray-500">
-                      {t("qty")}:{" "}
-                      <span className="font-semibold text-gray-700">
-                        {item.quantity}
-                      </span>
-                    </span>
-                    <span className="text-sm text-gray-500 flex items-center gap-1">
-                      <Star className="w-3 h-3" /> {item.productId.ratings}
-                    </span>
-                  </div>
-                  <p className="text-lg font-bold text-blue-500">
-                    {item.price}{" "}
-                    <span className="text-xs">
-                      {currencyLabeler(order.currency, isArabic)}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
+              item={item}
+              order={order}
+              showVariant={!!selectedOrder}
+            />
           ))}
         </div>
       </div>
