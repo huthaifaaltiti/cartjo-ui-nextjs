@@ -27,7 +27,7 @@ const getAttrs = (attrs: VariantAttribute[], key: ProductVariantAttributeKey) =>
   attrs.filter((a) => a.key === key).map((a) => a.value);
 
 const getAttr = (attrs: VariantAttribute[], key: ProductVariantAttributeKey) =>
-  attrs.find((a) => a.key === key)?.value ?? "—";
+  attrs.find((a) => a.key === key)?.value;
 
 const ProductInfoSection = ({
   isArabic,
