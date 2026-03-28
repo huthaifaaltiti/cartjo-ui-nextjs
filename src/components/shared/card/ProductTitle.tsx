@@ -20,16 +20,7 @@ export default function ProductTitle({
 
   return (
     <h3
-      className={`
-    font-semibold
-    text-sm sm:text-md md:text-lg
-    min-h-[3.5rem]
-    ${clampClass}
-    transition-all
-    ${isHovered && !isLoading ? "text-primary-600" : "text-gray-900"}
-    ${isLoading ? "opacity-70" : ""}
-    first-letter-capital
-  `}
+      className={`font-semibold text-sm sm:text-md md:text-lg ${clampClass} transition-all ${isHovered && !isLoading ? "text-primary-600" : "text-gray-900"} ${isLoading ? "opacity-70" : ""} first-letter-capital`}
     >
       {title}
     </h3>
