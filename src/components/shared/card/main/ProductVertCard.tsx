@@ -26,7 +26,6 @@ import ProductImage from "../ProductImage";
 import ProductTitle from "../ProductTitle";
 import AddToCartButton from "../AddToCartButton";
 import ProductPrice from "../ProductPrice";
-import ProductVariantDescription from "../ProductVariantDescription";
 import ItemRatingStats from "../ItemRatingStats";
 import ProductVariantSelector from "../ProductVariantSelector";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
