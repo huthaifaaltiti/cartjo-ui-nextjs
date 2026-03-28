@@ -1,3 +1,4 @@
+import SocialMediaLinks from "@/components/shared/SocialMediaLinks";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
@@ -34,6 +35,8 @@ const FooterBot = () => {
             </li>
           ))}
         </ul>
+
+        <SocialMediaLinks />
       </div>
     </footer>
   );
