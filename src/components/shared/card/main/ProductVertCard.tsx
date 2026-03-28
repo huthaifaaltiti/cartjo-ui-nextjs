@@ -26,7 +26,6 @@ import ProductImage from "../ProductImage";
 import ProductTitle from "../ProductTitle";
 import AddToCartButton from "../AddToCartButton";
 import ProductPrice from "../ProductPrice";
-import ProductVariantDescription from "../ProductVariantDescription";
 import ItemRatingStats from "../ItemRatingStats";
 import ProductVariantSelector from "../ProductVariantSelector";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
@@ -243,7 +242,7 @@ const ProductVertCard = ({
         </div>
 
         {/* Variant description */}
-        <div>
+        {/* <div>
           {currentVariant && (
             <ProductVariantDescription
               desc={
@@ -255,7 +254,7 @@ const ProductVertCard = ({
               isLoading={isAddToCartLoading || isWishListing}
             />
           )}
-        </div>
+        </div> */}
 
         {/* Variant Selector */}
         <ProductVariantSelector

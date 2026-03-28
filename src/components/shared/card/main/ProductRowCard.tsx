@@ -26,7 +26,6 @@ import ProductImage from "../ProductImage";
 import ProductTitle from "../ProductTitle";
 import ProductPrice from "../ProductPrice";
 import AddToCartButton from "../AddToCartButton";
-import ProductVariantDescription from "../ProductVariantDescription";
 import ItemRatingStats from "../ItemRatingStats";
 import ProductVariantSelector from "../ProductVariantSelector";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
@@ -282,7 +281,7 @@ const ProductRowCard = ({
         </div>
 
         {/* Variant description */}
-        <div>
+        {/* <div>
           {currentVariant && (
             <ProductVariantDescription
               desc={
@@ -294,7 +293,7 @@ const ProductRowCard = ({
               isLoading={isAddToCartLoading || isWishListLoading}
             />
           )}
-        </div>
+        </div> */}
 
         {/* Variant Selector */}
         {activeVariants.length > 0 && (
