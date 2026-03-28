@@ -243,7 +243,7 @@ const ProductVertCard = ({
         </div>
 
         {/* Variant description */}
-        <div>
+        {/* <div>
           {currentVariant && (
             <ProductVariantDescription
               desc={
@@ -255,7 +255,7 @@ const ProductVertCard = ({
               isLoading={isAddToCartLoading || isWishListing}
             />
           )}
-        </div>
+        </div> */}
 
         {/* Variant Selector */}
         <ProductVariantSelector

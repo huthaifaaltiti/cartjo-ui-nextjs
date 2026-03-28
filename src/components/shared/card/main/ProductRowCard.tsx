@@ -282,7 +282,7 @@ const ProductRowCard = ({
         </div>
 
         {/* Variant description */}
-        <div>
+        {/* <div>
           {currentVariant && (
             <ProductVariantDescription
               desc={
@@ -294,7 +294,7 @@ const ProductRowCard = ({
               isLoading={isAddToCartLoading || isWishListLoading}
             />
           )}
-        </div>
+        </div> */}
 
         {/* Variant Selector */}
         {activeVariants.length > 0 && (
