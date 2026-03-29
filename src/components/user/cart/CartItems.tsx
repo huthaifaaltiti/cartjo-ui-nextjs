@@ -71,8 +71,8 @@ const CartItems = () => {
 
   if (showData) {
     return (
-      <div className="w-full h-auto flex gap-1">
-        <div className="w-2/3 p-2">
+      <div className="w-full h-auto flex flex-col lg:flex-row gap-3">
+        <div className="w-full lg:w-2/3 p-2">
           <InfiniteScrollList
             isLoading={isLoading}
             isFetchingNextPage={isFetchingNextPage}
@@ -88,7 +88,7 @@ const CartItems = () => {
           />
         </div>
 
-        <div className="w-1/3 p-2">
+        <div className="w-full lg:w-1/3 p-2">
           <CartOrderStatus />
         </div>
       </div>
