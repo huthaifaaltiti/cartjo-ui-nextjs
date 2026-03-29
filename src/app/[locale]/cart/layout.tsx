@@ -20,7 +20,7 @@ export default async function CartPageLayout({
       <WishlistContextProvider>
         <TopBar />
         <MaxWidthWrapper className="w-full min-h-[70vh]">
-          <div className="w-full flex items-center justify-between">
+          <div className="w-full flex flex-col justify-start md:flex-row md:justify-between">
             <CartLayoutHeader />
             <CartLayoutHeaderActions />
           </div>
