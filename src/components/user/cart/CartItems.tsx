@@ -37,7 +37,7 @@ const CartItems = () => {
 
   const fetchedItems = useMemo(
     () => data?.pages?.flatMap((page) => page?.data?.items || []) ?? [],
-    [data]
+    [data],
   );
 
   const showData = (cartItems as CartItem[]).length !== 0;
@@ -71,8 +71,12 @@ const CartItems = () => {
 
   if (showData) {
     return (
-      <div className="w-full h-auto flex flex-col lg:flex-row gap-3">
-        <div className="w-full lg:w-2/3 p-2">
+      <div className="w-full h-auto flex flex-col lg:flex-row-reverse gap-3">
+        <div className="w-full lg:w-1/3">
+          <CartOrderStatus />
+        </div>
+
+        <div className="w-full lg:w-2/3 p-2 mt-5">
           <InfiniteScrollList
             isLoading={isLoading}
             isFetchingNextPage={isFetchingNextPage}
@@ -86,10 +90,6 @@ const CartItems = () => {
             }}
             gridType={GRID_TYPE.WIDE}
           />
-        </div>
-
-        <div className="w-full lg:w-1/3 p-2">
-          <CartOrderStatus />
         </div>
       </div>
     );
