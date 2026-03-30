@@ -2,8 +2,6 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import {
   getActiveBannersQueryOptions,
   getActiveCategoriesQueryOptions,
-  getActiveShowcasesQueryOptions,
-  getCategoriesPicksQueryOptions,
 } from "@/utils/queryOptions";
 import { getQueryClient } from "@/utils/queryUtils";
 import { getRandomItems } from "@/utils/getRandomItems";
@@ -24,6 +22,8 @@ import { DataResponse } from "@/types/service-response.type";
 import { Logo } from "@/types/logo";
 import { getActiveLogoQueryOptions } from "@/hooks/react-query/useLogosQuery";
 import ReduxInitializer from "@/components/ReduxInitializer";
+import { getActiveShowcasesQueryOptions } from "@/hooks/react-query/useShowcasesQuery";
+import { getCategoriesPicksQueryOptions } from "@/hooks/react-query/useProductsQuery";
 
 export default async function Home({
   params,
@@ -38,9 +38,11 @@ export default async function Home({
   const [categoriesResult] = await Promise.all([
     queryClient.fetchQuery(getActiveCategoriesQueryOptions(locale || "en")),
     queryClient.prefetchQuery(
-      getActiveShowcasesQueryOptions(
-        PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE,
-      ),
+      getActiveShowcasesQueryOptions({
+        limit: PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE,
+        locale,
+        token,
+      }),
     ),
     queryClient.prefetchQuery(getActiveBannersQueryOptions(locale || "en")),
   ]);
@@ -58,7 +60,11 @@ export default async function Home({
   await Promise.all(
     randomCategories.map((c: Category) =>
       queryClient.prefetchQuery(
-        getCategoriesPicksQueryOptions(c._id, "en", token ?? ""),
+        getCategoriesPicksQueryOptions({
+          categoryId: c._id,
+          locale: "en",
+          token: token ?? "",
+        }),
       ),
     ),
   );

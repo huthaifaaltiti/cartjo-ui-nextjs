@@ -9,6 +9,8 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { CustomSession } from "@/lib/authOptions";
 import { useAuthContext } from "../useAuthContext";
+import { Locale } from "@/types/locale";
+import { PRODUCTS_COUNT_PER_SELECTED_CATEGORY } from "@/config/home.config";
 
 export const fetchProducts = async ({
   token,
@@ -42,7 +44,8 @@ export const fetchCategoriesPicks = async ({
   lang = "en",
   limit = PAGINATION_LIMITS.PRODUCTS,
   categoryId,
-}: Pick<FetchPaginatedArgs, "lang" | "token" | "limit"> & {
+}: Pick<FetchPaginatedArgs, "lang" | "limit"> & {
+  token?: string | null;
   categoryId: string;
 }): Promise<DataListResponse<Product>> => {
   const url = new URL(`${API_ENDPOINTS.HOME.PRODUCTS.CATEGORIES_PICKS}`);
@@ -63,6 +66,27 @@ export const fetchCategoriesPicks = async ({
 
   return resObj;
 };
+
+export const getCategoriesPicksQueryOptions = ({
+  categoryId,
+  locale,
+  token,
+}: {
+  categoryId: string;
+  locale: string | Locale;
+  token?: string | null;
+}) => ({
+  queryKey: ["categoriesPicks", categoryId, locale],
+  queryFn: () =>
+    fetchCategoriesPicks({
+      token,
+      lang: locale,
+      limit: PRODUCTS_COUNT_PER_SELECTED_CATEGORY,
+      categoryId,
+    }),
+  staleTime: STALE_TIME,
+  gcTime: GC_TIME,
+});
 
 export const useProductsQuery = ({ search }: { search?: string }) => {
   const { data: session } = useSession();
@@ -107,17 +131,11 @@ export const useProductsQuery = ({ search }: { search?: string }) => {
 export const useCategoriesPicksQuery = (categoryId: string) => {
   const { accessToken, locale } = useAuthContext();
 
-  return useQuery({
-    queryKey: ["categoriesPicks", locale],
-    queryFn: () =>
-      fetchCategoriesPicks({
-        token: accessToken,
-        lang: locale,
-        limit: PAGINATION_LIMITS.PRODUCTS,
-        categoryId,
-      }),
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: true,
-  });
+  return useQuery(
+    getCategoriesPicksQueryOptions({
+      categoryId,
+      locale,
+      token: accessToken ?? undefined,
+    }),
+  );
 };
