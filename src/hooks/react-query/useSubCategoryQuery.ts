@@ -57,7 +57,7 @@ export const fetchSubCategoryProducts = async ({
   createdFrom,
   createdTo,
   beforeNumOfDays,
-  accessToken
+  accessToken,
 }: FetchSubCategoryProductsParams): Promise<DataListResponse<Product>> => {
   const url = new URL(`${API_ENDPOINTS.SUB_CATEGORY.PRODUCTS}`);
 
@@ -113,7 +113,7 @@ export const useSubCategoryProductsQuery = (
   ratingFrom?: number,
   createdFrom?: string,
   createdTo?: string,
-  beforeNumOfDays?: number
+  beforeNumOfDays?: number,
 ) => {
   const { locale, accessToken } = useAuthContext();
 
@@ -129,7 +129,7 @@ export const useSubCategoryProductsQuery = (
       createdFrom,
       createdTo,
       beforeNumOfDays,
-      accessToken
+      accessToken,
     ],
     queryFn: ({ pageParam }) => {
       if (!categoryId) {
@@ -149,18 +149,24 @@ export const useSubCategoryProductsQuery = (
         createdFrom,
         createdTo,
         beforeNumOfDays,
-        accessToken
+        accessToken,
       });
     },
     getNextPageParam: (lastPage) => {
-      if (!lastPage?.data?.length) return undefined;
+      const items = lastPage?.data;
 
-      const lastProduct = lastPage.data[lastPage.data.length - 1];
+      if (!items?.length) return undefined;
+
+      if (items.length < PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS)
+        return undefined;
+
+      const lastProduct = items[items.length - 1];
       return lastProduct?._id || undefined;
     },
     initialPageParam: undefined,
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
+    // The first query always runs because useInfiniteQuery always fetches the first page on mount if enabled is true. ✅
     enabled: !!categoryId && !!subCategoryId,
   });
 };
