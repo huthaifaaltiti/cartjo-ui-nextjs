@@ -85,8 +85,14 @@ export const useProductsQuery = ({ search }: { search?: string }) => {
       });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.data && lastPage.data.length > 0) {
-        const lastItem = lastPage.data[lastPage.data.length - 1];
+      const items = lastPage?.data;
+
+      if (!items?.length) return undefined;
+
+      if (items.length < PAGINATION_LIMITS.PRODUCTS) return undefined;
+
+      if (items && items.length > 0) {
+        const lastItem = items[items.length - 1];
         return lastItem._id;
       }
       return undefined;

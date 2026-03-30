@@ -14,6 +14,7 @@ import PaymentMethodSelector from "./PaymentMethodSelector";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { useCartQuery } from "@/hooks/react-query/useCartQuery";
 import { setCartItems } from "@/redux/slices/cart";
+import { CartItem } from "@/types/cartItem.type";
 
 export default function PaymentCheckoutPageClient() {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,11 +27,20 @@ export default function PaymentCheckoutPageClient() {
 
   const fetchedItems = useMemo(
     () => data?.pages?.flatMap((page) => page?.data?.items || []) ?? [],
-    [data]
+    [data],
   );
 
+  const cartSummary = useMemo(() => {
+    const firstPage = data?.pages?.[0]?.data;
+    return {
+      totalAmount: firstPage?.totalAmount ?? 0,
+      itemsCount: firstPage?.itemsCount ?? 0,
+      totalItemsCount: firstPage?.totalItemsCount ?? 0,
+    };
+  }, [data]);
+
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethods>(
-    PaymentMethods.Cash
+    PaymentMethods.Cash,
   );
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [orderEncrypted, setOrderEncrypted] = useState<string | null>(null);
@@ -38,9 +48,16 @@ export default function PaymentCheckoutPageClient() {
 
   useEffect(() => {
     if (fetchedItems.length > 0) {
-      dispatch(setCartItems(fetchedItems));
+      dispatch(
+        setCartItems({
+          items: fetchedItems as CartItem[],
+          totalAmount: cartSummary.totalAmount,
+          itemsCount: cartSummary.itemsCount,
+          totalItemsCount: cartSummary.totalItemsCount,
+        }),
+      );
     }
-  }, [fetchedItems]);
+  }, [fetchedItems, cartSummary, dispatch]);
 
   return (
     <>

@@ -28,6 +28,7 @@ type Props<T, P extends object = Record<string, unknown>> = {
   layout?: "grid" | "list";
   gridType?: (typeof GRID_TYPE)[keyof typeof GRID_TYPE];
   showNumFoundItems?: boolean;
+  getKey?: (item: T, index: number) => React.Key;
 };
 
 function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
@@ -42,6 +43,7 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
   layout = LAYOUT_TYPE.GRID,
   gridType = GRID_TYPE.NARROW,
   showNumFoundItems = true,
+  getKey,
 }: Props<T, P>) {
   const t = useTranslations();
 
@@ -79,6 +81,15 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
     };
   }, [handleObserver, fetchNextPage]);
 
+  const resolveKey = useCallback(
+    (item: T, index: number): React.Key => {
+      if (getKey) return getKey(item, index);
+
+      return index;
+    },
+    [getKey],
+  );
+
   return (
     <div className="space-y-4">
       {showNumFoundItems && (
@@ -97,7 +108,11 @@ function InfiniteScrollList<T, P extends object = Record<string, unknown>>({
         }
       >
         {list.map((item, index) => (
-          <ListItemCard key={index} item={item} {...(cardProps as P)} />
+          <ListItemCard
+            key={resolveKey(item, index)}
+            item={item}
+            {...(cardProps as P)}
+          />
         ))}
       </div>
 

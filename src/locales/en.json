@@ -2741,6 +2741,8 @@
           "item": "Item",
           "title": "Order Summary",
           "subtotal": "Subtotal",
+          "totalItemsCount": "Total Units",
+          "itemsCount": "Items Count",
           "total": "Total",
           "processing": "Processing...",
           "proceed": "Proceed to checkout"

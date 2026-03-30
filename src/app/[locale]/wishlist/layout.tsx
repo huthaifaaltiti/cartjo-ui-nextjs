@@ -11,7 +11,7 @@ export default async function WishlistPageLayout({
   params,
 }: {
   children: React.ReactNode;
-  params:  Promise<{ locale: Locale | string }>;
+  params: Promise<{ locale: Locale | string }>;
 }) {
   const { locale } = await params;
 
@@ -20,7 +20,7 @@ export default async function WishlistPageLayout({
       <WishlistContextProvider>
         <TopBar />
         <MaxWidthWrapper className="w-full min-h-[70vh]">
-          <div className="w-full flex items-center justify-between gap-5">
+          <div className="w-full flex flex-col justify-start md:flex-row md:justify-between">
             <WishlistLayoutHeader />
             <WishlistLayoutHeaderActions />
           </div>

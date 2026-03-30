@@ -35,29 +35,44 @@ const CartItems = () => {
     error,
   } = useCartQuery();
 
+  // All items flattened across all pages
   const fetchedItems = useMemo(
     () => data?.pages?.flatMap((page) => page?.data?.items || []) ?? [],
-    [data]
+    [data],
   );
 
-  const showData = (cartItems as CartItem[]).length !== 0;
-  const showNoData = !cartItems || (cartItems as CartItem[]).length === 0;
-  const showError = isError;
-  const showLoader = isLoading || isSessionLoading;
+  // Cart-level summary always lives on the first page's data
+  const cartSummary = useMemo(() => {
+    const firstPage = data?.pages?.[0]?.data;
+    return {
+      totalAmount: firstPage?.totalAmount ?? 0,
+      itemsCount: firstPage?.itemsCount ?? 0,
+      totalItemsCount: firstPage?.totalItemsCount ?? 0,
+    };
+  }, [data]);
 
   useEffect(() => {
     if (fetchedItems.length > 0) {
-      dispatch(setCartItems(fetchedItems));
+      dispatch(
+        setCartItems({
+          items: fetchedItems as CartItem[],
+          totalAmount: cartSummary.totalAmount,
+          itemsCount: cartSummary.itemsCount,
+          totalItemsCount: cartSummary.totalItemsCount,
+        }),
+      );
     }
-  }, [fetchedItems, dispatch]);
+  }, [fetchedItems, cartSummary, dispatch]);
+
+  const showLoader = isLoading || isSessionLoading;
+  const showData = (cartItems as CartItem[])?.length !== 0;
+  const showNoData = !cartItems || (cartItems as CartItem[])?.length === 0;
 
   if (showLoader) return <PageLoader />;
 
-  if (!isAuthenticated) {
-    return <AuthRedirect redirectLocation={"/cart"} />;
-  }
+  if (!isAuthenticated) return <AuthRedirect redirectLocation={"/cart"} />;
 
-  if (showError) {
+  if (isError) {
     return (
       <div className="w-full min-h-[50vh] flex items-center justify-center">
         <ErrorMessage
@@ -71,8 +86,12 @@ const CartItems = () => {
 
   if (showData) {
     return (
-      <div className="w-full h-auto flex gap-1">
-        <div className="w-2/3 p-2">
+      <div className="w-full h-auto flex flex-col lg:flex-row-reverse gap-3">
+        <div className="w-full lg:w-1/3">
+          <CartOrderStatus />
+        </div>
+
+        <div className="w-full lg:w-2/3 p-2 mt-5">
           <InfiniteScrollList
             isLoading={isLoading}
             isFetchingNextPage={isFetchingNextPage}
@@ -81,15 +100,10 @@ const CartItems = () => {
             list={cartItems}
             fetchNextPage={fetchNextPage}
             ListItemCard={CartProductCard}
-            cardProps={{
-              isArabic,
-            }}
+            cardProps={{ isArabic }}
             gridType={GRID_TYPE.WIDE}
+            getKey={(item) => item?.productId || item?.variant?.variantId}
           />
-        </div>
-
-        <div className="w-1/3 p-2">
-          <CartOrderStatus />
         </div>
       </div>
     );

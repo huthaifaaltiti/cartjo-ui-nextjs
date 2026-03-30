@@ -5,6 +5,8 @@ export interface Cart {
   _id: string;
   userId: string;
   totalAmount: number;
+  itemsCount: number;
+  totalItemsCount: number;
   items: CartItem[];
   productsCount: number;
   deletedAt: null | Date;
