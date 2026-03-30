@@ -2710,9 +2710,11 @@
           "item": "عنصر",
           "title": "ملخص الطلب",
           "subtotal": "المجموع الفرعي",
-          "total": "المجموع",
+          "totalItemsCount": "إجمالي عدد القطع",
+          "total": "الإجمالي",
           "processing": "جاري معالجة البيانات...",
-          "proceed": "متابعة إلى صفحة الدفع"
+          "proceed": "متابعة إلى صفحة الدفع",
+          "itemsCount": "عدد المنتجات"
         },
         "CartLayoutHeaderActions": {
           "emptyCart": "تفريغ العربة",

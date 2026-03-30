@@ -41,8 +41,8 @@ export const fetchCartItems = async ({
 
   if (!res.ok) throw new Error("Could not retrieve active cart list");
 
-  const resObj = await res.json();
-  return resObj;
+  return await res.json();
+
 };
 
 export const useCartQuery = () => {
@@ -66,14 +66,17 @@ export const useCartQuery = () => {
       });
     },
     getNextPageParam: (lastPage) => {
-      if (!lastPage?.data?.items?.length) return undefined;
+      const items = lastPage?.data?.items;
 
-      const lastProduct =
-        lastPage.data.items[lastPage.data.items.length - 1];
-      return lastProduct?.productId || lastProduct?._id || undefined;
+      if (!items?.length) return undefined;
+
+      // If we got fewer items than the limit, we're on the last page
+      if (items.length < PAGINATION_LIMITS.CART_ITEMS) return undefined;
+
+      const lastItem = items[items.length - 1];
+      return lastItem?.productId?.toString() ?? undefined;
     },
     initialPageParam: undefined,
-    // staleTime: STALE_TIME,
     staleTime: 0,
     gcTime: GC_TIME,
     // KEY FIX: Only enable the query when session is loaded and we have an accessToken
@@ -83,9 +86,8 @@ export const useCartQuery = () => {
     // Optional: Retry configuration
     retry: (failureCount, error) => {
       // Don't retry if it's an auth error
-      if (error.message.includes("access token")) {
-        return false;
-      }
+      if (error.message.includes("access token")) return false;
+
       return failureCount < 3;
     },
   });

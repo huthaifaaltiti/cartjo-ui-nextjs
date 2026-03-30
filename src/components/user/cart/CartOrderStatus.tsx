@@ -7,41 +7,75 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import Link from "next/link";
 import { Currency } from "@/enums/currency.enum";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import CurrencyLabel from "@/components/shared/CurrencyLabel";
 
 const CartOrderStatus: React.FC = () => {
   const t = useTranslations("routes.cart.components.CartOrderStatus");
-  const { items, totalAmount, totalItemsCount } = useSelector(
-    (state: RootState) => state.cart
+  const { items, totalAmount, totalItemsCount, itemsCount } = useSelector(
+    (state: RootState) => state.cart,
   );
+  const { isArabic } = useSelector((state: RootState) => state.general);
+
   const [isProcessing] = useState(false);
 
   return (
-    <div className="w-full min-h-[20vh] h-auto mt-9 px-4 py-4 bg-white-50 border border-gray-100 rounded shadow-sm">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">{t("title")}</h2>
+    <div className="w-full mt-9 p-5 bg-white border border-gray-200 rounded-xl shadow-sm">
+      <h2 className="text-lg font-semibold mb-5 text-gray-800">{t("title")}</h2>
 
-      <div className="flex justify-between mb-2 text-gray-700">
-        <span>
-          {t("subtotal")} ({totalItemsCount}{" "}
-          {t(totalItemsCount === 1 ? "item" : "items")})
-        </span>
-        <span>
-          {Currency.JOD} {totalAmount?.toFixed(2)}
-        </span>
+      {/* Summary */}
+      <div className="space-y-3 text-sm text-gray-700">
+        {/* Products count */}
+        <div className="flex justify-between">
+          <span>{t("itemsCount")}</span>
+          <span>
+            {itemsCount} {t(itemsCount === 1 ? "item" : "items")}
+          </span>
+        </div>
+
+        {/* Total units */}
+        <div className="flex justify-between">
+          <span>{t("totalItemsCount")}</span>
+          <span>
+            {totalItemsCount} {t(totalItemsCount === 1 ? "item" : "items")}
+          </span>
+        </div>
+
+        {/* Subtotal */}
+        <div className="flex justify-between border-t pt-3">
+          <span>{t("subtotal")}</span>
+          <span>
+            {totalAmount.toFixed(2)}{" "}
+            <CurrencyLabel
+              currency={Currency.JOD}
+              isArabic={isArabic}
+              className="text-xs"
+            />
+          </span>
+        </div>
       </div>
 
-      <div className="flex justify-between font-bold text-lg mb-4 border-t pt-2">
+      {/* Total */}
+      <div className="flex justify-between font-semibold text-lg mt-4 pt-3 border-t">
         <span>{t("total")}</span>
-        <span>
-          {Currency.JOD} {totalAmount.toFixed(2)}
+        <span className="flex items-center gap-1">
+          <span>{totalAmount.toFixed(2)}</span>
+          <CurrencyLabel
+            currency={Currency.JOD}
+            isArabic={isArabic}
+            className="text-xs"
+          />
         </span>
       </div>
 
-      <Link href={"/checkout"}>
+      {/* Checkout button */}
+      <Link href="/checkout" className="block mt-5">
         <Button
-          className="w-full bg-primary-500 text-white-50 py-2 rounded hover:bg-primary-600"
+          className="w-full bg-primary-500 text-white-50 hover:bg-primary-600 flex items-center justify-center gap-2"
           disabled={items.length === 0 || isProcessing}
         >
           {isProcessing ? t("processing") : t("proceed")}
+          {isArabic ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
         </Button>
       </Link>
     </div>

@@ -38,27 +38,35 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     resetCartState: () => ({ ...initialState }),
-    setCartItems: (state, action: PayloadAction<CartItem[]>) => {
-      state.items = action.payload;
-      state.totalItemsCount = state.items.reduce(
-        (acc, i) => acc + i.quantity,
-        0,
-      );
-      state.itemsCount = state.items.length;
-      state.totalAmount = state.items.reduce(
-        (acc, i) => acc + i.quantity * (i.price ?? 0),
-        0,
-      );
+
+    setCartItems: (
+      state,
+      action: PayloadAction<{
+        items: CartItem[];
+        totalAmount: number;
+        itemsCount: number;
+        totalItemsCount: number;
+      }>,
+    ) => {
+      const { items, totalAmount, itemsCount, totalItemsCount } =
+        action.payload;
+
+      state.items = items;
+      state.totalAmount = totalAmount;
+      state.itemsCount = itemsCount;
+      state.totalItemsCount = totalItemsCount;
     },
+
     setCartItemsCount: (state, action: PayloadAction<number>) => {
       state.totalItemsCount = action.payload;
     },
+
     incCartItemsCountByOne: (state) => {
       state.totalItemsCount++;
     },
+
     hydrateCartCounters: (state, action: PayloadAction<number>) => {
       if (state.hydrated) return;
-
       state.totalItemsCount = action.payload;
       state.hydrated = true;
     },
@@ -67,11 +75,12 @@ const cartSlice = createSlice({
     const getKey = (productId: string, variantId: string): string =>
       `${productId}_${variantId}`;
 
+    // Used for mutations (add / remove / removeAll) — reads totalAmount
+    // and itemsCount from the cart document returned by the server
     const updateCartState = (state: CartState, payload: DataResponse<Cart>) => {
       if (!payload.data) return;
 
-      const payloadList = payload?.data?.items || [];
-      const stateList = state.items;
+      const payloadList = payload.data.items || [];
 
       if (payloadList.length === 0) {
         state.items = [];
@@ -83,16 +92,18 @@ const cartSlice = createSlice({
 
       const payloadMap = new Map<string, ServerCartItem>(
         (payloadList as ServerCartItem[]).map((item) => [
-          getKey(item?.productId, item?.variantId),
+          getKey(item.productId, item.variantId),
           item,
         ]),
       );
 
-      state.items = stateList
-        .filter((i) => payloadMap.has(`${i.productId}_${i.variant?.variantId}`))
+      state.items = state.items
+        .filter((i) =>
+          payloadMap.has(getKey(i.productId, i.variant?.variantId)),
+        )
         .map((i) => {
           const updated = payloadMap.get(
-            getKey(i?.productId, i.variant?.variantId),
+            getKey(i.productId, i.variant?.variantId),
           );
 
           return {
@@ -102,16 +113,11 @@ const cartSlice = createSlice({
           };
         });
 
-      state.totalAmount = state.items.reduce(
-        (acc, i) => acc + i.quantity * (i.price ?? 0),
-        0,
-      );
+      // Read from cart document — these are always accurate regardless of pagination
+      state.totalAmount = payload.data.totalAmount ?? 0;
+      state.itemsCount = payload.data.itemsCount ?? 0;
 
-      state.itemsCount = payloadList.length ?? 0;
-      state.totalItemsCount = payloadList.reduce(
-        (acc, i) => acc + i.quantity,
-        0,
-      );
+      state.totalItemsCount = payload.data.totalItemsCount ?? 0;
     };
 
     builder
@@ -121,7 +127,6 @@ const cartSlice = createSlice({
       })
       .addCase(addItemToServer.fulfilled, (state, { payload }) => {
         state.loading = false;
-
         updateCartState(state, payload);
       })
       .addCase(addItemToServer.rejected, (state) => {
@@ -134,7 +139,6 @@ const cartSlice = createSlice({
       })
       .addCase(removeItemFromServer.fulfilled, (state, { payload }) => {
         state.loading = false;
-
         updateCartState(state, payload);
       })
       .addCase(removeItemFromServer.rejected, (state) => {
@@ -147,7 +151,6 @@ const cartSlice = createSlice({
       })
       .addCase(removeAllItemsFromServer.fulfilled, (state, { payload }) => {
         state.loading = false;
-
         updateCartState(state, payload);
       })
       .addCase(removeAllItemsFromServer.rejected, (state) => {

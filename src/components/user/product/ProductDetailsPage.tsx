@@ -46,6 +46,7 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
   };
 
   const containerClass = "w-full min-h-40 flex items-center justify-center";
+  const noData = showNoData || product?.variants?.every((v) => !v.isActive)
 
   if (showLoader) {
     return (
@@ -68,7 +69,7 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
     );
   }
 
-  if (showNoData) {
+  if (noData) {
     return (
       <div className={containerClass}>
         <NoProductFound
