@@ -221,13 +221,13 @@ const ProductRowCard = ({
     let categorySlug, subCategorySlug;
     const productSlug = item.slug;
 
-    if (typeof item.categoryId !== "string") {
+    if (typeof item?.categoryId !== "string" && item?.categoryId?.slug) {
       categorySlug = item?.categoryId?.slug;
     } else {
       categorySlug = item.categoryId;
     }
 
-    if (typeof item.subCategoryId !== "string") {
+    if (typeof item?.subCategoryId !== "string" && item?.subCategoryId?.slug) {
       subCategorySlug = item?.subCategoryId?.slug;
     } else {
       subCategorySlug = item.subCategoryId;
