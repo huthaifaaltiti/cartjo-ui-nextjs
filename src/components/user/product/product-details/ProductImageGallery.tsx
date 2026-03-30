@@ -38,7 +38,7 @@ const ProductImageGallery = ({
         />
 
         <Image
-          src={allImages[selectedImageIdx]?.url}
+          src={allImages[selectedImageIdx]?.url || "/assets/image/png/default-fallback-image.png"}
           fill
           alt={product.name.en}
           className="object-contain p-5"
@@ -60,7 +60,7 @@ const ProductImageGallery = ({
             <Image
               src={
                 imageErrors[i]
-                  ? "https://placehold.co/80x80/f3f4f6/9ca3af?text=Img"
+                  ? "/assets/image/png/default-fallback-image.png"
                   : img.url
               }
               alt={variant.description.en}
