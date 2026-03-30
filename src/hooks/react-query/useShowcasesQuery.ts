@@ -22,7 +22,7 @@ interface FetchShowcasesParams {
 export const fetchActiveShowcases = async (
   token?: string,
   lang = "en",
-  limit = PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE
+  limit = PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE,
 ): Promise<DataListResponse<Showcase>> => {
   const url = new URL(`${API_ENDPOINTS.DASHBOARD.SHOWCASES.ACTIVE}`);
 
@@ -71,6 +71,21 @@ export const fetchShowcases = async ({
   return resObj;
 };
 
+export const getActiveShowcasesQueryOptions = ({
+  limit,
+  locale = "en",
+  token,
+}: {
+  limit: number;
+  locale?: Locale | string;
+  token?: string | null;
+}) => ({
+  queryKey: ["activeShowcases", limit, locale],
+  queryFn: () => fetchActiveShowcases(token ?? undefined, locale, limit),
+  staleTime: STALE_TIME,
+  gcTime: GC_TIME,
+});
+
 export const useShowcasesQuery = ({ search }: { search: string }) => {
   const { data: session } = useSession();
   const locale = useLocale();
@@ -106,24 +121,12 @@ export const useShowcasesQuery = ({ search }: { search: string }) => {
 export const useActiveShowcasesQuery = (itemsNumPerShowcase: number) => {
   const { accessToken, locale, status } = useAuthContext();
 
-  return useQuery<DataListResponse<Showcase>>({
-    queryKey: ["activeShowcases", itemsNumPerShowcase, accessToken],
-    queryFn: () =>
-      fetchActiveShowcases(accessToken, locale, itemsNumPerShowcase),
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    // Sol #1 => Remove enabled => Query will run regardless of auth state
-    // enabled: !!accessToken,
-
-    // Sol #2
-    // Only disable when session is still loading
+  return useQuery({
+    ...getActiveShowcasesQueryOptions({
+      limit: itemsNumPerShowcase,
+      locale,
+      token: accessToken,
+    }),
     enabled: status !== "loading",
-
-    // Sol #3
-    // Enable when either:
-    // 1. User is authenticated and has token
-    // 2. Session loading is complete (authenticated or unauthenticated)
-    // enabled:
-    //   status === "authenticated" ? !!accessToken : status === "unauthenticated",
   });
 };

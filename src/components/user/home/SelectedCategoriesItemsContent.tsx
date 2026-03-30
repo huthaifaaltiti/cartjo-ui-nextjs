@@ -2,7 +2,6 @@
 
 import { memo } from "react";
 import { useTranslations } from "next-intl";
-import { getCategoriesPicksQueryOptions } from "@/utils/queryOptions";
 import { useQueries } from "@tanstack/react-query";
 import { Category } from "@/types/category.type";
 import { useAuthContext } from "@/hooks/useAuthContext";
@@ -12,6 +11,7 @@ import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 import { useGeneralContext } from "@/contexts/General.context";
 import SelectedCategoriesItemsContentHeader from "./SelectedCategoriesItemsContentHeader";
+import { getCategoriesPicksQueryOptions } from "@/hooks/react-query/useProductsQuery";
 
 const SelectedCategoriesItemsContent = ({
   randomCategories,
@@ -24,7 +24,11 @@ const SelectedCategoriesItemsContent = ({
 
   const results = useQueries({
     queries: randomCategories.map((category) =>
-      getCategoriesPicksQueryOptions(category._id, locale, accessToken ?? ""),
+      getCategoriesPicksQueryOptions({
+        categoryId: category._id,
+        locale: locale,
+        token: accessToken ?? "",
+      }),
     ),
   });
 

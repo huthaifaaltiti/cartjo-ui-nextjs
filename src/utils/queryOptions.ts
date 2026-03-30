@@ -1,4 +1,3 @@
-import { PRODUCTS_COUNT_PER_SELECTED_CATEGORY } from "@/config/home.config";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { fetchActiveBanners } from "@/hooks/react-query/useBannersQuery";
@@ -14,9 +13,7 @@ import {
   fetchProduct,
   fetchProductComments,
 } from "@/hooks/react-query/useProductQuery";
-import { fetchCategoriesPicks } from "@/hooks/react-query/useProductsQuery";
 import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
-import { fetchActiveShowcases } from "@/hooks/react-query/useShowcasesQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { fetchSuggestedProducts } from "@/hooks/react-query/useSuggestedProductQuery";
 import { fetchUserOrderReturns } from "@/hooks/react-query/useUserOrderReturnsQuery";
@@ -56,42 +53,11 @@ export const getActiveCategoriesQueryOptions = (locale: string | Locale) => ({
 });
 
 /**
- * Query options for showcases (server-side paginated)
- */
-export const getActiveShowcasesQueryOptions = (limit: number) => ({
-  queryKey: ["activeShowcases", limit],
-  queryFn: () => fetchActiveShowcases(String(limit)),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-});
-
-/**
- * Query options for Categories Picks (public data, always enabled)
- */
-export const getCategoriesPicksQueryOptions = (
-  categoryId: string,
-  locale: string | Locale,
-  token: string
-) => ({
-  queryKey: ["categoriesPicks", locale, categoryId],
-  queryFn: () =>
-    fetchCategoriesPicks({
-      token,
-      lang: locale,
-      limit: PRODUCTS_COUNT_PER_SELECTED_CATEGORY,
-      categoryId,
-    }),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-  enabled: true,
-});
-
-/**
  * Query options for category
  */
 export const getCategoryQueryOptions = (
   locale: Locale | string,
-  categoryId: string
+  categoryId: string,
 ) => ({
   queryKey: ["publicCategory", locale, categoryId],
   queryFn: () => fetchCategory({ lang: locale, categoryId }),
@@ -102,7 +68,7 @@ export const getCategoryQueryOptions = (
 
 export const getCategoryProductsQueryOptions = (
   locale: string,
-  categoryId: string
+  categoryId: string,
 ) => {
   const getNextPageParam = (lastPage: DataListResponse<Product>) => {
     if (!lastPage?.data?.length) return undefined;
@@ -140,7 +106,7 @@ export const getCategoryProductsQueryOptions = (
 export const getSubCategoryProductsQueryOptions = (
   locale: string,
   categoryId: string,
-  subCategoryId: string
+  subCategoryId: string,
 ) => {
   const getNextPageParam = (lastPage: DataListResponse<Product>) => {
     if (!lastPage?.data?.length) return undefined;
@@ -161,7 +127,7 @@ export const getSubCategoryProductsQueryOptions = (
         categoryId,
         subCategoryId,
         limit: PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS,
-        lastId: typeof pageParam === "string" ? pageParam : undefined
+        lastId: typeof pageParam === "string" ? pageParam : undefined,
       });
     },
     getNextPageParam,
@@ -175,7 +141,7 @@ export const getSubCategoryProductsQueryOptions = (
 export const getProductQueryOptions = (
   locale: string | Locale,
   productId: string,
-  token: string | null
+  token: string | null,
 ) => {
   return {
     queryKey: ["publicProduct", locale, productId, token],
@@ -195,7 +161,7 @@ export const getProductQueryOptions = (
 
 export const getSearchProductsQueryOptions = (
   locale: string,
-  querySearch: string
+  querySearch: string,
 ) => {
   const getNextPageParam = (lastPage: DataListResponse<Product>) => {
     if (!lastPage?.data?.length) return undefined;
@@ -226,7 +192,7 @@ export const getSearchProductsQueryOptions = (
 
 export const getSearchProductCommentsQueryOptions = (
   locale: string,
-  productId: string
+  productId: string,
 ) => {
   const getNextPageParam = (lastPage: DataListResponse<Comment>) => {
     if (!lastPage?.data?.length) return undefined;
@@ -257,7 +223,7 @@ export const getSearchProductCommentsQueryOptions = (
 
 export const getSuggestedProductsQueryOptions = (
   locale: Locale | string,
-  limit: number
+  limit: number,
 ) => ({
   queryKey: ["suggestedPublicCategory", locale, limit],
   queryFn: () => fetchSuggestedProducts({ lang: locale, limit }),
@@ -275,7 +241,7 @@ export const getSuggestedProductsQueryOptions = (
 export const getUserProfileQueryOptions = (
   locale: Locale | string,
   userId: string,
-  token: string
+  token: string,
 ) => ({
   queryKey: ["userProfileData", locale, userId],
   queryFn: () =>
@@ -291,7 +257,7 @@ export const getUserProfileQueryOptions = (
 
 export const getStaticNationalityListQueryOptions = (
   locale: Locale | string,
-  token: string
+  token: string,
 ) => ({
   queryKey: ["staticNationalityList", locale],
   queryFn: () =>
@@ -377,7 +343,7 @@ export const getUserOrdersQueryOptions = (
   locale: Locale | string,
   token: string,
   uid: string,
-  search?: string
+  search?: string,
 ) => {
   const getNextPageParam = (lastPage: DataListResponse<Order>) => {
     if (!lastPage?.data?.length) return undefined;
@@ -414,7 +380,7 @@ export const getUserOrderReturnsQueryOptions = (
   locale: Locale | string,
   token: string,
   uid: string,
-  search?: string
+  search?: string,
 ) => {
   const getNextPageParam = (lastPage: DataListResponse<Order>) => {
     if (!lastPage?.data?.length) return undefined;
