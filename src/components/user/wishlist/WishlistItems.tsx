@@ -18,7 +18,7 @@ import AuthRedirect from "@/components/shared/AuthRedirect";
 const WishlistItems = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { items: wishlistItems } = useSelector(
-    (state: RootState) => state.wishlist
+    (state: RootState) => state.wishlist,
   );
 
   const t = useTranslations();
@@ -32,12 +32,12 @@ const WishlistItems = () => {
     fetchNextPage,
     isError,
     error,
-    refetch
+    refetch,
   } = useWishlistQuery();
 
   const fetchedItems = useMemo(
     () => data?.pages?.flatMap((page) => page?.data?.products || []) ?? [],
-    [data]
+    [data],
   );
 
   const showData = (wishlistItems as Product[]).length > 0;
@@ -82,6 +82,7 @@ const WishlistItems = () => {
         list={wishlistItems}
         fetchNextPage={fetchNextPage}
         ListItemCard={WishlistProductCard}
+        getKey={(item) => item?._id}
         cardProps={{}}
       />
     );
