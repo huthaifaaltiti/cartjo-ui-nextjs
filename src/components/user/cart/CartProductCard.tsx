@@ -46,8 +46,9 @@ const CartProductCard = ({
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState<boolean>(false);
-  const [quantity, setQuantity] = useState<number>(item?.quantity ?? 1);
   const [showCounter, setShowCounter] = useState<boolean>(false);
+
+  const quantity = item.quantity;
 
   const formatPrice = useCallback(
     (price: number) => {
@@ -89,6 +90,8 @@ const CartProductCard = ({
         return;
       }
 
+      const removeQty = quantityMount ?? quantity;
+
       try {
         setIsAddToCartLoading(true);
 
@@ -96,7 +99,7 @@ const CartProductCard = ({
           removeItemFromServer({
             productId: item?.productId,
             variantId: item?.variant?.variantId,
-            quantity: quantityMount ?? quantity,
+            quantity: removeQty,
             lang: locale,
             token: accessToken,
           }),
@@ -110,8 +113,6 @@ const CartProductCard = ({
               t("routes.cart.components.CartProductCard.removedFromCartLabel"),
             dismissText: t("general.toast.dismissText"),
           });
-
-          setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
         }
       } catch (error) {
         showErrorToast({
@@ -123,7 +124,7 @@ const CartProductCard = ({
         setIsAddToCartLoading(false);
       }
     },
-    [item, isArabic],
+    [accessToken, dispatch, item, locale, t],
   );
 
   const handleAddToCart = useCallback(
@@ -134,9 +135,10 @@ const CartProductCard = ({
           description: t("general.toast.description.loginRequired"),
           dismissText: t("general.toast.dismissText"),
         });
-
         return;
       }
+
+      const addQty = quantityMount ?? 1;
 
       try {
         setIsAddToCartLoading(true);
@@ -145,7 +147,7 @@ const CartProductCard = ({
           addItemToServer({
             productId: item?.productId,
             variantId: item?.variant?.variantId,
-            quantity: quantityMount || quantity,
+            quantity: addQty,
             lang: locale,
             token: accessToken,
           }),
@@ -154,25 +156,21 @@ const CartProductCard = ({
         if (response.isSuccess) {
           showSuccessToast({
             title: t("general.toast.title.success"),
-            description:
-              response?.message ??
-              t("routes.cart.components.CartProductCard.removedFromCartLabel"),
+            description: response?.message,
             dismissText: t("general.toast.dismissText"),
           });
-
-          setQuantity((prev) => prev + 1);
         }
       } catch (error) {
         showErrorToast({
           title: t("general.toast.title.error"),
-          description: (error as Error)?.message || "Failed to remove item.",
+          description: (error as Error)?.message || "Failed to add item.",
           dismissText: t("general.toast.dismissText"),
         });
       } finally {
         setIsAddToCartLoading(false);
       }
     },
-    [item, isArabic],
+    [accessToken, dispatch, item, locale, t],
   );
 
   const handleQuantityChange = useCallback(
@@ -183,7 +181,7 @@ const CartProductCard = ({
         await handleAddToCart(1);
       }
     },
-    [isArabic, item],
+    [handleRemoveFromCart, handleAddToCart],
   );
 
   return (
