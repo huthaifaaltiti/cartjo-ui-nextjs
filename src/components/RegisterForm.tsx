@@ -38,11 +38,13 @@ import GeneralCheckbox from "./shared/GeneralCheckbox";
 import LoadingButton from "./shared/LoadingButton";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { normalizePhoneNumber } from "@/utils/normalizePhoneNumber";
+import { COUNTRY_CONFIGS } from "@/config/countryPhone.config";
 
 const RegisterForm = () => {
   const t = useTranslations();
   const { isArabic, locale, dir } = useSelector(
-    (state: RootState) => state.general
+    (state: RootState) => state.general,
   );
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -52,13 +54,13 @@ const RegisterForm = () => {
   const preferredLangs = [
     {
       label: t(
-        "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.langs.ar"
+        "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.langs.ar",
       ),
       val: "ar",
     },
     {
       label: t(
-        "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.langs.en"
+        "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.langs.en",
       ),
       val: "en",
     },
@@ -67,34 +69,39 @@ const RegisterForm = () => {
   const formSchema = z.object({
     firstName: z.string().min(2, {
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.firstName.min"
+        "routes.auth.components.AuthTabs.components.register.validations.firstName.min",
       ),
     }),
     lastName: z.string().min(2, {
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.lastName.min"
+        "routes.auth.components.AuthTabs.components.register.validations.lastName.min",
       ),
     }),
-    phoneNumber: z.string().regex(/^7[789]\d{7}$/, {
-      message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.pattern"
+    phoneNumber: z
+      .string()
+      .transform((val) => normalizePhoneNumber(val, COUNTRY_CONFIGS.JO))
+      .pipe(
+        z.string().regex(/^7[789]\d{7}$/, {
+          message: t(
+            "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.pattern",
+          ),
+        }),
       ),
-    }),
     email: z.string().email({
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.email.invalid"
+        "routes.auth.components.AuthTabs.components.register.validations.email.invalid",
       ),
     }),
     password: z.string().min(6, {
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.password.min"
+        "routes.auth.components.AuthTabs.components.register.validations.password.min",
       ),
     }),
     preferredLang: z.enum(["ar", "en"]),
     termsAccepted: z.literal(true, {
       errorMap: () => ({
         message: t(
-          "routes.auth.components.AuthTabs.components.register.validations.termsAccepted.required"
+          "routes.auth.components.AuthTabs.components.register.validations.termsAccepted.required",
         ),
       }),
     }),
@@ -127,7 +134,7 @@ const RegisterForm = () => {
               countryCode: "00962",
               lang: locale,
             }),
-          }
+          },
         );
 
         return response;
@@ -205,7 +212,7 @@ const RegisterForm = () => {
                   <FormItem className={isArabic ? "text-right" : "text-left"}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.firstName.label"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.firstName.label",
                       )}
                     </FormLabel>
 
@@ -217,7 +224,7 @@ const RegisterForm = () => {
                             : "placeholder:text-left text-left"
                         }`}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.firstName.placeholder"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.firstName.placeholder",
                         )}
                         {...field}
                       />
@@ -234,7 +241,7 @@ const RegisterForm = () => {
                   <FormItem className={isArabic ? "text-right" : "text-left"}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.lastName.label"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.lastName.label",
                       )}
                     </FormLabel>
 
@@ -246,7 +253,7 @@ const RegisterForm = () => {
                             : "placeholder:text-left text-left"
                         }`}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.lastName.placeholder"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.lastName.placeholder",
                         )}
                         {...field}
                       />
@@ -272,7 +279,7 @@ const RegisterForm = () => {
                   <FormItem className={isArabic ? "text-right" : "text-left"}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.label"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -283,7 +290,7 @@ const RegisterForm = () => {
                             : "placeholder:text-left"
                         }`}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.placeholder"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.placeholder",
                         )}
                         {...field}
                       />
@@ -300,7 +307,7 @@ const RegisterForm = () => {
                   <FormItem className={isArabic ? "text-right" : "text-left"}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.email.label"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.email.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -311,7 +318,7 @@ const RegisterForm = () => {
                             : "placeholder:text-left"
                         }`}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.email.placeholder"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.email.placeholder",
                         )}
                         {...field}
                       />
@@ -336,7 +343,7 @@ const RegisterForm = () => {
                 <FormItem className={isArabic ? "text-right" : "text-left"}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.auth.components.AuthTabs.components.register.dataSet.password.label"
+                      "routes.auth.components.AuthTabs.components.register.dataSet.password.label",
                     )}
                   </FormLabel>
                   <FormControl>
@@ -349,7 +356,7 @@ const RegisterForm = () => {
                             : "placeholder:text-left pr-10 text-left"
                         }`}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.password.placeholder"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.password.placeholder",
                         )}
                         {...field}
                         onChange={(e) => {
@@ -396,7 +403,7 @@ const RegisterForm = () => {
                 <FormItem dir={dir}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.label"
+                      "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.label",
                     )}
                   </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
@@ -404,7 +411,7 @@ const RegisterForm = () => {
                       <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                         <SelectValue
                           placeholder={t(
-                            "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.placeholder"
+                            "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.placeholder",
                           )}
                         />
                       </SelectTrigger>
@@ -423,7 +430,7 @@ const RegisterForm = () => {
                   </Select>
                   <FormDescription className="text-xs text-text-primary-100">
                     {t(
-                      "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.desc"
+                      "routes.auth.components.AuthTabs.components.register.dataSet.preferredLang.desc",
                     )}
                   </FormDescription>
                   <FormMessage />
@@ -442,7 +449,7 @@ const RegisterForm = () => {
             <Link href={"/privacy-policy"} target="_blank">
               <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
                 {t(
-                  "routes.auth.components.AuthTabs.components.register.privacyPolicy"
+                  "routes.auth.components.AuthTabs.components.register.privacyPolicy",
                 )}
               </span>
             </Link>{" "}
@@ -450,7 +457,7 @@ const RegisterForm = () => {
             <Link href="/terms-of-use" target="_blank">
               <span className="text-primary-500 hover:text-primary-900 hover:underline cursor-pointer">
                 {t(
-                  "routes.auth.components.AuthTabs.components.register.termsAndConditions"
+                  "routes.auth.components.AuthTabs.components.register.termsAndConditions",
                 )}
               </span>
             </Link>
@@ -480,7 +487,7 @@ const RegisterForm = () => {
                         className="text-sm font-normal"
                       >
                         {t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.termsAccepted.label"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.termsAccepted.label",
                         )}
                       </FormLabel>
                     </div>
@@ -506,7 +513,7 @@ const RegisterForm = () => {
                       className="text-sm font-normal"
                     >
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.marketingEmails.label"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.marketingEmails.label",
                       )}
                     </FormLabel>
                   </FormItem>
@@ -524,7 +531,7 @@ const RegisterForm = () => {
           withAnimate={true}
           dir={dir}
           label={t(
-            "routes.auth.components.AuthTabs.components.register.actions.proceed"
+            "routes.auth.components.AuthTabs.components.register.actions.proceed",
           )}
           loadingLabel={t("general.loadingStates.loadingApi")}
         />
