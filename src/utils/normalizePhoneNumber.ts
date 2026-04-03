@@ -15,3 +15,11 @@ export const normalizePhoneNumber = (
 
   return cleaned;
 };
+
+export const isPhoneNumberLike = (
+  value: string,
+  config: CountryPhoneConfig,
+): boolean => {
+  const cleaned = normalizePhoneNumber(value, config);
+  return /^7[789]\d{7}$/.test(cleaned);
+};
