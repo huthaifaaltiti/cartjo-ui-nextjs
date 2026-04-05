@@ -1,8 +1,10 @@
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
-import LoadingShimmerEffect from "@/components/shared/LoadingShimmerEffect";
+import ProductImageSkeleton from "./ProductImageSkeleton";
+import Image from "next/image";
+import { DEFAULT_FALLBACK_IMAGE } from "@/config/media.config";
 
 interface ProductImageProps {
-  src: string;
+  src?: string;
   alt: string;
   isHovered: boolean;
   isLoading: boolean;
@@ -14,17 +16,31 @@ export default function ProductImage({
   isHovered,
   isLoading,
 }: ProductImageProps) {
+  if (isLoading && !src) {
+    return <ProductImageSkeleton />;
+  }
+
+  if (!src) {
+    return (
+      <Image
+        width={400}
+        height={400}
+        src={DEFAULT_FALLBACK_IMAGE}
+        alt="Fallback product image"
+        className={`rounded-lg w-full h-full`}
+      />
+    );
+  }
+
   return (
     <div className="h-full w-full relative">
-      <div className="h-full w-full rounded-xl overflow-hidden bg-white-500 relative">
-        {(isLoading || !src) && <LoadingShimmerEffect />}
-
+      <div className="h-full w-full rounded-xl overflow-hidden bg-white relative">
         <ImageWithFallback
           src={src}
-          alt={alt}
+          alt={alt ?? "Product Image alternative text"}
           className={`object-contain w-full h-full transition-all duration-700 ${
             isHovered ? "scale-110" : "scale-100"
-          } ${isLoading ? "scale-110 blur-[1px]" : ""}`}
+          }`}
         />
       </div>
     </div>
