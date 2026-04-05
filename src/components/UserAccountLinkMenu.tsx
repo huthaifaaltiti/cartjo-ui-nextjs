@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, User, UserRoundPen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useGeneralContext } from "@/contexts/General.context";
-import { LogoutBtn } from "./shared/LogoutBrn";
+import { LogoutBtn } from "./shared/LogoutBtn";
 
 const UserAccountLinkMenu = () => {
   const router = useRouter();

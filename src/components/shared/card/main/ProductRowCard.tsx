@@ -63,7 +63,10 @@ const ProductRowCard = ({
   );
 
   const currentVariant = useMemo(
-    () => activeVariants.find((v) => v.variantId === selectedVariantId) ?? null,
+    () =>
+      activeVariants.find((v) => v.variantId === selectedVariantId) ??
+      activeVariants[0] ??
+      null,
     [activeVariants, selectedVariantId],
   );
 
