@@ -29,6 +29,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { login } from "@/redux/slices/authorization/login/actions";
 import { resetLoginState } from "@/redux/slices/authorization/login";
+import { COUNTRY_CONFIGS } from "@/config/countryPhone.config";
+import {
+  isPhoneNumberLike,
+  normalizePhoneNumber,
+} from "@/utils/normalizePhoneNumber";
 
 const LoginForm = () => {
   const t = useTranslations();
@@ -131,7 +136,7 @@ const LoginForm = () => {
       .refine(
         (val) =>
           /^[a-zA-Z0-9._]{2,50}$/.test(val) || // username pattern
-          /^7[789]\d{7}$/.test(val) || // Jordanian mobile pattern
+          /^((\+962|00962|0)?7[789]\d{7})$/.test(val) || // Jordanian mobile pattern (all formats)
           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), // email pattern
         {
           message: t(
@@ -161,7 +166,14 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    loginMutation.mutate(values);
+    const normalizedIdentifier = isPhoneNumberLike(
+      values.identifier,
+      COUNTRY_CONFIGS.JO,
+    )
+      ? normalizePhoneNumber(values.identifier, COUNTRY_CONFIGS.JO)
+      : values.identifier;
+
+    loginMutation.mutate({ ...values, identifier: normalizedIdentifier });
   };
 
   return (

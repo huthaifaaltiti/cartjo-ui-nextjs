@@ -6,7 +6,7 @@ import DashboardControlNavLinks from "./DashboardControlNavLinks";
 import LanguageSelector from "@/components/LanguageSelector";
 import BackToHomePage from "@/components/shared/BackToHomePage";
 import DynamicLogo from "@/components/shared/DynamicLogo";
-import { LogoutBtn } from "@/components/shared/LogoutBrn";
+import { LogoutBtn } from "@/components/shared/LogoutBtn";
 
 const DashboardSideNav = () => {
   const locale = useLocale();

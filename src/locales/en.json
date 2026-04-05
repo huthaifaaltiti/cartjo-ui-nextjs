@@ -502,7 +502,7 @@
                   "min": "Last name must be at least 2 characters long"
                 },
                 "phoneNumber": {
-                  "pattern": "Phone number must start with 77, 78, or 79 and be 9 digits long"
+                  "pattern": "Please enter valid Jordanian number"
                 },
                 "email": {
                   "invalid": "Please enter a valid email address"
