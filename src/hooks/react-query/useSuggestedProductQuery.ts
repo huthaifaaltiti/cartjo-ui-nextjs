@@ -6,7 +6,7 @@ import { useAuthContext } from "../useAuthContext";
 import { Locale } from "@/types/locale";
 import { fetcher } from "@/utils/fetcher";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { getSuggestedProductsQueryOptions } from "@/utils/queryOptions";
+import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 
 interface FetchSuggestedProductsProps {
   lang?: Locale | string;
@@ -25,9 +25,26 @@ export const fetchSuggestedProducts = async ({
   return fetcher<DataListResponse<Product>>(url, {});
 };
 
+export const getSuggestedProductsQueryOptions = (
+  locale: Locale | string,
+  limit: number,
+) => ({
+  queryKey: ["suggestedPublicCategory", locale, limit],
+  queryFn: () => fetchSuggestedProducts({ lang: locale, limit }),
+  staleTime: STALE_TIME,
+  gcTime: GC_TIME,
+  enabled: true,
+  // retry: (failureCount, error) => {
+  //   const err = error as FetchError;
+  //   if (err?.status === 404) return false;
+  //   return failureCount < 2; // Only retry up to 2 times for other errors
+  // },
+  // retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+});
+
 export const useSuggestedProductQuery = (
   lang: string | Locale,
-  limit: number
+  limit: number,
 ) => {
   const { locale } = useAuthContext();
 
