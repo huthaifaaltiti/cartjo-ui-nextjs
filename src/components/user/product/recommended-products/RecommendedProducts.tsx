@@ -8,6 +8,7 @@ import { getQueryUIState } from "@/utils/uiStateHelpers";
 import RecommendedProductsLoading from "./RecommendedProductsLoading";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import RecProductsData from "./RecProductsData";
+import { SUGGESTED_PRODUCTS_LIMIT } from "@/config/product.config";
 
 interface RecommendedProductsProps {
   title?: string;
@@ -18,7 +19,7 @@ const RecommendedProducts = ({ title, subtitle }: RecommendedProductsProps) => {
   const locale = useLocale();
   const t = useTranslations();
   const { data, isLoading, isFetching, isFetched, isError, error } =
-    useSuggestedProductQuery(locale, 4);
+    useSuggestedProductQuery(locale, SUGGESTED_PRODUCTS_LIMIT);
 
   const products = useMemo(() => data?.data ?? null, [data]);
 

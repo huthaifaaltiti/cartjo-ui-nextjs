@@ -14,7 +14,6 @@ import {
 } from "@/hooks/react-query/useProductQuery";
 import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
-import { fetchSuggestedProducts } from "@/hooks/react-query/useSuggestedProductQuery";
 import { fetchUserOrderReturns } from "@/hooks/react-query/useUserOrderReturnsQuery";
 import { fetchUserOrders } from "@/hooks/react-query/useUserOrdersQuery";
 import { fetchMyProfile } from "@/hooks/react-query/useUserProfileQuery";
@@ -220,23 +219,6 @@ export const getSearchProductCommentsQueryOptions = (
   };
 };
 
-export const getSuggestedProductsQueryOptions = (
-  locale: Locale | string,
-  limit: number,
-) => ({
-  queryKey: ["suggestedPublicCategory", locale, limit],
-  queryFn: () => fetchSuggestedProducts({ lang: locale, limit }),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-  enabled: true,
-  // retry: (failureCount, error) => {
-  //   const err = error as FetchError;
-  //   if (err?.status === 404) return false;
-  //   return failureCount < 2; // Only retry up to 2 times for other errors
-  // },
-  // retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-});
-
 export const getUserProfileQueryOptions = (
   locale: Locale | string,
   userId: string,
@@ -268,7 +250,6 @@ export const getStaticNationalityListQueryOptions = (
   gcTime: GC_TIME,
   enabled: true,
 });
-
 
 export const getWishlistQueryOptions = (token: string) => {
   const getNextPageParam = (lastPage: DataResponse<Cart>) => {

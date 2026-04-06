@@ -3,7 +3,6 @@ import {
   getActiveCategoriesQueryOptions,
   getProductQueryOptions,
   getSearchProductCommentsQueryOptions,
-  getSuggestedProductsQueryOptions,
 } from "@/utils/queryOptions";
 import { getQueryClient } from "@/utils/queryUtils";
 import { Product } from "@/types/product.type";
@@ -16,6 +15,8 @@ import { PublicProductContextProvider } from "@/contexts/PublicProduct.context";
 import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { getProductCommentsQueryOptions } from "@/hooks/react-query/useProductCommentsQuery";
 import { Locale as LocaleEnum } from "@/enums/locale.enum";
+import { getSuggestedProductsQueryOptions } from "@/hooks/react-query/useSuggestedProductQuery";
+import { SUGGESTED_PRODUCTS_LIMIT } from "@/config/product.config";
 
 interface PageProps {
   params: Promise<{
@@ -37,7 +38,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery<DataListResponse<Product>>(
-    getSuggestedProductsQueryOptions(locale, 5),
+    getSuggestedProductsQueryOptions(locale, SUGGESTED_PRODUCTS_LIMIT),
   );
 
   await queryClient.prefetchQuery<DataResponse<Product>>(
