@@ -1,7 +1,6 @@
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { fetchActiveBanners } from "@/hooks/react-query/useBannersQuery";
-import { fetchCartItems } from "@/hooks/react-query/useCartQuery";
 import { fetchActiveCategories } from "@/hooks/react-query/useCategoriesQuery";
 import {
   fetchCategory,
@@ -15,7 +14,6 @@ import {
 } from "@/hooks/react-query/useProductQuery";
 import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
-import { fetchSuggestedProducts } from "@/hooks/react-query/useSuggestedProductQuery";
 import { fetchUserOrderReturns } from "@/hooks/react-query/useUserOrderReturnsQuery";
 import { fetchUserOrders } from "@/hooks/react-query/useUserOrdersQuery";
 import { fetchMyProfile } from "@/hooks/react-query/useUserProfileQuery";
@@ -221,23 +219,6 @@ export const getSearchProductCommentsQueryOptions = (
   };
 };
 
-export const getSuggestedProductsQueryOptions = (
-  locale: Locale | string,
-  limit: number,
-) => ({
-  queryKey: ["suggestedPublicCategory", locale, limit],
-  queryFn: () => fetchSuggestedProducts({ lang: locale, limit }),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-  enabled: true,
-  // retry: (failureCount, error) => {
-  //   const err = error as FetchError;
-  //   if (err?.status === 404) return false;
-  //   return failureCount < 2; // Only retry up to 2 times for other errors
-  // },
-  // retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-});
-
 export const getUserProfileQueryOptions = (
   locale: Locale | string,
   userId: string,
@@ -269,29 +250,6 @@ export const getStaticNationalityListQueryOptions = (
   gcTime: GC_TIME,
   enabled: true,
 });
-
-export const getCartQueryOptions = (token: string) => {
-  const getNextPageParam = (lastPage: DataResponse<Cart>) => {
-    if (!lastPage?.data?.items?.length) return undefined;
-
-    const lastProduct = lastPage.data.items.at(-1);
-    return lastProduct?._id ?? undefined;
-  };
-
-  return {
-    queryKey: ["cartItems", token],
-    queryFn: () =>
-      fetchCartItems({
-        token,
-        lang: "en",
-        limit: PAGINATION_LIMITS.CART_ITEMS,
-      }),
-    getNextPageParam,
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-  };
-};
 
 export const getWishlistQueryOptions = (token: string) => {
   const getNextPageParam = (lastPage: DataResponse<Cart>) => {

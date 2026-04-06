@@ -3,9 +3,9 @@ import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { getQueryClient } from "@/utils/queryUtils";
 import { DataResponse } from "@/types/service-response.type";
 import CartItems from "@/components/user/cart/CartItems";
-import { getCartQueryOptions } from "@/utils/queryOptions";
 import { Cart } from "@/types/cart.type";
 import { redirect } from "next/navigation";
+import { getCartQueryOptions } from "@/hooks/react-query/useCartQuery";
 
 const Page = async () => {
   const token = await getAccessTokenFromServerSession();
