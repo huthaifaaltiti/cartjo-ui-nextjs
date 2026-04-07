@@ -33,11 +33,6 @@ const Register: React.FC = () => {
         {/* Secondary Action */}
         <div className="space-y-4">
           <p className="text-center text-sm text-text-primary-300 mb-5">
-            {/* {t.rich("formTitle", {
-              cartjo: (chunks) => (
-                <span className="font-semibold text-primary">{chunks}</span>
-              ),
-            })} */}
             {t("formTitle")}
           </p>
           <RegisterForm />

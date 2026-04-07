@@ -40,6 +40,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { normalizePhoneNumber } from "@/utils/normalizePhoneNumber";
 import { COUNTRY_CONFIGS } from "@/config/countryPhone.config";
+import { validationConfig } from "@/config/validationConfig";
+import { Locale } from "@/enums/locale.enum";
 
 const RegisterForm = () => {
   const t = useTranslations();
@@ -67,18 +69,54 @@ const RegisterForm = () => {
   ];
 
   const formSchema = z.object({
-    firstName: z.string().min(2, {
-      message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.firstName.min",
-      ),
-    }),
-    lastName: z.string().min(2, {
-      message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.lastName.min",
-      ),
-    }),
+    firstName: z
+      .string()
+      .min(1, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.firstName.required",
+        ),
+      })
+      .trim()
+      .min(validationConfig.auth.name.min, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.firstName.min",
+          { min: validationConfig.auth.name.min },
+        ),
+      })
+      .max(validationConfig.auth.name.max, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.firstName.max",
+          { max: validationConfig.auth.name.max },
+        ),
+      }),
+    lastName: z
+      .string()
+      .min(1, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.lastName.required",
+        ),
+      })
+      .trim()
+      .min(validationConfig.auth.name.min, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.lastName.min",
+          { min: validationConfig.auth.name.min },
+        ),
+      })
+      .max(validationConfig.auth.name.max, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.lastName.max",
+          { max: validationConfig.auth.name.max },
+        ),
+      }),
     phoneNumber: z
       .string()
+      .min(1, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.required",
+        ),
+      })
+      .trim()
       .transform((val) => normalizePhoneNumber(val, COUNTRY_CONFIGS.JO))
       .pipe(
         z.string().regex(/^7[789]\d{7}$/, {
@@ -87,17 +125,52 @@ const RegisterForm = () => {
           ),
         }),
       ),
-    email: z.string().email({
-      message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.email.invalid",
-      ),
-    }),
-    password: z.string().min(6, {
-      message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.password.min",
-      ),
-    }),
-    preferredLang: z.enum(["ar", "en"]),
+    email: z
+      .string()
+      .min(1, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.email.required",
+        ),
+      })
+      .trim()
+      .email({
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.email.invalid",
+        ),
+      })
+      .min(validationConfig.auth.email.min, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.email.min",
+          { min: validationConfig.auth.email.min },
+        ),
+      })
+      .max(validationConfig.auth.email.max, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.email.max",
+          { max: validationConfig.auth.email.max },
+        ),
+      }),
+    password: z
+      .string()
+      .min(1, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.password.required",
+        ),
+      })
+      .trim()
+      .min(validationConfig.auth.password.min, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.password.min",
+          { min: validationConfig.auth.password.min },
+        ),
+      })
+      .max(validationConfig.auth.password.max, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.password.max",
+          { max: validationConfig.auth.password.max },
+        ),
+      }),
+    preferredLang: z.nativeEnum(Locale),
     termsAccepted: z.literal(true, {
       errorMap: () => ({
         message: t(
@@ -116,7 +189,7 @@ const RegisterForm = () => {
       phoneNumber: "",
       email: "",
       password: "",
-      preferredLang: "ar",
+      preferredLang: Locale.AR,
       termsAccepted: true,
       marketingEmails: false,
     },
@@ -312,6 +385,7 @@ const RegisterForm = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        autoComplete="username"
                         className={`placeholder:text-xs text-xs ${
                           isArabic
                             ? "placeholder:text-right"
@@ -349,6 +423,7 @@ const RegisterForm = () => {
                   <FormControl>
                     <div className="relative">
                       <Input
+                        autoComplete="current-password"
                         type={showPassword ? "text" : "password"}
                         className={`placeholder:text-xs text-xs ${
                           isArabic

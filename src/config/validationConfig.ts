@@ -4,9 +4,17 @@ export const validationConfig = {
       min: 3,
       max: 40,
     },
+    email: {
+      min: 7,
+      max: 100,
+    },
     password: {
-      min: 3,
+      min: 8,
       max: 40,
+    },
+    name: {
+      min: 3,
+      max: 20,
     },
   },
   category: {

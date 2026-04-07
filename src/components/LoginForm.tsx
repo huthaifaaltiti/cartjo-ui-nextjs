@@ -129,6 +129,7 @@ const LoginForm = () => {
           "routes.auth.components.AuthTabs.components.login.validations.identifier.required",
         ),
       })
+      .trim()
       .min(validationConfig.auth.identifier.min, {
         message: t(
           "routes.auth.components.AuthTabs.components.login.validations.identifier.min",
@@ -159,6 +160,7 @@ const LoginForm = () => {
           "routes.auth.components.AuthTabs.components.login.validations.password.required",
         ),
       })
+      .trim()
       .min(validationConfig.auth.password.min, {
         message: t(
           "routes.auth.components.AuthTabs.components.login.validations.password.min",
