@@ -415,12 +415,15 @@
               },
               "validations": {
                 "identifier": {
-                  "min": "Identifier must be at least 3 characters",
-                  "max": "Identifier must be at most 50 characters",
+                  "required": "Account Identifier is required",
+                  "min": "Identifier must be at least {min} characters long",
+                  "max": "Identifier must be at most {max} characters long",
                   "pattern": "Must be a valid username, Jordanian phone number, or email"
                 },
                 "password": {
-                  "min": "Password must be at least 6 characters"
+                  "required": "Password is required",
+                  "min": "Password must be at least {min} characters long",
+                  "max": "Password must be at most {max} characters long"
                 }
               },
               "api": {
