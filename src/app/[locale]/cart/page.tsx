@@ -5,7 +5,7 @@ import { DataResponse } from "@/types/service-response.type";
 import CartItems from "@/components/user/cart/CartItems";
 import { Cart } from "@/types/cart.type";
 import { redirect } from "next/navigation";
-import { getCartQueryOptions } from "@/hooks/react-query/useCartQuery";
+import { getCartQueryOptions } from "@/hooks/react-query/query-options/cartQueryOptions";
 
 const Page = async () => {
   const token = await getAccessTokenFromServerSession();
@@ -15,7 +15,7 @@ const Page = async () => {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchInfiniteQuery<DataResponse<Cart>>(
-    getCartQueryOptions(token)
+    getCartQueryOptions(token),
   );
 
   const dehydratedState = dehydrate(queryClient);
