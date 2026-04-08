@@ -261,7 +261,11 @@ const LoginForm = () => {
                       autoComplete="current-password"
                       dir="ltr"
                       type={showPassword ? "text" : "password"}
-                      className={`placeholder:text-xs text-xs`}
+                      className={`placeholder:text-xs text-xs pr-10 ${
+                        isArabic
+                          ? "placeholder:text-right"
+                          : "placeholder:text-left"
+                      }`}
                       placeholder={t(
                         "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder",
                       )}
@@ -270,7 +274,7 @@ const LoginForm = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className={`absolute inset-y-0 right-2 flex items-center text-gray-500`}
+                      className={`absolute inset-y-0 right-2 flex items-center text-gray-500 pl-2 border-l`}
                       tabIndex={-1}
                     >
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
