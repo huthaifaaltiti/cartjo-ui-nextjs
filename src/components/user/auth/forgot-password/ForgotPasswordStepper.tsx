@@ -12,12 +12,12 @@ import { setStep } from "@/redux/slices/authorization/forgotPassword";
 
 const ForgotPasswordStepper = () => {
   const t = useTranslations(
-    "routes.auth.routes.forgotPassword.components.ForgotPasswordStepper"
+    "routes.auth.routes.forgotPassword.components.ForgotPasswordStepper",
   );
   const dispatch = useDispatch<AppDispatch>();
   const { isArabic } = useSelector((state: RootState) => state.general);
   const { currentStep } = useSelector(
-    (state: RootState) => state.forgotPassword
+    (state: RootState) => state.forgotPassword,
   );
 
   const steps = [
@@ -40,12 +40,14 @@ const ForgotPasswordStepper = () => {
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <div className="container mx-auto px-4 py-8 md:py-12 max-w-4xl flex-1 flex flex-col">
+      <div className="container mx-auto px-4 max-w-4xl flex-1 flex flex-col">
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-center mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             {t("title")}
           </h1>
-          <p className="text-center text-gray-600">{t("desc")}</p>
+          <p className="text-center text-sm md:text-lg lg:text-xl text-gray-600">
+            {t("desc")}
+          </p>
         </div>
 
         <div className="bg-white-50 rounded-2xl shadow-lg p-6 md:p-8 mb-6">
