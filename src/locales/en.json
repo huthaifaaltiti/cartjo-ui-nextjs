@@ -36,6 +36,8 @@
       "sold": "Sold",
       "favorites": "Favorites",
       "states": {
+        "default": "Default",
+        "expired": "Expired",
         "active": "Active",
         "inactive": "Inactive",
         "available": "Available",

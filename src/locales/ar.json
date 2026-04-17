@@ -36,6 +36,8 @@
       "sold": "مباع",
       "favorites": "المفضلة",
       "states": {
+        "default": "إفتراضي",
+        "expired": "منتهي الصلاحية",
         "active": "نشط",
         "inactive": "غير نشط",
         "deleted": "محذوف",

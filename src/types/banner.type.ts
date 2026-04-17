@@ -14,6 +14,8 @@ export interface Banner {
   endDate: Date;
   isActive: boolean;
   isDeleted: boolean;
+  isExpired: boolean;
+  isDefault: boolean;
   unDeletedBy: null | Actor;
   createdBy: null | Actor;
   createdAt: Date;

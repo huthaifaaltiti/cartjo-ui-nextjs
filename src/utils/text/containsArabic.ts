@@ -17,3 +17,13 @@ export function isArabicOnly(input: string): boolean {
   const arabicOnlyRegex = /^[\u0600-\u06FF\s]+$/;
   return arabicOnlyRegex.test(input);
 }
+
+/**
+ * Checks if a string contains only English letters with numbers
+ * @param input - The input string
+ * @returns boolean
+ */
+export function isArabicWithNumOnly(input: string): boolean {
+  const arabicAndNumOnlyRegex = /^[\u0600-\u06FF0-9\s]+$/;
+  return arabicAndNumOnlyRegex.test(input);
+}

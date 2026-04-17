@@ -10,7 +10,7 @@ export const API_ENDPOINTS = {
       VERIFY_CODE: "verify-reset-password-code",
       RESET_PASSWORD: "reset-password",
     },
-    GOOGLE:`${API_URL}/api/v1/authentication/google`
+    GOOGLE: `${API_URL}/api/v1/authentication/google`,
   },
   AUTHORIZATION: { LOGIN: `${API_URL}/api/v1/authorization/login` },
   DASHBOARD: {
@@ -73,6 +73,7 @@ export const API_ENDPOINTS = {
       CREATE: `${API_URL}/api/v1/banner/create`,
       EDIT: `${API_URL}/api/v1/banner/update`,
       ACTIVE: `${API_URL}/api/v1/banner/active`,
+      SET_DEFAULT: `${API_URL}/api/v1/banner/set-default`,
     },
     TYPE_HINT_CONFIGS: {
       ALL: `${API_URL}/api/v1/type-hint-config/all`,
