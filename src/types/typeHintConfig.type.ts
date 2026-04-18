@@ -12,6 +12,7 @@ export interface TypeHintConfig {
   startDate: Date | null;
   endDate: Date | null;
   isSystem: boolean;
+  isExpired: boolean;
   isActive: boolean;
   isDeleted: boolean;
   deletedAt: Date | null;

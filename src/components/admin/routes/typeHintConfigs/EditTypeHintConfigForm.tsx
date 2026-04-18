@@ -200,7 +200,7 @@ const EditTypeHintConfigForm = ({
           dismissText: t("general.toast.dismissText"),
         });
 
-        form.reset();
+        // form.reset();
 
         await invalidateQuery(queryClient, queryKey);
       }
