@@ -36,6 +36,7 @@ import { isArabicWithNumOnly } from "@/utils/text/containsArabic";
 import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { MEDIA_CONFIG } from "@/config/media.config";
+import { DataListResponse } from "@/types/service-response.type";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -350,7 +351,7 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
       // const previousData = queryClient.getQueryData(queryKey);
       const previousData = queryClient.getQueryData([queryKey]);
 
-      queryClient.setQueryData([queryKey], (old: any) => {
+      queryClient.setQueryData([queryKey], (old: DataListResponse<Banner>) => {
         if (!old?.data) return old;
 
         return {
@@ -586,17 +587,19 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
           <div className="w-full flex items-end gap-5">
             <div className="w-auto flex items-center gap-3">
               <span>
-              {setDefaultMutation.isPending ? t('general.processing') : t('general.items.states.default')}
-            </span>
-            <ToggleSwitch
-              value={setDefaultMutation.isPending ? true : banner?.isDefault}
-              onChange={handleSetDefaultBanner}
-              isDisabled={setDefaultMutation.isPending}
-              width={50}
-              height={22}
-              trackColorInactive="#E55050"
-              trackColorActive="#16610E"
-            />
+                {setDefaultMutation.isPending
+                  ? t("general.processing")
+                  : t("general.items.states.default")}
+              </span>
+              <ToggleSwitch
+                value={setDefaultMutation.isPending ? true : banner?.isDefault}
+                onChange={handleSetDefaultBanner}
+                isDisabled={setDefaultMutation.isPending}
+                width={50}
+                height={22}
+                trackColorInactive="#E55050"
+                trackColorActive="#16610E"
+              />
             </div>
           </div>
 
