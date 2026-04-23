@@ -45,29 +45,6 @@ export const fetchCartItems = async ({
   return await res.json();
 };
 
-export const getCartQueryOptions = (token: string) => {
-  const getNextPageParam = (lastPage: DataResponse<Cart>) => {
-    if (!lastPage?.data?.items?.length) return undefined;
-
-    const lastProduct = lastPage.data.items.at(-1);
-    return lastProduct?._id ?? undefined;
-  };
-
-  return {
-    queryKey: [CART_QUERY_KEY, token],
-    queryFn: () =>
-      fetchCartItems({
-        token,
-        lang: "en",
-        limit: PAGINATION_LIMITS.CART_ITEMS,
-      }),
-    getNextPageParam,
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-  };
-};
-
 export const useCartQuery = () => {
   const { accessToken, locale, status } = useAuthContext();
 

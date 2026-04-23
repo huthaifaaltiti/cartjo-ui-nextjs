@@ -13,6 +13,7 @@ export interface Showcase {
   startDate: Date;
   endDate: Date;
   isSystem: boolean;
+  isExpired: boolean;
   isActive: boolean;
   isDeleted: boolean;
   unDeletedBy: null | Actor;

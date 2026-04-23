@@ -68,6 +68,8 @@ const VerifyCode = () => {
   };
 
   const handleResendVerifyCode = async () => {
+    if(!identifier) return;
+    
     await dispatch(sendIdentifier({ identifier, lang: locale }));
   };
 

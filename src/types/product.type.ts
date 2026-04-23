@@ -5,6 +5,7 @@ import { SubCategory } from "./subCategory";
 import { User } from "./user";
 import { Media } from "./media.type";
 import { ProductVariantAttributeKey } from "@/enums/productVariantAttributeKey.enum";
+import { TypeHintConfig } from "./typeHintConfig.type";
 
 export interface Product {
   _id: string;
@@ -28,6 +29,7 @@ export interface Product {
   weeklyFavoriteCount: number;
   weeklyScore: number;
   slug: string;
+  typeHintsDetails?: TypeHintConfig[];
   isWishListed: boolean;
   isAvailable: boolean;
   isActive: boolean;

@@ -17,7 +17,26 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
   const { data, isLoading, isFetching, isFetched, isError, error } =
     useProductQuery({ lang: "en", productId });
 
-  const product = useMemo(() => data?.data ?? null, [data]);
+  const product = useMemo(() => {
+    const p = data?.data;
+
+    if (!p) return null;
+
+    const allTypeHintsNotValid = p.typeHintsDetails?.every(
+      (t) => !t.isActive || t.isExpired || t.isDeleted,
+    );
+
+    const isValid =
+      p.isActive &&
+      !p.isDeleted &&
+      p.categoryId?.isActive &&
+      !p.categoryId?.isDeleted &&
+      p.subCategoryId?.isActive &&
+      !p.subCategoryId?.isDeleted &&
+      !allTypeHintsNotValid;
+
+    return isValid ? p : null;
+  }, [data]);
 
   const { showLoader, showError, showNoData, showData } =
     getQueryUIState<Product>({
@@ -46,7 +65,7 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
   };
 
   const containerClass = "w-full min-h-40 flex items-center justify-center";
-  const noData = showNoData || product?.variants?.every((v) => !v.isActive)
+  const noData = showNoData || product?.variants?.every((v) => !v.isActive);
 
   if (showLoader) {
     return (

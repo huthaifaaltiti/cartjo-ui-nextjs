@@ -42,7 +42,7 @@ import RequestingDataLoader from "@/components/shared/RequestingDataLoader";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
-  activeTypeHintConfigsList: string[]
+  activeTypeHintConfigsList: string[],
 ) => {
   const {
     titleMinChars,
@@ -62,18 +62,18 @@ const editFormSchema = (
         .min(titleMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_ar.minChars",
-            { min: titleMinChars }
+            { min: titleMinChars },
           ),
         })
         .max(titleMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_ar.maxChars",
-            { max: titleMaxChars }
+            { max: titleMaxChars },
           ),
         })
         .refine((val) => isArabicOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_ar.arabicCharsOnly"
+            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_ar.arabicCharsOnly",
           ),
         }),
       title_en: z
@@ -81,18 +81,18 @@ const editFormSchema = (
         .min(titleMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_en.minChars",
-            { min: titleMinChars }
+            { min: titleMinChars },
           ),
         })
         .max(titleMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_en.maxChars",
-            { max: titleMaxChars }
+            { max: titleMaxChars },
           ),
         })
         .refine((val) => isEnglishOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_en.englishCharsOnly"
+            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_en.englishCharsOnly",
           ),
         }),
       description_ar: z
@@ -100,18 +100,18 @@ const editFormSchema = (
         .min(descMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_ar.minChars",
-            { min: descMinChars }
+            { min: descMinChars },
           ),
         })
         .max(descMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_ar.maxChars",
-            { max: descMaxChars }
+            { max: descMaxChars },
           ),
         })
         .refine((val) => isArabicOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_ar.arabicCharsOnly"
+            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_ar.arabicCharsOnly",
           ),
         }),
       description_en: z
@@ -119,18 +119,18 @@ const editFormSchema = (
         .min(descMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_en.minChars",
-            { min: descMinChars }
+            { min: descMinChars },
           ),
         })
         .max(descMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_en.maxChars",
-            { max: descMaxChars }
+            { max: descMaxChars },
           ),
         })
         .refine((val) => isEnglishOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_en.englishCharsOnly"
+            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_en.englishCharsOnly",
           ),
         }),
       showAllButtonText_ar: z
@@ -138,18 +138,18 @@ const editFormSchema = (
         .min(linkBtnTextMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_ar.minChars",
-            { min: linkBtnTextMinChars }
+            { min: linkBtnTextMinChars },
           ),
         })
         .max(linkBtnTextMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_ar.maxChars",
-            { max: linkBtnTextMaxChars }
+            { max: linkBtnTextMaxChars },
           ),
         })
         .refine((val) => isArabicOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_ar.arabicCharsOnly"
+            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_ar.arabicCharsOnly",
           ),
         }),
       showAllButtonText_en: z
@@ -157,18 +157,18 @@ const editFormSchema = (
         .min(linkBtnTextMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_en.minChars",
-            { min: linkBtnTextMinChars }
+            { min: linkBtnTextMinChars },
           ),
         })
         .max(linkBtnTextMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_en.maxChars",
-            { max: linkBtnTextMaxChars }
+            { max: linkBtnTextMaxChars },
           ),
         })
         .refine((val) => isEnglishOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_en.englishCharsOnly"
+            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_en.englishCharsOnly",
           ),
         }),
       showAllButtonLink: z
@@ -176,32 +176,48 @@ const editFormSchema = (
         .min(linkMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonLink.minChars",
-            { min: linkMinChars }
+            { min: linkMinChars },
           ),
         })
         .max(linkMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonLink.maxChars",
-            { max: linkMaxChars }
+            { max: linkMaxChars },
           ),
         })
-        .url({
-          message: t(
-            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonLink.invalidUrl"
-          ),
-        }),
+        .refine(
+          (val) => {
+            const isInternal = val.startsWith("/search?typeHint=");
+
+            const isValidExternal = (() => {
+              try {
+                new URL(val);
+                return true;
+              } catch {
+                return false;
+              }
+            })();
+
+            return isInternal || isValidExternal;
+          },
+          {
+            message: t(
+              "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonLink.invalidUrl",
+            ),
+          },
+        ),
 
       type: z
         .string()
         .refine((val) => activeTypeHintConfigsList.includes(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid",
           ),
         }),
       startDate: z
         .date({
           invalid_type_error: t(
-            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.startDate.invalid"
+            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.startDate.invalid",
           ),
         })
         .nullable()
@@ -209,7 +225,7 @@ const editFormSchema = (
       endDate: z
         .date({
           invalid_type_error: t(
-            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.endDate.invalid"
+            "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.endDate.invalid",
           ),
         })
         .nullable()
@@ -223,7 +239,7 @@ const editFormSchema = (
             path: ["endDate"],
             code: "custom",
             message: t(
-              "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.endDate.mustBeAfterStart"
+              "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.endDate.mustBeAfterStart",
             ),
           });
         }
@@ -275,7 +291,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -283,7 +299,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
 
         throw new Error(
           errorData?.message ||
-            t("routes.dashboard.routes.showcases.errors.failedCreation")
+            t("routes.dashboard.routes.showcases.errors.failedCreation"),
         );
       }
 
@@ -346,14 +362,14 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.title_ar.label"
+                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.title_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.title_ar.placeholder"
+                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.title_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -372,14 +388,14 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.title_en.label"
+                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.title_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.title_en.placeholder"
+                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.title_en.placeholder",
                         )}
                         {...field}
                       />
@@ -405,14 +421,14 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.description_ar.label"
+                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.description_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.description_ar.placeholder"
+                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.description_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -431,14 +447,14 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.description_en.label"
+                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.description_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.description_en.placeholder"
+                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.description_en.placeholder",
                         )}
                         {...field}
                       />
@@ -464,14 +480,14 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonText_ar.label"
+                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonText_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonText_ar.placeholder"
+                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonText_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -490,14 +506,14 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonText_en.label"
+                        "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonText_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonText_en.placeholder"
+                          "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonText_en.placeholder",
                         )}
                         {...field}
                       />
@@ -517,21 +533,21 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
               <FormItem className={getFormItemClassName()}>
                 <FormLabel className="text-sm font-normal">
                   {t(
-                    "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonLink.label"
+                    "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonLink.label",
                   )}
                 </FormLabel>
                 <FormControl>
                   <Input
                     className={getInputClassName()}
                     placeholder={t(
-                      "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonLink.placeholder"
+                      "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonLink.placeholder",
                     )}
                     {...field}
                   />
                 </FormControl>
                 <FormDescription className="text-xs text-text-primary-100">
                   {t(
-                    "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonLink.desc"
+                    "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.showAllButtonLink.desc",
                   )}
                 </FormDescription>
                 <FormMessage />
@@ -547,7 +563,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.type.label"
+                      "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.type.label",
                     )}
                   </FormLabel>
                   {isFormTypeHintConfigsListLoading ? (
@@ -558,7 +574,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.type.placeholder"
+                              "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.type.placeholder",
                             )}
                           />
                         </SelectTrigger>
@@ -592,7 +608,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.startDate.label"
+                      "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.startDate.label",
                     )}
                   </FormLabel>
                   <FormControl>
@@ -610,7 +626,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.endDate.label"
+                      "routes.dashboard.routes.showcases.components.EditShowcaseForm.fields.endDate.label",
                     )}
                   </FormLabel>
                   <FormControl>

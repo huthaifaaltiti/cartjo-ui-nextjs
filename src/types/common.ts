@@ -46,3 +46,5 @@ export type FormHandler<T> = {
 };
 
 export type Direction = "rtl" | "ltr";
+
+export type ViewMode = "public" | "admin"

@@ -22,7 +22,9 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
     useCategoryQuery(categoryId);
 
   const subCategoriesList = useMemo<SubCategory[]>(() => {
-    return data?.data?.subCategories ?? [];
+    return (
+      data?.data?.subCategories?.filter((sc: SubCategory) => sc.isActive) ?? []
+    );
   }, [data]);
 
   const showLoader =
@@ -87,10 +89,10 @@ const CategorySubCategoriesGrid = ({ categoryId }: { categoryId: string }) => {
       <div className={containerClass}>
         <NoData
           title={t(
-            "routes.categories.components.CategorySubCategoriesGrid.noData"
+            "routes.categories.components.CategorySubCategoriesGrid.noData",
           )}
           description={t(
-            "routes.categories.components.CategorySubCategoriesGrid.checkLater"
+            "routes.categories.components.CategorySubCategoriesGrid.checkLater",
           )}
         />
       </div>

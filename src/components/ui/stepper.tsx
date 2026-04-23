@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -25,10 +25,10 @@ const Step: React.FC<StepProps> = ({
           className={cn(
             "w-8 h-8 rounded-full border-2 flex items-center justify-center",
             isCompleted
-              ? "border-primary bg-primary text-primary-foreground"
+              ? "border-primary bg-primary-500 text-primary-foreground"
               : isActive
-              ? "border-primary"
-              : "border-muted"
+                ? "border-primary"
+                : "border-muted",
           )}
         >
           {isCompleted ? (
@@ -44,7 +44,7 @@ const Step: React.FC<StepProps> = ({
             "text-sm font-medium",
             isActive || isCompleted
               ? "text-foreground"
-              : "text-muted-foreground"
+              : "text-muted-foreground",
           )}
         >
           {title}
@@ -84,7 +84,7 @@ export function Stepper({
 }: StepperProps) {
   return (
     <div className="w-full max-w-3xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div className="flex items-center justify-center flex-col md:flex-row md:justify-between md:items-center gap-4">
         {steps.map((step, index) => (
           <React.Fragment key={step.title}>
             <Step
@@ -95,9 +95,15 @@ export function Stepper({
             />
             {index < steps.length - 1 &&
               (dir === "ltr" ? (
-                <ChevronRight className="hidden md:block text-muted-foreground" />
+                <>
+                  <ChevronRight className="hidden md:block text-muted-foreground" />
+                  <ChevronDown className="md:hidden text-muted-foreground" />
+                </>
               ) : (
-                <ChevronLeft className="hidden md:block text-muted-foreground" />
+                <>
+                  <ChevronLeft className="hidden md:block text-muted-foreground" />
+                  <ChevronDown className=" md:hidden text-muted-foreground" />
+                </>
               ))}
           </React.Fragment>
         ))}

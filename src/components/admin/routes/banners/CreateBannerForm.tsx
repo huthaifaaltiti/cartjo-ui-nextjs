@@ -30,14 +30,14 @@ import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
-import { isArabicOnly } from "@/utils/text/containsArabic";
-import { isEnglishOnly } from "@/utils/text/containsEnglish";
+import { isArabicWithNumOnly } from "@/utils/text/containsArabic";
+import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { MEDIA_CONFIG } from "@/config/media.config";
 
 const createFormSchema = (
-  t: (key: string, options?: Record<string, string | number | Date>) => string
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
 ) => {
   const {
     titleMinChars,
@@ -51,12 +51,12 @@ const createFormSchema = (
     .object({
       bannerImage_ar: z.string().min(imageMinChars, {
         message: t(
-          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.bannerImage_ar.required"
+          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.bannerImage_ar.required",
         ),
       }),
       bannerImage_en: z.string().min(imageMinChars, {
         message: t(
-          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.bannerImage_en.required"
+          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.bannerImage_en.required",
         ),
       }),
       title_ar: z
@@ -64,18 +64,18 @@ const createFormSchema = (
         .min(titleMinChars, {
           message: t(
             "routes.dashboard.routes.banners.components.CreateBannerForm.validations.title_ar.minChars",
-            { min: titleMinChars }
+            { min: titleMinChars },
           ),
         })
         .max(titleMaxChars, {
           message: t(
             "routes.dashboard.routes.banners.components.CreateBannerForm.validations.title_ar.maxChars",
-            { max: titleMaxChars }
+            { max: titleMaxChars },
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.banners.components.CreateBannerForm.validations.title_ar.arabicCharsOnly"
+            "routes.dashboard.routes.banners.components.CreateBannerForm.validations.title_ar.arabicCharsOnly",
           ),
         }),
       title_en: z
@@ -83,34 +83,34 @@ const createFormSchema = (
         .min(titleMinChars, {
           message: t(
             "routes.dashboard.routes.banners.components.CreateBannerForm.validations.title_en.minChars",
-            { min: titleMinChars }
+            { min: titleMinChars },
           ),
         })
         .max(titleMaxChars, {
           message: t(
             "routes.dashboard.routes.banners.components.CreateBannerForm.validations.title_en.maxChars",
-            { max: titleMaxChars }
+            { max: titleMaxChars },
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.banners.components.CreateBannerForm.validations.title_en.englishCharsOnly"
+            "routes.dashboard.routes.banners.components.CreateBannerForm.validations.title_en.englishCharsOnly",
           ),
         }),
       link: z.string().optional(),
       withAction: z.boolean(),
       startDate: z.date({
         required_error: t(
-          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.startDate.required"
+          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.startDate.required",
         ),
         invalid_type_error: t(
-          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.startDate.invalid"
+          "routes.dashboard.routes.banners.components.CreateBannerForm.validations.startDate.invalid",
         ),
       }),
       endDate: z
         .date({
           invalid_type_error: t(
-            "routes.dashboard.routes.banners.components.CreateBannerForm.validations.endDate.invalid"
+            "routes.dashboard.routes.banners.components.CreateBannerForm.validations.endDate.invalid",
           ),
         })
         .nullable()
@@ -125,7 +125,7 @@ const createFormSchema = (
             code: "custom",
             message: t(
               "routes.dashboard.routes.banners.components.CreateBannerForm.validations.link.minChars",
-              { min: bannerLinkMinChars }
+              { min: bannerLinkMinChars },
             ),
           });
         } else if (data.link.length > bannerLinkMaxChars) {
@@ -134,7 +134,7 @@ const createFormSchema = (
             code: "custom",
             message: t(
               "routes.dashboard.routes.banners.components.CreateBannerForm.validations.link.maxChars",
-              { max: bannerLinkMaxChars }
+              { max: bannerLinkMaxChars },
             ),
           });
         }
@@ -147,7 +147,7 @@ const createFormSchema = (
             path: ["endDate"],
             code: "custom",
             message: t(
-              "routes.dashboard.routes.banners.components.CreateBannerForm.validations.endDate.mustBeAfterStart"
+              "routes.dashboard.routes.banners.components.CreateBannerForm.validations.endDate.mustBeAfterStart",
             ),
           });
         }
@@ -264,7 +264,7 @@ const CreateBannerForm = () => {
 
         throw new Error(
           errorData?.message ||
-            t("routes.dashboard.routes.banners.errors.failedCreation")
+            t("routes.dashboard.routes.banners.errors.failedCreation"),
         );
       }
 
@@ -320,7 +320,7 @@ const CreateBannerForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.banners.createBanner.uploadImage_ar"
+                        "routes.dashboard.routes.banners.createBanner.uploadImage_ar",
                       )}
                     </FormLabel>
 
@@ -349,7 +349,7 @@ const CreateBannerForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.banners.createBanner.uploadImage_en"
+                        "routes.dashboard.routes.banners.createBanner.uploadImage_en",
                       )}
                     </FormLabel>
                     <ImageUploader
@@ -383,14 +383,14 @@ const CreateBannerForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.banners.components.CreateBannerForm.fields.title_ar.label"
+                        "routes.dashboard.routes.banners.components.CreateBannerForm.fields.title_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.banners.components.CreateBannerForm.fields.title_ar.placeholder"
+                          "routes.dashboard.routes.banners.components.CreateBannerForm.fields.title_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -409,14 +409,14 @@ const CreateBannerForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.banners.components.CreateBannerForm.fields.title_en.label"
+                        "routes.dashboard.routes.banners.components.CreateBannerForm.fields.title_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.banners.components.CreateBannerForm.fields.title_en.placeholder"
+                          "routes.dashboard.routes.banners.components.CreateBannerForm.fields.title_en.placeholder",
                         )}
                         {...field}
                       />
@@ -443,7 +443,7 @@ const CreateBannerForm = () => {
                   >
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.banners.components.CreateBannerForm.fields.withAction.label"
+                        "routes.dashboard.routes.banners.components.CreateBannerForm.fields.withAction.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -476,14 +476,14 @@ const CreateBannerForm = () => {
                     <FormItem className={getFormItemClassName()}>
                       <FormLabel className="text-sm font-normal">
                         {t(
-                          "routes.dashboard.routes.banners.components.CreateBannerForm.fields.link.label"
+                          "routes.dashboard.routes.banners.components.CreateBannerForm.fields.link.label",
                         )}
                       </FormLabel>
                       <FormControl>
                         <Input
                           className={getInputClassName()}
                           placeholder={t(
-                            "routes.dashboard.routes.banners.components.CreateBannerForm.fields.link.placeholder"
+                            "routes.dashboard.routes.banners.components.CreateBannerForm.fields.link.placeholder",
                           )}
                           {...field}
                         />
@@ -504,7 +504,7 @@ const CreateBannerForm = () => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.banners.components.CreateBannerForm.fields.startDate.label"
+                      "routes.dashboard.routes.banners.components.CreateBannerForm.fields.startDate.label",
                     )}
                   </FormLabel>
                   <FormControl>
@@ -522,7 +522,7 @@ const CreateBannerForm = () => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.banners.components.CreateBannerForm.fields.endDate.label"
+                      "routes.dashboard.routes.banners.components.CreateBannerForm.fields.endDate.label",
                     )}
                   </FormLabel>
                   <FormControl>

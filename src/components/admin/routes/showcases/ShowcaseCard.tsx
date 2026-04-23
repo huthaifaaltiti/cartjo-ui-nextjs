@@ -12,19 +12,19 @@ type ShowcaseCardProps = {
   deleteShowcase: (
     accessToken: string | null,
     showcaseId: string,
-    lang: Locale
+    lang: Locale,
   ) => Promise<BaseResponse>;
   unDeleteShowcase: (
     accessToken: string | null,
     showcaseId: string,
-    lang: Locale
+    lang: Locale,
   ) => Promise<BaseResponse>;
   accessToken: string | null;
   switchShowcaseActiveStatus: (
     token: string | null,
     lang: string,
     isActive: boolean,
-    showcaseId: string
+    showcaseId: string,
   ) => Promise<BaseResponse>;
   queryKey: string;
 };
@@ -65,6 +65,18 @@ const ShowcaseCard = ({
         {showcase.type && (
           <span className="ml-2 px-[5px] py-[0.8px] text-[10px] rounded-full bg-blue-100 text-blue-800 capitalize">
             {showcase.type}
+          </span>
+        )}
+
+        {showcase.isExpired && (
+          <span className="ml-2 px-[5px] py-[0.8px] text-[10px] rounded-full bg-gray-200 text-gray-700">
+            {t("general.items.states.expired")}
+          </span>
+        )}
+
+        {showcase.isSystem && (
+          <span className="ml-2 px-[5px] py-[0.8px] text-[10px] rounded-full bg-fuchsia-200 text-fuchsia-700">
+            {t("general.items.states.system")}
           </span>
         )}
       </div>
@@ -123,6 +135,40 @@ const ShowcaseCard = ({
           </p>
         )}
       </div>
+
+      {showcase?.startDate && showcase.endDate && (
+        <div className="text-xs text-gray-600 my-1 border-y py-3 mb-3 flex items-center gap-1">
+          {showcase?.startDate && (
+            <p>
+              {t("general.date.startDate")}:{" "}
+              {new Date(showcase.startDate).toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              })}
+            </p>
+          )}
+
+          {showcase.endDate && (
+            <p>
+              {t("general.date.endDate")}:{" "}
+              {new Date(showcase.endDate).toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              })}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Creator Info */}
       {showcase?.createdBy && (

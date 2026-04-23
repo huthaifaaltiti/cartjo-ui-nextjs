@@ -21,7 +21,19 @@ const RecommendedProducts = ({ title, subtitle }: RecommendedProductsProps) => {
   const { data, isLoading, isFetching, isFetched, isError, error } =
     useSuggestedProductQuery(locale, SUGGESTED_PRODUCTS_LIMIT);
 
-  const products = useMemo(() => data?.data ?? null, [data]);
+  const products = useMemo(() => {
+    if (!data?.data) return [];
+
+    return data.data.filter(
+      (p: Product) =>
+        p.isActive &&
+        !p.isDeleted &&
+        p.categoryId?.isActive &&
+        !p.categoryId?.isDeleted &&
+        p.subCategoryId?.isActive &&
+        !p.subCategoryId?.isDeleted,
+    );
+  }, [data]);
 
   const { showLoader, showError, showNoData, showData } = getQueryUIState<
     Product[]

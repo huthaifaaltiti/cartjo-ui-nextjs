@@ -7,7 +7,7 @@ import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { WishlistContextProvider } from "@/contexts/Wishlist.context";
-import { getCartQueryOptions } from "@/hooks/react-query/useCartQuery";
+import { getCartQueryOptions } from "@/hooks/react-query/query-options/cartQueryOptions";
 
 const PaymentCheckoutPage: React.FC = async () => {
   const token = await getAccessTokenFromServerSession();
@@ -17,7 +17,7 @@ const PaymentCheckoutPage: React.FC = async () => {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchInfiniteQuery<DataResponse<Cart>>(
-    getCartQueryOptions(token)
+    getCartQueryOptions(token),
   );
 
   const dehydratedState = dehydrate(queryClient);
