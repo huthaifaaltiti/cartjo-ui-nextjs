@@ -12,19 +12,19 @@ type TypeHintConfigCardProps = {
   deleteTypeHintConfig: (
     accessToken: string | null,
     typeHintConfigId: string,
-    lang: Locale
+    lang: Locale,
   ) => Promise<BaseResponse>;
   unDeleteTypeHintConfig: (
     accessToken: string | null,
     typeHintConfigId: string,
-    lang: Locale
+    lang: Locale,
   ) => Promise<BaseResponse>;
   accessToken: string | null;
   switchTypeHintConfigActiveStatus: (
     accessToken: string | null,
     lang: string,
     isActive: boolean,
-    typeHintConfigId: string
+    typeHintConfigId: string,
   ) => Promise<BaseResponse>;
   queryKey: string;
 };
@@ -62,6 +62,18 @@ const TypeHintConfigCard = ({
             {t("general.items.states.deleted")}
           </span>
         )}
+
+        {typeHintConfig.isExpired && (
+          <span className="ml-2 px-[5px] py-[0.8px] text-[10px] rounded-full bg-gray-200 text-gray-700">
+            {t("general.items.states.expired")}
+          </span>
+        )}
+
+        {typeHintConfig.isSystem && (
+          <span className="ml-2 px-[5px] py-[0.8px] text-[10px] rounded-full bg-fuchsia-200 text-fuchsia-700">
+            {t("general.items.states.system")}
+          </span>
+        )}
       </div>
 
       {/* Title / Label */}
@@ -97,6 +109,40 @@ const TypeHintConfigCard = ({
           </p>
         )}
       </div>
+
+      {typeHintConfig?.startDate && typeHintConfig.endDate && (
+        <div className="text-xs text-gray-600 my-1 border-y py-3 mb-3 flex items-center gap-1">
+          {typeHintConfig?.startDate && (
+            <p>
+              {t("general.date.startDate")}:{" "}
+              {new Date(typeHintConfig.startDate).toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              })}
+            </p>
+          )}
+
+          {typeHintConfig.endDate && (
+            <p>
+              {t("general.date.endDate")}:{" "}
+              {new Date(typeHintConfig.endDate).toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              })}
+            </p>
+          )}
+        </div>
+      )}
 
       {!typeHintConfig.isSystem && (
         <div className="mt-auto">

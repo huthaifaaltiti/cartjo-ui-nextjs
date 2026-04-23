@@ -8,6 +8,7 @@ import InfiniteScrollList, {
 } from "../../../shared/InfiniteScrollList";
 import { useProducts } from "@/contexts/Products.context";
 import DashboardProductCard from "./DashboardProductCard";
+import { ViewMode } from "@/enums/viewMode.enum";
 
 type ProductsListProps = {
   initialProducts: Product[];
@@ -32,6 +33,7 @@ const ProductsList = ({ initialProducts }: ProductsListProps) => {
     error,
   } = useProductsQuery({
     search: searchQuery,
+    viewMode: ViewMode.ADMIN,
   });
 
   const products = data?.pages.flatMap((page) => page.data) || initialProducts;

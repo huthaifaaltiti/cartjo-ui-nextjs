@@ -32,9 +32,11 @@ import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { MEDIA_CONFIG } from "@/config/media.config";
+import { isArabicOnly } from "@/utils/text/containsArabic";
+import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 
 const editFormSchema = (
-  t: (key: string, options?: Record<string, string | number | Date>) => string
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
 ) => {
   const { nameMinChars, nameMaxChars, imageMinChars } =
     validationConfig.category;
@@ -42,12 +44,12 @@ const editFormSchema = (
   return z.object({
     categoryImage_ar: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.categories.components.EditCategoryForm.validations.categoryImage_ar.required"
+        "routes.dashboard.routes.categories.components.EditCategoryForm.validations.categoryImage_ar.required",
       ),
     }),
     categoryImage_en: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.categories.components.EditCategoryForm.validations.categoryImage_en.required"
+        "routes.dashboard.routes.categories.components.EditCategoryForm.validations.categoryImage_en.required",
       ),
     }),
     name_ar: z
@@ -55,13 +57,18 @@ const editFormSchema = (
       .min(nameMinChars, {
         message: t(
           "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_ar.minChars",
-          { min: nameMinChars }
+          { min: nameMinChars },
         ),
       })
       .max(nameMaxChars, {
         message: t(
           "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_ar.maxChars",
-          { max: nameMaxChars }
+          { max: nameMaxChars },
+        ),
+      })
+      .refine((val) => isArabicOnly(val), {
+        message: t(
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.arabicCharsOnly",
         ),
       }),
     name_en: z
@@ -69,13 +76,18 @@ const editFormSchema = (
       .min(nameMinChars, {
         message: t(
           "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_en.minChars",
-          { min: nameMinChars }
+          { min: nameMinChars },
         ),
       })
       .max(nameMaxChars, {
         message: t(
           "routes.dashboard.routes.categories.components.EditCategoryForm.validations.name_en.maxChars",
-          { max: nameMaxChars }
+          { max: nameMaxChars },
+        ),
+      })
+      .refine((val) => isEnglishWithNumOnly(val), {
+        message: t(
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.englishCharsOnly",
         ),
       }),
   });
@@ -179,7 +191,7 @@ const EditCategoryForm = ({ category }: Props) => {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -239,7 +251,7 @@ const EditCategoryForm = ({ category }: Props) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.editCategory.uploadArImage"
+                        "routes.dashboard.routes.categories.editCategory.uploadArImage",
                       )}
                     </FormLabel>
                     <ImageUploader
@@ -267,7 +279,7 @@ const EditCategoryForm = ({ category }: Props) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.editCategory.uploadEnImage"
+                        "routes.dashboard.routes.categories.editCategory.uploadEnImage",
                       )}
                     </FormLabel>
                     <ImageUploader
@@ -301,14 +313,14 @@ const EditCategoryForm = ({ category }: Props) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.components.EditCategoryForm.fields.name_ar.label"
+                        "routes.dashboard.routes.categories.components.EditCategoryForm.fields.name_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.categories.components.EditCategoryForm.fields.name_ar.placeholder"
+                          "routes.dashboard.routes.categories.components.EditCategoryForm.fields.name_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -327,14 +339,14 @@ const EditCategoryForm = ({ category }: Props) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.components.EditCategoryForm.fields.name_en.label"
+                        "routes.dashboard.routes.categories.components.EditCategoryForm.fields.name_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.categories.components.EditCategoryForm.fields.name_en.placeholder"
+                          "routes.dashboard.routes.categories.components.EditCategoryForm.fields.name_en.placeholder",
                         )}
                         {...field}
                       />
@@ -351,7 +363,7 @@ const EditCategoryForm = ({ category }: Props) => {
             loading={registerMutation.isPending}
             withAnimate={true}
             label={t(
-              "routes.auth.components.AuthTabs.components.register.actions.proceed"
+              "routes.auth.components.AuthTabs.components.register.actions.proceed",
             )}
             loadingLabel={t("general.loadingStates.loadingApi")}
           />

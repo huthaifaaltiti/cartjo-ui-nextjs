@@ -1,15 +1,14 @@
-import { memo } from "react";
 import MaxWidthWrapper from "@/components/shared/MaxWidthWrapper";
 import CategoriesEmblaCarousel from "./CategoriesEmblaCarousel";
 
 const CategoriesCarouselSection = () => {
   return (
-    <section className="w-full min-h-44 h-auto bg-white flex items-center justify-center">
-      <MaxWidthWrapper className="w-full h-full mt-8 mb-12">
+    <section className="w-full bg-white flex items-center justify-center">
+      <MaxWidthWrapper className="w-full mt-6 mb-8 sm:mt-8 sm:mb-10 md:mt-10 md:mb-12 lg:mt-12 lg:mb-16">
         <CategoriesEmblaCarousel />
       </MaxWidthWrapper>
     </section>
   );
 };
 
-export default memo(CategoriesCarouselSection);
+export default CategoriesCarouselSection;

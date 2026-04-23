@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
-import { FetchPaginatedArgs } from "@/types/common";
+import { FetchPaginatedArgs, ViewMode } from "@/types/common";
 import { Product } from "@/types/product.type";
 import { DataListResponse } from "@/types/service-response.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
@@ -18,13 +18,17 @@ export const fetchProducts = async ({
   limit = PAGINATION_LIMITS.PRODUCTS,
   lastId,
   search,
-}: FetchPaginatedArgs): Promise<DataListResponse<Product>> => {
+  viewMode,
+}: FetchPaginatedArgs & { viewMode?: ViewMode }): Promise<
+  DataListResponse<Product>
+> => {
   const url = new URL(API_ENDPOINTS.DASHBOARD.PRODUCTS.ALL);
 
   if (lang) url.searchParams.append("lang", lang.toString());
   if (limit) url.searchParams.append("limit", limit.toString());
   if (lastId) url.searchParams.append("lastId", lastId.toString());
   if (search) url.searchParams.append("search", search.toString());
+  if (viewMode) url.searchParams.append("viewMode", viewMode);
 
   const resp = await fetch(url, {
     headers: {
@@ -88,13 +92,19 @@ export const getCategoriesPicksQueryOptions = ({
   gcTime: GC_TIME,
 });
 
-export const useProductsQuery = ({ search }: { search?: string }) => {
+export const useProductsQuery = ({
+  search,
+  viewMode,
+}: {
+  search?: string;
+  viewMode?: ViewMode;
+}) => {
   const { data: session } = useSession();
   const locale = useLocale();
   const accessToken = (session as CustomSession)?.accessToken;
 
   return useInfiniteQuery<DataListResponse<Product>>({
-    queryKey: ["products", search],
+    queryKey: ["products", search, viewMode],
     queryFn: ({ pageParam }) => {
       if (!accessToken) throw new Error("No access token found");
 
@@ -106,6 +116,7 @@ export const useProductsQuery = ({ search }: { search?: string }) => {
           pageParam && typeof pageParam === "string" ? pageParam : undefined,
 
         search,
+        viewMode,
       });
     },
     getNextPageParam: (lastPage) => {

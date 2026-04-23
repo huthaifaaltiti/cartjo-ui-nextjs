@@ -1,5 +1,6 @@
 "use client";
 
+import { validationConfig } from "@/config/validationConfig";
 import { RootState } from "@/redux/store";
 import { CheckCircle2 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -17,11 +18,18 @@ const PasswordRules: React.FC<PasswordRulesProps> = ({
 }) => {
   const { dir } = useSelector((state: RootState) => state.general);
   const t = useTranslations(
-    "routes.auth.components.AuthTabs.components.PasswordRules.rules"
+    "routes.auth.components.AuthTabs.components.PasswordRules.rules",
   );
 
   const rules = [
-    { label: t("charsCount"), test: (pw: string) => pw.length >= 8 },
+    {
+      label: t("minCharsCount", { min: validationConfig.auth.password.min }),
+      test: (pw: string) => pw.length >= validationConfig.auth.password.min,
+    },
+    {
+      label: t("maxCharsCount", { max: validationConfig.auth.password.max }),
+      test: (pw: string) => pw.length <= validationConfig.auth.password.max,
+    },
     {
       label: t("uppercase"),
       test: (pw: string) => /[A-Z]/.test(pw),

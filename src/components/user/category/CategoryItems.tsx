@@ -74,7 +74,17 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
   const categoryProducts = useMemo(() => {
     return (
       (data?.pages?.flatMap((page) => page?.data || []) as Product[]) ?? []
-    );
+    )?.filter((p: Product) => {
+      const isProductValid = p && p.isActive && !p.isDeleted;
+
+      const isCategoryValid =
+        p.categoryId && p.categoryId.isActive && !p.categoryId.isDeleted;
+
+      const isSubCategoryValid =
+        p.subCategoryId.isActive && !p.subCategoryId.isDeleted;
+
+      return isProductValid && isCategoryValid && isSubCategoryValid;
+    });
   }, [data]);
 
   const handleApplyPriceFilter = useCallback(
@@ -147,31 +157,6 @@ const CategoryItems = ({ categoryId }: { categoryId: string }) => {
     return (
       <div className={containerClass}>
         <div className="w-full flex flex-col gap-4 mt-5">
-          {/* Filters */}
-          <div className="w-full flex items-center flex-wrap gap-4 border-y border-grey-50/20 py-1">
-            <PriceRange
-              setPriceFrom={setPriceFrom}
-              setPriceTo={setPriceTo}
-              onApplyFilter={handleApplyPriceFilter}
-              initialFrom={priceFrom}
-              initialTo={priceTo}
-            />
-            <RatingRange
-              setRatingFrom={setRatingFrom}
-              onApplyFilter={handleApplyRangeFilter}
-              initialFrom={ratingFrom}
-            />
-            <DateRangeWithDaysNum
-              setCreatedFrom={setCreatedFrom}
-              setCreatedTo={setCreatedTo}
-              setBeforeNumOfDays={setBeforeNumOfDays}
-              onApplyFilter={handleApplyDateFilter}
-              initialCreatedFrom={createdFrom}
-              initialCreatedTo={createdTo}
-              initialBeforeNumOfDays={beforeNumOfDays}
-            />
-          </div>
-
           {/* items */}
           <div className="w-full">
             <NoCategoryItems />;

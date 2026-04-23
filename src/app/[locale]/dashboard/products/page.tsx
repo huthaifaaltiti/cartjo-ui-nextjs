@@ -6,10 +6,11 @@ import { fetchProducts } from "@/hooks/react-query/useProductsQuery";
 import { fetchCategories } from "@/hooks/react-query/useCategoriesQuery";
 import ProductsPage from "@/components/admin/routes/products/ProductsPage";
 import { requireAuth } from "@/utils/authRedirect";
+import { ViewMode } from "@/enums/viewMode.enum";
 
 export default async function Page() {
   const accessToken = await getAccessTokenFromServerSession();
-  requireAuth(accessToken)
+  requireAuth(accessToken);
 
   let products: Product[] = [];
   let categories: Category[] = [];
@@ -18,6 +19,7 @@ export default async function Page() {
     const prodsResp = await fetchProducts({
       token: accessToken,
       limit: PAGINATION_LIMITS.PRODUCTS,
+      viewMode: ViewMode.ADMIN,
     });
 
     const catsResp = await fetchCategories({

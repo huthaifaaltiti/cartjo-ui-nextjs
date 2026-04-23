@@ -34,6 +34,7 @@ import {
   isPhoneNumberLike,
   normalizePhoneNumber,
 } from "@/utils/normalizePhoneNumber";
+import { validationConfig } from "@/config/validationConfig";
 
 const LoginForm = () => {
   const t = useTranslations();
@@ -123,14 +124,22 @@ const LoginForm = () => {
   const formSchema = z.object({
     identifier: z
       .string()
-      .min(3, {
+      .min(1, {
         message: t(
-          "routes.auth.components.AuthTabs.components.login.validations.identifier.min",
+          "routes.auth.components.AuthTabs.components.login.validations.identifier.required",
         ),
       })
-      .max(50, {
+      .trim()
+      .min(validationConfig.auth.identifier.min, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.login.validations.identifier.min",
+          { min: validationConfig.auth.identifier.min },
+        ),
+      })
+      .max(validationConfig.auth.identifier.max, {
         message: t(
           "routes.auth.components.AuthTabs.components.login.validations.identifier.max",
+          { max: validationConfig.auth.identifier.max },
         ),
       })
       .refine(
@@ -144,11 +153,26 @@ const LoginForm = () => {
           ),
         },
       ),
-    password: z.string().min(6, {
-      message: t(
-        "routes.auth.components.AuthTabs.components.login.validations.password.min",
-      ),
-    }),
+    password: z
+      .string()
+      .min(1, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.login.validations.password.required",
+        ),
+      })
+      .trim()
+      .min(validationConfig.auth.password.min, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.login.validations.password.min",
+          { min: validationConfig.auth.password.min },
+        ),
+      })
+      .max(validationConfig.auth.password.max, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.login.validations.password.max",
+          { max: validationConfig.auth.password.max },
+        ),
+      }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -196,6 +220,8 @@ const LoginForm = () => {
               </FormLabel>
               <FormControl>
                 <Input
+                  dir="ltr"
+                  autoComplete="username"
                   className={`placeholder:text-xs text-xs ${
                     isArabic
                       ? "placeholder:text-right"
@@ -224,7 +250,7 @@ const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
-                <FormLabel className="text-sm text-text-primary-400 font-normal">
+                <FormLabel className="text-sm font-normal">
                   {t(
                     "routes.auth.components.AuthTabs.components.login.dataSet.password.label",
                   )}
@@ -232,9 +258,14 @@ const LoginForm = () => {
                 <FormControl>
                   <div className="relative">
                     <Input
+                      autoComplete="current-password"
                       dir="ltr"
                       type={showPassword ? "text" : "password"}
-                      className={`placeholder:text-xs text-xs`}
+                      className={`placeholder:text-xs text-xs pr-10 ${
+                        isArabic
+                          ? "placeholder:text-right"
+                          : "placeholder:text-left"
+                      }`}
                       placeholder={t(
                         "routes.auth.components.AuthTabs.components.login.dataSet.password.placeholder",
                       )}
@@ -243,7 +274,7 @@ const LoginForm = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className={`absolute inset-y-0 right-2 flex items-center text-gray-500`}
+                      className={`absolute inset-y-0 right-2 flex items-center text-gray-500 pl-2 border-l`}
                       tabIndex={-1}
                     >
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}

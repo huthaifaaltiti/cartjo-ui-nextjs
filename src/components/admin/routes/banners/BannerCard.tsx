@@ -13,19 +13,19 @@ type BannerCardProps = {
   deleteBanner: (
     accessToken: string | null,
     userId: string,
-    lang: Locale
+    lang: Locale,
   ) => Promise<BaseResponse>;
   unDeleteBanner: (
     accessToken: string | null,
     userId: string,
-    lang: Locale
+    lang: Locale,
   ) => Promise<BaseResponse>;
   accessToken: string | null;
   switchBannerActiveStatus: (
     token: string | null,
     lang: string,
     isActive: boolean,
-    userId: string
+    userId: string,
   ) => Promise<BaseResponse>;
   queryKey: string;
 };
@@ -60,6 +60,20 @@ const BannerCard = ({
         {banner.isDeleted && (
           <span className="ml-2 px-[5px] py-[0.8px] text-[10px] rounded-full bg-gray-200 text-gray-700">
             {t("general.items.states.deleted")}
+          </span>
+        )}
+
+        {banner.isExpired && (
+          <span className="ml-2 px-[5px] py-[0.8px] text-[10px] rounded-full bg-gray-200 text-gray-700">
+            {t("general.items.states.expired")}
+          </span>
+        )}
+
+        {banner.isDefault && (
+          <span
+            className={`px-[5px] py-[0.8px] text-[10px] rounded-full bg-orange-100 text-orange-800`}
+          >
+            {t("general.items.states.default")}
           </span>
         )}
       </div>
