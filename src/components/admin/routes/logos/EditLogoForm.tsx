@@ -34,7 +34,7 @@ import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { MEDIA_CONFIG } from "@/config/media.config";
 
 const editFormSchema = (
-  t: (key: string, options?: Record<string, string | number | Date>) => string
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
 ) => {
   const {
     nameMinChars,
@@ -47,7 +47,7 @@ const editFormSchema = (
   return z.object({
     logoImage: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.logos.components.EditLogoForm.validations.logoImage.required"
+        "routes.dashboard.routes.logos.components.EditLogoForm.validations.logoImage.required",
       ),
     }),
     name: z
@@ -55,13 +55,13 @@ const editFormSchema = (
       .min(nameMinChars, {
         message: t(
           "routes.dashboard.routes.logos.components.EditLogoForm.validations.name.minChars",
-          { min: nameMinChars }
+          { min: nameMinChars },
         ),
       })
       .max(nameMaxChars, {
         message: t(
           "routes.dashboard.routes.logos.components.EditLogoForm.validations.name_ar.maxChars",
-          { max: nameMaxChars }
+          { max: nameMaxChars },
         ),
       }),
     altText: z
@@ -69,13 +69,13 @@ const editFormSchema = (
       .min(altTextMinChars, {
         message: t(
           "routes.dashboard.routes.logos.components.EditLogoForm.validations.altText.minChars",
-          { min: altTextMinChars }
+          { min: altTextMinChars },
         ),
       })
       .max(altTextMaxChars, {
         message: t(
           "routes.dashboard.routes.logos.components.EditLogoForm.validations.altText.maxChars",
-          { max: altTextMaxChars }
+          { max: altTextMaxChars },
         ),
       }),
   });
@@ -153,14 +153,14 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
           errorData?.message ||
-            t("routes.dashboard.routes.logos.editLogo.actionFailed")
+            t("routes.dashboard.routes.logos.editLogo.actionFailed"),
         );
       }
 
@@ -177,9 +177,6 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
           description: data.message,
           dismissText: t("general.toast.dismissText"),
         });
-
-        form.reset();
-        imageUploaderRef.current?.clear();
 
         await invalidateQuery(queryClient, queryKey);
       }
@@ -243,14 +240,14 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.logos.components.EditLogoForm.fields.name.label"
+                        "routes.dashboard.routes.logos.components.EditLogoForm.fields.name.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.logos.components.EditLogoForm.fields.name.placeholder"
+                          "routes.dashboard.routes.logos.components.EditLogoForm.fields.name.placeholder",
                         )}
                         {...field}
                       />
@@ -269,14 +266,14 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.logos.components.EditLogoForm.fields.altText.label"
+                        "routes.dashboard.routes.logos.components.EditLogoForm.fields.altText.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.logos.components.EditLogoForm.fields.altText.placeholder"
+                          "routes.dashboard.routes.logos.components.EditLogoForm.fields.altText.placeholder",
                         )}
                         {...field}
                       />

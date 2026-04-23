@@ -8,10 +8,11 @@ import { useActiveShowcasesQuery } from "@/hooks/react-query/useShowcasesQuery";
 import ShowcaseSection from "./ShowcaseSection";
 import LoadingDotsFlexible from "@/components/shared/loaders/LoadingDotsFlexible";
 import ErrorMessage from "@/components/shared/ErrorMessage";
-import NoData from "@/components/shared/NoData";
 import ShowcaseProductRowCard from "./ShowcaseProductVertCard";
 import ShowcaseProduct212 from "./ShowcaseProduct212";
 import ShowcaseProduct121 from "./ShowcaseProduct121";
+import { Showcase } from "@/types/showcase.type";
+import { Product } from "@/types/product.type";
 
 const HomeShowcaseContent = () => {
   const locale = useLocale();
@@ -21,14 +22,34 @@ const HomeShowcaseContent = () => {
   const { data, isLoading, isFetching, isError, error } =
     useActiveShowcasesQuery(PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE);
 
-  const activeShowcasesList = useMemo(
-    () =>
+  const activeShowcasesList = useMemo(() => {
+    if (!data?.data) return [];
+
+    return (
       data?.data
-        .filter((as) => as.items.length > 0)
-        ?.sort((a, b) => (a.priority ?? Infinity) - (b.priority ?? Infinity)) ??
-      [],
-    [data]
-  );
+        .map((sc: Showcase) => {
+          const filteredItems = sc.items.filter(
+            (item: Product) =>
+              item?.isActive &&
+              !item?.isDeleted &&
+              item?.categoryId?.isActive &&
+              !item?.categoryId?.isDeleted &&
+              item?.subCategoryId?.isActive &&
+              !item?.subCategoryId?.isDeleted,
+          );
+
+          return {
+            ...sc,
+            items: filteredItems,
+            // items: sc.items,
+          };
+        })
+        // keep only showcases that still have items
+        .filter((sc) => sc.items.length > 0)
+        // sort by priority
+        .sort((a, b) => (a.priority ?? Infinity) - (b.priority ?? Infinity))
+    );
+  }, [data]);
 
   // Generate one random layout type per showcase
   const showcaseLayouts = useMemo(() => {
@@ -73,14 +94,7 @@ const HomeShowcaseContent = () => {
   }
 
   if (showNoData) {
-    return (
-      <div className={containerClass}>
-        <NoData
-          title={t("components.CategoriesCarouselClient.noData")}
-          description={t("components.CategoriesCarouselClient.checkLater")}
-        />
-      </div>
-    );
+    return null;
   }
 
   if (showData) {

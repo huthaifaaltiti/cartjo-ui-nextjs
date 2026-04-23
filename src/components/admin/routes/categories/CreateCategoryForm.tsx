@@ -27,7 +27,7 @@ import LoadingButton from "@/components/shared/LoadingButton";
 import { User } from "@/types/user";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { invalidateQuery } from "@/utils/queryUtils";
-import { isEnglishOnly } from "@/utils/text/containsEnglish";
+import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
@@ -35,7 +35,7 @@ import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { MEDIA_CONFIG } from "@/config/media.config";
 
 const createFormSchema = (
-  t: (key: string, options?: Record<string, string | number | Date>) => string
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
 ) => {
   const { nameMinChars, nameMaxChars, imageMinChars } =
     validationConfig.category;
@@ -43,12 +43,12 @@ const createFormSchema = (
   return z.object({
     categoryImage_ar: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage_ar.required"
+        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage_ar.required",
       ),
     }),
     categoryImage_en: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage_en.required"
+        "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.categoryImage_en.required",
       ),
     }),
     name_ar: z
@@ -56,18 +56,18 @@ const createFormSchema = (
       .min(nameMinChars, {
         message: t(
           "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.minChars",
-          { min: nameMinChars }
+          { min: nameMinChars },
         ),
       })
       .max(nameMaxChars, {
         message: t(
           "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.maxChars",
-          { max: nameMaxChars }
+          { max: nameMaxChars },
         ),
       })
       .refine((val) => isArabicOnly(val), {
         message: t(
-          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.arabicCharsOnly"
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_ar.arabicCharsOnly",
         ),
       }),
     name_en: z
@@ -75,18 +75,18 @@ const createFormSchema = (
       .min(nameMinChars, {
         message: t(
           "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.minChars",
-          { min: nameMinChars }
+          { min: nameMinChars },
         ),
       })
       .max(nameMaxChars, {
         message: t(
           "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.maxChars",
-          { max: nameMaxChars }
+          { max: nameMaxChars },
         ),
       })
-      .refine((val) => isEnglishOnly(val), {
+      .refine((val) => isEnglishWithNumOnly(val), {
         message: t(
-          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.englishCharsOnly"
+          "routes.dashboard.routes.categories.components.CreateCategoryForm.validations.name_en.englishCharsOnly",
         ),
       }),
   });
@@ -190,8 +190,8 @@ const CreateCategoryForm = () => {
         throw new Error(
           errorData?.message ||
             t(
-              "routes.dashboard.routes.categories.createCategory.creationFailed"
-            )
+              "routes.dashboard.routes.categories.createCategory.creationFailed",
+            ),
         );
       }
 
@@ -251,7 +251,7 @@ const CreateCategoryForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.createCategory.uploadArImage"
+                        "routes.dashboard.routes.categories.createCategory.uploadArImage",
                       )}
                     </FormLabel>
                     <ImageUploader
@@ -279,7 +279,7 @@ const CreateCategoryForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.createCategory.uploadEnImage"
+                        "routes.dashboard.routes.categories.createCategory.uploadEnImage",
                       )}
                     </FormLabel>
                     <ImageUploader
@@ -313,14 +313,14 @@ const CreateCategoryForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_ar.label"
+                        "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_ar.placeholder"
+                          "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -339,14 +339,14 @@ const CreateCategoryForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_en.label"
+                        "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_en.placeholder"
+                          "routes.dashboard.routes.categories.components.CreateCategoryForm.fields.name_en.placeholder",
                         )}
                         {...field}
                       />
@@ -363,7 +363,7 @@ const CreateCategoryForm = () => {
             loading={registerMutation.isPending}
             withAnimate={true}
             label={t(
-              "routes.auth.components.AuthTabs.components.register.actions.proceed"
+              "routes.dashboard.routes.categories.components.CreateCategoryForm.actions.create",
             )}
             loadingLabel={t("general.loadingStates.loadingApi")}
           />
