@@ -1,11 +1,10 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
@@ -36,92 +35,8 @@ import {
 } from "@/utils/normalizePhoneNumber";
 import { validationConfig } from "@/config/validationConfig";
 
-const LoginForm = () => {
-  const t = useTranslations();
-  const locale = useLocale();
-  const isArabic = isArabicLocale(locale);
-  const dir = isArabic ? "rtl" : "ltr";
-
-  const dispatch = useDispatch<AppDispatch>();
-  const {
-    status: loginStatus,
-    token,
-    message,
-    isLoading,
-  } = useSelector((state: RootState) => state.login);
-
-  const router = useRouter();
-
-  const { data: sessionData, status } = useSession();
-  const { reVerify } = useVerifyEmail();
-
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const [resend] = useQueryState("resend", {
-    defaultValue: false,
-    parse: (value) => Boolean(value),
-  });
-  const [identifier] = useQueryState("identifier", {
-    defaultValue: "",
-    parse: (value) => String(value),
-  });
-  const [redirectTo] = useQueryState("redirectTo", {
-    defaultValue: "",
-    parse: (value) => String(value),
-  });
-
-  useEffect(() => {
-    dispatch(resetLoginState());
-
-    if (loginStatus === "success" && token) {
-      showSuccessToast({
-        title: t("general.toast.title.success"),
-        description: message,
-        dismissText: t("general.toast.dismissText"),
-      });
-
-      // Sign/NextAuth
-      signIn("credentials", { token, redirect: false }).then((res) => {
-        if (res?.ok) {
-          if (resend && redirectTo) {
-            router.push(decodeURIComponent(redirectTo));
-          } else {
-            router.push("/");
-          }
-        } else {
-          showErrorToast({
-            title: t("general.toast.title.error"),
-            description: "Failed to sign in with token",
-            dismissText: t("general.toast.dismissText"),
-          });
-        }
-      });
-
-      dispatch(resetLoginState());
-    }
-
-    if (loginStatus === "error") {
-      showErrorToast({
-        title: t("general.toast.title.error"),
-        description: message,
-        dismissText: t("general.toast.dismissText"),
-      });
-    }
-  }, [loginStatus, token, message]);
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      if (resend && sessionData?.user?.email) {
-        reVerify(sessionData.user.email, locale)
-          .then(() => redirectTo && router.push(decodeURIComponent(redirectTo)))
-          .catch(console.error);
-      } else if (redirectTo) {
-        router.push(decodeURIComponent(redirectTo));
-      }
-    }
-  }, [status, resend, sessionData, locale, router, redirectTo, reVerify]);
-
-  const formSchema = z.object({
+const createFormSchema = (t: ReturnType<typeof useTranslations>) =>
+  z.object({
     identifier: z
       .string()
       .min(1, {
@@ -175,18 +90,109 @@ const LoginForm = () => {
       }),
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      identifier: identifier ?? "",
-      password: "",
-    },
+const LoginForm = () => {
+  const t = useTranslations();
+  const locale = useLocale();
+  const isArabic = isArabicLocale(locale);
+  const dir = isArabic ? "rtl" : "ltr";
+
+  const formSchema = useMemo(() => createFormSchema(t), [t]);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    status: loginStatus,
+    token,
+    message,
+    isLoading,
+  } = useSelector((state: RootState) => state.login);
+
+  const router = useRouter();
+
+  const { data: sessionData, status } = useSession();
+  const { reVerify } = useVerifyEmail();
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const [resend] = useQueryState("resend", {
+    defaultValue: false,
+    parse: (value) => Boolean(value),
+  });
+  const [identifier] = useQueryState("identifier", {
+    defaultValue: "",
+    parse: (value) => String(value),
+  });
+  const [redirectTo] = useQueryState("redirectTo", {
+    defaultValue: "",
+    parse: (value) => String(value),
   });
 
-  const loginMutation = useMutation({
-    mutationFn: async (data: z.infer<typeof formSchema>) => {
-      await dispatch(login({ ...data, lang: locale }));
-    },
+  useEffect(() => {
+    dispatch(resetLoginState());
+    return () => {
+      dispatch(resetLoginState());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (loginStatus === "success" && token) {
+      showSuccessToast({
+        title: t("general.toast.title.success"),
+        description: message,
+        dismissText: t("general.toast.dismissText"),
+      });
+
+      // Sign/NextAuth
+      signIn("credentials", { token, redirect: false }).then((res) => {
+        if (res?.ok) {
+          dispatch(resetLoginState());
+
+          if (resend && redirectTo) {
+            router.push(decodeURIComponent(redirectTo));
+          } else {
+            router.push("/");
+          }
+        } else {
+          showErrorToast({
+            title: t("general.toast.title.error"),
+            description: "Failed to sign in with token",
+            dismissText: t("general.toast.dismissText"),
+          });
+        }
+      });
+    }
+
+    if (loginStatus === "error") {
+      showErrorToast({
+        title: t("general.toast.title.error"),
+        description: message,
+        dismissText: t("general.toast.dismissText"),
+      });
+    }
+  }, [loginStatus, token, message]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      if (resend && sessionData?.user?.email) {
+        reVerify(sessionData.user.email, locale)
+          .then(() => redirectTo && router.push(decodeURIComponent(redirectTo)))
+          .catch(console.error);
+      } else if (redirectTo) {
+        router.push(decodeURIComponent(redirectTo));
+      }
+    }
+  }, [status, resend, sessionData, locale, router, redirectTo, reVerify]);
+
+  const defaultValues = useMemo(
+    () => ({
+      identifier: identifier ?? "",
+      password: "",
+    }),
+    [],
+  );
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues,
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -197,7 +203,9 @@ const LoginForm = () => {
       ? normalizePhoneNumber(values.identifier, COUNTRY_CONFIGS.JO)
       : values.identifier;
 
-    loginMutation.mutate({ ...values, identifier: normalizedIdentifier });
+    await dispatch(
+      login({ ...values, identifier: normalizedIdentifier, lang: locale }),
+    );
   };
 
   return (
@@ -291,14 +299,14 @@ const LoginForm = () => {
 
         <LoadingButton
           type="submit"
-          loading={(loginMutation?.isPending || isLoading) ?? false}
+          loading={isLoading ?? false}
           withAnimate={true}
           dir={dir}
           label={t(
             "routes.auth.components.AuthTabs.components.login.actions.proceed",
           )}
           loadingLabel={t(
-            "routes.auth.components.AuthTabs.components.login.actions.proceed",
+            "routes.auth.components.AuthTabs.components.login.actions.proceeding",
           )}
         />
       </form>
