@@ -24,8 +24,8 @@ import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
-import { isArabicOnly } from "@/utils/text/containsArabic";
-import { isEnglishOnly } from "@/utils/text/containsEnglish";
+import { isArabicWithNumOnly } from "@/utils/text/containsArabic";
+import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
 import { TypeHintConfig } from "@/types/typeHintConfig.type";
@@ -53,7 +53,7 @@ const editFormSchema = (
             { max: labelMaxChars },
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_ar.arabicCharsOnly",
           ),
@@ -72,7 +72,7 @@ const editFormSchema = (
             { max: labelMaxChars },
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_en.englishCharsOnly",
           ),
