@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
           // Verify the token by decoding it or making an API call
           // For now, we'll just decode the JWT to get user info
           const tokenPayload = JSON.parse(
-            Buffer.from(credentials.token.split(".")[1], "base64").toString()
+            Buffer.from(credentials.token.split(".")[1], "base64").toString(),
           );
 
           // You can also make an API call to verify the token:
@@ -94,6 +94,9 @@ export const authOptions: NextAuthOptions = {
         // Type guard to check if user has our custom properties
         const customUser = user as CustomUser;
 
+        // ✅ Guard — only assign if accessToken actually exists
+        if (!customUser?.accessToken) return token;
+
         if (customUser.accessToken) {
           customToken.accessToken = customUser.accessToken;
           customToken.userId = customUser.id;
@@ -113,6 +116,12 @@ export const authOptions: NextAuthOptions = {
       // Send properties to the client
       const customToken = token as CustomJWT;
       const customSession = session as CustomSession;
+
+      // ✅ If token has no accessToken, it's invalid — return empty session
+      // This prevents NextAuth from triggering auto-signout
+      if (!customToken?.accessToken) {
+        return customSession; // return as-is, don't assign undefined fields
+      }
 
       customSession.accessToken = customToken.accessToken;
       customSession.user = {

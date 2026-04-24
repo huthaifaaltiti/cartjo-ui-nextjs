@@ -29,7 +29,8 @@ export const login = createAsyncThunk<
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ identifier, password, lang }),
-        }
+        },
+        true,
       );
 
       if (!response.token) {
@@ -40,10 +41,8 @@ export const login = createAsyncThunk<
     } catch (error) {
       return rejectWithValue({
         isSuccess: false,
-        message:
-          error instanceof Error ? error.message : "Login failed",
+        message: error instanceof Error ? error.message : "Login failed",
       });
     }
-  }
+  },
 );
-

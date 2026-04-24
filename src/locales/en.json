@@ -414,7 +414,8 @@
                 }
               },
               "actions": {
-                "proceed": "Sign In"
+                "proceed": "Sign In",
+                "proceeding": "Signing In"
               },
               "validations": {
                 "identifier": {

@@ -415,7 +415,8 @@
                 }
               },
               "actions": {
-                "proceed": "تسجيل الدخول"
+                "proceed": "تسجيل الدخول",
+                "proceeding": "جاري تسجيل الدخول"
               },
               "validations": {
                 "identifier": {
