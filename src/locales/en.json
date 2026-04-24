@@ -1825,7 +1825,8 @@
                 },
                 "startDate": {
                   "label": "Start Date",
-                  "placeholder": "Start Date"
+                  "placeholder": "Start Date",
+                  "mustBeInFuture": "Start Date must be in the future"
                 },
                 "endDate": {
                   "label": "End Date",
@@ -1965,7 +1966,8 @@
                 },
                 "endDate": {
                   "invalid": "Invalid Date",
-                  "mustBeAfterStart": "End Date must be after start date"
+                  "mustBeAfterStart": "End Date must be after start date",
+                  "mustBeInFuture": "End Date must be in the future"
                 }
               },
               "errors": {

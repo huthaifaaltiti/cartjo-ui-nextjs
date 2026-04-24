@@ -16,9 +16,14 @@ import {
 type Calendar24Props = {
   value?: Date | string | null;
   onChange: (value: Date | null) => void;
+  isDisable?: boolean;
 };
 
-export function Calendar24({ value, onChange }: Calendar24Props) {
+export function Calendar24({
+  value,
+  onChange,
+  isDisable = false,
+}: Calendar24Props) {
   const t = useTranslations();
 
   // Ensure we always work with a Date if possible
@@ -78,12 +83,18 @@ export function Calendar24({ value, onChange }: Calendar24Props) {
         <Label htmlFor="date-picker" className="px-1">
           {t("general.others.date")}
         </Label>
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover
+          open={isDisable ? false : open}
+          onOpenChange={(val) => {
+            if (!isDisable) setOpen(val);
+          }}
+        >
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               id="date-picker"
-              className="w-32 justify-between font-normal"
+              disabled={isDisable}
+              className="w-32 justify-between font-normal disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {dateOnly}
               <ChevronDownIcon />
@@ -95,6 +106,7 @@ export function Calendar24({ value, onChange }: Calendar24Props) {
               selected={dateValue || undefined}
               captionLayout="dropdown"
               onSelect={handleDateSelect}
+              disabled={isDisable}
             />
 
             {/* ✅ Clear Button */}
@@ -119,6 +131,7 @@ export function Calendar24({ value, onChange }: Calendar24Props) {
         <Input
           type="time"
           id="time-picker"
+          disabled={isDisable}
           step="1"
           value={time}
           onChange={handleTimeChange}
