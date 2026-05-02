@@ -146,6 +146,17 @@ const DashboardProductCard = ({
               ? product.subCategoryId?.name?.ar
               : product.subCategoryId?.name?.en}
           </p>
+
+          {/* Type-Hints */}
+          <div className="w-full flex items-center gap-2 flex-wrap mt-2">
+            {product.typeHints.map((th: string) => {
+              return (
+                <span className="text-xs capitalize border rounded p-1 text-grey-600">
+                  {th}
+                </span>
+              );
+            })}
+          </div>
         </div>
 
         {/* VARIANT SELECTOR */}

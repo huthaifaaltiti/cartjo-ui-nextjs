@@ -109,7 +109,7 @@ const ProductDetailsPage = ({ productId }: { productId: string }) => {
           <ProductDetailsContent product={product!} />
           <ProductComments productId={product!._id} />
           <div className="w-full border-t border-gray-200/50 py-8">
-            <RecommendedProducts />
+            <RecommendedProducts productId={productId} />
           </div>
         </div>
       </div>

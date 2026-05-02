@@ -114,6 +114,17 @@ const editFormSchema = (
     .superRefine((data, ctx) => {
       const now = new Date();
 
+      // endDate must be in the future
+      if (data.endDate && !data.startDate) {
+        ctx.addIssue({
+          path: ["endDate"],
+          code: "custom",
+          message: t(
+            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.endDate.addStartDate",
+          ),
+        });
+      }
+
       // Only validate endDate if it's being set
       if (data.endDate) {
         // endDate must be in the future
