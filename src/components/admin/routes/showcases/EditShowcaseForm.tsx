@@ -26,8 +26,8 @@ import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
-import { isArabicOnly } from "@/utils/text/containsArabic";
-import { isEnglishOnly } from "@/utils/text/containsEnglish";
+import { isArabicWithNumOnly } from "@/utils/text/containsArabic";
+import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useShowcases } from "@/contexts/Showcase.context";
 import {
@@ -71,7 +71,7 @@ const editFormSchema = (
             { max: titleMaxChars },
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_ar.arabicCharsOnly",
           ),
@@ -90,7 +90,7 @@ const editFormSchema = (
             { max: titleMaxChars },
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.title_en.englishCharsOnly",
           ),
@@ -109,7 +109,7 @@ const editFormSchema = (
             { max: descMaxChars },
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_ar.arabicCharsOnly",
           ),
@@ -128,7 +128,7 @@ const editFormSchema = (
             { max: descMaxChars },
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.description_en.englishCharsOnly",
           ),
@@ -147,7 +147,7 @@ const editFormSchema = (
             { max: linkBtnTextMaxChars },
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_ar.arabicCharsOnly",
           ),
@@ -166,7 +166,7 @@ const editFormSchema = (
             { max: linkBtnTextMaxChars },
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.EditShowcaseForm.validations.showAllButtonText_en.englishCharsOnly",
           ),
@@ -275,8 +275,8 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
       showAllButtonText_en: showcase?.showAllButtonText?.en || "",
       showAllButtonLink: showcase?.showAllButtonLink || "",
       type: showcase?.type || "",
-      startDate: showcase?.startDate || null,
-      endDate: showcase?.endDate || null,
+      startDate:new Date( showcase?.startDate) || null,
+      endDate: new Date(showcase?.endDate) || null,
     },
   });
 

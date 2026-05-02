@@ -118,7 +118,7 @@ const NoProductFound = ({
       {showSuggestions && (
         <div className="space-y-8">
           <SearchSuggestions />
-          <RecommendedProducts />
+          <RecommendedProducts productId={productId} />
           <HelpSection
             primaryAction={{
               label: t("components.HelpSection.labels.contactSupport"),

@@ -25,8 +25,8 @@ import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
-import { isArabicOnly } from "@/utils/text/containsArabic";
-import { isEnglishOnly } from "@/utils/text/containsEnglish";
+import { isArabicWithNumOnly } from "@/utils/text/containsArabic";
+import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useShowcases } from "@/contexts/Showcase.context";
 import {
@@ -70,7 +70,7 @@ const createFormSchema = (
             { max: titleMaxChars }
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_ar.arabicCharsOnly"
           ),
@@ -89,7 +89,7 @@ const createFormSchema = (
             { max: titleMaxChars }
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_en.englishCharsOnly"
           ),
@@ -108,7 +108,7 @@ const createFormSchema = (
             { max: descMaxChars }
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_ar.arabicCharsOnly"
           ),
@@ -127,7 +127,7 @@ const createFormSchema = (
             { max: descMaxChars }
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_en.englishCharsOnly"
           ),
@@ -146,7 +146,7 @@ const createFormSchema = (
             { max: linkBtnTextMaxChars }
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_ar.arabicCharsOnly"
           ),
@@ -165,7 +165,7 @@ const createFormSchema = (
             { max: linkBtnTextMaxChars }
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_en.englishCharsOnly"
           ),
@@ -371,14 +371,14 @@ const CreateShowcaseForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.title_ar.label"
+                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.title_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.title_ar.placeholder"
+                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.title_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -397,14 +397,14 @@ const CreateShowcaseForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.title_en.label"
+                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.title_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.title_en.placeholder"
+                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.title_en.placeholder",
                         )}
                         {...field}
                       />
@@ -430,14 +430,14 @@ const CreateShowcaseForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.description_ar.label"
+                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.description_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.description_ar.placeholder"
+                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.description_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -456,14 +456,14 @@ const CreateShowcaseForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.description_en.label"
+                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.description_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.description_en.placeholder"
+                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.description_en.placeholder",
                         )}
                         {...field}
                       />
@@ -489,14 +489,14 @@ const CreateShowcaseForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonText_ar.label"
+                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonText_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonText_ar.placeholder"
+                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonText_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -515,14 +515,14 @@ const CreateShowcaseForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonText_en.label"
+                        "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonText_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonText_en.placeholder"
+                          "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonText_en.placeholder",
                         )}
                         {...field}
                       />
@@ -542,21 +542,21 @@ const CreateShowcaseForm = () => {
               <FormItem className={getFormItemClassName()}>
                 <FormLabel className="text-sm font-normal">
                   {t(
-                    "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonLink.label"
+                    "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonLink.label",
                   )}
                 </FormLabel>
                 <FormControl>
                   <Input
                     className={getInputClassName()}
                     placeholder={t(
-                      "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonLink.placeholder"
+                      "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonLink.placeholder",
                     )}
                     {...field}
                   />
                 </FormControl>
                 <FormDescription className="text-xs text-text-primary-100">
                   {t(
-                    "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonLink.desc"
+                    "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.showAllButtonLink.desc",
                   )}
                 </FormDescription>
                 <FormMessage />
@@ -572,7 +572,7 @@ const CreateShowcaseForm = () => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.type.label"
+                      "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.type.label",
                     )}
                   </FormLabel>
                   {isFormTypeHintConfigsListLoading ? (
@@ -583,21 +583,36 @@ const CreateShowcaseForm = () => {
                         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                           <SelectValue
                             placeholder={t(
-                              "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.type.placeholder"
+                              "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.type.placeholder",
                             )}
                           />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {activeTypeHintConfigsList?.map((th, i) => (
-                          <SelectItem
-                            key={`TypeHintItem_${i}`}
-                            value={th}
-                            className="cursor-pointer capitalize"
-                          >
-                            {th}
-                          </SelectItem>
-                        ))}
+                        {activeTypeHintConfigsList
+                          ?.filter((th: string) => {
+                            const toExclude = [
+                              "static",
+                              "date",
+                              "best-sellers",
+                              "most-viewed",
+                              "trending",
+                              "most-favorited",
+                              "picked",
+                              "recommended",
+                            ];
+
+                            return !toExclude.includes(th);
+                          })
+                          ?.map((th, i) => (
+                            <SelectItem
+                              key={`TypeHintItem_${i}`}
+                              value={th}
+                              className="cursor-pointer capitalize"
+                            >
+                              {th}
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
                   )}
@@ -617,7 +632,7 @@ const CreateShowcaseForm = () => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.startDate.label"
+                      "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.startDate.label",
                     )}
                   </FormLabel>
                   <FormControl>
@@ -635,7 +650,7 @@ const CreateShowcaseForm = () => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.endDate.label"
+                      "routes.dashboard.routes.showcases.components.CreateShowcaseForm.fields.endDate.label",
                     )}
                   </FormLabel>
                   <FormControl>

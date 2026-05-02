@@ -13,13 +13,18 @@ import { SUGGESTED_PRODUCTS_LIMIT } from "@/config/product.config";
 interface RecommendedProductsProps {
   title?: string;
   subtitle?: string;
+  productId?: string;
 }
 
-const RecommendedProducts = ({ title, subtitle }: RecommendedProductsProps) => {
+const RecommendedProducts = ({
+  title,
+  subtitle,
+  productId,
+}: RecommendedProductsProps) => {
   const locale = useLocale();
   const t = useTranslations();
   const { data, isLoading, isFetching, isFetched, isError, error } =
-    useSuggestedProductQuery(locale, SUGGESTED_PRODUCTS_LIMIT);
+    useSuggestedProductQuery(locale, SUGGESTED_PRODUCTS_LIMIT, productId);
 
   const products = useMemo(() => {
     if (!data?.data) return [];

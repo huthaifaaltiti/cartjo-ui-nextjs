@@ -11,16 +11,19 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 interface FetchSuggestedProductsProps {
   lang?: Locale | string;
   limit?: number;
+  productId?: string;
 }
 
 export const fetchSuggestedProducts = async ({
   lang = "en",
   limit = PAGINATION_LIMITS.PUBLIC_SUGGESTED_PRODUCTS_ITEMS,
+  productId,
 }: FetchSuggestedProductsProps): Promise<DataListResponse<Product>> => {
   const url = new URL(API_ENDPOINTS.PRODUCT.SUGGESTED);
 
   if (lang) url.searchParams.append("lang", lang.toString());
   if (limit) url.searchParams.append("limit", limit.toString());
+  if (productId) url.searchParams.append("mainProductId", productId.toString());
 
   return fetcher<DataListResponse<Product>>(url, {});
 };
@@ -28,9 +31,10 @@ export const fetchSuggestedProducts = async ({
 export const getSuggestedProductsQueryOptions = (
   locale: Locale | string,
   limit: number,
+  productId?: string,
 ) => ({
-  queryKey: ["suggestedPublicCategory", locale, limit],
-  queryFn: () => fetchSuggestedProducts({ lang: locale, limit }),
+  queryKey: ["suggestedPublicCategory", locale, limit, productId],
+  queryFn: () => fetchSuggestedProducts({ lang: locale, limit, productId }),
   staleTime: STALE_TIME,
   gcTime: GC_TIME,
   enabled: true,
@@ -45,8 +49,11 @@ export const getSuggestedProductsQueryOptions = (
 export const useSuggestedProductQuery = (
   lang: string | Locale,
   limit: number,
+  productId?: string,
 ) => {
   const { locale } = useAuthContext();
 
-  return useQuery(getSuggestedProductsQueryOptions(lang || locale, limit));
+  return useQuery(
+    getSuggestedProductsQueryOptions(lang || locale, limit, productId),
+  );
 };
