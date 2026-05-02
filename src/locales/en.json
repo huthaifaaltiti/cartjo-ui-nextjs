@@ -1300,7 +1300,8 @@
                   "maxChars": "Description (EN) must be at most {count} characters"
                 },
                 "type": {
-                  "min": "Type must be at least {count}"
+                  "min": "Type must be at least {count}",
+                  "invalid": "Invalid product type-hint"
                 },
                 "typeHint": {
                   "notSupported": "Select one of the supported type hints"
@@ -1825,7 +1826,8 @@
                 },
                 "startDate": {
                   "label": "Start Date",
-                  "placeholder": "Start Date"
+                  "placeholder": "Start Date",
+                  "mustBeInFuture": "Start Date must be in the future"
                 },
                 "endDate": {
                   "label": "End Date",
@@ -1965,7 +1967,9 @@
                 },
                 "endDate": {
                   "invalid": "Invalid Date",
-                  "mustBeAfterStart": "End Date must be after start date"
+                  "mustBeAfterStart": "End Date must be after start date",
+                  "mustBeInFuture": "End Date must be in the future",
+                  "addStartDate": "Add start date"
                 }
               },
               "errors": {

@@ -62,7 +62,7 @@ for (const key in Currency) {
   currencyValues.push(Currency[key as keyof typeof Currency]);
 }
 
-const createdFormSchema = (
+const editFormSchema = (
   t: (key: string, params?: Record<string, number>) => string,
   activeTypeHintConfigsList: string[],
 ) =>
@@ -140,7 +140,7 @@ const createdFormSchema = (
         (values) => values.every((v) => activeTypeHintConfigsList.includes(v)),
         {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid",
+            "routes.dashboard.routes.products.components.EditProductForm.validations.type.invalid",
           ),
         },
       ),
@@ -162,7 +162,7 @@ const createdFormSchema = (
     }),
   });
 
-type FormData = z.infer<ReturnType<typeof createdFormSchema>>;
+type FormData = z.infer<ReturnType<typeof editFormSchema>>;
 
 type CreateSubCategoryFormProps = {
   product: Product;
@@ -227,7 +227,7 @@ const EditProductForm = ({
   }>({
     mainImage: {
       file: null,
-      url: product?.mainImage?.url || "",
+      url: product?.mainImage?.url ?? product?.mainImage ?? "",
     },
     images: {
       files: [],
@@ -277,12 +277,12 @@ const EditProductForm = ({
     form.setValue("mainImage", url);
   };
 
-  const formSchema = createdFormSchema(t, activeTypeHintConfigsList);
+  const formSchema = editFormSchema(t, activeTypeHintConfigsList);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      mainImage: product?.mainImage?.url || "",
+      mainImage: product?.mainImage?.url ?? product?.mainImage ?? "",
       name_ar: product?.name?.ar || "",
       name_en: product?.name?.en || "",
       categoryId: product?.categoryId?._id || "",

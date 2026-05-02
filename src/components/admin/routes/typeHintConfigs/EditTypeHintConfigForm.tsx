@@ -24,15 +24,15 @@ import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
-import { isArabicOnly } from "@/utils/text/containsArabic";
-import { isEnglishOnly } from "@/utils/text/containsEnglish";
+import { isArabicWithNumOnly } from "@/utils/text/containsArabic";
+import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
 import { TypeHintConfig } from "@/types/typeHintConfig.type";
 import { staticTypeHintConfigs } from "@/constants/staticTypeHintConfigs.constant";
 
 const editFormSchema = (
-  t: (key: string, options?: Record<string, string | number | Date>) => string
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
 ) => {
   const { labelMinChars, labelMaxChars, priorityMinChars, priorityMaxChars } =
     validationConfig.typeHintConfig;
@@ -44,18 +44,18 @@ const editFormSchema = (
         .min(labelMinChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_ar.minChars",
-            { min: labelMinChars }
+            { min: labelMinChars },
           ),
         })
         .max(labelMaxChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_ar.maxChars",
-            { max: labelMaxChars }
+            { max: labelMaxChars },
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_ar.arabicCharsOnly"
+            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_ar.arabicCharsOnly",
           ),
         }),
       label_en: z
@@ -63,18 +63,18 @@ const editFormSchema = (
         .min(labelMinChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_en.minChars",
-            { min: labelMinChars }
+            { min: labelMinChars },
           ),
         })
         .max(labelMaxChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_en.maxChars",
-            { max: labelMaxChars }
+            { max: labelMaxChars },
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_en.englishCharsOnly"
+            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.label_en.englishCharsOnly",
           ),
         }),
       priority: z
@@ -82,13 +82,13 @@ const editFormSchema = (
         .min(priorityMinChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.priority.minChars",
-            { min: priorityMinChars }
+            { min: priorityMinChars },
           ),
         })
         .max(priorityMaxChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.priority.maxChars",
-            { max: priorityMaxChars }
+            { max: priorityMaxChars },
           ),
         }),
       startDate: z
@@ -97,7 +97,7 @@ const editFormSchema = (
           //   "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.startDate.required"
           // ),
           invalid_type_error: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.startDate.invalid"
+            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.startDate.invalid",
           ),
         })
         .nullable()
@@ -105,21 +105,46 @@ const editFormSchema = (
       endDate: z
         .date({
           invalid_type_error: t(
-            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.endDate.invalid"
+            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.endDate.invalid",
           ),
         })
         .nullable()
         .optional(),
     })
     .superRefine((data, ctx) => {
-      // Validate date order
-      if (data.startDate && data.endDate) {
-        if (data.endDate <= data.startDate) {
+      const now = new Date();
+
+      // endDate must be in the future
+      if (data.endDate && !data.startDate) {
+        ctx.addIssue({
+          path: ["endDate"],
+          code: "custom",
+          message: t(
+            "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.endDate.addStartDate",
+          ),
+        });
+      }
+
+      // Only validate endDate if it's being set
+      if (data.endDate) {
+        // endDate must be in the future
+        if (data.endDate <= now) {
           ctx.addIssue({
             path: ["endDate"],
             code: "custom",
             message: t(
-              "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.endDate.mustBeAfterStart"
+              "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.endDate.mustBeInFuture",
+            ),
+          });
+        }
+
+        // endDate must be after startDate (if startDate exists)
+        if (data.startDate && data.endDate <= data.startDate) {
+          ctx.addIssue({
+            path: ["endDate"],
+            code: "custom",
+            message: t(
+              "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.validations.endDate.mustBeAfterStart",
             ),
           });
         }
@@ -149,8 +174,12 @@ const EditTypeHintConfigForm = ({
       label_ar: typeHintConfig?.label?.ar ?? "",
       label_en: typeHintConfig?.label?.en ?? "",
       priority: typeHintConfig?.priority ?? 10,
-      startDate: typeHintConfig?.startDate || null,
-      endDate: typeHintConfig?.endDate || null,
+      startDate: typeHintConfig?.startDate
+        ? new Date(typeHintConfig.startDate)
+        : null,
+      endDate: typeHintConfig?.endDate
+        ? new Date(typeHintConfig.endDate)
+        : null,
     },
   });
 
@@ -174,7 +203,7 @@ const EditTypeHintConfigForm = ({
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -182,7 +211,7 @@ const EditTypeHintConfigForm = ({
 
         throw new Error(
           errorData?.message ||
-            t("routes.dashboard.routes.typeHintConfigs.errors.failedCreation")
+            t("routes.dashboard.routes.typeHintConfigs.errors.failedCreation"),
         );
       }
 
@@ -237,14 +266,14 @@ const EditTypeHintConfigForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.label_ar.label"
+                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.label_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.label_ar.placeholder"
+                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.label_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -263,17 +292,17 @@ const EditTypeHintConfigForm = ({
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.label_en.label"
+                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.label_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         disabled={staticTypeHintConfigs.includes(
-                          field.value.split(" ").join("-")
+                          field.value.split(" ").join("-"),
                         )}
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.label_en.placeholder"
+                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.label_en.placeholder",
                         )}
                         {...field}
                       />
@@ -294,7 +323,7 @@ const EditTypeHintConfigForm = ({
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.priority.label"
+                      "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.priority.label",
                     )}
                   </FormLabel>
                   <FormControl>
@@ -306,7 +335,7 @@ const EditTypeHintConfigForm = ({
                       step="1"
                       className={getInputClassName()}
                       placeholder={t(
-                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.priority.placeholder"
+                        "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.priority.placeholder",
                       )}
                       {...field}
                       onChange={(e) => {
@@ -327,7 +356,7 @@ const EditTypeHintConfigForm = ({
                       <span> 🌟 </span>
                       <span>
                         {t(
-                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.priority.hint"
+                          "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.priority.hint",
                         )}
                       </span>
                     </span>
@@ -347,11 +376,14 @@ const EditTypeHintConfigForm = ({
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.startDate.label"
+                      "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.startDate.label",
                     )}
                   </FormLabel>
                   <FormControl>
-                    <Calendar24 value={field.value} onChange={field.onChange} />
+                    <Calendar24
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -365,7 +397,7 @@ const EditTypeHintConfigForm = ({
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.endDate.label"
+                      "routes.dashboard.routes.typeHintConfigs.components.EditTypeHintConfigForm.fields.endDate.label",
                     )}
                   </FormLabel>
                   <FormControl>

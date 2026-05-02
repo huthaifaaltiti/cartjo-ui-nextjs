@@ -24,13 +24,13 @@ import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
-import { isArabicOnly } from "@/utils/text/containsArabic";
-import { isEnglishOnly } from "@/utils/text/containsEnglish";
+import { isArabicWithNumOnly } from "@/utils/text/containsArabic";
+import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
 
 const createFormSchema = (
-  t: (key: string, options?: Record<string, string | number | Date>) => string
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
 ) => {
   const { labelMinChars, labelMaxChars, priorityMinChars, priorityMaxChars } =
     validationConfig.typeHintConfig;
@@ -42,18 +42,18 @@ const createFormSchema = (
         .min(labelMinChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.label_ar.minChars",
-            { min: labelMinChars }
+            { min: labelMinChars },
           ),
         })
         .max(labelMaxChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.label_ar.maxChars",
-            { max: labelMaxChars }
+            { max: labelMaxChars },
           ),
         })
-        .refine((val) => isArabicOnly(val), {
+        .refine((val) => isArabicWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.label_ar.arabicCharsOnly"
+            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.label_ar.arabicCharsOnly",
           ),
         }),
       label_en: z
@@ -61,18 +61,18 @@ const createFormSchema = (
         .min(labelMinChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.label_en.minChars",
-            { min: labelMinChars }
+            { min: labelMinChars },
           ),
         })
         .max(labelMaxChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.label_en.maxChars",
-            { max: labelMaxChars }
+            { max: labelMaxChars },
           ),
         })
-        .refine((val) => isEnglishOnly(val), {
+        .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.label_en.englishCharsOnly"
+            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.label_en.englishCharsOnly",
           ),
         }),
       priority: z
@@ -80,13 +80,13 @@ const createFormSchema = (
         .min(priorityMinChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.priority.minChars",
-            { min: priorityMinChars }
+            { min: priorityMinChars },
           ),
         })
         .max(priorityMaxChars, {
           message: t(
             "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.priority.maxChars",
-            { max: priorityMaxChars }
+            { max: priorityMaxChars },
           ),
         }),
       startDate: z
@@ -95,7 +95,7 @@ const createFormSchema = (
           //   "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.startDate.required"
           // ),
           invalid_type_error: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.startDate.invalid"
+            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.startDate.invalid",
           ),
         })
         .nullable()
@@ -103,13 +103,28 @@ const createFormSchema = (
       endDate: z
         .date({
           invalid_type_error: t(
-            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.endDate.invalid"
+            "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.endDate.invalid",
           ),
         })
         .nullable()
         .optional(),
     })
     .superRefine((data, ctx) => {
+      const now = new Date();
+
+      if (data.startDate) {
+        // startDate must be in the future
+        if (data.startDate <= now) {
+          ctx.addIssue({
+            path: ["startDate"],
+            code: "custom",
+            message: t(
+              "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.startDate.mustBeInFuture",
+            ),
+          });
+        }
+      }
+
       // Validate date order
       if (data.startDate && data.endDate) {
         if (data.endDate <= data.startDate) {
@@ -117,7 +132,7 @@ const createFormSchema = (
             path: ["endDate"],
             code: "custom",
             message: t(
-              "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.endDate.mustBeAfterStart"
+              "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.validations.endDate.mustBeAfterStart",
             ),
           });
         }
@@ -168,7 +183,7 @@ const CreateTypeHintConfigForm = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -176,7 +191,7 @@ const CreateTypeHintConfigForm = () => {
 
         throw new Error(
           errorData?.message ||
-            t("routes.dashboard.routes.typeHintConfigs.errors.failedCreation")
+            t("routes.dashboard.routes.typeHintConfigs.errors.failedCreation"),
         );
       }
 
@@ -231,14 +246,14 @@ const CreateTypeHintConfigForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.label_ar.label"
+                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.label_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.label_ar.placeholder"
+                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.label_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -257,14 +272,14 @@ const CreateTypeHintConfigForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.label_en.label"
+                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.label_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.label_en.placeholder"
+                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.label_en.placeholder",
                         )}
                         {...field}
                       />
@@ -285,7 +300,7 @@ const CreateTypeHintConfigForm = () => {
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.priority.label"
+                      "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.priority.label",
                     )}
                   </FormLabel>
                   <FormControl>
@@ -297,7 +312,7 @@ const CreateTypeHintConfigForm = () => {
                       step="1"
                       className={getInputClassName()}
                       placeholder={t(
-                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.priority.placeholder"
+                        "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.priority.placeholder",
                       )}
                       {...field}
                       onChange={(e) => {
@@ -445,7 +460,7 @@ If you want, I can show a variant that also blocks unwanted keys at the keystrok
                       <span> 🌟 </span>
                       <span>
                         {t(
-                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.priority.hint"
+                          "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.priority.hint",
                         )}
                       </span>
                     </span>
@@ -465,7 +480,7 @@ If you want, I can show a variant that also blocks unwanted keys at the keystrok
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.startDate.label"
+                      "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.startDate.label",
                     )}
                   </FormLabel>
                   <FormControl>
@@ -483,7 +498,7 @@ If you want, I can show a variant that also blocks unwanted keys at the keystrok
                 <FormItem className={getFormItemClassName()}>
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.endDate.label"
+                      "routes.dashboard.routes.typeHintConfigs.components.CreateTypeHintConfigForm.fields.endDate.label",
                     )}
                   </FormLabel>
                   <FormControl>
