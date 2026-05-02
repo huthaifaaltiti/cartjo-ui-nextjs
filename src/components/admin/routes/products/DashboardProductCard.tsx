@@ -149,9 +149,9 @@ const DashboardProductCard = ({
 
           {/* Type-Hints */}
           <div className="w-full flex items-center gap-2 flex-wrap mt-2">
-            {product.typeHints.map((th: string) => {
+            {product.typeHints.map((th: string, i) => {
               return (
-                <span className="text-xs capitalize border rounded p-1 text-grey-600">
+                <span key={th + i} className="text-xs capitalize border rounded p-1 text-grey-600">
                   {th}
                 </span>
               );
