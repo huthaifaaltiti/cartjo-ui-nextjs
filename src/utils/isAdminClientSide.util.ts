@@ -1,7 +1,9 @@
 import { UserRole } from "@/enums/user-role.enum";
-import { CartJOSession } from "@/lib/session.server";
+import { CartJOSession } from "@/types/cartjoSession.type";
 
-export default function isAdminClientSide(session: CartJOSession | null): boolean {
+export default function isAdminClientSide(
+  session: CartJOSession | null,
+): boolean {
   if (!session) return false;
 
   const role = session.role.toLowerCase();

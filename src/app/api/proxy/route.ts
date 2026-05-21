@@ -12,6 +12,10 @@ export async function POST(req: NextRequest) {
     const { path, method, body, headers: extraHeaders } = await req.json();
 
     const SERVER_API = process.env.NEXT_PUBLIC_API_LINK!;
+    const daysNum = Number(process.env.JWT_REFRESH_EXPIRATION_TIME_DAYS ?? 7);
+    const minutesNum = Number(
+      process.env.JWT_MIN_EXPIRATION_TIME_MINUTES ?? 15,
+    );
 
     const targetUrl =
       path.startsWith("http://") || path.startsWith("https://")
@@ -63,8 +67,7 @@ export async function POST(req: NextRequest) {
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             path: "/",
-            maxAge:
-              60 * Number(process.env.JWT_MIN_EXPIRATION_TIME_MINUTES ?? 15), // 15 minutes
+            maxAge: 60 * minutesNum, // 15 minutes
           });
         }
         if (newRefresh) {
@@ -73,11 +76,7 @@ export async function POST(req: NextRequest) {
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             path: "/",
-            maxAge:
-              60 *
-              60 *
-              24 *
-              Number(process.env.JWT_REFRESH_EXPIRATION_TIME_DAYS ?? 7), // 7 days
+            maxAge: 60 * 60 * 24 * daysNum, // 7 days
           });
         }
 

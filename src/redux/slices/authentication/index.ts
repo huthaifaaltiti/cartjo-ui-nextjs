@@ -1,22 +1,51 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CartJOSession } from "@/lib/session.server";
+import isAdminClientSide from "@/utils/isAdminClientSide.util";
 
-interface GeneralState {
+interface AuthenticationState {
   isAuthenticated: boolean;
-  token: string | null;
+  session: CartJOSession | null;
+  isAdmin: boolean;
+  loading: boolean;
 }
 
-const initialState: GeneralState = {
+const initialState: AuthenticationState = {
   isAuthenticated: false,
-  token: null,
+  session: null,
+  isAdmin: false,
+  loading: true,
 };
 
 const authenticationSlice = createSlice({
   name: "authentication",
   initialState,
   reducers: {
+    setSession: (state, action: PayloadAction<CartJOSession>) => {
+      state.session = action.payload;
+      state.isAuthenticated = true;
+      state.isAdmin = isAdminClientSide(action.payload);
+    },
+
+    // On logout or session expiry
+    clearSession: () => ({ ...initialState }),
+
+    // Call this on app boot to hydrate from server (passed via initialSession prop)
+    hydrateSession: (state, action: PayloadAction<CartJOSession | null>) => {
+      state.session = action.payload;
+      state.isAuthenticated = action.payload !== null;
+      state.isAdmin = isAdminClientSide(action.payload);
+      state.loading = false;
+    },
+
     resetAuthenticationSliceState: () => ({ ...initialState }),
   },
 });
 
-export const { resetAuthenticationSliceState } = authenticationSlice.actions;
+export const {
+  setSession,
+  clearSession,
+  hydrateSession,
+  resetAuthenticationSliceState,
+} = authenticationSlice.actions;
+
 export default authenticationSlice.reducer;
