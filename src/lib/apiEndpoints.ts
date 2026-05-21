@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
   AUTH: {
     REGISTER: `${API_URL}/api/v1/authentication/register`,
     LOGIN: `${API_URL}/api/v1/authorization/login`,
+    REFRESH: `${API_URL}/api/v1/authorization/refresh`,
     FORGOT_PASSWORD: {
       ROOT: `${API_URL}/api/v1/authentication/forgot-password`,
       SEND_IDENTIFIER: "send-identifier",
