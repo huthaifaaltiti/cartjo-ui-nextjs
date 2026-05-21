@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
 import { isArabicLocale } from "@/config/locales.config";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,7 +20,6 @@ import {
 } from "@/components/ui/form";
 import { showErrorToast, showSuccessToast } from "./shared/CustomToast";
 import { useQueryState } from "nuqs";
-import { useVerifyEmail } from "@/contexts/VerifyEmailContext";
 import ForgotPasswordLink from "./user/auth/forgot-password/ForgotPasswordLink";
 import LoadingButton from "./shared/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +32,7 @@ import {
   normalizePhoneNumber,
 } from "@/utils/normalizePhoneNumber";
 import { validationConfig } from "@/config/validationConfig";
+import { setSession } from "@/redux/slices/authentication";
 
 const createFormSchema = (t: ReturnType<typeof useTranslations>) =>
   z.object({
@@ -59,9 +58,9 @@ const createFormSchema = (t: ReturnType<typeof useTranslations>) =>
       })
       .refine(
         (val) =>
-          /^[a-zA-Z0-9._]{2,50}$/.test(val) || // username pattern
-          /^((\+962|00962|0)?7[789]\d{7})$/.test(val) || // Jordanian mobile pattern (all formats)
-          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), // email pattern
+          /^[a-zA-Z0-9._]{2,50}$/.test(val) ||
+          /^((\+962|00962|0)?7[789]\d{7})$/.test(val) ||
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
         {
           message: t(
             "routes.auth.components.AuthTabs.components.login.validations.identifier.pattern",
@@ -101,31 +100,25 @@ const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     status: loginStatus,
-    token,
+    user,
     message,
     isLoading,
   } = useSelector((state: RootState) => state.login);
 
   const router = useRouter();
 
-  const { data: sessionData, status } = useSession();
-  const { reVerify } = useVerifyEmail();
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [resend] = useQueryState("resend", {
-    defaultValue: false,
-    parse: (value) => Boolean(value),
+  const [redirectTo] = useQueryState("redirectTo", {
+    defaultValue: "",
+    parse: (value) => String(value),
   });
   const [identifier] = useQueryState("identifier", {
     defaultValue: "",
     parse: (value) => String(value),
   });
-  const [redirectTo] = useQueryState("redirectTo", {
-    defaultValue: "",
-    parse: (value) => String(value),
-  });
 
+  // Cleanup on mount/unmount
   useEffect(() => {
     dispatch(resetLoginState());
     return () => {
@@ -133,54 +126,36 @@ const LoginForm = () => {
     };
   }, []);
 
+  // Handle login result
   useEffect(() => {
-    if (loginStatus === "success" && token) {
+    if (loginStatus === "success" && user) {
+      dispatch(setSession(user));
+
       showSuccessToast({
         title: t("general.toast.title.success"),
-        description: message,
+        description: message ?? "",
         dismissText: t("general.toast.dismissText"),
       });
 
-      // Sign/NextAuth
-      signIn("credentials", { token, redirect: false }).then((res) => {
-        if (res?.ok) {
-          dispatch(resetLoginState());
+      // Tokens are in HttpOnly cookies — just navigate
+      if (redirectTo) {
+        router.push(decodeURIComponent(redirectTo));
+      } else {
+        router.push("/");
+      }
 
-          if (resend && redirectTo) {
-            router.push(decodeURIComponent(redirectTo));
-          } else {
-            router.push("/");
-          }
-        } else {
-          showErrorToast({
-            title: t("general.toast.title.error"),
-            description: "Failed to sign in with token",
-            dismissText: t("general.toast.dismissText"),
-          });
-        }
-      });
+      // Refresh server components so they pick up the new cookies
+      router.refresh();
     }
 
     if (loginStatus === "error") {
       showErrorToast({
         title: t("general.toast.title.error"),
-        description: message,
+        description: message ?? "Login failed",
         dismissText: t("general.toast.dismissText"),
       });
     }
-  }, [loginStatus, token, message]);
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      if (resend && sessionData?.user?.email) {
-        reVerify(sessionData.user.email, locale)
-          .then(() => redirectTo && router.push(decodeURIComponent(redirectTo)))
-          .catch(console.error);
-      } else if (redirectTo) {
-        router.push(decodeURIComponent(redirectTo));
-      }
-    }
-  }, [status, resend, sessionData, locale, router, redirectTo, reVerify]);
+  }, [loginStatus, user, message]);
 
   const defaultValues = useMemo(
     () => ({
@@ -196,6 +171,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // Normalize phone before sending
     const normalizedIdentifier = isPhoneNumberLike(
       values.identifier,
       COUNTRY_CONFIGS.JO,
@@ -215,13 +191,13 @@ const LoginForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8"
       >
-        {/* identifier */}
+        {/* Identifier */}
         <FormField
           control={form.control}
           name="identifier"
           render={({ field }) => (
-            <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
-              <FormLabel className={"text-sm font-normal"}>
+            <FormItem className={isArabic ? "text-right" : "text-left"}>
+              <FormLabel className="text-sm font-normal">
                 {t(
                   "routes.auth.components.AuthTabs.components.login.dataSet.username.label",
                 )}
@@ -252,12 +228,12 @@ const LoginForm = () => {
         />
 
         <div className="w-full flex flex-col gap-3">
-          {/* password */}
+          {/* Password */}
           <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem className={`${isArabic ? "text-right" : "text-left"}`}>
+              <FormItem className={isArabic ? "text-right" : "text-left"}>
                 <FormLabel className="text-sm font-normal">
                   {t(
                     "routes.auth.components.AuthTabs.components.login.dataSet.password.label",
@@ -282,7 +258,7 @@ const LoginForm = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className={`absolute inset-y-0 right-2 flex items-center text-gray-500 pl-2 border-l`}
+                      className="absolute inset-y-0 right-2 flex items-center text-gray-500 pl-2 border-l"
                       tabIndex={-1}
                     >
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}

@@ -12,7 +12,10 @@ export const API_ENDPOINTS = {
     },
     GOOGLE: `${API_URL}/api/v1/authentication/google`,
   },
-  AUTHORIZATION: { LOGIN: `${API_URL}/api/v1/authorization/login` },
+  AUTHORIZATION: {
+    LOGIN: `${API_URL}/api/v1/authorization/login`,
+    LOGOUT: `${API_URL}/api/v1/authorization/logout`,
+  },
   DASHBOARD: {
     LOCATIONS: {
       BULK_UPLOAD_LOCATIONS: `${API_URL}/api/v1/location/bulk-upload`,
