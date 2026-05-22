@@ -5,7 +5,7 @@ import { Wishlist } from "@/types/wishlist.type";
 import WishlistItems from "@/components/user/wishlist/WishlistItems";
 import { getAccessToken } from "@/lib/tokens.server";
 import { requireAuth } from "@/utils/authRedirect";
-import { getWishlistQueryOptions } from "@/utils/queryOptions";
+import { getWishlistQueryOptions } from "@/hooks/react-query/query-options/wishlistQueryOptions";
 
 const Page = async () => {
   const token = await getAccessToken();

@@ -17,7 +17,6 @@ import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuer
 import { fetchUserOrderReturns } from "@/hooks/react-query/useUserOrderReturnsQuery";
 import { fetchUserOrders } from "@/hooks/react-query/useUserOrdersQuery";
 import { fetchMyProfile } from "@/hooks/react-query/useUserProfileQuery";
-import { fetchWishlistItems } from "@/hooks/react-query/useWishlistQuery";
 import { Cart } from "@/types/cart.type";
 import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
@@ -25,7 +24,6 @@ import { Locale } from "@/types/locale";
 import { Order } from "@/types/order.type";
 import { Product } from "@/types/product.type";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
-import { Wishlist } from "@/types/wishlist.type";
 import { QueryFunctionContext } from "@tanstack/react-query";
 
 /**
@@ -251,30 +249,6 @@ export const getStaticNationalityListQueryOptions = (
   gcTime: GC_TIME,
   enabled: true,
 });
-
-export const getWishlistQueryOptions = (
-  locale: string | Locale,
-  token?: string,
-) => {
-  return {
-    queryKey: ["wishlistItems", locale],
-    queryFn: ({ pageParam }: { pageParam?: unknown }) =>
-      fetchWishlistItems({
-        token,
-        lang: locale,
-        limit: PAGINATION_LIMITS.USER_VIEW.WISHLIST_ITEMS ?? 20,
-        lastId: typeof pageParam === "string" ? pageParam : undefined,
-      }),
-    getNextPageParam: (lastPage: DataResponse<Wishlist>) => {
-      if (!lastPage?.data?.products?.length) return undefined;
-      const lastProduct = lastPage.data.products.at(-1);
-      return lastProduct?._id ?? undefined;
-    },
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-  };
-};
 
 export const getOrdersQueryOptions = (token: string) => {
   const getNextPageParam = (lastPage: DataResponse<Cart>) => {
