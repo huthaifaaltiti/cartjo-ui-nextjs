@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Product, VariantServer } from "@/types/product.type";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import {
@@ -38,7 +37,6 @@ const ProductVertCard = ({
   isArabic: boolean;
 }) => {
   const router = useRouter();
-  const { accessToken } = useAuthContext();
   const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector((state: RootState) => state.wishlist);
   const { locale } = useSelector((state: RootState) => state.general);
@@ -102,7 +100,6 @@ const ProductVertCard = ({
           variantId: currentVariant?.variantId,
           quantity: 1,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -125,7 +122,7 @@ const ProductVertCard = ({
   };
 
   const handleRemoveWishListItem = useCallback(async () => {
-    if (!accessToken) return;
+    if (!requireAuth()) return;
 
     try {
       setIsWishListing(true);
@@ -134,7 +131,6 @@ const ProductVertCard = ({
         removeWishlistItem({
           productId: item?._id,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -149,10 +145,10 @@ const ProductVertCard = ({
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, accessToken, item, t, dispatch]);
+  }, [locale, item, t, dispatch]);
 
   const handleAddWishListItem = useCallback(async () => {
-    if (!accessToken) return;
+    if (!requireAuth()) return;
 
     try {
       setIsWishListing(true);
@@ -161,7 +157,6 @@ const ProductVertCard = ({
         addWishlistItem({
           product: item,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -176,7 +171,7 @@ const ProductVertCard = ({
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, accessToken, item, t, dispatch]);
+  }, [locale, item, t, dispatch]);
 
   const handleWishListedItemState = () => {
     if (!requireAuth()) return;

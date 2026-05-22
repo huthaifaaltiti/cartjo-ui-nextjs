@@ -8,7 +8,6 @@ import {
   showSuccessToast,
   showWarningToast,
 } from "@/components/shared/CustomToast";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import { addItemToServer } from "@/redux/slices/cart/actions";
@@ -45,7 +44,6 @@ const ProductRowCard = ({
   const { items } = useSelector((state: RootState) => state.wishlist);
 
   const locale = useLocale();
-  const { accessToken } = useAuthContext();
   const t = useTranslations();
   const { requireAuth } = useRequireAuth();
 
@@ -71,7 +69,7 @@ const ProductRowCard = ({
   );
 
   useEffect(() => {
-    const foundItem = items?.find((i) => i._id === item._id);
+    const foundItem = items?.find((i: Product) => i._id === item._id);
     setIsWishListed(Boolean(foundItem || item?.isWishListed));
   }, [items, item]);
 
@@ -83,15 +81,7 @@ const ProductRowCard = ({
   };
 
   const handleAddWishListItem = useCallback(async () => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-
-      return;
-    }
+    if (!requireAuth()) return;
 
     try {
       setIsWishListLoading(true);
@@ -100,7 +90,6 @@ const ProductRowCard = ({
         addWishlistItem({
           product: item,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -122,18 +111,10 @@ const ProductRowCard = ({
     } finally {
       setIsWishListLoading(false);
     }
-  }, [locale, accessToken, item, t]);
+  }, [locale, item, t]);
 
   const handleRemoveWishListItem = useCallback(async () => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-
-      return;
-    }
+    if (!requireAuth()) return;
 
     try {
       setIsWishListLoading(true);
@@ -142,7 +123,6 @@ const ProductRowCard = ({
         removeWishlistItem({
           productId: item?._id,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -164,7 +144,7 @@ const ProductRowCard = ({
     } finally {
       setIsWishListLoading(false);
     }
-  }, [locale, accessToken, item, t]);
+  }, [locale, item, t]);
 
   const handleWishListedItemState = () => {
     if (!requireAuth()) return;
@@ -198,7 +178,6 @@ const ProductRowCard = ({
           variantId: currentVariant?.variantId,
           quantity: 1,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
