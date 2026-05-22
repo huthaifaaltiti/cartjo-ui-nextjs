@@ -19,7 +19,7 @@ const CartLayoutHeaderActions: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { itemsCount } = useSelector((state: RootState) => state.cart);
   const t = useTranslations();
-  const { accessToken, locale } = useAuthContext();
+  const { locale } = useAuthContext();
   const queryClient = useQueryClient();
 
   const [modalState, setModalState] = useState<{
@@ -42,11 +42,11 @@ const CartLayoutHeaderActions: React.FC = () => {
   const dispatchAction = async (type: "delete" | "wishlist") => {
     if (type === "delete") {
       return await dispatch(
-        removeAllItemsFromServer({ lang: locale, token: accessToken })
+        removeAllItemsFromServer({ lang: locale })
       ).unwrap();
     } else {
       return await dispatch(
-        wishlistItems({ lang: locale, token: accessToken })
+        wishlistItems({ lang: locale })
       ).unwrap();
     }
   };
@@ -85,7 +85,7 @@ const CartLayoutHeaderActions: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, modalState.type, accessToken, locale, queryClient, t]);
+  }, [dispatch, modalState.type, locale, queryClient, t]);
 
   const renderButton = (
     onClick: () => void,

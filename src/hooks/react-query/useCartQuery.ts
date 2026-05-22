@@ -2,18 +2,17 @@
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuthContext } from "../useAuthContext";
-import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { handleUnauthorizedResponse } from "@/utils/handleUnauthorizedResponse";
 import { Locale } from "@/types/locale";
-
-export const CART_QUERY_KEY = "cartItems" as const;
+import { getCartQueryOptions } from "./query-options/cartQueryOptions";
+import { fetcher } from "@/utils/fetcher";
+import { authFetcher } from "@/utils/authFetcher";
 
 interface FetchCartItemsParams {
-  token: string | null;
+  token?: string | null;
   lang?: string | Locale;
   limit?: number;
   lastId?: string;
@@ -23,7 +22,7 @@ interface FetchCartItemsParams {
 export const fetchCartItems = async ({
   token,
   lang = "en",
-  limit = PAGINATION_LIMITS.CART_ITEMS,
+  limit = PAGINATION_LIMITS.USER_VIEW.CART_ITEMS ?? 20,
   lastId,
 }: FetchCartItemsParams): Promise<DataResponse<Cart>> => {
   const url = new URL(`${API_ENDPOINTS.LOGGED_USER.CART.ONE}`);
@@ -32,62 +31,25 @@ export const fetchCartItems = async ({
   if (lang) url.searchParams.append("lang", lang);
   if (lastId) url.searchParams.append("lastId", lastId);
 
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  if (token) {
+    return fetcher<DataResponse<Cart>>(url.toString(), {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+  }
 
-  handleUnauthorizedResponse(res, lang);
-
-  if (!res.ok) throw new Error("Could not retrieve active cart list");
-
-  return await res.json();
+  return authFetcher<DataResponse<Cart>>(url.toString());
 };
 
-export const useCartQuery = () => {
-  const { accessToken, locale, status } = useAuthContext();
+export const useCartQuery = (token?: string) => {
+  const { locale, isSessionLoading, isAuthenticated } = useAuthContext();
 
   return useInfiniteQuery<DataResponse<Cart>>({
-    queryKey: [CART_QUERY_KEY, accessToken],
-    queryFn: ({ pageParam }) => {
-      // This should never be reached due to enabled condition, but keeping as safeguard
-      if (!accessToken) {
-        throw new Error("No access token found");
-      }
-
-      return fetchCartItems({
-        token: accessToken,
-        lang: locale,
-        limit: PAGINATION_LIMITS.CART_ITEMS,
-        lastId:
-          pageParam && typeof pageParam === "string" ? pageParam : undefined,
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      const items = lastPage?.data?.items;
-
-      if (!items?.length) return undefined;
-
-      // If we got fewer items than the limit, we're on the last page
-      if (items.length < PAGINATION_LIMITS.CART_ITEMS) return undefined;
-
-      const lastItem = items[items.length - 1];
-      return lastItem?.productId?.toString() ?? undefined;
-    },
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    // KEY FIX: Only enable the query when session is loaded and we have an accessToken
-    enabled: status !== "loading" && !!accessToken,
-    // refetchOnMount: "always",
-    // refetchOnWindowFocus: true,
+    ...getCartQueryOptions(locale, token),
+    enabled: !isSessionLoading && isAuthenticated,
     refetchOnWindowFocus: false,
-    // Optional: Retry configuration
-    retry: (failureCount, error) => {
-      // Don't retry if it's an auth error
-      if (error.message.includes("access token")) return false;
-
+    retry: (failureCount, error: any) => {
+      if (error?.status === 401 || error?.status === 403) return false;
       return failureCount < 3;
     },
   });

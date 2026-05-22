@@ -4,11 +4,9 @@ import { memo, useCallback, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import {
   showErrorToast,
   showSuccessToast,
-  showWarningToast,
 } from "@/components/shared/CustomToast";
 import {
   addItemToServer,
@@ -25,6 +23,7 @@ import LoadingOverlay from "@/components/shared/card/LoadingOverlay";
 import RemoveItemFromCartBtn from "./RemoveItemFromCartBtn";
 import ItemRatingStats from "@/components/shared/card/ItemRatingStats";
 import { extractVariantDetails } from "@/utils/productVariant.utils";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 const CartProductCard = ({
   item,
@@ -40,13 +39,14 @@ const CartProductCard = ({
 
   const t = useTranslations();
   const locale = useLocale();
-  const { accessToken } = useAuthContext();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
+  const { requireAuth } = useRequireAuth();
+
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isAddToCartLoading, setIsAddToCartLoading] = useState<boolean>(false);
-  const [showCounter, setShowCounter] = useState<boolean>(false);
+  const [showCounter] = useState<boolean>(false);
 
   const quantity = item.quantity;
 
@@ -79,16 +79,7 @@ const CartProductCard = ({
 
   const handleRemoveFromCart = useCallback(
     async (quantityMount?: number) => {
-      if (!accessToken) {
-        showWarningToast({
-          title: t("general.toast.title.warning"),
-          description: t("general.toast.description.loginRequired"),
-          dismissText: t("general.toast.dismissText"),
-        });
-
-        setShowCounter(true);
-        return;
-      }
+      if (!requireAuth()) return;
 
       const removeQty = quantityMount ?? quantity;
 
@@ -101,7 +92,6 @@ const CartProductCard = ({
             variantId: item?.variant?.variantId,
             quantity: removeQty,
             lang: locale,
-            token: accessToken,
           }),
         ).unwrap();
 
@@ -124,19 +114,12 @@ const CartProductCard = ({
         setIsAddToCartLoading(false);
       }
     },
-    [accessToken, dispatch, item, locale, t],
+    [dispatch, item, locale, t],
   );
 
   const handleAddToCart = useCallback(
     async (quantityMount?: number) => {
-      if (!accessToken) {
-        showWarningToast({
-          title: t("general.toast.title.warning"),
-          description: t("general.toast.description.loginRequired"),
-          dismissText: t("general.toast.dismissText"),
-        });
-        return;
-      }
+      if (!requireAuth()) return;
 
       const addQty = quantityMount ?? 1;
 
@@ -149,7 +132,6 @@ const CartProductCard = ({
             variantId: item?.variant?.variantId,
             quantity: addQty,
             lang: locale,
-            token: accessToken,
           }),
         ).unwrap();
 
@@ -170,7 +152,7 @@ const CartProductCard = ({
         setIsAddToCartLoading(false);
       }
     },
-    [accessToken, dispatch, item, locale, t],
+    [dispatch, item, locale, t],
   );
 
   const handleQuantityChange = useCallback(
