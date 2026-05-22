@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CartJOSession } from "@/lib/session.server";
+import { CartJOSession } from "@/types/cartjoSession.type";
 import isAdminClientSide from "@/utils/isAdminClientSide.util";
 
 interface AuthenticationState {
