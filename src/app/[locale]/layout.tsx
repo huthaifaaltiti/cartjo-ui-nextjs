@@ -11,10 +11,7 @@ import ReactQueryProvider from "@/components/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
 import { HomeEffectsContextProvider } from "@/contexts/HomeEffectsContext";
 import { GeneralContextProvider } from "@/contexts/General.context";
-import "../globals.css";
-import "../../styles/prose.css";
 import ReduxProvider from "../../redux/ReduxProvider";
-import "leaflet/dist/leaflet.css";
 import {
   METADATA_ROUTES_NAMES,
   routesMetadata,
@@ -22,6 +19,11 @@ import {
 import { Locale } from "@/types/locale";
 import ReduxLocaleSync from "@/components/ReduxLocaleSync";
 import UserContextHydrator from "@/components/hydrators/UserContextHydrator";
+import SessionHydrator from "@/components/SessionHydrator";
+import { getSession } from "@/lib/session.server";
+import "leaflet/dist/leaflet.css";
+import "../globals.css";
+import "../../styles/prose.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -73,6 +75,8 @@ export default async function LocaleLayout({
   const dir = isArabic ? "rtl" : "ltr";
   const layoutFont = isArabic ? notoKufiArabic.className : inter.className;
 
+  const session = await getSession();
+
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
@@ -96,6 +100,7 @@ export default async function LocaleLayout({
                       <ReduxProvider>
                         <ReduxLocaleSync />
                         <UserContextHydrator locale={locale}>
+                          <SessionHydrator initialSession={session} />
                           {children}
                         </UserContextHydrator>
                       </ReduxProvider>
