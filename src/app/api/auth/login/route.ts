@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     if (!nestRes.ok) {
       return NextResponse.json(
-        { isSuccess: false, message: result?.data?.message ?? "Login failed" },
+        { isSuccess: false, message: result?.message ?? "Login failed" },
         { status: nestRes.status },
       );
     }
