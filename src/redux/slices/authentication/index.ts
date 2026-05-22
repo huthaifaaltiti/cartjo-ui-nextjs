@@ -24,6 +24,7 @@ const authenticationSlice = createSlice({
       state.session = action.payload;
       state.isAuthenticated = true;
       state.isAdmin = isAdminClientSide(action.payload);
+      state.loading = false;
     },
 
     // On logout or session expiry
