@@ -1,17 +1,17 @@
-import { getServerSession } from "next-auth/next";
-
-import { ExtendedSession } from "@/types/session";
-import { authOptions } from "@/lib/authOptions";
-
 import DashboardSideNav from "@/components/admin/layout/DashboardSideNav";
+import { getSession, checkIsAdmin } from "@/lib/session.server";
+import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = (await getServerSession(authOptions)) as ExtendedSession;
-  const canManage = session?.user?.canManage ?? false;
+  const session = await getSession();
+
+  if (!session || !checkIsAdmin(session)) redirect("/");
+
+  const canManage = checkIsAdmin(session);
 
   return (
     <div className="w-full min-h-screen bg-[#f5f4fe]">
