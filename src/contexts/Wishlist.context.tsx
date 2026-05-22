@@ -1,5 +1,6 @@
 "use client";
 
+import { WISHLIST_QUERY_KEY } from "@/hooks/react-query/query-options/wishlistQueryOptions";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
@@ -31,7 +32,7 @@ type WishlistContextProviderType = {
 export const WishlistContextProvider = ({
   children,
 }: WishlistContextProviderType) => {
-  const queryKey: string = "wishlistItems";
+  const queryKey: string = WISHLIST_QUERY_KEY;
   const [wishlistItemsCount, setWishlistItemsCount] = useState<number>(0);
 
   const deleteAllWishlistItems = async (

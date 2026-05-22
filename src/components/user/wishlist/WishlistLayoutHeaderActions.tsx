@@ -14,6 +14,7 @@ import {
   removeAllWishlistItems,
   sendAllWishlistItemsToCart,
 } from "@/redux/slices/wishlist/actions";
+import { WISHLIST_QUERY_KEY } from "@/hooks/react-query/query-options/wishlistQueryOptions";
 
 const WishlistLayoutHeaderActions: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,7 +22,7 @@ const WishlistLayoutHeaderActions: React.FC = () => {
     (state: RootState) => state.wishlist,
   );
   const t = useTranslations();
-  const { accessToken, locale } = useAuthContext();
+  const { locale } = useAuthContext();
   const queryClient = useQueryClient();
 
   const [modalState, setModalState] = useState<{
@@ -42,9 +43,7 @@ const WishlistLayoutHeaderActions: React.FC = () => {
 
   const dispatchAction = async (type: "delete" | "cart") => {
     if (type === "delete") {
-      return await dispatch(
-        removeAllWishlistItems({ lang: locale, token: accessToken }),
-      ).unwrap();
+      return await dispatch(removeAllWishlistItems({ lang: locale })).unwrap();
     } else {
       const payloadItems = items
         .map((item) => {
@@ -66,7 +65,6 @@ const WishlistLayoutHeaderActions: React.FC = () => {
       return await dispatch(
         sendAllWishlistItemsToCart({
           lang: locale,
-          token: accessToken,
           items: payloadItems,
         }),
       ).unwrap();
@@ -91,7 +89,7 @@ const WishlistLayoutHeaderActions: React.FC = () => {
         setModalState((prev) => ({ ...prev, isOpen: false }));
 
         await queryClient.invalidateQueries({
-          queryKey: ["wishlistItems", ""],
+          queryKey: [WISHLIST_QUERY_KEY, ""],
         });
       }
     } catch (error) {
@@ -109,7 +107,7 @@ const WishlistLayoutHeaderActions: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, modalState.type, accessToken, locale, queryClient, t]);
+  }, [dispatch, modalState.type, locale, queryClient, t]);
 
   const renderButton = (
     onClick: () => void,

@@ -5,12 +5,14 @@ import { fetchWishlistItems } from "../useWishlistQuery";
 import { Wishlist } from "@/types/wishlist.type";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 
+export const WISHLIST_QUERY_KEY = "wishlistItems" as const;
+
 export const getWishlistQueryOptions = (
   locale: string | Locale,
   token?: string,
 ) => {
   return {
-    queryKey: ["wishlistItems", locale],
+    queryKey: [WISHLIST_QUERY_KEY, locale],
     queryFn: ({ pageParam }: { pageParam?: unknown }) =>
       fetchWishlistItems({
         token,
