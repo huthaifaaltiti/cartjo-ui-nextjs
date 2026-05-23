@@ -6,7 +6,6 @@ import {
   fetchCategory,
   fetchCategoryProducts,
 } from "@/hooks/react-query/useCategoryQuery";
-import { fetchStaticNationalist } from "@/hooks/react-query/useNationalityQuery";
 import { fetchOrders } from "@/hooks/react-query/useOrdersQuery";
 import {
   fetchProduct,
@@ -16,7 +15,6 @@ import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { fetchUserOrderReturns } from "@/hooks/react-query/useUserOrderReturnsQuery";
 import { fetchUserOrders } from "@/hooks/react-query/useUserOrdersQuery";
-import { fetchMyProfile } from "@/hooks/react-query/useUserProfileQuery";
 import { Cart } from "@/types/cart.type";
 import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
@@ -217,38 +215,6 @@ export const getSearchProductCommentsQueryOptions = (
     enabled: !!productId,
   };
 };
-
-export const getUserProfileQueryOptions = (
-  locale: Locale | string,
-  userId: string,
-  token: string,
-) => ({
-  queryKey: ["userProfileData", locale, userId],
-  queryFn: () =>
-    fetchMyProfile({
-      token,
-      lang: locale,
-      userId,
-    }),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-  enabled: !!userId,
-});
-
-export const getStaticNationalityListQueryOptions = (
-  locale: Locale | string,
-  token: string,
-) => ({
-  queryKey: ["staticNationalityList", locale],
-  queryFn: () =>
-    fetchStaticNationalist({
-      token,
-      lang: locale,
-    }),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-  enabled: true,
-});
 
 export const getOrdersQueryOptions = (token: string) => {
   const getNextPageParam = (lastPage: DataResponse<Cart>) => {

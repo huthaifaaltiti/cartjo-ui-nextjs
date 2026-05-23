@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { DataResponse } from "@/types/service-response.type";
-import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useAuthContext } from "../useAuthContext";
 import { User } from "@/types/user";
 import { fetcher } from "@/utils/fetcher";
+import { getUserProfileQueryOptions } from "./query-options/userProfile";
+import { authFetcher } from "@/utils/authFetcher";
 
 interface FetchMyProfileArgs {
-  token: string;
+  token?: string;
   lang?: string;
   userId: string | null | undefined;
 }
@@ -21,28 +22,23 @@ export const fetchMyProfile = async ({
 
   if (lang) url.searchParams.append("lang", lang.toString());
 
-  const response = await fetcher<DataResponse<User>>(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  
-  return response;
+  if (token) {
+    return fetcher<DataResponse<User>>(url.toString(), {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+  }
+
+  return authFetcher<DataResponse<User>>(url.toString());
 };
 
-export const useUserProfileQuery = (userId: string | null | undefined) => {
-  const { accessToken, locale } = useAuthContext();
+export const useUserProfileQuery = (
+  userId: string | null | undefined,
+  token?: string,
+) => {
+  const { locale } = useAuthContext();
 
   return useQuery({
-    queryKey: ["userProfileData", locale, userId],
-    queryFn: () =>
-      fetchMyProfile({
-        token: accessToken,
-        lang: locale,
-        userId,
-      }),
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!userId,
+    ...getUserProfileQueryOptions(locale, userId, token),
   });
 };
