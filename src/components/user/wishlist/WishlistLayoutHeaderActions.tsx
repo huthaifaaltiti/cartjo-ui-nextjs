@@ -14,7 +14,7 @@ import {
   removeAllWishlistItems,
   sendAllWishlistItemsToCart,
 } from "@/redux/slices/wishlist/actions";
-import { WISHLIST_QUERY_KEY } from "@/hooks/react-query/query-options/wishlistQueryOptions";
+import { WISHLIST_QUERY_KEY } from "@/hooks/react-query/query-options/wishlist";
 
 const WishlistLayoutHeaderActions: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

@@ -3,7 +3,7 @@ import { getQueryClient } from "@/utils/queryUtils";
 import { DataResponse } from "@/types/service-response.type";
 import CartItems from "@/components/user/cart/CartItems";
 import { Cart } from "@/types/cart.type";
-import { getCartQueryOptions } from "@/hooks/react-query/query-options/cartQueryOptions";
+import { getCartQueryOptions } from "@/hooks/react-query/query-options/cart";
 import { getAccessToken } from "@/lib/tokens.server";
 import { requireAuth } from "@/utils/authRedirect";
 

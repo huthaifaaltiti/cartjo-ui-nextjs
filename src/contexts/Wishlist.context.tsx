@@ -1,6 +1,6 @@
 "use client";
 
-import { WISHLIST_QUERY_KEY } from "@/hooks/react-query/query-options/wishlistQueryOptions";
+import { WISHLIST_QUERY_KEY } from "@/hooks/react-query/query-options/wishlist";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";

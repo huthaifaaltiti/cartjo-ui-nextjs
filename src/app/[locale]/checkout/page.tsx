@@ -7,7 +7,7 @@ import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { WishlistContextProvider } from "@/contexts/Wishlist.context";
-import { getCartQueryOptions } from "@/hooks/react-query/query-options/cartQueryOptions";
+import { getCartQueryOptions } from "@/hooks/react-query/query-options/cart";
 
 const PaymentCheckoutPage: React.FC = async () => {
   const token = await getAccessTokenFromServerSession();

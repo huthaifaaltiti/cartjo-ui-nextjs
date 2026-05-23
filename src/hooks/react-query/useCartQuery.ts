@@ -7,7 +7,7 @@ import { Cart } from "@/types/cart.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
-import { getCartQueryOptions } from "./query-options/cartQueryOptions";
+import { getCartQueryOptions } from "./query-options/cart";
 import { fetcher } from "@/utils/fetcher";
 import { authFetcher } from "@/utils/authFetcher";
 

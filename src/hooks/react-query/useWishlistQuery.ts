@@ -9,7 +9,7 @@ import { Locale } from "@/types/locale";
 import { authFetcher } from "@/utils/authFetcher";
 import { fetcher } from "@/utils/fetcher";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { getWishlistQueryOptions } from "./query-options/wishlistQueryOptions";
+import { getWishlistQueryOptions } from "./query-options/wishlist";
 interface FetchWishlistItemsParams {
   token?: string | null;
   lang?: string | Locale;
