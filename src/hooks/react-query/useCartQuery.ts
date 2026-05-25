@@ -5,52 +5,31 @@ import { useAuthContext } from "../useAuthContext";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
-import { getCartQueryOptions } from "./query-options/cart";
-import { fetcher } from "@/utils/fetcher";
 import { authFetcher } from "@/utils/authFetcher";
+import { fetchCartItems } from "@/services/cart.service";
+import { createRetryHandler } from "@/utils/reactQueryRetry";
+import { getCartQueryOptions } from "./query-options/cart";
 
-interface FetchCartItemsParams {
-  token?: string | null;
-  lang?: string | Locale;
-  limit?: number;
-  lastId?: string;
-  search?: string;
-}
-
-export const fetchCartItems = async ({
-  token,
-  lang = "en",
-  limit = PAGINATION_LIMITS.USER_VIEW.CART_ITEMS ?? 20,
-  lastId,
-}: FetchCartItemsParams): Promise<DataResponse<Cart>> => {
-  const url = new URL(`${API_ENDPOINTS.LOGGED_USER.CART.ONE}`);
-
-  url.searchParams.append("limit", limit.toString());
-  if (lang) url.searchParams.append("lang", lang);
-  if (lastId) url.searchParams.append("lastId", lastId);
-
-  if (token) {
-    return fetcher<DataResponse<Cart>>(url.toString(), {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-  }
-
-  return authFetcher<DataResponse<Cart>>(url.toString());
-};
-
-export const useCartQuery = (token?: string) => {
-  const { locale, isSessionLoading, isAuthenticated } = useAuthContext();
+export const useCartQuery = () => {
+  const { locale, isSessionLoading, isAuthenticated, userId } =
+    useAuthContext();
 
   return useInfiniteQuery<DataResponse<Cart>>({
-    ...getCartQueryOptions(locale, token),
-    enabled: !isSessionLoading && isAuthenticated,
+    ...getCartQueryOptions({
+      locale,
+      queryFn: (context) =>
+        fetchCartItems({
+          lang: locale as Locale,
+          limit: PAGINATION_LIMITS.USER_VIEW.WISHLIST_ITEMS ?? 20,
+          lastId: context.pageParam as string | undefined,
+          fetcher: (path) => authFetcher(path),
+        }),
+    }),
+    enabled: !isSessionLoading && isAuthenticated && !!userId,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
-    retry: (failureCount, error: any) => {
-      if (error?.status === 401 || error?.status === 403) return false;
-      return failureCount < 3;
-    },
+    initialData: undefined,
+    retry: createRetryHandler(),
   });
 };
