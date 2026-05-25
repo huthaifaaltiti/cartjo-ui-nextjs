@@ -19,7 +19,7 @@ const UserOrderReturnCard = ({
   isArabic: boolean;
 }) => {
   const t = useTranslations(
-    "routes.user.layout.routes.returns.components.UserOrderReturnCard"
+    "routes.user.layout.routes.returns.components.UserOrderReturnCard",
   );
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -49,7 +49,7 @@ const UserOrderReturnCard = ({
                 <span>
                   {formatDateWithHourAndMin(
                     item.createdAt.toString(),
-                    isArabic
+                    isArabic,
                   )}
                 </span>
               </div>

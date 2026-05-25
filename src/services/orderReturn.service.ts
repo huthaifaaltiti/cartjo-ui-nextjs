@@ -3,8 +3,9 @@ import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { DataListResponse } from "@/types/service-response.type";
 import { Order } from "@/types/order.type";
 import { Locale } from "@/types/locale";
+import { Locale as LocaleEnum } from "@/enums/locale.enum";
 
-interface FetchUserOrdersParams {
+interface FetchUserOrderReturnsParams {
   uid: string | undefined;
   lang?: string | Locale;
   limit?: number;
@@ -13,17 +14,20 @@ interface FetchUserOrdersParams {
   fetcher: (url: string) => Promise<DataListResponse<Order>>;
 }
 
-export const fetchUserOrders = async ({
+export const fetchUserOrderReturns = async ({
   uid,
-  lang = "en",
-  limit = PAGINATION_LIMITS.USER_VIEW.ORDERS,
+  lang = LocaleEnum.EN,
+  limit = PAGINATION_LIMITS.USER_ORDERS,
   lastId,
   search,
   fetcher,
-}: FetchUserOrdersParams) => {
-  if (!uid) throw new Error("uid is required");
+}: FetchUserOrderReturnsParams): Promise<DataListResponse<Order>> => {
+  if (!uid) throw new Error("User ID is required");
 
-  const url = new URL(`${API_ENDPOINTS.ORDER.GetMyOrders}/${uid}`);
+  const url = new URL(
+    `${API_ENDPOINTS.ORDER.GetMyOrderReturns.replace("$uid", uid)}`,
+  );
+
   url.searchParams.append("limit", limit.toString());
   if (lang) url.searchParams.append("lang", lang.toString());
   if (lastId) url.searchParams.append("lastId", lastId);
