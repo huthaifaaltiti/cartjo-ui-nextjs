@@ -35,19 +35,20 @@ const UserOrderDetailedCard = ({ itemId }: { itemId: string }) => {
   const { selectedOrder, loading, error } = useSelector(
     (state: RootState) => state.orders,
   );
-  const { accessToken, userId } = useAuthContext();
+  const { userId } = useAuthContext();
 
   useEffect(() => {
-    if (!itemId) return;
-
     const getOrderDetails = async () => {
-      await dispatch(
-        getMyOrder({ id: itemId, lang: locale, token: accessToken, userId }),
-      );
+      if (!itemId || !userId) return;
+
+      // Prevent redundant calls if this specific order is already loading/loaded
+      if (selectedOrder?._id === itemId && !error) return;
+
+      await dispatch(getMyOrder({ id: itemId, lang: locale, userId }));
     };
 
     getOrderDetails();
-  }, [itemId, dispatch, locale, accessToken]);
+  }, [dispatch, itemId, userId, locale]);
 
   if (loading) {
     return (

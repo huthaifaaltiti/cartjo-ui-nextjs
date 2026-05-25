@@ -14,7 +14,6 @@ import {
 import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { fetchUserOrderReturns } from "@/hooks/react-query/useUserOrderReturnsQuery";
-import { fetchUserOrders } from "@/hooks/react-query/useUserOrdersQuery";
 import { Cart } from "@/types/cart.type";
 import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
@@ -236,43 +235,6 @@ export const getOrdersQueryOptions = (token: string) => {
     initialPageParam: undefined,
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
-  };
-};
-
-export const getUserOrdersQueryOptions = (
-  locale: Locale | string,
-  token: string,
-  uid: string,
-  search?: string,
-) => {
-  const getNextPageParam = (lastPage: DataListResponse<Order>) => {
-    if (!lastPage?.data?.length) return undefined;
-    const lastOrder = lastPage.data[lastPage.data.length - 1];
-    return lastOrder?._id || undefined;
-  };
-
-  return {
-    queryKey: ["userOrders", locale, token, uid, search] as const,
-    queryFn: async (context: QueryFunctionContext) => {
-      const pageParam = context.pageParam as string | undefined;
-
-      if (!token) throw new Error("Not authorized");
-      if (!uid) throw new Error("No user id");
-
-      return fetchUserOrders({
-        token,
-        lang: locale,
-        uid,
-        limit: PAGINATION_LIMITS.USER_ORDERS,
-        lastId: pageParam,
-        search,
-      });
-    },
-    getNextPageParam,
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!token,
   };
 };
 
