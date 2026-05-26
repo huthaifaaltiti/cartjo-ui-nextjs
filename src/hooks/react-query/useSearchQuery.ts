@@ -1,81 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { DataListResponse } from "@/types/service-response.type";
-import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { Locale } from "@/types/locale";
 import { useAuthContext } from "../useAuthContext";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { Product } from "@/types/product.type";
-import { fetcher } from "@/utils/fetcher";
-
-interface FetchSearchProductsParams {
-  querySearch: string;
-  lang?: string | Locale;
-  categoryId?: string | undefined;
-  subCategoryId?: string | undefined;
-  limit?: number;
-  lastId?: string;
-  priceFrom?: number;
-  priceTo?: number;
-  ratingFrom?: number;
-  createdFrom?: string;
-  createdTo?: string;
-  beforeNumOfDays?: number;
-  typeHint?: string;
-  accessToken?: string;
-}
-
-export const fetchSearchProducts = async ({
-  querySearch,
-  lang = "en",
-  categoryId,
-  subCategoryId,
-  limit = PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS,
-  lastId,
-  priceFrom,
-  priceTo,
-  ratingFrom,
-  createdFrom,
-  createdTo,
-  beforeNumOfDays,
-  typeHint,
-  accessToken
-}: FetchSearchProductsParams): Promise<DataListResponse<Product>> => {
-  const url = new URL(`${API_ENDPOINTS.SEARCH.PRODUCTS}`);
-
-  if (querySearch) url.searchParams.append("q", querySearch);
-  if (lang) url.searchParams.append("lang", lang);
-  if (categoryId) url.searchParams.append("categoryId", categoryId);
-  if (subCategoryId) url.searchParams.append("subCategoryId", subCategoryId);
-  if (limit) url.searchParams.append("limit", String(limit));
-  if (lastId) url.searchParams.append("lastId", lastId);
-  if (priceFrom !== undefined && priceFrom > 0)
-    url.searchParams.append("priceFrom", String(priceFrom));
-  if (priceTo !== undefined && priceTo > 0)
-    url.searchParams.append("priceTo", String(priceTo));
-  if (ratingFrom !== undefined && ratingFrom > 0)
-    url.searchParams.append("ratingFrom", String(ratingFrom));
-  if (createdFrom !== undefined && createdFrom)
-    url.searchParams.append("createdFrom", String(createdFrom));
-  if (createdTo !== undefined && createdTo)
-    url.searchParams.append("createdTo", String(createdTo));
-  if (beforeNumOfDays !== undefined && beforeNumOfDays > 0)
-    url.searchParams.append("beforeNumOfDays", String(beforeNumOfDays));
-
-  if (typeHint) url.searchParams.append("typeHint", typeHint);
-
-  const headers: Record<string, string> = {};
-
-  if (accessToken) {
-    headers.Authorization = `Bearer ${accessToken}`;
-  }
-
-  const resp = await fetcher<DataListResponse<Product>>(url, {
-    headers,
-  });
-
-  return resp;
-};
+import { fetchSearchProducts } from "@/services/product.service";
+import { getSearchProductsQueryOptions } from "./query-options/publicSearchedProducts";
+import { authFetcher } from "@/utils/authFetcher";
 
 export const useSearchProductsQuery = (
   querySearch: string,
@@ -89,11 +19,10 @@ export const useSearchProductsQuery = (
   beforeNumOfDays?: number,
   typeHint?: string,
 ) => {
-  const { locale, accessToken } = useAuthContext();
+  const { locale } = useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Product>>({
-    queryKey: [
-      "publicSearchProducts",
+    ...getSearchProductsQueryOptions({
       locale,
       querySearch,
       categoryId,
@@ -105,38 +34,29 @@ export const useSearchProductsQuery = (
       createdTo,
       beforeNumOfDays,
       typeHint,
-      accessToken
-    ],
-    queryFn: ({ pageParam }) => {
-      if (!querySearch && !typeHint) throw new Error("No search text is found");
+      queryFn: ({ pageParam }) => {
+        if (!querySearch && !typeHint) {
+          throw new Error("No search text or hint provided");
+        }
 
-      return fetchSearchProducts({
-        querySearch,
-        lang: locale,
-        categoryId,
-        subCategoryId,
-        limit: PAGINATION_LIMITS.PUBLIC_SEARCH_PRODUCTS_ITEMS,
-        lastId:
-          pageParam && typeof pageParam === "string" ? pageParam : undefined,
-        priceFrom,
-        priceTo,
-        ratingFrom,
-        createdFrom,
-        createdTo,
-        beforeNumOfDays,
-        typeHint,
-        accessToken
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      if (!lastPage?.data?.length) return undefined;
-
-      const lastProduct = lastPage.data[lastPage.data.length - 1];
-      return lastProduct?._id || undefined;
-    },
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
+        return fetchSearchProducts({
+          querySearch,
+          lang: locale,
+          categoryId,
+          subCategoryId,
+          limit: PAGINATION_LIMITS.PUBLIC_SEARCH_PRODUCTS_ITEMS,
+          lastId: pageParam as string,
+          priceFrom,
+          priceTo,
+          ratingFrom,
+          createdFrom,
+          createdTo,
+          beforeNumOfDays,
+          typeHint,
+          fetcher: (path) => authFetcher(path),
+        });
+      },
+    }),
     enabled: !!querySearch || !!typeHint,
   });
 };

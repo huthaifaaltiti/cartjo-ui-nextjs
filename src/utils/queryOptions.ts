@@ -9,7 +9,6 @@ import {
   fetchProduct,
   fetchProductComments,
 } from "@/hooks/react-query/useProductQuery";
-import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
 import { Cart } from "@/types/cart.type";
 import { Comment } from "@/types/comment.type";
@@ -17,7 +16,6 @@ import { FetchError } from "@/types/common";
 import { Locale } from "@/types/locale";
 import { Product } from "@/types/product.type";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
-
 
 /**
  * Query options for category
@@ -123,37 +121,6 @@ export const getProductQueryOptions = (
     },
     retryDelay: (attemptIndex: number) =>
       Math.min(1000 * 2 ** attemptIndex, 30000),
-  };
-};
-
-export const getSearchProductsQueryOptions = (
-  locale: string,
-  querySearch: string,
-) => {
-  const getNextPageParam = (lastPage: DataListResponse<Product>) => {
-    if (!lastPage?.data?.length) return undefined;
-
-    const lastProduct = lastPage.data[lastPage.data.length - 1];
-    return lastProduct?._id || undefined;
-  };
-
-  return {
-    queryKey: ["publicSearchProducts", locale, querySearch],
-    queryFn: async ({ pageParam }: { pageParam: unknown }) => {
-      if (!querySearch) throw new Error("No query search is found");
-
-      return fetchSearchProducts({
-        querySearch,
-        lang: locale,
-        limit: PAGINATION_LIMITS.PUBLIC_SEARCH_PRODUCTS_ITEMS,
-        lastId: typeof pageParam === "string" ? pageParam : undefined,
-      });
-    },
-    getNextPageParam,
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!querySearch,
   };
 };
 
