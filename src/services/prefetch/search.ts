@@ -14,21 +14,25 @@ import {
 export async function prefetchSearchData({
   queryClient,
   querySearch,
+  typeHint,
   locale,
 }: {
   queryClient: QueryClient;
   locale: string;
-  querySearch: string;
+  querySearch?: string | undefined;
+  typeHint?: string | undefined;
 }) {
   await Promise.all([
     queryClient.prefetchInfiniteQuery(
       getSearchProductsQueryOptions({
         locale: locale ?? Locale.EN,
         querySearch,
+        typeHint,
         queryFn: () =>
           fetchSearchProducts({
             lang: locale ?? Locale.EN,
             querySearch,
+            typeHint,
             fetcher: (path) =>
               apiFetch<DataListResponse<Product>>(path).then(
                 ({ data, ok, status }) => {

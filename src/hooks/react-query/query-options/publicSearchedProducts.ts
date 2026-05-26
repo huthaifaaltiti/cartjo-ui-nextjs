@@ -8,7 +8,7 @@ export const PUBLIC_SEARCHED_PRODUCTS_QUERY_KEY =
 
 export interface SearchProductsParams {
   locale: string;
-  querySearch: string;
+  querySearch: string | undefined;
   categoryId?: string;
   subCategoryId?: string;
   priceFrom?: number;
@@ -17,7 +17,7 @@ export interface SearchProductsParams {
   createdFrom?: string;
   createdTo?: string;
   beforeNumOfDays?: number;
-  typeHint?: string;
+  typeHint?: string | undefined;
   queryFn: (
     context: QueryFunctionContext,
   ) => Promise<DataListResponse<Product>>;

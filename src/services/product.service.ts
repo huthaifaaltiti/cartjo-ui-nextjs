@@ -6,7 +6,7 @@ import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { Product } from "@/types/product.type";
 
 interface FetchSearchProductsParams {
-  querySearch: string;
+  querySearch: string | undefined;
   lang?: string | Locale;
   categoryId?: string | undefined;
   subCategoryId?: string | undefined;
@@ -18,7 +18,7 @@ interface FetchSearchProductsParams {
   createdFrom?: string;
   createdTo?: string;
   beforeNumOfDays?: number;
-  typeHint?: string;
+  typeHint?: string | undefined;
   fetcher: (url: string) => Promise<DataListResponse<Product>>;
 }
 
@@ -58,7 +58,6 @@ export const fetchSearchProducts = async ({
     url.searchParams.append("createdTo", String(createdTo));
   if (beforeNumOfDays !== undefined && beforeNumOfDays > 0)
     url.searchParams.append("beforeNumOfDays", String(beforeNumOfDays));
-
   if (typeHint) url.searchParams.append("typeHint", typeHint);
 
   return fetcher(url.toString());
