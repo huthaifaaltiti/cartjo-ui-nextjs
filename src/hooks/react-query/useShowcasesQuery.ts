@@ -10,6 +10,9 @@ import { Showcase } from "@/types/showcase.type";
 import { handleUnauthorizedResponse } from "@/utils/handleUnauthorizedResponse";
 import { useAuthContext } from "../useAuthContext";
 import { Locale } from "@/types/locale";
+import { fetchActiveShowcases } from "@/services/showcase.service";
+import { authFetcher } from "@/utils/authFetcher";
+import { getActiveShowcasesQueryOptions } from "./query-options/activeShowcases";
 
 interface FetchShowcasesParams {
   token: string | null;
@@ -18,29 +21,6 @@ interface FetchShowcasesParams {
   lastId?: string;
   search?: string;
 }
-
-export const fetchActiveShowcases = async (
-  token?: string,
-  lang = "en",
-  limit = PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE,
-): Promise<DataListResponse<Showcase>> => {
-  const url = new URL(`${API_ENDPOINTS.DASHBOARD.SHOWCASES.ACTIVE}`);
-
-  if (lang) url.searchParams.append("lang", lang);
-  if (limit) url.searchParams.append("limit", String(limit));
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) throw new Error("Could not retrieve active showcase(s)");
-
-  const resObj = await res.json();
-
-  return resObj;
-};
 
 export const fetchShowcases = async ({
   token,
@@ -70,21 +50,6 @@ export const fetchShowcases = async ({
 
   return resObj;
 };
-
-export const getActiveShowcasesQueryOptions = ({
-  limit,
-  locale = "en",
-  token,
-}: {
-  limit: number;
-  locale?: Locale | string;
-  token?: string | null;
-}) => ({
-  queryKey: ["activeShowcases", limit, locale],
-  queryFn: () => fetchActiveShowcases(token ?? undefined, locale, limit),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-});
 
 export const useShowcasesQuery = ({ search }: { search: string }) => {
   const { data: session } = useSession();
@@ -118,15 +83,18 @@ export const useShowcasesQuery = ({ search }: { search: string }) => {
   });
 };
 
-export const useActiveShowcasesQuery = (itemsNumPerShowcase: number) => {
-  const { accessToken, locale, status } = useAuthContext();
+export const useActiveShowcasesQuery = () => {
+  const { locale, isSessionLoading } = useAuthContext();
 
   return useQuery({
     ...getActiveShowcasesQueryOptions({
-      limit: itemsNumPerShowcase,
       locale,
-      token: accessToken,
+      queryFn: () =>
+        fetchActiveShowcases({
+          lang: locale as Locale,
+          fetcher: (path) => authFetcher(path),
+        }),
     }),
-    enabled: status !== "loading",
+    enabled: !isSessionLoading,
   });
 };

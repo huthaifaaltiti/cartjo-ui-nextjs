@@ -1,13 +1,7 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import {
-  getActiveBannersQueryOptions,
-  getActiveCategoriesQueryOptions,
-} from "@/utils/queryOptions";
 import { getQueryClient } from "@/utils/queryUtils";
 import { getRandomItems } from "@/utils/getRandomItems";
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { SELECTED_CATEGORIES_COUNT } from "@/config/home.config";
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { Category } from "@/types/category.type";
 import HeroSection from "@/components/HeroSection";
 import MainHeader from "@/components/MainHeader";
@@ -18,12 +12,12 @@ import HomeShowcase from "@/components/user/home/HomeShowcase";
 import SelectedCategoriesItems from "@/components/user/home/SelectedCategoriesItems";
 import Footer from "@/components/Footer";
 import { Locale } from "@/types/locale";
-import { DataResponse } from "@/types/service-response.type";
-import { Logo } from "@/types/logo";
-import { getActiveLogoQueryOptions } from "@/hooks/react-query/useLogosQuery";
 import ReduxInitializer from "@/components/ReduxInitializer";
-import { getActiveShowcasesQueryOptions } from "@/hooks/react-query/useShowcasesQuery";
-import { getCategoriesPicksQueryOptions } from "@/hooks/react-query/useProductsQuery";
+import {
+  prefetchActiveLogo,
+  prefetchCategoryPicks,
+  prefetchHomeData,
+} from "@/services/prefetch/home";
 
 export default async function Home({
   params,
@@ -32,46 +26,22 @@ export default async function Home({
 }) {
   const { locale } = await params;
 
-  const token = await getAccessTokenFromServerSession();
   const queryClient = getQueryClient();
 
-  const [categoriesResult] = await Promise.all([
-    queryClient.fetchQuery(getActiveCategoriesQueryOptions(locale || "en")),
-    queryClient.prefetchQuery(
-      getActiveShowcasesQueryOptions({
-        limit: PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE,
-        locale,
-        token,
-      }),
-    ),
-    queryClient.prefetchQuery(getActiveBannersQueryOptions(locale || "en")),
-  ]);
-
-  const categories = categoriesResult?.data ?? [];
+  const categories = await prefetchHomeData(queryClient, locale);
   const activeCategories = categories.filter(
     (c: Category) => c.isActive && !c.isDeleted,
   );
-
   const randomCategories = getRandomItems(
     activeCategories,
     SELECTED_CATEGORIES_COUNT,
   );
 
-  await Promise.all(
-    randomCategories.map((c: Category) =>
-      queryClient.prefetchQuery(
-        getCategoriesPicksQueryOptions({
-          categoryId: c._id,
-          locale: "en",
-          token: token ?? "",
-        }),
-      ),
-    ),
-  );
+  if (randomCategories.length > 0) {
+    await prefetchCategoryPicks({ randomCategories, queryClient, locale });
+  }
 
-  await queryClient.prefetchQuery<DataResponse<Logo>>(
-    getActiveLogoQueryOptions({ lang: locale }),
-  );
+  await prefetchActiveLogo({ queryClient, locale });
 
   const dehydratedState = dehydrate(queryClient);
 

@@ -9,8 +9,10 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { CustomSession } from "@/lib/authOptions";
 import { useAuthContext } from "../useAuthContext";
-import { Locale } from "@/types/locale";
-import { PRODUCTS_COUNT_PER_SELECTED_CATEGORY } from "@/config/home.config";
+import { getCategoriesPicksQueryOptions } from "./query-options/categoryPicks";
+import { fetchCategoriesPicks } from "@/services/category.service";
+import { Locale as LocaleEnum } from "@/enums/locale.enum";
+import { authFetcher } from "@/utils/authFetcher";
 
 export const fetchProducts = async ({
   token,
@@ -42,55 +44,6 @@ export const fetchProducts = async ({
 
   return respObj;
 };
-
-export const fetchCategoriesPicks = async ({
-  token,
-  lang = "en",
-  limit = PAGINATION_LIMITS.PRODUCTS,
-  categoryId,
-}: Pick<FetchPaginatedArgs, "lang" | "limit"> & {
-  token?: string | null;
-  categoryId: string;
-}): Promise<DataListResponse<Product>> => {
-  const url = new URL(`${API_ENDPOINTS.HOME.PRODUCTS.CATEGORIES_PICKS}`);
-
-  if (lang) url.searchParams.append("lang", lang);
-  if (limit) url.searchParams.append("limit", limit.toString());
-  if (categoryId) url.searchParams.append("categoryId", categoryId.toString());
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) throw new Error("Could not retrieve category(ies) picks");
-
-  const resObj = await res.json();
-
-  return resObj;
-};
-
-export const getCategoriesPicksQueryOptions = ({
-  categoryId,
-  locale,
-  token,
-}: {
-  categoryId: string;
-  locale: string | Locale;
-  token?: string | null;
-}) => ({
-  queryKey: ["categoriesPicks", categoryId, locale],
-  queryFn: () =>
-    fetchCategoriesPicks({
-      token,
-      lang: locale,
-      limit: PRODUCTS_COUNT_PER_SELECTED_CATEGORY,
-      categoryId,
-    }),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-});
 
 export const useProductsQuery = ({
   search,
@@ -140,13 +93,19 @@ export const useProductsQuery = ({
 };
 
 export const useCategoriesPicksQuery = (categoryId: string) => {
-  const { accessToken, locale } = useAuthContext();
+  const { locale } = useAuthContext();
 
-  return useQuery(
-    getCategoriesPicksQueryOptions({
+  return useQuery({
+    ...getCategoriesPicksQueryOptions({
+      locale: locale ?? LocaleEnum.EN,
       categoryId,
-      locale,
-      token: accessToken ?? undefined,
+      queryFn: () =>
+        fetchCategoriesPicks({
+          lang: locale ?? LocaleEnum.EN,
+          categoryId,
+          fetcher: (path) => authFetcher(path),
+        }),
     }),
-  );
+    enabled: true
+  });
 };

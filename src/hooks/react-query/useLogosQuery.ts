@@ -8,6 +8,10 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useAuthContext } from "../useAuthContext";
+import { getActiveLogoQueryOptions } from "./query-options/activeLogo";
+import { fetchActiveLogo } from "@/services/logo.service";
+import { Locale } from "@/types/locale";
+import { authFetcher } from "@/utils/authFetcher";
 
 interface FetchLogosParams {
   token: string | null;
@@ -44,43 +48,19 @@ export const fetchLogos = async ({
   return resObj;
 };
 
-export const fetchActiveLogo = async ({
-  lang = "en",
-}: Partial<FetchLogosParams>): Promise<DataResponse<Logo>> => {
-  const url = new URL(`${API_ENDPOINTS.DASHBOARD.LOGOS.ACTIVE}`);
-
-  if (lang) url.searchParams.append("lang", lang);
-
-  const res = await fetch(url.toString(), {
-    next:{revalidate:3600}
-  });
-
-  if (!res.ok) throw new Error("Could not retrieve active logo");
-
-  const resObj = await res.json();
-
-  return resObj;
-};
-
-export const getActiveLogoQueryOptions = ({
-  lang = "en",
-}: Partial<FetchLogosParams>) => ({
-  queryKey: ["activeLogo", lang],
-  queryFn: () =>
-    fetchActiveLogo({
-      lang,
-    }),
-  initialPageParam: undefined,
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-});
-
 export const useActiveLogoQuery = () => {
-  const { accessToken, locale } = useAuthContext();
+  const { locale } = useAuthContext();
 
-  return useQuery<DataResponse<Logo>>(
-    getActiveLogoQueryOptions({ lang: locale, token: accessToken }),
-  );
+  return useQuery<DataResponse<Logo>>({
+    ...getActiveLogoQueryOptions({
+      locale,
+      queryFn: () =>
+        fetchActiveLogo({
+          lang: locale as Locale,
+          fetcher: (path) => authFetcher(path),
+        }),
+    }),
+  });
 };
 
 export const useLogosQuery = (search?: string) => {

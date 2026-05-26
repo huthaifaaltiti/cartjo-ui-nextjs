@@ -1,7 +1,5 @@
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
-import { fetchActiveBanners } from "@/hooks/react-query/useBannersQuery";
-import { fetchActiveCategories } from "@/hooks/react-query/useCategoriesQuery";
 import {
   fetchCategory,
   fetchCategoryProducts,
@@ -13,38 +11,13 @@ import {
 } from "@/hooks/react-query/useProductQuery";
 import { fetchSearchProducts } from "@/hooks/react-query/useSearchQuery";
 import { fetchSubCategoryProducts } from "@/hooks/react-query/useSubCategoryQuery";
-import { fetchUserOrderReturns } from "@/hooks/react-query/useUserOrderReturnsQuery";
 import { Cart } from "@/types/cart.type";
 import { Comment } from "@/types/comment.type";
 import { FetchError } from "@/types/common";
 import { Locale } from "@/types/locale";
-import { Order } from "@/types/order.type";
 import { Product } from "@/types/product.type";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
-import { QueryFunctionContext } from "@tanstack/react-query";
 
-/**
- * Query options for banners (public data, always enabled)
- */
-export const getActiveBannersQueryOptions = (locale: string | Locale) => ({
-  queryKey: ["activeBanners", locale],
-  queryFn: () => fetchActiveBanners({ lang: locale }),
-  staleTime: STALE_TIME,
-  /* 🚨 don’t block guests, banners are public => By default, if enabled: true, React Query will run the queryFn immediately (on mount, and on re-renders if dependencies like queryKey change). If enabled: false, the query won’t run until you manually call refetch(). */
-  gcTime: GC_TIME,
-  enabled: true,
-});
-
-/**
- * Query options for categories (public data, always enabled)
- */
-export const getActiveCategoriesQueryOptions = (locale: string | Locale) => ({
-  queryKey: ["activeCategories", locale],
-  queryFn: () => fetchActiveCategories({ lang: locale }),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-  enabled: true,
-});
 
 /**
  * Query options for category
@@ -235,42 +208,5 @@ export const getOrdersQueryOptions = (token: string) => {
     initialPageParam: undefined,
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
-  };
-};
-
-export const getUserOrderReturnsQueryOptions = (
-  locale: Locale | string,
-  token: string,
-  uid: string,
-  search?: string,
-) => {
-  const getNextPageParam = (lastPage: DataListResponse<Order>) => {
-    if (!lastPage?.data?.length) return undefined;
-    const lastOrder = lastPage.data[lastPage.data.length - 1];
-    return lastOrder?._id || undefined;
-  };
-
-  return {
-    queryKey: ["userOrderReturns", locale, token, uid, search] as const,
-    queryFn: async (context: QueryFunctionContext) => {
-      const pageParam = context.pageParam as string | undefined;
-
-      if (!token) throw new Error("Not authorized");
-      if (!uid) throw new Error("No user id");
-
-      return fetchUserOrderReturns({
-        token,
-        lang: locale,
-        uid,
-        limit: PAGINATION_LIMITS.USER_ORDER_RETURNS,
-        lastId: pageParam,
-        search,
-      });
-    },
-    getNextPageParam,
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!token,
   };
 };

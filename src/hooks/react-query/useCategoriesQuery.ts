@@ -8,6 +8,10 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
+import { fetchActiveCategories } from "@/services/category.service";
+import { getActiveCategoriesQueryOptions } from "./query-options/activeCategories";
+import { authFetcher } from "@/utils/authFetcher";
+import { useAuthContext } from "../useAuthContext";
 
 interface FetchCategoriesParams {
   token: string | null;
@@ -16,26 +20,6 @@ interface FetchCategoriesParams {
   lastId?: string;
   search?: string;
 }
-
-interface FetchActiveCategoriesParams {
-  lang?: Locale | string;
-}
-
-export const fetchActiveCategories = async ({
-  lang = "en",
-}: FetchActiveCategoriesParams): Promise<DataListResponse<Category>> => {
-  const url = new URL(`${API_ENDPOINTS.DASHBOARD.CATEGORIES.ACTIVE}`);
-
-  if (lang) url.searchParams.append("lang", lang);
-
-  const res = await fetch(url.toString(), {});
-
-  if (!res.ok) throw new Error("Could not retrieve active category(ies)");
-
-  const resObj = await res.json();
-
-  return resObj;
-};
 
 export const fetchCategories = async ({
   token,
@@ -97,13 +81,17 @@ export const useCategoriesQuery = (search?: string) => {
 };
 
 export const useActiveCategoriesQuery = () => {
-  const locale = useLocale();
+  const { locale } = useAuthContext();
 
   return useQuery({
-    queryKey: ["activeCategories", locale],
-    queryFn: () => fetchActiveCategories({ lang: locale }),
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
+    ...getActiveCategoriesQueryOptions({
+      locale,
+      queryFn: () =>
+        fetchActiveCategories({
+          lang: locale as Locale,
+          fetcher: (path) => authFetcher(path),
+        }),
+    }),
     enabled: true,
   });
 };
