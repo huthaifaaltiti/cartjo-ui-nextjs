@@ -21,7 +21,12 @@ export async function apiFetch<T = any>(
       ...fetchOptions.headers,
     };
 
-    return fetch(`${SERVER_API}${path}`, {
+    const targetUrl =
+      path.startsWith("http://") || path.startsWith("https://")
+        ? path
+        : `${SERVER_API}${path}`;
+
+    return fetch(targetUrl, {
       ...fetchOptions,
       headers,
       cache: "no-store", // always fresh for auth-related
