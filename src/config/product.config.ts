@@ -1,1 +1,0 @@
-export const SUGGESTED_PRODUCTS_LIMIT = 5;

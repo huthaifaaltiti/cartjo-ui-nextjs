@@ -5,7 +5,7 @@ import { Product } from "@/types/product.type";
 import { Locale } from "@/types/locale";
 
 export const PUBLIC_SUGGESTED_PRODUCTS_QUERY_KEY =
-  "suggestedPublicCategory" as const;
+  "suggestedPublicProducts" as const;
 
 export const getSuggestedProductsQueryOptions = ({
   locale,

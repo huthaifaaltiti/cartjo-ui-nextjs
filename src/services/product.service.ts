@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { DataListResponse } from "@/types/service-response.type";
+import { DataListResponse, DataResponse } from "@/types/service-response.type";
 import { Locale } from "@/types/locale";
 import { Locale as LocaleEnum } from "@/enums/locale.enum";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
@@ -71,7 +71,7 @@ interface FetchSuggestedProductsProps {
 }
 
 export const fetchSuggestedProducts = async ({
-  lang = "en",
+  lang = LocaleEnum.EN,
   limit = PAGINATION_LIMITS.OTHERS.PUBLIC_SUGGESTED_PRODUCTS_ITEMS ?? 4,
   productId,
   fetcher,
@@ -81,6 +81,23 @@ export const fetchSuggestedProducts = async ({
   if (lang) url.searchParams.append("lang", lang.toString());
   if (limit) url.searchParams.append("limit", limit.toString());
   if (productId) url.searchParams.append("mainProductId", productId.toString());
+
+  return fetcher(url.toString());
+};
+
+interface FetchProductProps {
+  lang?: Locale | string;
+  productId: string;
+  fetcher: (url: string) => Promise<DataResponse<Product>>;
+}
+
+export const fetchProduct = async ({
+  lang = LocaleEnum.EN,
+  productId,
+  fetcher,
+}: FetchProductProps): Promise<DataResponse<Product>> => {
+  const url = new URL(`${API_ENDPOINTS.PRODUCT.ONE}/${productId}`);
+  if (lang) url.searchParams.append("lang", lang.toString());
 
   return fetcher(url.toString());
 };
