@@ -1,11 +1,9 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { getSubCategoryProductsQueryOptions } from "@/utils/queryOptions";
 import { getQueryClient } from "@/utils/queryUtils";
-import { DataListResponse } from "@/types/service-response.type";
-import { Product } from "@/types/product.type";
 import { Locale } from "@/types/locale";
 import { LoggedUserWishlistProvider } from "@/contexts/LoggedUserWishList.context";
 import SubCategoryItems from "@/components/user/subCategory/SubCategoryItems";
+import { prefetchSubCategoryData } from "@/services/prefetch/subCategory";
 
 interface PageProps {
   params: Promise<{
@@ -28,9 +26,12 @@ export default async function SubCategoryPage({
 
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchInfiniteQuery<DataListResponse<Product>>(
-    getSubCategoryProductsQueryOptions(locale, categoryId, subCategoryId)
-  );
+  await prefetchSubCategoryData({
+    queryClient,
+    categoryId,
+    subCategoryId,
+    locale,
+  });
 
   const dehydratedState = dehydrate(queryClient);
 

@@ -5,8 +5,10 @@ import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
 import { useAuthContext } from "../useAuthContext";
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { Product } from "@/types/product.type";
+import { getSubCategoryProductsQueryOptions } from "./query-options/subCategoryProducts";
+import { authFetcher } from "@/utils/authFetcher";
+import { fetchSubCategoryProducts } from "@/services/subCategory.service";
 
 interface FetchSubCategoryParams {
   lang?: Locale | string;
@@ -24,68 +26,6 @@ export const fetchSubCategory = async ({
   const res = await fetch(url.toString(), {});
 
   if (!res.ok) throw new Error("Could not retrieve sub-category");
-
-  const resObj = await res.json();
-
-  return resObj;
-};
-
-interface FetchSubCategoryProductsParams {
-  lang?: string | Locale;
-  categoryId: string;
-  subCategoryId: string;
-  limit?: number;
-  lastId?: string;
-  priceFrom?: number;
-  priceTo?: number;
-  ratingFrom?: number;
-  createdFrom?: string;
-  createdTo?: string;
-  beforeNumOfDays?: number;
-  accessToken?: string | undefined;
-}
-
-export const fetchSubCategoryProducts = async ({
-  lang = "en",
-  categoryId,
-  subCategoryId,
-  limit = PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS,
-  lastId,
-  priceFrom,
-  priceTo,
-  ratingFrom,
-  createdFrom,
-  createdTo,
-  beforeNumOfDays,
-  accessToken,
-}: FetchSubCategoryProductsParams): Promise<DataListResponse<Product>> => {
-  const url = new URL(`${API_ENDPOINTS.SUB_CATEGORY.PRODUCTS}`);
-
-  if (lang) url.searchParams.append("lang", lang);
-  if (categoryId) url.searchParams.append("categoryId", categoryId);
-  if (subCategoryId) url.searchParams.append("subCategoryId", subCategoryId);
-  if (limit) url.searchParams.append("limit", String(limit));
-  if (lastId) url.searchParams.append("lastId", lastId);
-  if (priceFrom !== undefined && priceFrom > 0)
-    url.searchParams.append("priceFrom", String(priceFrom));
-  if (priceTo !== undefined && priceTo > 0)
-    url.searchParams.append("priceTo", String(priceTo));
-  if (ratingFrom !== undefined && ratingFrom > 0)
-    url.searchParams.append("ratingFrom", String(ratingFrom));
-  if (createdFrom !== undefined && createdFrom)
-    url.searchParams.append("createdFrom", String(createdFrom));
-  if (createdTo !== undefined && createdTo)
-    url.searchParams.append("createdTo", String(createdTo));
-  if (beforeNumOfDays !== undefined && beforeNumOfDays > 0)
-    url.searchParams.append("beforeNumOfDays", String(beforeNumOfDays));
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  if (!res.ok) throw new Error("Could not retrieve sub-category's products");
 
   const resObj = await res.json();
 
@@ -115,58 +55,33 @@ export const useSubCategoryProductsQuery = (
   createdTo?: string,
   beforeNumOfDays?: number,
 ) => {
-  const { locale, accessToken } = useAuthContext();
+  const { locale } = useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Product>>({
-    queryKey: [
-      "publicSubCategoryProducts",
+    ...getSubCategoryProductsQueryOptions({
       categoryId,
       subCategoryId,
-      locale,
       priceFrom,
       priceTo,
       ratingFrom,
       createdFrom,
       createdTo,
       beforeNumOfDays,
-      accessToken,
-    ],
-    queryFn: ({ pageParam }) => {
-      if (!categoryId) {
-        throw new Error("No category id found");
-      }
-
-      return fetchSubCategoryProducts({
-        lang: locale,
-        categoryId,
-        subCategoryId,
-        limit: PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS,
-        lastId:
-          pageParam && typeof pageParam === "string" ? pageParam : undefined,
-        priceFrom,
-        priceTo,
-        ratingFrom,
-        createdFrom,
-        createdTo,
-        beforeNumOfDays,
-        accessToken,
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      const items = lastPage?.data;
-
-      if (!items?.length) return undefined;
-
-      if (items.length < PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS)
-        return undefined;
-
-      const lastProduct = items[items.length - 1];
-      return lastProduct?._id || undefined;
-    },
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    // The first query always runs because useInfiniteQuery always fetches the first page on mount if enabled is true. ✅
-    enabled: !!categoryId && !!subCategoryId,
+      locale,
+      queryFn: ({ pageParam }) =>
+        fetchSubCategoryProducts({
+          lang: locale as Locale,
+          categoryId,
+          subCategoryId,
+          priceFrom,
+          lastId: pageParam as string,
+          priceTo,
+          ratingFrom,
+          createdFrom,
+          createdTo,
+          beforeNumOfDays,
+          fetcher: (path) => authFetcher(path),
+        }),
+    }),
   });
 };
