@@ -1991,6 +1991,9 @@
             "SearchBar": {
               "placeholder": "Search for transaction ID, email, merchant reference, or user ID"
             },
+            "OrdersList": {
+              "noData": "No orders found"
+            },
             "OrderCard": {
               "status": {
                 "pending": "Pending",

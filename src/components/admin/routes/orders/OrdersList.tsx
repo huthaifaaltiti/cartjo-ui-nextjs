@@ -4,7 +4,9 @@ import { memo, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
 import { useOrdersQuery } from "@/hooks/react-query/useOrdersQuery";
-import InfiniteScrollList, { GRID_TYPE } from "@/components/shared/InfiniteScrollList";
+import InfiniteScrollList, {
+  GRID_TYPE,
+} from "@/components/shared/InfiniteScrollList";
 import OrderCard from "./OrderCard";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import PageLoader from "@/components/shared/PageLoader";
@@ -16,10 +18,15 @@ import { useQueryState } from "nuqs";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
 import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
+import { useTranslations } from "next-intl";
 
 const OrdersList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isAuthenticated, isSessionLoading } = useAuthContext();
+
+  const t = useTranslations(
+    "routes.dashboard.routes.orders.components.OrdersList",
+  );
 
   const {
     searchQuery,
@@ -55,7 +62,7 @@ const OrdersList = () => {
       defaultValue: null,
       parse: (value) => (value ? (value as PaymentStatus) : null),
       serialize: (value) => (value ? String(value) : ""),
-    }
+    },
   );
 
   const [deliveryStatus, setDeliveryStatus] =
@@ -71,7 +78,7 @@ const OrdersList = () => {
       defaultValue: "",
       parse: (value) => value || "",
       serialize: (value) => value,
-    }
+    },
   );
   const [createdAfter, setCreatedAfter] = useQueryState<string>(
     "createdAfter",
@@ -79,7 +86,7 @@ const OrdersList = () => {
       defaultValue: "",
       parse: (value) => value || "",
       serialize: (value) => value,
-    }
+    },
   );
 
   const {
@@ -92,7 +99,6 @@ const OrdersList = () => {
     isError,
   } = useOrdersQuery({
     searchQuery,
-    queryKey,
     amountMin,
     amountMax,
     paymentMethod,
@@ -117,7 +123,7 @@ const OrdersList = () => {
       setCreatedAfter(createdFromValue || "");
       setCreatedBefore(createdToValue || "");
     },
-    [createdAfter, createdBefore, setCreatedAfter, setCreatedBefore]
+    [createdAfter, createdBefore, setCreatedAfter, setCreatedBefore],
   );
 
   const showLoader = isLoading || isSessionLoading;
@@ -160,7 +166,7 @@ const OrdersList = () => {
           onApplyDateFilter={handleApplyDateFilter}
         />
         <div className="w-full min-h-[50vh] flex items-center justify-center">
-          <p className="text-gray-500 text-lg">No orders found</p>
+          <p className="text-gray-500 text-lg">{t("noData")}</p>
         </div>
       </>
     );
