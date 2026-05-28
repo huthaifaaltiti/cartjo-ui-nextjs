@@ -4,7 +4,7 @@ import { Order } from "@/types/order.type";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
 import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
-import { getOrdersQueryOptions } from "./query-options/admin-dashboard/orders";
+import { getOrdersQueryOptions } from "./query-options/dashboard/orders";
 import { useAuthContext } from "../useAuthContext";
 import { fetchOrders } from "@/services/order.service";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
