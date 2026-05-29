@@ -1,27 +1,55 @@
 import { fetcher } from "./fetcher";
 
-/**
- * authFetcher — authenticated version of the existing fetcher.
- *
- * Routes through /api/proxy (Next.js route handler) which reads the
- * cartjo_access HttpOnly cookie server-side and attaches Bearer to NestJS.
- */
 export async function authFetcher<T>(
   path: string,
   options: RequestInit = {},
 ): Promise<T> {
+  const body = options.body;
+  const isFormData = body instanceof FormData;
+
+  const headers: Record<string, string> = {
+    ...((options.headers as Record<string, string>) ?? {}),
+  };
+
+  let finalBody: BodyInit;
+
+  if (isFormData) {
+    // Inject proxy routing configuration details into custom transport headers
+    headers["x-proxy-path"] = path;
+    headers["x-proxy-method"] = options.method ?? "POST";
+    headers["x-proxy-headers"] = JSON.stringify(options.headers ?? {});
+    // NOTE: Leave Content-Type completely undefined here.
+    // The browser will automatically set 'multipart/form-data' along with the accurate boundary.
+
+    finalBody = body as FormData;
+  } else {
+    headers["Content-Type"] = "application/json";
+
+    let parsedPayload: unknown = body;
+
+    if (typeof body === "string") {
+      try {
+        parsedPayload = JSON.parse(body) as unknown;
+      } catch {
+        parsedPayload = body;
+      }
+    }
+
+    finalBody = JSON.stringify({
+      path,
+      method: options.method ?? "GET",
+      body: parsedPayload,
+      headers: options.headers ?? {},
+    });
+  }
+
   return fetcher<T>(
     "/api/proxy",
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        path,
-        method: options.method ?? "GET",
-        body: options.body ? JSON.parse(options.body as string) : undefined,
-        headers: options.headers ?? {},
-      }),
+      headers,
+      body: finalBody,
     },
-    true, // skipAuthErrorHandling — /api/proxy handles 401/refresh itself
+    true, // skipAuthErrorHandling => /api/proxy handles token refresh lifecycle itself
   );
 }

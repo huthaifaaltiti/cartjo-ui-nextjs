@@ -9,7 +9,48 @@ import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
   try {
-    const { path, method, body, headers: extraHeaders } = await req.json();
+    const contentType = req.headers.get("content-type") || "";
+    const isMultipart = contentType.includes("multipart/form-data");
+
+    let path: string;
+    let method: string;
+    let extraHeaders: Record<string, string> = {};
+    let finalBody: any;
+
+    if (isMultipart) {
+      // 1. Read metadata out of transport headers
+      path = req.headers.get("x-proxy-path") || "";
+      method = req.headers.get("x-proxy-method") || "POST";
+
+      try {
+        const rawHeaders = req.headers.get("x-proxy-headers");
+        extraHeaders = rawHeaders ? JSON.parse(rawHeaders) : {};
+      } catch {
+        extraHeaders = {};
+      }
+
+      // Safeguard: strip system headers to prevent conflicts downstream
+      delete extraHeaders["content-type"];
+
+      // 2. Safely parse the raw multipart payload incoming into Next.js
+      const incomingFormData = await req.formData();
+      const outboundFormData = new FormData();
+
+      // Reconstruct the payload to forward downstream safely
+      incomingFormData.forEach((value, key) => {
+        outboundFormData.append(key, value);
+      });
+
+      finalBody = outboundFormData;
+    } else {
+      // JSON Payload Fallback Path
+      const payload = await req.json();
+      path = payload.path;
+      method = payload.method || "POST";
+      extraHeaders = payload.headers || {};
+      finalBody =
+        payload.body !== undefined ? JSON.stringify(payload.body) : undefined;
+    }
 
     const SERVER_API = process.env.NEXT_PUBLIC_API_LINK!;
     const daysNum = Number(process.env.JWT_REFRESH_EXPIRATION_TIME_DAYS ?? 7);
@@ -31,14 +72,20 @@ export async function POST(req: NextRequest) {
       (await getRefreshToken());
 
     const makeRequest = async (token: string | null) => {
+      const headers: Record<string, string> = {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...extraHeaders,
+      };
+
+      // CRITICAL: Let fetch auto-generate the content-type with the correct boundary string
+      if (!isMultipart) {
+        headers["Content-Type"] = "application/json";
+      }
+
       return fetch(targetUrl, {
-        method: method ?? "GET",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          ...(extraHeaders ?? {}),
-        },
-        ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+        method: method,
+        headers,
+        body: finalBody,
         cache: "no-store",
       });
     };
@@ -50,14 +97,12 @@ export async function POST(req: NextRequest) {
 
       if (refreshed) {
         const newToken = await getAccessToken();
-
         nestRes = await makeRequest(newToken);
 
         const data = await nestRes.json();
         const response = NextResponse.json(data, { status: nestRes.status });
 
         const cookieStore = await cookies();
-
         const newAccess = cookieStore.get(TOKEN_KEYS.ACCESS_TOKEN);
         const newRefresh = cookieStore.get(TOKEN_KEYS.REFRESH_TOKEN);
 
@@ -67,7 +112,7 @@ export async function POST(req: NextRequest) {
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             path: "/",
-            maxAge: 60 * minutesNum, // 15 minutes
+            maxAge: 60 * minutesNum, // minutes
           });
         }
         if (newRefresh) {
@@ -76,7 +121,7 @@ export async function POST(req: NextRequest) {
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             path: "/",
-            maxAge: 60 * 60 * 24 * daysNum, // 7 days
+            maxAge: 60 * 60 * 24 * daysNum, // days
           });
         }
 
@@ -107,10 +152,7 @@ export async function POST(req: NextRequest) {
       data = JSON.parse(text);
     } catch {
       return NextResponse.json(
-        {
-          isSuccess: false,
-          message: `Server error: ${text.slice(0, 150)}`,
-        },
+        { isSuccess: false, message: `Server error: ${text.slice(0, 150)}` },
         { status: nestRes.status },
       );
     }
