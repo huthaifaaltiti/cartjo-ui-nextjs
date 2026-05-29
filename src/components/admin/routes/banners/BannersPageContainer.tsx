@@ -1,20 +1,13 @@
 import { memo } from "react";
-import { Blocks } from "lucide-react";
-import { Banner } from "@/types/banner.type";
-import { BannersContextProvider } from "@/contexts/Banners.context";
 import SearchBanners from "./SearchBanners";
 import ModalCreateButton from "@/components/shared/ModalCreateButton";
-import BannersList from "./BannersList";
+import { Blocks } from "lucide-react";
 import CreateBannerForm from "./CreateBannerForm";
+import BannersList from "./BannersList";
 
-type BannersPageProps = {
-  data: Banner[];
-  token: string | null;
-};
-
-const BannersPage = ({ data, token }: BannersPageProps) => {
+const BannersPageContainer = () => {
   return (
-    <BannersContextProvider token={token}>
+    <div className="w-full">
       <div className="w-full flex flex-col items-start gap-1 md:flex-row md:items-center md:justify-between md:gap-5 mb-3">
         <SearchBanners />
         <ModalCreateButton
@@ -23,9 +16,9 @@ const BannersPage = ({ data, token }: BannersPageProps) => {
           ModalContent={<CreateBannerForm />}
         />
       </div>
-      <BannersList initialBanners={data} />
-    </BannersContextProvider>
+      <BannersList />
+    </div>
   );
 };
 
-export default memo(BannersPage);
+export default memo(BannersPageContainer);

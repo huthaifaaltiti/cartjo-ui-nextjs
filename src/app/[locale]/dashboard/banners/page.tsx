@@ -1,19 +1,31 @@
-import { fetchBanners } from "@/hooks/react-query/useBannersQuery";
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
-import BannersPage from "@/components/admin/routes/banners/BannersPage";
 import { requireAuth } from "@/utils/authRedirect";
+import { getAccessToken } from "@/lib/tokens.server";
+import { Locale } from "@/types/locale";
+import { prefetchDashboardBannersData } from "@/services/prefetch/dashboard/banners";
+import { getQueryClient } from "@/utils/queryUtils";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import BannersPageContainer from "@/components/admin/routes/banners/BannersPageContainer";
 
-const Page = async () => {
-  const token = await getAccessTokenFromServerSession();
-  requireAuth(token)
+interface PageProps {
+  params: Promise<{ locale: Locale }>;
+}
 
-  const { data } = await fetchBanners({
-    token,
-    limit: PAGINATION_LIMITS.BANNERS,
-  });
+const Page = async ({ params }: PageProps) => {
+  const { locale } = await params;
 
-  return <BannersPage data={data} token={token} />;
+  const token = await getAccessToken();
+  requireAuth(token);
+
+  const queryClient = getQueryClient();
+  await prefetchDashboardBannersData({ queryClient, locale });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <BannersPageContainer />
+    </HydrationBoundary>
+  );
 };
 
 export default Page;

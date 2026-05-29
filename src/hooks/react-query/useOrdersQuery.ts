@@ -29,7 +29,8 @@ export const useOrdersQuery = ({
   createdAfter?: string;
   createdBefore?: string;
 }) => {
-  const { locale } = useAuthContext();
+  const { locale, isAuthenticated, isSessionLoading, userId } =
+    useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Order>>({
     ...getOrdersQueryOptions({
@@ -58,5 +59,6 @@ export const useOrdersQuery = ({
           fetcher: (path) => authFetcher(path),
         }),
     }),
+    enabled: !isSessionLoading && isAuthenticated && !!userId,
   });
 };
