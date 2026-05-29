@@ -6,20 +6,52 @@ interface FetchOptions extends RequestInit {
   skipAuth?: boolean;
 }
 
-// Server-side authenticated fetch
-// Use this in Server Components and Route Handlers
-export async function apiFetch<T = any>(
+interface ApiResponse<T> {
+  data: T | null;
+  ok: boolean;
+  status: number;
+}
+
+/**
+ * Server-side authenticated fetcher.
+ * Safe to use across React Server Components (RSC), Server Actions, and Route Handlers.
+ */
+export async function apiFetch<T = unknown>(
   path: string,
   options: FetchOptions = {},
-): Promise<{ data: T; ok: boolean; status: number }> {
+): Promise<ApiResponse<T>> {
   const { skipAuth = false, ...fetchOptions } = options;
 
+  const incomingBody = fetchOptions.body;
+  const isFormData = incomingBody instanceof FormData;
+
   const makeRequest = async (token: string | null) => {
-    const headers: HeadersInit = {
-      "Content-Type": "application/json",
+    const headers: Record<string, string> = {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...fetchOptions.headers,
+      ...(fetchOptions.headers as Record<string, string>),
     };
+
+    let finalBody: BodyInit | null | undefined = incomingBody;
+
+    if (isFormData) {
+      // CRITICAL: Content-Type must remain undefined so fetch can insert the accurate multi-part boundary string
+      delete headers["content-type"];
+      delete headers["Content-Type"];
+    } else {
+      headers["Content-Type"] = "application/json";
+
+      // If the body is already stringified JSON, unwrap it to clean up double escapes
+      if (typeof incomingBody === "string") {
+        try {
+          const parsed = JSON.parse(incomingBody) as unknown;
+          finalBody = JSON.stringify(parsed);
+        } catch {
+          finalBody = incomingBody;
+        }
+      } else if (incomingBody !== undefined && incomingBody !== null) {
+        finalBody = JSON.stringify(incomingBody);
+      }
+    }
 
     const targetUrl =
       path.startsWith("http://") || path.startsWith("https://")
@@ -28,34 +60,39 @@ export async function apiFetch<T = any>(
 
     return fetch(targetUrl, {
       ...fetchOptions,
+      method: fetchOptions.method ?? "GET",
       headers,
-      cache: "no-store", // always fresh for auth-related
+      body: finalBody,
+      cache: "no-store", // Keep data synchronized across server evaluations
     });
   };
 
   if (skipAuth) {
     const res = await makeRequest(null);
-    const data = await res.json();
+    const data = (await res.json().catch(() => null)) as T | null;
     return { data, ok: res.ok, status: res.status };
   }
 
-  // First attempt with current access token
+  // Attempt 1: Execute with the active access token
   const accessToken = await getAccessToken();
   let res = await makeRequest(accessToken);
 
-  // 401 → try silent refresh once
+  // Attempt 2: If unauthorized (401), execute an internal silent refresh cycle once
   if (res.status === 401) {
     const refreshed = await silentRefresh();
 
     if (!refreshed) {
-      return { data: null as any, ok: false, status: 401 };
+      console.warn(
+        "[apiFetch] Session token recovery rejected. Token is completely expired.",
+      );
+      return { data: null, ok: false, status: 401 };
     }
 
-    // Retry with new access token
+    // Attempt 3: Retry request pipeline with the freshly rotated token
     const newToken = await getAccessToken();
     res = await makeRequest(newToken);
   }
 
-  const data = await res.json().catch(() => null);
+  const data = (await res.json().catch(() => null)) as T | null;
   return { data, ok: res.ok, status: res.status };
 }
