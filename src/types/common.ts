@@ -1,5 +1,7 @@
 // ---
 
+import { Locale } from "./locale";
+
 export interface Name {
   ar: string;
   en: string;
@@ -20,6 +22,10 @@ export interface FetchPaginatedArgs {
 }
 
 // --
+
+export interface PageProps {
+  params: Promise<{ locale: Locale }>;
+}
 
 export interface ErrorPageProps {
   error?: Error & { digest?: string };
@@ -47,4 +53,4 @@ export type FormHandler<T> = {
 
 export type Direction = "rtl" | "ltr";
 
-export type ViewMode = "public" | "admin"
+export type ViewMode = "public" | "admin";

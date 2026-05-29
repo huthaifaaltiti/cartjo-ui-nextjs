@@ -19,6 +19,10 @@ import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
 import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
 import { useTranslations } from "next-intl";
+import { useDebounce } from "@/hooks/useDebounce";
+import { DEBOUNCE_TIME_MS } from "@/config/time.config";
+
+const debouncingTime = DEBOUNCE_TIME_MS ?? 750;
 
 const OrdersList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,6 +37,11 @@ const OrdersList = () => {
     queryKey,
     items: reduxOrders,
   } = useSelector((state: RootState) => state.orders);
+
+  const debouncedSearch = useDebounce<string>({
+    value: searchQuery,
+    delay: debouncingTime,
+  });
 
   const [amountMin, setAmountMin] = useQueryState<number>("amountMin", {
     defaultValue: 0,
@@ -98,7 +107,7 @@ const OrdersList = () => {
     error,
     isError,
   } = useOrdersQuery({
-    searchQuery,
+    searchQuery: debouncedSearch,
     amountMin,
     amountMax,
     paymentMethod,

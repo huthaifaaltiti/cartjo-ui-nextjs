@@ -19,6 +19,10 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 import PageLoader from "@/components/shared/PageLoader";
 import AuthRedirect from "@/components/shared/AuthRedirect";
 import ErrorMessage from "@/components/shared/ErrorMessage";
+import { DEBOUNCE_TIME_MS } from "@/config/time.config";
+import { useDebounce } from "@/hooks/useDebounce";
+
+const debouncingTime = DEBOUNCE_TIME_MS ?? 750;
 
 const BannersList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,10 +31,14 @@ const BannersList = () => {
 
   const {
     items,
-
     error: reduxError,
     searchQuery,
   } = useSelector((state: RootState) => state.banners);
+
+  const debouncedSearch = useDebounce<string>({
+    value: searchQuery,
+    delay: debouncingTime,
+  });
 
   const {
     data,
@@ -40,7 +48,7 @@ const BannersList = () => {
     isLoading,
     error,
     isError,
-  } = useBannersQuery({ search: searchQuery });
+  } = useBannersQuery({ search: debouncedSearch });
 
   useEffect(() => {
     const fetched = data?.pages?.flatMap((p) => p?.data || []) ?? [];

@@ -22,9 +22,7 @@ import {
 import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
-import { useBanners } from "@/contexts/Banners.context";
 import LoadingButton from "@/components/shared/LoadingButton";
-import { User } from "@/types/user";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
@@ -35,6 +33,10 @@ import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { MEDIA_CONFIG } from "@/config/media.config";
+import { BANNERS_QUERY_KEY } from "@/hooks/react-query/query-options/banners";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
+import { Banner } from "@/types/banner.type";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -161,9 +163,10 @@ const CreateBannerForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { token: accessToken, queryKey } = useBanners();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
+
+  const queryKey = BANNERS_QUERY_KEY;
 
   const [withAction, setWithAction] = useState<boolean>(false);
 
@@ -251,30 +254,24 @@ const CreateBannerForm = () => {
         formData.append("image_en", bannerImage_en.file);
       }
 
-      const response = await fetch(API_ENDPOINTS.DASHBOARD.BANNERS.CREATE, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      const response = await authFetcher<DataResponse<Banner>>(
+        API_ENDPOINTS.DASHBOARD.BANNERS.CREATE,
+        {
+          method: "POST",
+          body: formData,
         },
-      });
+      );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-
+      if (!response.isSuccess) {
         throw new Error(
-          errorData?.message ||
+          response?.message ||
             t("routes.dashboard.routes.banners.errors.failedCreation"),
         );
       }
 
-      return response.json();
+      return response;
     },
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<Banner>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
