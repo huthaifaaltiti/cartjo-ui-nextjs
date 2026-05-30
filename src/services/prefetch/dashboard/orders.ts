@@ -14,9 +14,11 @@ export async function prefetchDashboardOrdersData({
   queryClient: QueryClient;
   locale: string;
 }) {
+  const fallbackLocale = locale ?? Locale.EN;
+
   await queryClient.prefetchInfiniteQuery(
     getOrdersQueryOptions({
-      locale: locale ?? Locale.EN,
+      locale: fallbackLocale,
       searchQuery: "",
       amountMax: 0,
       amountMin: 0,
@@ -27,19 +29,20 @@ export async function prefetchDashboardOrdersData({
       createdBefore: "",
       queryFn: ({ pageParam }) =>
         fetchOrders({
-          lang: locale ?? Locale.EN,
+          lang: fallbackLocale,
           lastId: pageParam as string,
           limit: PAGINATION_LIMITS.DASHBOARD_VIEW.ORDERS ?? 20,
-          fetcher: (path) =>
-            apiFetch<DataListResponse<Order>>(path).then(
-              ({ data, ok, status }) => {
-                if (!ok)
-                  throw new Error(
-                    `[DashboardOrdersPage] Failed to fetch dashboard orders: ${status}`,
-                  );
-                return data;
-              },
-            ),
+          fetcher: async (path) => {
+            const { data, ok, status } =
+              await apiFetch<DataListResponse<Order>>(path);
+
+            if (!ok || !data) {
+              throw new Error(
+                `[DashboardOrdersPage] Failed to fetch dashboard orders: ${status}`,
+              );
+            }
+            return data;
+          },
         }),
     }),
   );

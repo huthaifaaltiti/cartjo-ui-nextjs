@@ -33,16 +33,19 @@ export async function prefetchSearchData({
             lang: locale ?? Locale.EN,
             querySearch,
             typeHint,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Product>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[SearchPage] Failed to fetch searched products: ${status}`,
-                    );
-                  return data;
-                },
-              ),
+            fetcher: async (path) => {
+              {
+                const { data, ok, status } =
+                  await apiFetch<DataListResponse<Product>>(path);
+
+                if (!ok || !data) {
+                  throw new Error(
+                    `[SearchPage] Failed to fetch searched products: ${status}`,
+                  );
+                }
+                return data;
+              }
+            },
           }),
       }),
     ),
@@ -54,17 +57,21 @@ export async function prefetchSearchData({
         queryFn: () =>
           fetchSuggestedProducts({
             lang: locale ?? Locale.EN,
-            limit: PAGINATION_LIMITS.OTHERS.PUBLIC_SUGGESTED_PRODUCTS_ITEMS ?? 4,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Product>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[SearchPage] Failed to fetch suggested products: ${status}`,
-                    );
-                  return data;
-                },
-              ),
+            limit:
+              PAGINATION_LIMITS.OTHERS.PUBLIC_SUGGESTED_PRODUCTS_ITEMS ?? 4,
+            fetcher: async (path) => {
+              {
+                const { data, ok, status } =
+                  await apiFetch<DataListResponse<Product>>(path);
+
+                if (!ok || !data) {
+                  throw new Error(
+                    `[SearchPage] Failed to fetch suggested products: ${status}`,
+                  );
+                }
+                return data;
+              }
+            },
           }),
       }),
     ),

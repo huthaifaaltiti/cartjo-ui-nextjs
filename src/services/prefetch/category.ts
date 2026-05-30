@@ -27,16 +27,17 @@ export async function prefetchCategoryData({
           fetchCategory({
             lang: locale ?? Locale.EN,
             categoryId,
-            fetcher: (path) =>
-              apiFetch<DataResponse<Category>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[CategoryPage] Failed to fetch category: ${status}`,
-                    );
-                  return data;
-                },
-              ),
+            fetcher: async (path) => {
+              const { data, ok, status } =
+                await apiFetch<DataResponse<Category>>(path);
+
+              if (!ok || !data) {
+                throw new Error(
+                  `[CategoryPage] Failed to fetch category: ${status}`,
+                );
+              }
+              return data;
+            },
           }),
       }),
     ),
@@ -57,16 +58,17 @@ export async function prefetchCategoryData({
             categoryId,
             lastId: pageParam as string,
             limit: PAGINATION_LIMITS.PUBLIC_VIEW.CATEGORY_PRODUCTS_ITEMS ?? 20,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Product>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[CategoryPage] Failed to fetch category products: ${status}`,
-                    );
-                  return data;
-                },
-              ),
+            fetcher: async (path) => {
+              const { data, ok, status } =
+                await apiFetch<DataListResponse<Product>>(path);
+
+              if (!ok || !data) {
+                throw new Error(
+                  `[CategoryPage] Failed to fetch category products: ${status}`,
+                );
+              }
+              return data;
+            },
           }),
       }),
     ),

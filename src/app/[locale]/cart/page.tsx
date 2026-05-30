@@ -36,14 +36,17 @@ const Page = async ({ params }: PageProps) => {
           lang: locale ?? LocaleEnum.EN,
           limit: PAGINATION_LIMITS.USER_VIEW.CART_ITEMS ?? 20,
           lastId: context.pageParam as string | undefined,
-          fetcher: (path) =>
-            apiFetch<DataResponse<Cart>>(path).then(({ data, ok, status }) => {
-              if (!ok)
-                throw new Error(
-                  `[UserCartPage] Failed to fetch wishlist items: ${status}`,
-                );
-              return data;
-            }),
+          fetcher: async (path) => {
+            const { data, ok, status } =
+              await apiFetch<DataResponse<Cart>>(path);
+
+            if (!ok || !data) {
+              throw new Error(
+                `[UserCartPage] Failed to fetch cart items: ${status}`,
+              );
+            }
+            return data;
+          },
         }),
     }),
   );

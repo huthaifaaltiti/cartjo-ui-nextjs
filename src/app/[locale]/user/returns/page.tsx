@@ -47,16 +47,17 @@ const UserOrdersReturnsPage = async ({ params }: PageProps) => {
               lang: locale ?? LocaleEnum.EN,
               limit: PAGINATION_LIMITS.USER_VIEW.ORDER_RETURNS,
               lastId: context.pageParam as string | undefined,
-              fetcher: (path) =>
-                apiFetch<DataListResponse<Order>>(path).then(
-                  ({ data, ok, status }) => {
-                    if (!ok)
-                      throw new Error(
-                        `[UserOrderReturnsPage] Failed to fetch order returns: ${status}`,
-                      );
-                    return data;
-                  },
-                ),
+              fetcher: async (path) => {
+                const { data, ok, status } =
+                  await apiFetch<DataListResponse<Order>>(path);
+
+                if (!ok || !data) {
+                  throw new Error(
+                    `[UserOrderReturnsPage] Failed to fetch order returns: ${status}`,
+                  );
+                }
+                return data;
+              },
             }),
         }),
       );

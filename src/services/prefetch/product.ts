@@ -36,16 +36,17 @@ export async function prefetchProductData({
             limit:
               PAGINATION_LIMITS.OTHERS.PUBLIC_SUGGESTED_PRODUCTS_ITEMS ?? 4,
             productId,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Product>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[ProductPage] Failed to fetch suggested products: ${status}`,
-                    );
-                  return data;
-                },
-              ),
+            fetcher: async (path) => {
+              const { data, ok, status } =
+                await apiFetch<DataListResponse<Product>>(path);
+
+              if (!ok || !data) {
+                throw new Error(
+                  `[ProductPage] Failed to fetch suggested products: ${status}`,
+                );
+              }
+              return data;
+            },
           }),
       }),
     ),
@@ -57,16 +58,17 @@ export async function prefetchProductData({
           fetchProduct({
             lang: locale ?? Locale.EN,
             productId,
-            fetcher: (path) =>
-              apiFetch<DataResponse<Product>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[ProductPage] Failed to fetch product. status:${status}, productId: ${productId}`,
-                    );
-                  return data;
-                },
-              ),
+            fetcher: async (path) => {
+              const { data, ok, status } =
+                await apiFetch<DataResponse<Product>>(path);
+
+              if (!ok || !data) {
+                throw new Error(
+                  `[ProductPage] Failed to fetch product: ${status}, productID: ${productId}`,
+                );
+              }
+              return data;
+            },
           }),
       }),
     ),
@@ -80,16 +82,19 @@ export async function prefetchProductData({
             productId,
             lastId: pageParam as string,
             limit: PAGINATION_LIMITS.PUBLIC_VIEW.PRODUCT_COMMENTS ?? 20,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Comment>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[ProductPage] Failed to fetch search product comments: ${status}`,
-                    );
-                  return data;
-                },
-              ),
+            fetcher: async (path) => {
+              {
+                const { data, ok, status } =
+                  await apiFetch<DataListResponse<Comment>>(path);
+
+                if (!ok || !data) {
+                  throw new Error(
+                    `[ProductPage] Failed to fetch search product comments: ${status}`,
+                  );
+                }
+                return data;
+              }
+            },
           }),
       }),
     ),
@@ -103,16 +108,19 @@ export async function prefetchProductData({
             productId,
             lastId: pageParam as string,
             limit: PAGINATION_LIMITS.PUBLIC_VIEW.PRODUCT_COMMENTS ?? 20,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Comment>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[ProductPage] Failed to fetch product comments: ${status}`,
-                    );
-                  return data;
-                },
-              ),
+            fetcher: async (path) => {
+              {
+                const { data, ok, status } =
+                  await apiFetch<DataListResponse<Comment>>(path);
+
+                if (!ok || !data) {
+                  throw new Error(
+                    `[ProductPage] Failed to fetch product comments: ${status}`,
+                  );
+                }
+                return data;
+              }
+            },
           }),
       }),
     ),
@@ -122,16 +130,19 @@ export async function prefetchProductData({
         queryFn: () =>
           fetchActiveCategories({
             lang: locale ?? Locale.EN,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Category>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[ProductPage] Failed to fetch active categories: ${status}`,
-                    );
-                  return data;
-                },
-              ),
+            fetcher: async (path) => {
+              {
+                const { data, ok, status } =
+                  await apiFetch<DataListResponse<Category>>(path);
+
+                if (!ok || !data) {
+                  throw new Error(
+                    `[ProductPage] Failed to fetch active categories: ${status}`,
+                  );
+                }
+                return data;
+              }
+            },
           }),
       }),
     ),

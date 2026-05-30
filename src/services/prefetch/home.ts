@@ -23,63 +23,71 @@ import { fetchActiveLogo } from "../logo.service";
 export async function prefetchHomeData(
   queryClient: QueryClient,
   locale: string,
-) {
+): Promise<Category[]> {
+  const fallbackLocale = locale ?? Locale.EN;
+
   const [categoriesResult] = await Promise.all([
-    queryClient.fetchQuery(
+    queryClient.fetchQuery<DataListResponse<Category>>(
       getActiveCategoriesQueryOptions({
-        locale: locale ?? Locale.EN,
-        queryFn: () =>
-          fetchActiveCategories({
-            lang: locale ?? Locale.EN,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Category>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[HomePage] Failed to fetch active categories: ${status}`,
-                    );
-                  return data;
-                },
-              ),
-          }),
+        locale: fallbackLocale,
+        queryFn: async () => {
+          return fetchActiveCategories({
+            lang: fallbackLocale,
+            fetcher: async (path) => {
+              const { data, ok, status } =
+                await apiFetch<DataListResponse<Category>>(path);
+
+              if (!ok || !data) {
+                throw new Error(
+                  `[HomePage] Failed to fetch active categories: ${status}`,
+                );
+              }
+              return data;
+            },
+          });
+        },
       }),
     ),
-    queryClient.prefetchQuery(
+    queryClient.prefetchQuery<DataListResponse<Showcase>>(
       getActiveShowcasesQueryOptions({
-        locale: locale ?? Locale.EN,
-        queryFn: () =>
-          fetchActiveShowcases({
-            lang: locale ?? Locale.EN,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Showcase>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[HomePage] Failed to fetch active showcases: ${status}`,
-                    );
-                  return data;
-                },
-              ),
-          }),
+        locale: fallbackLocale,
+        queryFn: async () => {
+          return fetchActiveShowcases({
+            lang: fallbackLocale,
+            fetcher: async (path) => {
+              const { data, ok, status } =
+                await apiFetch<DataListResponse<Showcase>>(path);
+
+              if (!ok || !data) {
+                throw new Error(
+                  `[HomePage] Failed to fetch active showcases: ${status}`,
+                );
+              }
+              return data;
+            },
+          });
+        },
       }),
     ),
-    queryClient.prefetchQuery(
+    queryClient.prefetchQuery<DataListResponse<Banner>>(
       getActiveBannersQueryOptions({
-        locale: locale ?? Locale.EN,
-        queryFn: () =>
-          fetchActiveBanners({
-            lang: locale ?? Locale.EN,
-            fetcher: (path) =>
-              apiFetch<DataListResponse<Banner>>(path).then(
-                ({ data, ok, status }) => {
-                  if (!ok)
-                    throw new Error(
-                      `[HomePage] Failed to fetch active banners: ${status}`,
-                    );
-                  return data;
-                },
-              ),
-          }),
+        locale: fallbackLocale,
+        queryFn: async () => {
+          return fetchActiveBanners({
+            lang: fallbackLocale,
+            fetcher: async (path) => {
+              const { data, ok, status } =
+                await apiFetch<DataListResponse<Banner>>(path);
+
+              if (!ok || !data) {
+                throw new Error(
+                  `[HomePage] Failed to fetch active banners: ${status}`,
+                );
+              }
+              return data;
+            },
+          });
+        },
       }),
     ),
   ]);
@@ -95,28 +103,32 @@ export async function prefetchCategoryPicks({
   randomCategories: Category[];
   locale: Locale | string;
   queryClient: QueryClient;
-}) {
+}): Promise<void> {
+  const fallbackLocale = locale ?? Locale.EN;
+
   await Promise.all(
     randomCategories.map((c: Category) =>
-      queryClient.prefetchQuery(
+      queryClient.prefetchQuery<DataListResponse<Product>>(
         getCategoriesPicksQueryOptions({
-          locale: locale ?? Locale.EN,
+          locale: fallbackLocale,
           categoryId: c._id,
-          queryFn: () =>
-            fetchCategoriesPicks({
-              lang: locale ?? Locale.EN,
+          queryFn: async () => {
+            return fetchCategoriesPicks({
+              lang: fallbackLocale,
               categoryId: c._id,
-              fetcher: (path) =>
-                apiFetch<DataListResponse<Product>>(path).then(
-                  ({ data, ok, status }) => {
-                    if (!ok)
-                      throw new Error(
-                        `[HomePage] Failed to fetch active categories: ${status}`,
-                      );
-                    return data;
-                  },
-                ),
-            }),
+              fetcher: async (path) => {
+                const { data, ok, status } =
+                  await apiFetch<DataListResponse<Product>>(path);
+
+                if (!ok || !data) {
+                  throw new Error(
+                    `[HomePage] Failed to fetch category picks: ${status}`,
+                  );
+                }
+                return data;
+              },
+            });
+          },
         }),
       ),
     ),
@@ -129,22 +141,28 @@ export async function prefetchActiveLogo({
 }: {
   locale: Locale | string;
   queryClient: QueryClient;
-}) {
+}): Promise<void> {
+  const fallbackLocale = locale ?? Locale.EN;
+
   await queryClient.prefetchQuery<DataResponse<Logo>>(
     getActiveLogoQueryOptions({
-      locale: locale ?? Locale.EN,
-      queryFn: () =>
-        fetchActiveLogo({
-          lang: locale ?? Locale.EN,
-          fetcher: (path) =>
-            apiFetch<DataResponse<Logo>>(path).then(({ data, ok, status }) => {
-              if (!ok)
-                throw new Error(
-                  `[HomePage] Failed to fetch active logo: ${status}`,
-                );
-              return data;
-            }),
-        }),
+      locale: fallbackLocale,
+      queryFn: async () => {
+        return fetchActiveLogo({
+          lang: fallbackLocale,
+          fetcher: async (path) => {
+            const { data, ok, status } =
+              await apiFetch<DataResponse<Logo>>(path);
+
+            if (!ok || !data) {
+              throw new Error(
+                `[HomePage] Failed to fetch active logo: ${status}`,
+              );
+            }
+            return data;
+          },
+        });
+      },
     }),
   );
 }

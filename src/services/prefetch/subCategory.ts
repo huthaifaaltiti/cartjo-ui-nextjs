@@ -37,16 +37,19 @@ export async function prefetchSubCategoryData({
           lastId: pageParam as string,
           limit:
             PAGINATION_LIMITS.PUBLIC_VIEW.SUB_CATEGORY_PRODUCTS_ITEMS ?? 20,
-          fetcher: (path) =>
-            apiFetch<DataListResponse<Product>>(path).then(
-              ({ data, ok, status }) => {
-                if (!ok)
-                  throw new Error(
-                    `[SubCategoryPage] Failed to fetch sub-category products: ${status}`,
-                  );
-                return data;
-              },
-            ),
+          fetcher: async (path) => {
+            {
+              const { data, ok, status } =
+                await apiFetch<DataListResponse<Product>>(path);
+
+              if (!ok || !data) {
+                throw new Error(
+                  `[SubCategoryPage] Failed to fetch sub-category products: ${status}`,
+                );
+              }
+              return data;
+            }
+          },
         }),
     }),
   );

@@ -35,16 +35,19 @@ const Page = async ({ params }: PageProps) => {
           lang: locale,
           limit: PAGINATION_LIMITS.USER_VIEW.WISHLIST_ITEMS,
           lastId: context.pageParam as string | undefined,
-          fetcher: (path) =>
-            apiFetch<DataResponse<Wishlist>>(path).then(
-              ({ data, ok, status }) => {
-                if (!ok)
-                  throw new Error(
-                    `[UserWishlistPage] Failed to fetch wishlist items: ${status}`,
-                  );
-                return data;
-              },
-            ),
+          fetcher: async (path) => {
+            {
+              const { data, ok, status } =
+                await apiFetch<DataResponse<Wishlist>>(path);
+
+              if (!ok || !data) {
+                throw new Error(
+                  `[WishlistPage] Failed to fetch wishlist items: ${status}`,
+                );
+              }
+              return data;
+            }
+          },
         }),
     }),
   );

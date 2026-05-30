@@ -14,25 +14,28 @@ export async function prefetchDashboardBannersData({
   queryClient: QueryClient;
   locale: string;
 }) {
+  const fallbackLocale = locale ?? Locale.EN;
+
   await queryClient.prefetchInfiniteQuery(
     getBannersQueryOptions({
-      locale: locale ?? Locale.EN,
+      locale: fallbackLocale,
       search: "",
       queryFn: ({ pageParam }) =>
         fetchBanners({
-          lang: locale ?? Locale.EN,
+          lang: fallbackLocale,
           lastId: pageParam as string,
           limit: PAGINATION_LIMITS.DASHBOARD_VIEW.BANNERS ?? 20,
-          fetcher: (path) =>
-            apiFetch<DataListResponse<Banner>>(path).then(
-              ({ data, ok, status }) => {
-                if (!ok)
-                  throw new Error(
-                    `[DashboardBannersPage] Failed to fetch dashboard banners: ${status}`,
-                  );
-                return data;
-              },
-            ),
+          fetcher: async (path) => {
+            const { data, ok, status } =
+              await apiFetch<DataListResponse<Banner>>(path);
+
+            if (!ok || !data) {
+              throw new Error(
+                `[DashboardBannersPage] Failed to fetch dashboard banners: ${status}`,
+              );
+            }
+            return data;
+          },
         }),
     }),
   );
