@@ -67,7 +67,6 @@ export function useRequireAuth() {
     requireAuth,
     requireAuthWithoutRedirect,
     session: session as CartJOSession | null,
-    status,
     isAuthenticated,
   };
 }

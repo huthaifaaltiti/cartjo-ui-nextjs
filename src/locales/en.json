@@ -1580,6 +1580,7 @@
         "showcases": {
           "title": "Showcases Management",
           "desc": "Manage showcases data",
+          "failed":"Failed to load showcases",
           "createShowcase": {
             "label": "Create showcase",
             "uploadImage_ar": "Upload ar banner image",

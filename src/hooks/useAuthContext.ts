@@ -17,7 +17,7 @@ export const useAuthContext = () => {
   return {
     session,
     locale,
-    userId: session?.id,
+    userId: session?._id,
     user: session,
     isAuthenticated,
     isSessionLoading: loading,

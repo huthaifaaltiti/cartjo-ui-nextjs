@@ -1557,6 +1557,7 @@
         "showcases": {
           "title": "إدارة العروض",
           "desc": "إدارة بيانات العروض",
+          "failed":"فشل تحميل العروض",
           "createShowcase": {
             "label": "إنشاء عرض",
             "actionFailed": "فشل إنشاء العرض"

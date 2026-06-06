@@ -23,3 +23,29 @@ export const fetchActiveShowcases = async ({
 
   return fetcher(url.toString());
 };
+
+interface FetchShowcasesParams {
+  lang?: Locale | string;
+  limit?: number;
+  lastId?: string;
+  search?: string;
+  fetcher: (url: string) => Promise<DataListResponse<Showcase>>;
+}
+
+export const fetchShowcases = async ({
+  lang = "en",
+  limit = PAGINATION_LIMITS.SHOWCASES,
+  lastId,
+  search,
+  fetcher,
+}: FetchShowcasesParams): Promise<DataListResponse<Showcase>> => {
+  console.log("fetchShowcases");
+  const url = new URL(`${API_ENDPOINTS.DASHBOARD.SHOWCASES.ALL}`);
+
+  url.searchParams.append("limit", limit.toString());
+  if (lang) url.searchParams.append("lang", lang);
+  if (lastId) url.searchParams.append("lastId", lastId);
+  if (search) url.searchParams.append("search", search);
+
+  return fetcher(url.toString());
+};

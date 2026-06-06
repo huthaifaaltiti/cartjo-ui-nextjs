@@ -9,19 +9,9 @@ import EditShowcaseForm from "./EditShowcaseForm";
 
 type ShowcaseCardProps = {
   item: Showcase;
-  deleteShowcase: (
-    accessToken: string | null,
-    showcaseId: string,
-    lang: Locale,
-  ) => Promise<BaseResponse>;
-  unDeleteShowcase: (
-    accessToken: string | null,
-    showcaseId: string,
-    lang: Locale,
-  ) => Promise<BaseResponse>;
-  accessToken: string | null;
+  deleteShowcase: (showcaseId: string, lang: Locale) => Promise<BaseResponse>;
+  unDeleteShowcase: (showcaseId: string, lang: Locale) => Promise<BaseResponse>;
   switchShowcaseActiveStatus: (
-    token: string | null,
     lang: string,
     isActive: boolean,
     showcaseId: string,
@@ -33,7 +23,6 @@ const ShowcaseCard = ({
   item: showcase,
   deleteShowcase,
   unDeleteShowcase,
-  accessToken,
   switchShowcaseActiveStatus,
   queryKey,
 }: ShowcaseCardProps) => {
@@ -223,7 +212,6 @@ const ShowcaseCard = ({
             cardItem={showcase}
             deleteFn={deleteShowcase}
             unDeleteFn={unDeleteShowcase}
-            accessToken={accessToken}
             switchUserActiveStatusFn={switchShowcaseActiveStatus}
             queryKey={queryKey}
             showEditButton={true}
