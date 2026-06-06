@@ -149,6 +149,7 @@ export const API_ENDPOINTS = {
   },
   USER: {
     PROFILE: `${API_URL}/api/v1/user`,
+    GET_ME: `${API_URL}/api/v1/user/me`,
     NATIONALITY_STATIC_LIST: `${API_URL}/api/v1/nationality/all-static`,
     UPDATE_PROFILE: `${API_URL}/api/v1/user/update`,
     CONTEXT: `${API_URL}/api/v1/user-context`,
