@@ -1,14 +1,14 @@
 import { QueryClient } from "@tanstack/react-query";
 import { Locale } from "@/enums/locale.enum";
 import { apiFetch } from "@/lib/api.server";
-import { getUsersStatsQueryOptions } from "@/hooks/react-query/query-options/dashboard/usersStats";
+import { getUsersStatsQueryOptions } from "@/hooks/react-query/query-options/usersStats";
 import {
   ActiveUsersResp,
   fetchActiveUsers,
   fetchUsersStats,
   UsersStatsResp,
 } from "@/services/user.service";
-import { getActiveUsersQueryOptions } from "@/hooks/react-query/query-options/dashboard/activeUsers";
+import { getActiveUsersQueryOptions } from "@/hooks/react-query/query-options/activeUsers";
 
 export async function prefetchDashboardUsersData({
   locale,

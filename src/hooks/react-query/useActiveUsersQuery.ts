@@ -1,6 +1,6 @@
 import { QueryFunctionContext, useInfiniteQuery } from "@tanstack/react-query";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { getActiveUsersQueryOptions } from "./query-options/dashboard/activeUsers";
+import { getActiveUsersQueryOptions } from "./query-options/activeUsers";
 import { ActiveUsersResp, fetchActiveUsers } from "@/services/user.service";
 import { authFetcher } from "@/utils/authFetcher";
 import { useAuthContext } from "../useAuthContext";

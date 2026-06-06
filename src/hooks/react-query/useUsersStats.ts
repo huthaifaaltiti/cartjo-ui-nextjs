@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { UsersStats } from "@/types/UsersStats";
-import { getUsersStatsQueryOptions } from "./query-options/dashboard/usersStats";
+import { getUsersStatsQueryOptions } from "./query-options/usersStats";
 import { useAuthContext } from "../useAuthContext";
 import { fetchUsersStats } from "@/services/user.service";
 import { authFetcher } from "@/utils/authFetcher";

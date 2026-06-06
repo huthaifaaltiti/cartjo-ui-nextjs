@@ -4,7 +4,7 @@ import { memo } from "react";
 import { useActiveUsersQuery } from "@/hooks/react-query/useActiveUsersQuery";
 import { useActiveUsers } from "@/contexts/ActiveUsersContext";
 import UsersInfiniteScrollList from "@/components/admin/shared/UsersInfiniteScrollList";
-import { ACTIVE_USERS_QUERY_KEY } from "@/hooks/react-query/query-options/dashboard/activeUsers";
+import { ACTIVE_USERS_QUERY_KEY } from "@/hooks/react-query/query-options/activeUsers";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import PageLoader from "@/components/shared/PageLoader";
 import AuthRedirect from "@/components/shared/AuthRedirect";

@@ -3,7 +3,7 @@ import { Locale } from "@/enums/locale.enum";
 import { DataListResponse } from "@/types/service-response.type";
 import { apiFetch } from "@/lib/api.server";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { getOrdersQueryOptions } from "@/hooks/react-query/query-options/dashboard/orders";
+import { getOrdersQueryOptions } from "@/hooks/react-query/query-options/orders";
 import { fetchOrders } from "@/services/order.service";
 import { Order } from "@/types/order.type";
 
