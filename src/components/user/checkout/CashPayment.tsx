@@ -17,14 +17,17 @@ import {
   setOrderShippingAddress,
 } from "@/redux/slices/orders";
 import { resetCartState } from "@/redux/slices/cart";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 export default function CashPayment() {
   const dispatch = useDispatch<AppDispatch>();
   const t = useTranslations("");
 
+  const { requireAuth } = useRequireAuth();
+
   const { totalAmount, items } = useSelector((state: RootState) => state.cart);
   const { deliveryCost } = useSelector((state: RootState) => state.orders);
-  const { accessToken, user, locale } = useAuthContext();
+  const { user, locale } = useAuthContext();
 
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string>("");
@@ -35,16 +38,11 @@ export default function CashPayment() {
 
   const isProceedBtnDisabled =
     cashOrderProcessing ||
-    !accessToken ||
     !shippingAddress ||
     (totalAmount === 0 && items.length === 0);
 
   const handleCashPayment = async () => {
-    if (!accessToken) {
-      setError(t("routes.checkout.components.CashPayment.errors.notLoggedIn"));
-      return;
-    }
-
+    if (!requireAuth()) return;
     if (!shippingAddress) {
       setError(t("routes.checkout.components.CashPayment.errors.noShipping"));
       return;
@@ -61,13 +59,12 @@ export default function CashPayment() {
           amount: totalAmount,
           deliveryCost,
           currency: Currency.JOD,
-          email: user!.email,
+          email: user?.email as string,
           merchantReference,
           transactionId: null,
           paymentMethod: PaymentMethods.Cash,
           shippingAddress,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 

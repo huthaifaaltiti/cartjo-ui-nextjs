@@ -8,7 +8,6 @@ import { PaymentData, VerifiedOrder } from "@/types/payment.types";
 // import { SubmitPaymentResponse } from "./PaymentForm";
 
 interface PaymentInitializerProps {
-  accessToken: string | null;
   email: string | undefined | null;
   totalAmount: number;
   orderEncrypted: string | null;
@@ -19,7 +18,6 @@ interface PaymentInitializerProps {
 }
 
 export default function PaymentInitializer({
-  accessToken,
   // email,
   // totalAmount,
   orderEncrypted,
@@ -30,7 +28,6 @@ export default function PaymentInitializer({
 }: PaymentInitializerProps) {
   // 1) Create signature
   useEffect(() => {
-    if (!accessToken) return;
 
     const init = async () => {
       // const url = new URL(API_ENDPOINTS.CHECKOUT.PROCESS_PAYMENT);
@@ -69,11 +66,11 @@ export default function PaymentInitializer({
     };
 
     init();
-  }, [accessToken]);
+  }, []);
 
   // 2) Verify encrypted order
   useEffect(() => {
-    if (!orderEncrypted || !accessToken) return;
+    if (!orderEncrypted) return;
 
     const verify = async () => {
       // const url = new URL(API_ENDPOINTS.CHECKOUT.VERIFY_PAYMENT);
