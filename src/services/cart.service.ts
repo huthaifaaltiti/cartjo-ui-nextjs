@@ -3,9 +3,10 @@ import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { DataResponse } from "@/types/service-response.type";
 import { Locale } from "@/types/locale";
 import { Cart } from "@/types/cart.type";
+import { Locale as LocaleEnum } from "@/enums/locale.enum";
 
 interface FetchCartItemsParams {
-  lang?: Locale;
+  lang?: Locale | string;
   limit?: number;
   lastId?: string;
   search?: string;
@@ -13,7 +14,7 @@ interface FetchCartItemsParams {
 }
 
 export const fetchCartItems = async ({
-  lang = "en",
+  lang = LocaleEnum.EN,
   limit = PAGINATION_LIMITS.USER_VIEW.CART_ITEMS ?? 20,
   lastId,
   fetcher,
