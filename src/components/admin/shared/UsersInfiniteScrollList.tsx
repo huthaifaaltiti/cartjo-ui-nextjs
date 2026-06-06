@@ -2,9 +2,7 @@
 
 import { memo, useCallback, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-
 import { User } from "@/types/user";
-
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import DashboardUserCard from "./DashboardUserCard";
@@ -22,20 +20,12 @@ type Props = {
   error?: boolean;
   usersList: User[];
   fetchNextPage?: () => void;
-  deleteUser: (
-    accessToken: string | null,
-    userId: string
-  ) => Promise<DeleteUserResponse>;
-  unDeleteUser: (
-    accessToken: string | null,
-    userId: string
-  ) => Promise<UnDeleteUserResponse>;
-  accessToken: string | null;
+  deleteUser: (userId: string) => Promise<DeleteUserResponse>;
+  unDeleteUser: (userId: string) => Promise<UnDeleteUserResponse>;
   switchUserActiveStatus: (
-    token: string | null,
     lang: Locale | string,
     isActive: boolean,
-    userId: string
+    userId: string,
   ) => Promise<SwitchUserActiveStatusResponse>;
   queryKey: string;
 };
@@ -49,7 +39,6 @@ const UsersInfiniteScrollList = ({
   fetchNextPage,
   deleteUser,
   unDeleteUser,
-  accessToken,
   switchUserActiveStatus,
   queryKey,
 }: Props) => {
@@ -70,7 +59,7 @@ const UsersInfiniteScrollList = ({
         fetchNextPage();
       }
     },
-    [fetchNextPage, hasNextPage, isFetchingNextPage]
+    [fetchNextPage, hasNextPage, isFetchingNextPage],
   );
 
   useEffect(() => {
@@ -96,7 +85,7 @@ const UsersInfiniteScrollList = ({
           {isLoading
             ? t("general.loadingStates.loading")
             : `${usersList.length} ${t(
-                "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.usersFound"
+                "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.usersFound",
               )}`}
         </p>
       </div>
@@ -104,7 +93,7 @@ const UsersInfiniteScrollList = ({
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {usersList
           .filter(
-            (user) => user?._id !== process.env.NEXT_PUBLIC_DB_SYSTEM_OBJ_ID
+            (user) => user?._id !== process.env.NEXT_PUBLIC_DB_SYSTEM_OBJ_ID,
           )
           .map((user, index) => (
             <DashboardUserCard
@@ -112,7 +101,6 @@ const UsersInfiniteScrollList = ({
               user={user}
               deleteUser={deleteUser}
               unDeleteUser={unDeleteUser}
-              accessToken={accessToken}
               switchUserActiveStatus={switchUserActiveStatus}
               queryKey={queryKey}
             />
@@ -130,7 +118,7 @@ const UsersInfiniteScrollList = ({
       {!hasNextPage && usersList.length > 0 && (
         <div className="text-center py-8 text-gray-500">
           {t(
-            "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.noUsersToLoad"
+            "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.noUsersToLoad",
           )}
         </div>
       )}
@@ -138,7 +126,7 @@ const UsersInfiniteScrollList = ({
       {!isLoading && usersList.length === 0 && (
         <div className="text-center py-12 text-gray-500">
           {t(
-            "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.noUsersFound"
+            "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.noUsersFound",
           )}
         </div>
       )}
@@ -147,7 +135,7 @@ const UsersInfiniteScrollList = ({
         <div className="text-center py-12 text-gray-500">
           <ErrorMessage
             message={t(
-              "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.errors.totalUsersFetchingFailure"
+              "routes.dashboard.routes.users.routes.totalUsers.components.TotalUsersList.errors.totalUsersFetchingFailure",
             )}
           />
         </div>

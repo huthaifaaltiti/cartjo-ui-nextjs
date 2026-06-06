@@ -1,27 +1,16 @@
-import { memo } from "react";
-import { User } from "@/types/user";
 import { ActiveUsersContextProvider } from "@/contexts/ActiveUsersContext";
 import SearchActiveUsers from "./SearchActiveUsers";
 import ActiveUsersList from "./ActiveUsersList";
 
-interface ActiveUsersPageProps {
-  initialUsers: User[];
-  accessToken: string | null;
-}
-
-const ActiveUsersPage = ({
-  initialUsers,
-  accessToken,
-}: ActiveUsersPageProps) => {
+const ActiveUsersPage = () => {
   return (
-    <ActiveUsersContextProvider accessToken={accessToken}>
+    <ActiveUsersContextProvider>
       <SearchActiveUsers />
-
       <div className="w-full mt-3">
-        <ActiveUsersList initialUsers={initialUsers} />
+        <ActiveUsersList />
       </div>
     </ActiveUsersContextProvider>
   );
 };
 
-export default memo(ActiveUsersPage);
+export default ActiveUsersPage;

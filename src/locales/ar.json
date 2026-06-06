@@ -670,7 +670,11 @@
         "users": {
           "title": "إدارة المستخدمين",
           "desc": "إدارة بيانات المستخدمين",
+          "noData": "لا يوجد بيانات للبحث: {search}",
           "components": {
+            "UsersPageContainer": {
+              "noData": "بيانات المستخدمين غير متاحة حاليا"
+            },
             "DashboardUsersStatCards": {
               "totalUsers": "إجمالي المستخدمين",
               "activeUsers": "المستخدمون النشطون",

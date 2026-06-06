@@ -678,7 +678,11 @@
         "users": {
           "title": "Users Management",
           "desc": "Manage users data",
+          "noData":"No data available right now for: {search}",
           "components": {
+            "UsersPageContainer": {
+              "noData": "No users statistics available"
+            },
             "DashboardUsersStatCards": {
               "totalUsers": "Total users",
               "activeUsers": "Active users",
