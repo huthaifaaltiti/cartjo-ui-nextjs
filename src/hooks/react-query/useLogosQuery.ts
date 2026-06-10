@@ -1,52 +1,17 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
-import { useSession } from "next-auth/react";
+import {
+  QueryFunctionContext,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 import { Logo } from "@/types/logo";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
-import { CustomSession } from "@/lib/authOptions";
-import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useAuthContext } from "../useAuthContext";
 import { getActiveLogoQueryOptions } from "./query-options/activeLogo";
-import { fetchActiveLogo } from "@/services/logo.service";
+import { fetchActiveLogo, fetchLogos } from "@/services/logo.service";
 import { Locale } from "@/types/locale";
 import { authFetcher } from "@/utils/authFetcher";
-
-interface FetchLogosParams {
-  token: string | null;
-  lang?: string;
-  limit?: number;
-  lastId?: string;
-  search?: string;
-}
-
-export const fetchLogos = async ({
-  token,
-  lang = "en",
-  limit = PAGINATION_LIMITS.LOGOS,
-  lastId,
-  search,
-}: FetchLogosParams): Promise<DataListResponse<Logo>> => {
-  const url = new URL(`${API_ENDPOINTS.DASHBOARD.LOGOS.ALL}`);
-
-  url.searchParams.append("limit", limit.toString());
-  if (lang) url.searchParams.append("lang", lang);
-  if (lastId) url.searchParams.append("lastId", lastId);
-  if (search) url.searchParams.append("search", search);
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) throw new Error("Could not retrieve logos");
-
-  const resObj = await res.json();
-
-  return resObj;
-};
+import { getLogosQueryOptions } from "./query-options/logos";
 
 export const useActiveLogoQuery = () => {
   const { locale } = useAuthContext();
@@ -64,33 +29,22 @@ export const useActiveLogoQuery = () => {
 };
 
 export const useLogosQuery = (search?: string) => {
-  const { data: session } = useSession();
-  const locale = useLocale();
-  const accessToken = (session as CustomSession)?.accessToken;
+  const { locale, isAuthenticated, isSessionLoading, userId } =
+    useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Logo>>({
-    queryKey: ["logos", search],
-    queryFn: ({ pageParam }) => {
-      if (!accessToken) throw new Error("No access token found");
-
-      return fetchLogos({
-        token: accessToken,
-        lang: locale,
-        limit: PAGINATION_LIMITS.LOGOS,
-        lastId: pageParam as string,
-        search,
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      if (lastPage.data && lastPage.data.length > 0) {
-        const lastCategory = lastPage.data[lastPage.data.length - 1];
-        return lastCategory._id;
-      }
-      return undefined;
-    },
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!accessToken,
+    ...getLogosQueryOptions({
+      search,
+      locale,
+      queryFn: (context: QueryFunctionContext) =>
+        fetchLogos({
+          lang: locale,
+          limit: PAGINATION_LIMITS.LOGOS,
+          lastId: context?.pageParam as string,
+          search,
+          fetcher: (path) => authFetcher(path),
+        }),
+    }),
+    enabled: !isSessionLoading && isAuthenticated && !!userId,
   });
 };

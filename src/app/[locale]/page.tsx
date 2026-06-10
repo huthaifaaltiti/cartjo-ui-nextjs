@@ -14,10 +14,10 @@ import Footer from "@/components/Footer";
 import { Locale } from "@/types/locale";
 import ReduxInitializer from "@/components/ReduxInitializer";
 import {
-  prefetchActiveLogo,
   prefetchCategoryPicks,
   prefetchHomeData,
 } from "@/services/prefetch/home";
+import { prefetchActiveLogo } from "@/services/prefetch/activeLogo";
 
 export default async function Home({
   params,

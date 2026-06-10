@@ -10,18 +10,14 @@ import EditLogoForm from "./EditLogoForm";
 type LogoCardProps = {
   item: Logo;
   deleteLogo: (
-    accessToken: string | null,
     userId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
   unDeleteLogo: (
-    accessToken: string | null,
     userId: string,
     lang: Locale
   ) => Promise<BaseResponse>;
-  accessToken: string | null;
   switchLogoActiveStatus: (
-    token: string | null,
     lang: string,
     isActive: boolean,
     userId: string
@@ -33,7 +29,6 @@ const LogoCard = ({
   item: logo,
   deleteLogo,
   unDeleteLogo,
-  accessToken,
   switchLogoActiveStatus,
   queryKey,
 }: LogoCardProps) => {
@@ -96,7 +91,6 @@ const LogoCard = ({
           cardItem={logo}
           deleteFn={deleteLogo}
           unDeleteFn={unDeleteLogo}
-          accessToken={accessToken}
           switchUserActiveStatusFn={switchLogoActiveStatus}
           queryKey={queryKey}
           showEditButton={true}

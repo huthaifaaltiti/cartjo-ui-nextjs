@@ -7,7 +7,7 @@ import {
 import { getActiveShowcasesQueryOptions } from "@/hooks/react-query/query-options/activeShowcases";
 import { getActiveBannersQueryOptions } from "@/hooks/react-query/query-options/activeBanners";
 import { Locale } from "@/enums/locale.enum";
-import { DataListResponse, DataResponse } from "@/types/service-response.type";
+import { DataListResponse } from "@/types/service-response.type";
 import { Category } from "@/types/category.type";
 import { apiFetch } from "@/lib/api.server";
 import { fetchActiveShowcases } from "../showcase.service";
@@ -16,9 +16,6 @@ import { Banner } from "@/types/banner.type";
 import { fetchActiveBanners } from "../banner.service";
 import { getCategoriesPicksQueryOptions } from "@/hooks/react-query/query-options/categoryPicks";
 import { Product } from "@/types/product.type";
-import { Logo } from "@/types/logo";
-import { getActiveLogoQueryOptions } from "@/hooks/react-query/query-options/activeLogo";
-import { fetchActiveLogo } from "../logo.service";
 
 export async function prefetchHomeData(
   queryClient: QueryClient,
@@ -132,37 +129,5 @@ export async function prefetchCategoryPicks({
         }),
       ),
     ),
-  );
-}
-
-export async function prefetchActiveLogo({
-  queryClient,
-  locale,
-}: {
-  locale: Locale | string;
-  queryClient: QueryClient;
-}): Promise<void> {
-  const fallbackLocale = locale ?? Locale.EN;
-
-  await queryClient.prefetchQuery<DataResponse<Logo>>(
-    getActiveLogoQueryOptions({
-      locale: fallbackLocale,
-      queryFn: async () => {
-        return fetchActiveLogo({
-          lang: fallbackLocale,
-          fetcher: async (path) => {
-            const { data, ok, status } =
-              await apiFetch<DataResponse<Logo>>(path);
-
-            if (!ok || !data) {
-              throw new Error(
-                `[HomePage] Failed to fetch active logo: ${status}`,
-              );
-            }
-            return data;
-          },
-        });
-      },
-    }),
   );
 }
