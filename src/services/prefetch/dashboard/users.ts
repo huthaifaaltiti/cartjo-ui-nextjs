@@ -3,6 +3,7 @@ import { prefetchUsersStats } from "../usersStats";
 import { prefetchActiveUsers } from "../activeUsers";
 import { prefetchTotalUsers } from "../totalUsers";
 import { prefetchAdminUsers } from "../adminUsers";
+import { prefetchDeletedUsers } from "../deletedUsers";
 
 export async function prefetchDashboardUsersData({
   locale,
@@ -16,5 +17,6 @@ export async function prefetchDashboardUsersData({
     prefetchActiveUsers({ queryClient, locale }),
     prefetchTotalUsers({ queryClient, locale }),
     prefetchAdminUsers({ queryClient, locale }),
+    prefetchDeletedUsers({ queryClient, locale }),
   ]);
 }

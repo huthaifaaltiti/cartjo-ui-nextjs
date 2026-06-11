@@ -132,3 +132,39 @@ export const fetchAdminUsers = async ({
 
   return fetcher(url.toString());
 };
+
+export interface DeletedUsersResp {
+  isSuccess: boolean;
+  message: string;
+  usersNum: number;
+  users: User[];
+}
+
+interface FetchDeletedUsersParams {
+  lang?: string;
+  limit?: number;
+  lastId?: string;
+  search?: string;
+  isDeleted?: boolean;
+  fetcher: (url: string) => Promise<DeletedUsersResp>;
+}
+
+export const fetchDeletedUsers = async ({
+  lang = "en",
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.DELETED_USERS ?? 20,
+  lastId,
+  search,
+  isDeleted,
+  fetcher,
+}: FetchDeletedUsersParams): Promise<ActiveUsersResp> => {
+  const url = new URL(`${API_ENDPOINTS.DASHBOARD.USERS.GET_DELETED_USERS}`);
+
+  url.searchParams.append("limit", limit.toString());
+  if (lang) url.searchParams.append("lang", lang);
+  if (lastId) url.searchParams.append("lastId", lastId);
+  if (search) url.searchParams.append("search", search);
+  if (typeof isDeleted === "boolean")
+    url.searchParams.append("isDeleted", isDeleted.toString());
+
+  return fetcher(url.toString());
+};
