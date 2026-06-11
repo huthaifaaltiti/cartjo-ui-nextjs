@@ -31,7 +31,6 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import LoadingButton from "@/components/shared/LoadingButton";
-import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicLocale } from "@/config/locales.config";
@@ -41,9 +40,13 @@ import { invalidateQuery } from "@/utils/queryUtils";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishOnly } from "@/utils/text/containsEnglish";
 import { MEDIA_CONFIG } from "@/config/media.config";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
+import { SubCategory } from "@/types/subCategory";
+import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 
 const createFormSchema = (
-  t: (key: string, options?: Record<string, string | number | Date>) => string
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
 ) => {
   const { nameMinChars, nameMaxChars, imageMinChars } =
     validationConfig.subCategory;
@@ -51,12 +54,12 @@ const createFormSchema = (
   return z.object({
     subCategoryImage_ar: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.subCategoryImage_ar.required"
+        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.subCategoryImage_ar.required",
       ),
     }),
     subCategoryImage_en: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.subCategoryImage_en.required"
+        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.subCategoryImage_en.required",
       ),
     }),
     name_ar: z
@@ -64,18 +67,18 @@ const createFormSchema = (
       .min(nameMinChars, {
         message: t(
           "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_ar.minChars",
-          { min: nameMinChars }
+          { min: nameMinChars },
         ),
       })
       .max(nameMaxChars, {
         message: t(
           "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_ar.maxChars",
-          { max: nameMaxChars }
+          { max: nameMaxChars },
         ),
       })
       .refine((val) => isArabicOnly(val), {
         message: t(
-          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_ar.arabicCharsOnly"
+          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_ar.arabicCharsOnly",
         ),
       }),
     name_en: z
@@ -83,23 +86,23 @@ const createFormSchema = (
       .min(nameMinChars, {
         message: t(
           "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_en.minChars",
-          { min: nameMinChars }
+          { min: nameMinChars },
         ),
       })
       .max(nameMaxChars, {
         message: t(
           "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_en.maxChars",
-          { max: nameMaxChars }
+          { max: nameMaxChars },
         ),
       })
       .refine((val) => isEnglishOnly(val), {
         message: t(
-          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_en.englishCharsOnly"
+          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.name_en.englishCharsOnly",
         ),
       }),
     categoryId: z.string().min(1, {
       message: t(
-        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.category.required"
+        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.validations.category.required",
       ),
     }),
   });
@@ -107,17 +110,16 @@ const createFormSchema = (
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 
-type CreateSubCategoryFormProps = {
-  categories: Category[];
-};
-
-const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
+const CreateSubCategoryForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { accessToken, queryKey } = useSubCategories();
+  const { queryKey } = useSubCategories();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
+
+  const { data: activeCategories } = useActiveCategoriesQuery();
+  const categories: Category[] = activeCategories?.data ?? [];
 
   const imageUploaderRef_ar = useRef<ImageUploaderRef>(null);
   const imageUploaderRef_en = useRef<ImageUploaderRef>(null);
@@ -196,34 +198,26 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
         formData.append("image_en", subCategoryImage_en.file);
       }
 
-      const response = await fetch(
+      const response = await authFetcher<DataResponse<SubCategory>>(
         API_ENDPOINTS.DASHBOARD.SUB_CATEGORIES.CREATE,
         {
           method: "POST",
           body: formData,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        },
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
+      if (!response.isSuccess) {
         throw new Error(
-          errorData?.message ||
+          response?.message ||
             t(
-              "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.errors.failedCreation"
-            )
+              "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.errors.failedCreation",
+            ),
         );
       }
 
-      return response.json();
+      return response;
     },
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<SubCategory>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -269,7 +263,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.subCategoryImage_ar.label"
+                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.subCategoryImage_ar.label",
                       )}
                     </FormLabel>
                     <ImageUploader
@@ -296,7 +290,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.subCategoryImage_en.label"
+                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.subCategoryImage_en.label",
                       )}
                     </FormLabel>
                     <ImageUploader
@@ -330,14 +324,14 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_ar.label"
+                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_ar.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_ar.placeholder"
+                          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_ar.placeholder",
                         )}
                         {...field}
                       />
@@ -356,14 +350,14 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_en.label"
+                        "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_en.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_en.placeholder"
+                          "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.name_en.placeholder",
                         )}
                         {...field}
                       />
@@ -383,7 +377,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                 <FormItem className="text-left">
                   <FormLabel className="text-sm font-normal">
                     {t(
-                      "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.category.label"
+                      "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.category.label",
                     )}
                   </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
@@ -391,7 +385,7 @@ const CreateSubCategoryForm = ({ categories }: CreateSubCategoryFormProps) => {
                       <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
                         <SelectValue
                           placeholder={t(
-                            "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.category.placeholder"
+                            "routes.dashboard.routes.subCategories.components.CreateSubCategoryForm.fields.category.placeholder",
                           )}
                         />
                       </SelectTrigger>

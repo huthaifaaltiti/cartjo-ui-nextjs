@@ -4,6 +4,7 @@ import { Locale } from "@/types/locale";
 import { Locale as LocaleEnum } from "@/enums/locale.enum";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { Product } from "@/types/product.type";
+import { SubCategory } from "@/types/subCategory";
 
 interface FetchSubCategoryProductsParams {
   lang?: string | Locale;
@@ -53,6 +54,34 @@ export const fetchSubCategoryProducts = async ({
     url.searchParams.append("createdTo", String(createdTo));
   if (beforeNumOfDays !== undefined && beforeNumOfDays > 0)
     url.searchParams.append("beforeNumOfDays", String(beforeNumOfDays));
+
+  return fetcher(url.toString());
+};
+
+interface FetchSubCategoriesParams {
+  lang?: string;
+  limit?: number;
+  lastId?: string;
+  search?: string;
+  catId?: string;
+  fetcher: (url: string) => Promise<DataListResponse<SubCategory>>;
+}
+
+export const fetchSubCategories = async ({
+  lang = "en",
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.SUB_CATEGORIES ?? 20,
+  lastId,
+  search,
+  catId,
+  fetcher,
+}: FetchSubCategoriesParams): Promise<DataListResponse<SubCategory>> => {
+  const url = new URL(API_ENDPOINTS.DASHBOARD.SUB_CATEGORIES.GET_ALL);
+
+  if (limit) url.searchParams.append("limit", limit.toString());
+  if (lastId) url.searchParams.append("lastId", lastId.toString());
+  if (search) url.searchParams.append("search", search.toString());
+  if (lang) url.searchParams.append("lang", lang.toString());
+  if (catId) url.searchParams.append("catId", catId.toString());
 
   return fetcher(url.toString());
 };
