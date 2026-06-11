@@ -3,14 +3,12 @@
 import { memo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ShieldPlus } from "lucide-react";
-import { useAdminUsers } from "@/contexts/AdminUsersContext";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/shared/Modal";
 import CreateAdminUserForm from "../users/adminUsers/CreateAdminUserForm";
 
 const CreateCategoryBtn = () => {
   const t = useTranslations();
-  const { accessToken } = useAdminUsers();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -26,13 +24,13 @@ const CreateCategoryBtn = () => {
         >
           <ShieldPlus />
           {t(
-            "routes.dashboard.routes.users.routes.adminUsers.components.CreateAdminUser.createAdmin"
+            "routes.dashboard.routes.users.routes.adminUsers.components.CreateAdminUser.createAdmin",
           )}
         </Button>
       </div>
 
       <Modal isOpen={isOpen} onClose={handleClose}>
-        <CreateAdminUserForm accessToken={accessToken} />
+        <CreateAdminUserForm />
       </Modal>
     </>
   );
