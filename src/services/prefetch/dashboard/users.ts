@@ -2,6 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { prefetchUsersStats } from "../usersStats";
 import { prefetchActiveUsers } from "../activeUsers";
 import { prefetchTotalUsers } from "../totalUsers";
+import { prefetchAdminUsers } from "../adminUsers";
 
 export async function prefetchDashboardUsersData({
   locale,
@@ -14,5 +15,6 @@ export async function prefetchDashboardUsersData({
     prefetchUsersStats({ queryClient, locale }),
     prefetchActiveUsers({ queryClient, locale }),
     prefetchTotalUsers({ queryClient, locale }),
+    prefetchAdminUsers({ queryClient, locale }),
   ]);
 }

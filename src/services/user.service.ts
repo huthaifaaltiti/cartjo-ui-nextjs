@@ -45,7 +45,7 @@ export interface ActiveUsersResp {
 
 export const fetchActiveUsers = async ({
   lang = LocaleEnum.EN,
-  limit = PAGINATION_LIMITS.ACTIVE_USERS,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.ACTIVE_USERS ?? 20,
   lastId,
   search,
   isActive,
@@ -93,6 +93,42 @@ export const fetchTotalUsers = async ({
   if (lang) url.searchParams.append("lang", lang);
   if (lastId) url.searchParams.append("lastId", lastId);
   if (search) url.searchParams.append("search", search);
+
+  return fetcher(url.toString());
+};
+
+export interface AdminUsersResp {
+  isSuccess: boolean;
+  message: string;
+  usersNum: number;
+  users: User[];
+}
+
+interface FetchAdminUsersParams {
+  lang?: string;
+  limit?: number;
+  lastId?: string;
+  search?: string;
+  canManage?: boolean;
+  fetcher: (url: string) => Promise<AdminUsersResp>;
+}
+
+export const fetchAdminUsers = async ({
+  lang = "en",
+  limit = PAGINATION_LIMITS.ADMIN_USERS,
+  lastId,
+  search,
+  canManage,
+  fetcher,
+}: FetchAdminUsersParams): Promise<AdminUsersResp> => {
+  const url = new URL(`${API_ENDPOINTS.DASHBOARD.USERS.GET_ADMIN_USERS}`);
+
+  url.searchParams.append("limit", limit.toString());
+  if (lang) url.searchParams.append("lang", lang);
+  if (lastId) url.searchParams.append("lastId", lastId);
+  if (search) url.searchParams.append("search", search);
+  if (typeof canManage === "boolean")
+    url.searchParams.append("canManage", canManage.toString());
 
   return fetcher(url.toString());
 };
