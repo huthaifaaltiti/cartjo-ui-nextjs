@@ -984,6 +984,11 @@
         "products": {
           "title": "إدارة المنتجات",
           "desc": "إدارة بيانات المنتجات",
+          "errors": {
+            "failedLoadData": "فشل تحميل المنتجات",
+            "failedCreation": "فشل إنشاء المنتج",
+            "failedEdit": "فشل تعديل المنتج"
+          },
           "createProduct": {
             "label": "إنشاء منتج",
             "uploadImage": "تحميل صورة المنتج"
@@ -1557,7 +1562,7 @@
         "showcases": {
           "title": "إدارة العروض",
           "desc": "إدارة بيانات العروض",
-          "failed":"فشل تحميل العروض",
+          "failed": "فشل تحميل العروض",
           "createShowcase": {
             "label": "إنشاء عرض",
             "actionFailed": "فشل إنشاء العرض"

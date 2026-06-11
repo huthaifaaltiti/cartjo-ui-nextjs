@@ -33,7 +33,6 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import TagsInput from "@/components/shared/TagsInput";
-import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { Currency } from "@/enums/currency.enum";
 import { Textarea } from "@/components/ui/textarea";
@@ -56,6 +55,9 @@ import ProductVariantForm, {
 import { validationConfig } from "@/config/validationConfig";
 import { Product, Variant, VariantServer } from "@/types/product.type";
 import { containsArabic } from "@/utils/text/containsArabic";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
+import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -166,7 +168,6 @@ type FormData = z.infer<ReturnType<typeof editFormSchema>>;
 
 type CreateSubCategoryFormProps = {
   product: Product;
-  categories: Category[];
 };
 
 const mapServerVariantToFormVariant = (
@@ -196,18 +197,17 @@ const mapServerVariantToFormVariant = (
   attributes: serverVariant.attributes || [],
 });
 
-const EditProductForm = ({
-  categories,
-  product,
-}: CreateSubCategoryFormProps) => {
+const EditProductForm = ({ product }: CreateSubCategoryFormProps) => {
   const t = useTranslations("");
   const locale = useLocale();
-  const { token, queryKey } = useProducts();
+  const { queryKey } = useProducts();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
-  const { data: activeTypeHintConfigsList = [] } =
-    useActiveTypeHintConfigsQuery();
+  const { data } = useActiveTypeHintConfigsQuery();
+  const { data: activeCategories } = useActiveCategoriesQuery();
+  const categories: Category[] = activeCategories?.data ?? [];
+  const activeTypeHintConfigsList: string[] = data?.data ?? [];
 
   const isArabic = isArabicLocale(locale);
 
@@ -350,30 +350,25 @@ const EditProductForm = ({
 
       formData.append("lang", locale);
 
-      const response = await fetch(
+      const response = await authFetcher<DataResponse<Product>>(
         `${API_ENDPOINTS.DASHBOARD.PRODUCTS.EDIT}/${product?._id}`,
         {
           method: "PUT",
           body: formData,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         },
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.message || "Product updating failed");
+      if (!response.isSuccess) {
+        throw new Error(
+          response?.message ||
+            t("routes.dashboard.routes.products.errors.failedEdit"),
+        );
       }
 
-      return response.json();
+      return response;
     },
 
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<Product>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),

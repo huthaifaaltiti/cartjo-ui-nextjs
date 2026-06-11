@@ -114,3 +114,29 @@ export const fetchCategoryProducts = async ({
 
   return fetcher(url.toString());
 };
+
+interface FetchCategoriesParams {
+  lang?: string;
+  limit?: number;
+  lastId?: string;
+  search?: string;
+  fetcher: (url: string) => Promise<DataListResponse<Category>>;
+}
+
+export const fetchCategories = async ({
+  lang = LocaleEnum.EN,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.CATEGORIES ?? 20,
+  lastId,
+  search,
+  fetcher,
+}: FetchCategoriesParams): Promise<DataListResponse<Category>> => {
+  const url = new URL(API_ENDPOINTS.DASHBOARD.CATEGORIES.GET_ALL);
+
+  url.searchParams.append("limit", limit.toString());
+
+  if (lang) url.searchParams.append("lang", lang);
+  if (lastId) url.searchParams.append("lastId", lastId);
+  if (search) url.searchParams.append("search", search);
+
+  return fetcher(url.toString());
+};

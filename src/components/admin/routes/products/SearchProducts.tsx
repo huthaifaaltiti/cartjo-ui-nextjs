@@ -13,7 +13,7 @@ const SearchProducts = () => {
     <div className="w-full">
       <SearchBar
         placeholder={t(
-          "routes.dashboard.routes.products.components.SearchBar.placeholder"
+          "routes.dashboard.routes.products.components.SearchBar.placeholder",
         )}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}

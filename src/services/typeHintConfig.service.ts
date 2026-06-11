@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { DataListResponse } from "@/types/service-response.type";
+import { DataListResponse, DataResponse } from "@/types/service-response.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { TypeHintConfig } from "@/types/typeHintConfig.type";
 
@@ -47,14 +47,14 @@ export const fetchTypeHintConfigsList = async ({
 interface FetchTypeHintConfigsActiveListParams {
   lang?: string;
   limit?: number;
-  fetcher: (url: string) => Promise<string[]>;
+  fetcher: (url: string) => Promise<DataResponse<string[]>>;
 }
 
 export const fetchTypeHintActiveListConfigs = async ({
   lang,
   limit,
   fetcher,
-}: FetchTypeHintConfigsActiveListParams): Promise<string[]> => {
+}: FetchTypeHintConfigsActiveListParams): Promise<DataResponse<string[]>> => {
   const url = new URL(`${API_ENDPOINTS.DASHBOARD.TYPE_HINT_CONFIGS.LIST}`);
 
   if (lang) url.searchParams.append("lang", lang);

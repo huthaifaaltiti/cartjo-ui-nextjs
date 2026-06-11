@@ -10,7 +10,6 @@ import {
   BadgeDollarSign,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 import { formatDate } from "@/utils/formatDate";
 import { isArabicLocale } from "@/config/locales.config";
 import { BaseResponse } from "@/types/service-response.type";
@@ -26,18 +25,9 @@ import { Statuses } from "@/enums/statuses.enum";
 
 type DashboardProductCardProps = {
   item: Product;
-  deleteProduct: (
-    token: string | null,
-    locale: string,
-    prodId: string,
-  ) => Promise<BaseResponse>;
-  unDeleteProduct: (
-    token: string | null,
-    locale: string,
-    prodId: string,
-  ) => Promise<BaseResponse>;
+  deleteProduct: (locale: string, prodId: string) => Promise<BaseResponse>;
+  unDeleteProduct: (locale: string, prodId: string) => Promise<BaseResponse>;
   switchProductActiveStatus: (
-    token: string | null,
     lang: string,
     isActive: boolean,
     id: string,
@@ -56,12 +46,6 @@ const DashboardProductCard = ({
   const tg = useTranslations("general");
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-
-  const { data } = useCategoriesQuery();
-  const categories = useMemo(
-    () => data?.pages.flatMap((page) => page.data) ?? [],
-    [data],
-  );
 
   const [showActions, setShowActions] = useState<boolean>(false);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState<number>(0);
@@ -112,9 +96,7 @@ const DashboardProductCard = ({
                 switchActiveStatusFn={switchProductActiveStatus}
                 product={product}
                 setShowActions={setShowActions}
-                renderEditForm={() => (
-                  <EditProductForm product={product} categories={categories} />
-                )}
+                renderEditForm={() => <EditProductForm product={product} />}
               />
             </div>
           )}
@@ -151,7 +133,10 @@ const DashboardProductCard = ({
           <div className="w-full flex items-center gap-2 flex-wrap mt-2">
             {product.typeHints.map((th: string, i) => {
               return (
-                <span key={th + i} className="text-xs capitalize border rounded p-1 text-grey-600">
+                <span
+                  key={th + i}
+                  className="text-xs capitalize border rounded p-1 text-grey-600"
+                >
                   {th}
                 </span>
               );

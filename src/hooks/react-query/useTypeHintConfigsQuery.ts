@@ -1,5 +1,5 @@
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { DataListResponse } from "@/types/service-response.type";
+import { DataListResponse, DataResponse } from "@/types/service-response.type";
 import { TypeHintConfig } from "@/types/typeHintConfig.type";
 import {
   QueryFunctionContext,
@@ -59,7 +59,7 @@ export const useActiveTypeHintConfigsQuery = () => {
   const { isAuthenticated, locale, userId, isSessionLoading } =
     useAuthContext();
 
-  return useQuery<string[]>({
+  return useQuery<DataResponse<string[]>>({
     ...getTypeHintConfigsActiveListQueryOptions({
       locale,
       queryFn: (context) =>

@@ -678,7 +678,7 @@
         "users": {
           "title": "Users Management",
           "desc": "Manage users data",
-          "noData":"No data available right now for: {search}",
+          "noData": "No data available right now for: {search}",
           "components": {
             "UsersPageContainer": {
               "noData": "No users statistics available"
@@ -980,6 +980,11 @@
         "products": {
           "title": "Products Management",
           "desc": "Manage products data",
+          "errors": {
+            "failedLoadData": "Failed to load products",
+            "failedCreation": "Failed to create product",
+            "failedEdit": "Failed to edit product"
+          },
           "createProduct": {
             "label": "Create Product",
             "uploadImage": "Upload product image"
@@ -1580,7 +1585,7 @@
         "showcases": {
           "title": "Showcases Management",
           "desc": "Manage showcases data",
-          "failed":"Failed to load showcases",
+          "failed": "Failed to load showcases",
           "createShowcase": {
             "label": "Create showcase",
             "uploadImage_ar": "Upload ar banner image",

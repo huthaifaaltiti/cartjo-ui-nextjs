@@ -4,6 +4,7 @@ import { Locale } from "@/types/locale";
 import { Locale as LocaleEnum } from "@/enums/locale.enum";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { Product } from "@/types/product.type";
+import { ViewMode } from "@/types/common";
 
 interface FetchSearchProductsParams {
   querySearch: string | undefined;
@@ -98,6 +99,34 @@ export const fetchProduct = async ({
 }: FetchProductProps): Promise<DataResponse<Product>> => {
   const url = new URL(`${API_ENDPOINTS.PRODUCT.ONE}/${productId}`);
   if (lang) url.searchParams.append("lang", lang.toString());
+
+  return fetcher(url.toString());
+};
+
+export interface FetchProductsProps {
+  lang?: string;
+  limit?: number;
+  lastId?: string;
+  search?: string;
+  viewMode: ViewMode;
+  fetcher: (url: string) => Promise<DataListResponse<Product>>;
+}
+
+export const fetchProducts = async ({
+  lang = LocaleEnum.EN,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.PRODUCTS ?? 10,
+  lastId,
+  search,
+  viewMode,
+  fetcher,
+}: FetchProductsProps): Promise<DataListResponse<Product>> => {
+  const url = new URL(API_ENDPOINTS.DASHBOARD.PRODUCTS.ALL);
+
+  if (lang) url.searchParams.append("lang", lang.toString());
+  if (limit) url.searchParams.append("limit", limit.toString());
+  if (lastId) url.searchParams.append("lastId", lastId.toString());
+  if (search) url.searchParams.append("search", search.toString());
+  if (viewMode) url.searchParams.append("viewMode", viewMode);
 
   return fetcher(url.toString());
 };

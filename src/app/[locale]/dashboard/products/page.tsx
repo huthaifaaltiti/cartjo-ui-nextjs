@@ -1,41 +1,26 @@
-import { Product } from "@/types/product.type";
-import { Category } from "@/types/category.type";
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { fetchProducts } from "@/hooks/react-query/useProductsQuery";
-import { fetchCategories } from "@/hooks/react-query/useCategoriesQuery";
 import ProductsPage from "@/components/admin/routes/products/ProductsPage";
 import { requireAuth } from "@/utils/authRedirect";
-import { ViewMode } from "@/enums/viewMode.enum";
+import { getAccessToken } from "@/lib/tokens.server";
+import { getQueryClient } from "@/utils/queryUtils";
+import { PageProps } from "@/types/common";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { prefetchDashboardProducts } from "@/services/prefetch/dashboard-products";
 
-export default async function Page() {
-  const accessToken = await getAccessTokenFromServerSession();
-  requireAuth(accessToken);
+export default async function DashboardProductsPage({ params }: PageProps) {
+  const { locale } = await params;
 
-  let products: Product[] = [];
-  let categories: Category[] = [];
+  const token = await getAccessToken();
+  requireAuth(token);
 
-  if (accessToken) {
-    const prodsResp = await fetchProducts({
-      token: accessToken,
-      limit: PAGINATION_LIMITS.PRODUCTS,
-      viewMode: ViewMode.ADMIN,
-    });
+  const queryClient = getQueryClient();
 
-    const catsResp = await fetchCategories({
-      token: accessToken,
-      limit: PAGINATION_LIMITS.CATEGORIES,
-    });
+  await prefetchDashboardProducts({ queryClient, locale });
 
-    categories = catsResp?.data || [];
-    products = prodsResp?.data || [];
-  }
+  const dehydratedState = dehydrate(queryClient);
 
   return (
-    <ProductsPage
-      initialProducts={products}
-      initialCategories={categories}
-      token={accessToken}
-    />
+    <HydrationBoundary state={dehydratedState}>
+      <ProductsPage />
+    </HydrationBoundary>
   );
 }

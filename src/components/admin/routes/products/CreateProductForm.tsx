@@ -33,7 +33,6 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import TagsInput from "@/components/shared/TagsInput";
-import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { Currency } from "@/enums/currency.enum";
 import { Textarea } from "@/components/ui/textarea";
@@ -56,6 +55,10 @@ import ProductVariantForm, {
 import { ProductVariantAttributeKey } from "@/enums/productVariantAttributeKey.enum";
 import { validationConfig } from "@/config/validationConfig";
 import { containsArabic } from "@/utils/text/containsArabic";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
+import { Product } from "@/types/product.type";
+import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -193,19 +196,18 @@ const createFormSchema = (
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 
-type CreateSubCategoryFormProps = {
-  categories: Category[];
-};
-
-const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
+const CreateProductForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { token, queryKey } = useProducts();
+  const { queryKey } = useProducts();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
-  const { data: activeTypeHintConfigsList = [] } =
-    useActiveTypeHintConfigsQuery();
+  const { data } = useActiveTypeHintConfigsQuery();
+  const { data: activeCategories } = useActiveCategoriesQuery();
+
+  const activeTypeHintConfigsList: string[] = data?.data ?? [];
+  const categories: Category[] = activeCategories?.data ?? [];
 
   const mainImageUploaderRef = useRef<ImageUploaderRef>(null);
   const imagesUploaderRef = useRef<ImageUploaderRef>(null);
@@ -280,7 +282,7 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
   });
 
   const selectedCategoryId = form.watch("categoryId");
-  const selectedCategory: Category | undefined = categories.find(
+  const selectedCategory: Category | undefined = categories?.find(
     (cat) => cat._id === selectedCategoryId,
   );
 
@@ -383,27 +385,25 @@ const CreateProductForm = ({ categories }: CreateSubCategoryFormProps) => {
 
       formData.append("lang", locale);
 
-      const response = await fetch(API_ENDPOINTS.DASHBOARD.PRODUCTS.CREATE, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await authFetcher<DataResponse<Product>>(
+        API_ENDPOINTS.DASHBOARD.PRODUCTS.CREATE,
+        {
+          method: "POST",
+          body: formData,
         },
-      });
+      );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.message || "Product creation failed");
+      if (!response.isSuccess) {
+        throw new Error(
+          response?.message ||
+            t("routes.dashboard.routes.products.errors.failedCreation"),
+        );
       }
 
-      return response.json();
+      return response;
     },
 
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<Product>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
