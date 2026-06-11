@@ -1,20 +1,14 @@
 import { memo } from "react";
-import { User } from "@/types/user";
 import { TotalUsersProvider } from "@/contexts/TotalUsersContext";
 import SearchTotalUsers from "./SearchTotalUsers";
 import TotalUsersList from "./TotalUsersList";
 
-interface TotalUsersPageProps {
-  initialUsers: User[];
-  accessToken: string | null;
-}
-
-const TotalUsersPage = ({ initialUsers, accessToken }: TotalUsersPageProps) => {
+const TotalUsersPage = () => {
   return (
-    <TotalUsersProvider accessToken={accessToken}>
+    <TotalUsersProvider>
       <SearchTotalUsers />
       <div className="w-full mt-3">
-        <TotalUsersList initialUsers={initialUsers} />
+        <TotalUsersList />
       </div>
     </TotalUsersProvider>
   );

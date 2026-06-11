@@ -3,6 +3,7 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
 import { User } from "@/types/user";
 import { UsersStats } from "@/types/UsersStats";
+import { Locale as LocaleEnum } from "@/enums/locale.enum";
 
 export interface UsersStatsResp {
   isSuccess: boolean;
@@ -43,7 +44,7 @@ export interface ActiveUsersResp {
 }
 
 export const fetchActiveUsers = async ({
-  lang = "en",
+  lang = LocaleEnum.EN,
   limit = PAGINATION_LIMITS.ACTIVE_USERS,
   lastId,
   search,
@@ -60,6 +61,38 @@ export const fetchActiveUsers = async ({
   if (search) url.searchParams.append("search", search);
   if (typeof isActive === "boolean")
     url.searchParams.append("isActive", isActive.toString());
+
+  return fetcher(url.toString());
+};
+
+export interface TotalUsersResp {
+  isSuccess: boolean;
+  message: string;
+  usersNum: number;
+  users: User[];
+}
+
+interface FetchTotalUsersParams {
+  lang?: string;
+  limit?: number;
+  lastId?: string;
+  search?: string;
+  fetcher: (url: string) => Promise<TotalUsersResp>;
+}
+
+export const fetchTotalUsers = async ({
+  lang = LocaleEnum.EN,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.TOTAL_USERS ?? 20,
+  lastId,
+  search,
+  fetcher,
+}: FetchTotalUsersParams): Promise<TotalUsersResp> => {
+  const url = new URL(API_ENDPOINTS.DASHBOARD.USERS.GET_TOTAL_USERS);
+
+  url.searchParams.append("limit", limit.toString());
+  if (lang) url.searchParams.append("lang", lang);
+  if (lastId) url.searchParams.append("lastId", lastId);
+  if (search) url.searchParams.append("search", search);
 
   return fetcher(url.toString());
 };

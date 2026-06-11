@@ -1,14 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
-import { Locale } from "@/enums/locale.enum";
-import { apiFetch } from "@/lib/api.server";
-import { getUsersStatsQueryOptions } from "@/hooks/react-query/query-options/usersStats";
-import {
-  ActiveUsersResp,
-  fetchActiveUsers,
-  fetchUsersStats,
-  UsersStatsResp,
-} from "@/services/user.service";
-import { getActiveUsersQueryOptions } from "@/hooks/react-query/query-options/activeUsers";
+import { prefetchUsersStats } from "../usersStats";
+import { prefetchActiveUsers } from "../activeUsers";
+import { prefetchTotalUsers } from "../totalUsers";
 
 export async function prefetchDashboardUsersData({
   locale,
@@ -17,58 +10,9 @@ export async function prefetchDashboardUsersData({
   locale: string;
   queryClient: QueryClient;
 }) {
-  const fallbackLocale = locale ?? Locale.EN;
-
-  await queryClient.fetchQuery(
-    getUsersStatsQueryOptions({
-      locale: fallbackLocale,
-      queryFn: () =>
-        fetchUsersStats({
-          lang: fallbackLocale,
-          fetcher: async (path) => {
-            const { data, ok, status } =
-              await apiFetch<Promise<UsersStatsResp>>(path);
-
-            if (!ok || !data) {
-              throw new Error(
-                `[DashboardUsersPage] Failed to fetch dashboard users statistics: ${status}`,
-              );
-            }
-            return data;
-          },
-        }),
-    }),
-  );
-}
-
-export async function prefetchDashboardActiveUsersData({
-  locale,
-  queryClient,
-}: {
-  locale: string;
-  queryClient: QueryClient;
-}) {
-  const fallbackLocale = locale ?? Locale.EN;
-
-  await queryClient.fetchInfiniteQuery(
-    getActiveUsersQueryOptions({
-      locale: fallbackLocale,
-      search: "",
-      queryFn: () =>
-        fetchActiveUsers({
-          lang: fallbackLocale,
-          fetcher: async (path) => {
-            const { data, ok, status } =
-              await apiFetch<Promise<ActiveUsersResp>>(path);
-
-            if (!ok || !data) {
-              throw new Error(
-                `[DashboardActiveUsersPage] Failed to fetch dashboard active users: ${status}`,
-              );
-            }
-            return data;
-          },
-        }),
-    }),
-  );
+  await Promise.all([
+    prefetchUsersStats({ queryClient, locale }),
+    prefetchActiveUsers({ queryClient, locale }),
+    prefetchTotalUsers({ queryClient, locale }),
+  ]);
 }
