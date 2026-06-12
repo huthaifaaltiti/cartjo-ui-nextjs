@@ -28,7 +28,7 @@ export const fetchSearchProducts = async ({
   lang = LocaleEnum.EN,
   categoryId,
   subCategoryId,
-  limit = PAGINATION_LIMITS.PUBLIC_VIEW.PUBLIC_SEARCH_PAGE_PRODUCTS_ITEMS ?? 20,
+  limit = PAGINATION_LIMITS.PUBLIC_VIEW.SEARCH_PAGE_PRODUCTS_ITEMS ?? 20,
   lastId,
   priceFrom,
   priceTo,

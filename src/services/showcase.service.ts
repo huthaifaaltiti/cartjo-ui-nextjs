@@ -34,7 +34,7 @@ interface FetchShowcasesParams {
 
 export const fetchShowcases = async ({
   lang = "en",
-  limit = PAGINATION_LIMITS.SHOWCASES,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.SHOWCASES ?? 20,
   lastId,
   search,
   fetcher,

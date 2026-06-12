@@ -13,7 +13,7 @@ interface FetchTypeHintConfigsParams {
 
 export const fetchTypeHintConfigs = async ({
   lang = "en",
-  limit = PAGINATION_LIMITS.TYPE_HINT_CONFIGS,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.TYPE_HINT_CONFIGS ?? 20,
   lastId,
   search,
   fetcher,

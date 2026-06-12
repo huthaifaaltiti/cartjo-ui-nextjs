@@ -31,7 +31,7 @@ interface FetchLogosParams {
 
 export const fetchLogos = async ({
   lang = "en",
-  limit = PAGINATION_LIMITS.LOGOS,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.LOGOS ?? 10,
   lastId,
   search,
   fetcher,

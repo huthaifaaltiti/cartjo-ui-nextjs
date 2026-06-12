@@ -25,7 +25,7 @@ export const fetchSubCategoryProducts = async ({
   lang = LocaleEnum.EN,
   categoryId,
   subCategoryId,
-  limit = PAGINATION_LIMITS.PUBLIC_SUB_CATEGORY_PRODUCTS_ITEMS,
+  limit = PAGINATION_LIMITS.PUBLIC_VIEW.SUB_CATEGORY_PRODUCTS_ITEMS ?? 20,
   lastId,
   priceFrom,
   priceTo,

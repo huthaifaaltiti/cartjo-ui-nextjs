@@ -115,7 +115,7 @@ interface FetchAdminUsersParams {
 
 export const fetchAdminUsers = async ({
   lang = "en",
-  limit = PAGINATION_LIMITS.ADMIN_USERS,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.ADMIN_USERS ?? 20,
   lastId,
   search,
   canManage,

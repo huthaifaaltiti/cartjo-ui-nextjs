@@ -17,7 +17,7 @@ interface FetchUserOrderReturnsParams {
 export const fetchUserOrderReturns = async ({
   uid,
   lang = LocaleEnum.EN,
-  limit = PAGINATION_LIMITS.USER_ORDERS,
+  limit = PAGINATION_LIMITS.USER_VIEW.ORDERS_RETURNS ?? 20,
   lastId,
   search,
   fetcher,

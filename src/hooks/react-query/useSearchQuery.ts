@@ -44,7 +44,7 @@ export const useSearchProductsQuery = (
           lang: locale,
           categoryId,
           subCategoryId,
-          limit: PAGINATION_LIMITS.PUBLIC_SEARCH_PRODUCTS_ITEMS,
+          limit: PAGINATION_LIMITS.PUBLIC_VIEW.SEARCH_PAGE_PRODUCTS_ITEMS,
           lastId: pageParam as string,
           priceFrom,
           priceTo,

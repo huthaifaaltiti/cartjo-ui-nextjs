@@ -16,7 +16,7 @@ export const useActiveUsersQuery = (search: string) => {
       queryFn: (context: QueryFunctionContext) =>
         fetchActiveUsers({
           lang: locale,
-          limit: PAGINATION_LIMITS.ACTIVE_USERS,
+          limit: PAGINATION_LIMITS.DASHBOARD_VIEW.ACTIVE_USERS,
           lastId: context?.pageParam as string,
           search,
           fetcher: (path) => authFetcher(path),

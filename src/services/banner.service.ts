@@ -31,7 +31,7 @@ interface FetchBannersParams {
 
 export const fetchBanners = async ({
   lang = "en",
-  limit = PAGINATION_LIMITS.BANNERS,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.BANNERS ?? 20,
   lastId,
   search,
   fetcher,

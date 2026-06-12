@@ -31,7 +31,7 @@ interface FetchCategoriesPicksParams {
 
 export const fetchCategoriesPicks = async ({
   lang = "en",
-  limit = PAGINATION_LIMITS.PRODUCTS,
+  limit = PAGINATION_LIMITS.PUBLIC_VIEW.PRODUCTS ?? 10,
   categoryId,
   fetcher,
 }: FetchCategoriesPicksParams): Promise<DataListResponse<Product>> => {
@@ -79,7 +79,7 @@ interface FetchCategoryProductsParams {
 export const fetchCategoryProducts = async ({
   lang = "en",
   categoryId,
-  limit = PAGINATION_LIMITS.PUBLIC_CATEGORY_PRODUCTS_ITEMS,
+  limit = PAGINATION_LIMITS.PUBLIC_VIEW.CATEGORY_PRODUCTS_ITEMS ?? 20,
   lastId,
   priceFrom,
   priceTo,

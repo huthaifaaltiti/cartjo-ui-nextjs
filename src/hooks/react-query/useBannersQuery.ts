@@ -40,7 +40,7 @@ export const useBannersQuery = ({ search }: { search: string }) => {
       queryFn: (context: QueryFunctionContext) =>
         fetchBanners({
           lang: locale,
-          limit: PAGINATION_LIMITS.BANNERS,
+          limit: PAGINATION_LIMITS.DASHBOARD_VIEW.BANNERS,
           lastId: context?.pageParam as string,
           search,
           fetcher: (path) => authFetcher(path),

@@ -39,7 +39,7 @@ export const useLogosQuery = (search?: string) => {
       queryFn: (context: QueryFunctionContext) =>
         fetchLogos({
           lang: locale,
-          limit: PAGINATION_LIMITS.LOGOS,
+          limit: PAGINATION_LIMITS.DASHBOARD_VIEW.LOGOS,
           lastId: context?.pageParam as string,
           search,
           fetcher: (path) => authFetcher(path),
