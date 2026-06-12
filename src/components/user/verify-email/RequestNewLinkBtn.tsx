@@ -3,19 +3,20 @@
 import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
 import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { showWarningToast } from "@/components/shared/CustomToast";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { reVerifyEmail } from "@/redux/slices/authorization/verifyEmail/actions";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const RequestNewLinkBtn = () => {
   const t = useTranslations();
-  const { data: sessionData, status } = useSession();
+  const { session } = useSelector((state: RootState) => state.authentication);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const { isAuthenticated } = useAuthContext();
 
   const {
     status: reverifyStatus,
@@ -28,7 +29,7 @@ const RequestNewLinkBtn = () => {
   const isError = reverifyStatus === "error";
 
   const handleRequestNewVerifyLink = async () => {
-    if (status === "unauthenticated") {
+    if (!isAuthenticated) {
       showWarningToast({
         title: t(
           "routes.verifyEmail.components.RequestNewLinkBtn.mustLoginTitle",
@@ -45,9 +46,9 @@ const RequestNewLinkBtn = () => {
       return;
     }
 
-    if (status !== "authenticated") return;
+    if (!isAuthenticated) return;
 
-    const { user } = sessionData;
+    const user = session;
     if (!user?.email) return;
 
     await dispatch(reVerifyEmail({ email: user.email, lang: locale }));

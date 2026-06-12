@@ -31,7 +31,7 @@ const UserOrdersReturnsPage = async ({ params }: PageProps) => {
   requireAuth(token);
   const session = (await getSession()) as CartJOSession | null;
 
-  const uid = session?.id ?? null;
+  const uid = session?._id ?? null;
 
   const queryClient = getQueryClient();
 

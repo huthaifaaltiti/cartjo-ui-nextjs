@@ -1,16 +1,25 @@
-import { signOut } from "next-auth/react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-
 import { showErrorToast } from "@/components/shared/CustomToast";
+import { Locale } from "@/enums/locale.enum";
+
+const handleLogout = async () => {
+  await fetch("/api/auth/logout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      lang: Locale.EN,
+    }),
+  });
+};
 
 export const useHandleApiError = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const t = useTranslations();
 
-  const handleApiError = (error: Error) => {
+  const handleApiError = async (error: Error) => {
     if (!error) return;
-    
+
     showErrorToast({
       title: t("general.toast.title.error"),
       description: error.message,
@@ -18,8 +27,8 @@ export const useHandleApiError = () => {
     });
 
     if (error.message === "Unauthorized") {
-      signOut({ redirect: true });
-      // router.push("/auth");
+      await handleLogout();
+      router.push("/auth");
       return;
     }
 

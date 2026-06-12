@@ -3,8 +3,9 @@ import { UserRole } from "@/enums/user-role.enum";
 import { CartJOSession } from "@/types/cartjoSession.type";
 import { cookies } from "next/headers";
 import { API_ENDPOINTS } from "./apiEndpoints";
+import { TokenSession } from "@/types/tokenSession.type";
 
-function decodeAccessToken(token: string): CartJOSession | null {
+function decodeAccessToken(token: string): TokenSession | null {
   try {
     const base64 = token.split(".")[1];
     if (!base64) return null;
@@ -13,7 +14,7 @@ function decodeAccessToken(token: string): CartJOSession | null {
     );
 
     return {
-      id: payload.sub,
+      _id: payload.sub,
       email: payload.email,
       username: payload.username,
       firstName: payload.firstName,
@@ -28,7 +29,7 @@ function decodeAccessToken(token: string): CartJOSession | null {
 
 async function fetchSession(
   accessToken: string,
-): Promise<CartJOSession | null> {
+): Promise<CartJOSession | TokenSession | null> {
   try {
     const res = await fetch(API_ENDPOINTS.USER.GET_ME, {
       headers: {
@@ -51,7 +52,9 @@ async function fetchSession(
   }
 }
 
-export async function getSession(): Promise<CartJOSession | null> {
+export async function getSession(): Promise<
+  CartJOSession | TokenSession | null
+> {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(TOKEN_KEYS.ACCESS_TOKEN)?.value;
 

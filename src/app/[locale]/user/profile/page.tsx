@@ -2,7 +2,11 @@ import { getQueryClient } from "@/utils/queryUtils";
 import UserProfileHeader from "@/components/user/user/routes/profile/UserProfileHeader";
 import { Locale } from "@/types/locale";
 import UserProfileContent from "@/components/user/user/routes/profile/UserProfileContent";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { getAccessToken } from "@/lib/tokens.server";
 import { getSession } from "@/lib/session.server";
 import { CartJOSession } from "@/types/cartjoSession.type";
@@ -20,11 +24,11 @@ const UserProfilePage = async ({ params }: PageProps) => {
   requireAuth(token);
   const session = (await getSession()) as CartJOSession | null;
 
-  const queryClient = getQueryClient();
+  const queryClient: QueryClient = getQueryClient();
 
-  if (session?.id && token) {
+  if (session?._id && token) {
     await queryClient.prefetchQuery(
-      getUserProfileQueryOptions(locale, session?.id, token),
+      getUserProfileQueryOptions(locale, session?._id, token),
     );
   }
   if (token) {
@@ -39,7 +43,7 @@ const UserProfilePage = async ({ params }: PageProps) => {
     <div className="w-full flex flex-col gap-4">
       <HydrationBoundary state={dehydratedState}>
         <UserProfileHeader />
-        <UserProfileContent userId={session?.id} />
+        <UserProfileContent userId={session?._id} />
       </HydrationBoundary>
     </div>
   );

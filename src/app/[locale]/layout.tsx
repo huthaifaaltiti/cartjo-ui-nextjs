@@ -8,7 +8,6 @@ import { routing } from "@/i18n/routing";
 import { isArabicLocale } from "@/config/locales.config";
 import { LocaleProvider } from "@/contexts/LocaleContext";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
-import SessionWrapper from "@/components/SessionWrapper";
 import { HomeEffectsContextProvider } from "@/contexts/HomeEffectsContext";
 import { GeneralContextProvider } from "@/contexts/General.context";
 import ReduxProvider from "../../redux/ReduxProvider";
@@ -87,27 +86,25 @@ export default async function LocaleLayout({
         <ReactQueryProvider>
           <NextIntlClientProvider>
             <LocaleProvider locale={locale}>
-              <SessionWrapper>
-                <HomeEffectsContextProvider>
-                  <Toaster
-                    toastOptions={{ className: layoutFont }}
-                    position={!isArabic ? "top-right" : "top-left"}
-                    expand={true}
-                    closeButton={false}
-                  />
-                  <NuqsAdapter>
-                    <GeneralContextProvider>
-                      <ReduxProvider>
-                        <ReduxLocaleSync />
-                        <UserContextHydrator locale={locale}>
-                          <SessionHydrator initialSession={session} />
-                          {children}
-                        </UserContextHydrator>
-                      </ReduxProvider>
-                    </GeneralContextProvider>
-                  </NuqsAdapter>
-                </HomeEffectsContextProvider>
-              </SessionWrapper>
+              <HomeEffectsContextProvider>
+                <Toaster
+                  toastOptions={{ className: layoutFont }}
+                  position={!isArabic ? "top-right" : "top-left"}
+                  expand={true}
+                  closeButton={false}
+                />
+                <NuqsAdapter>
+                  <GeneralContextProvider>
+                    <ReduxProvider>
+                      <ReduxLocaleSync />
+                      <UserContextHydrator locale={locale}>
+                        <SessionHydrator initialSession={session} />
+                        {children}
+                      </UserContextHydrator>
+                    </ReduxProvider>
+                  </GeneralContextProvider>
+                </NuqsAdapter>
+              </HomeEffectsContextProvider>
             </LocaleProvider>
           </NextIntlClientProvider>
         </ReactQueryProvider>

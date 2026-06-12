@@ -14,11 +14,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useTranslations } from "use-intl";
 import { Currency } from "@/enums/currency.enum";
-import { fetcher } from "@/utils/fetcher";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import Modal from "@/components/shared/Modal";
 import ShippingAddressForm from "./ShippingAddressForm";
 import { ShippingAddress } from "@/types/shippingAddress.type";
+import { authFetcher } from "@/utils/authFetcher";
 
 export interface SubmitPaymentResponse {
   isSuccess: boolean;
@@ -27,7 +27,7 @@ export interface SubmitPaymentResponse {
     order: {
       _id: string;
     };
-    return_url:string
+    return_url: string;
   };
 }
 
@@ -44,7 +44,6 @@ export default function PaymentForm({
   formRef,
   paymentData,
   verifiedOrder,
-  accessToken,
   error,
   setError,
 }: PaymentFormProps) {
@@ -54,9 +53,10 @@ export default function PaymentForm({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [shippingAddress, setShippingAddress] = useState<ShippingAddress | null>(null);
+  const [shippingAddress, setShippingAddress] =
+    useState<ShippingAddress | null>(null);
   const [tokenReceived, setTokenReceived] = useState(false);
-  
+
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
@@ -65,14 +65,13 @@ export default function PaymentForm({
 
   // Listen for APS PayFort tokenization response
   useEffect(() => {
-    if (!paymentData || !verifiedOrder || !shippingAddress || tokenReceived) return;
+    if (!paymentData || !verifiedOrder || !shippingAddress || tokenReceived)
+      return;
 
     const handleAPSResponse = async (event: MessageEvent) => {
-
-
       try {
         const responseData = event.data;
-        
+
         // Check if this is the tokenization response
         if (responseData.service_command === "TOKENIZATION") {
           const { response_code, response_message, token_name } = responseData;
@@ -83,7 +82,9 @@ export default function PaymentForm({
             await processPaymentWithToken(token_name);
           } else {
             // Tokenization failed
-            setError(`Tokenization failed: ${response_message || "Unknown error"}`);
+            setError(
+              `Tokenization failed: ${response_message || "Unknown error"}`,
+            );
             setIsProcessing(false);
           }
         }
@@ -99,17 +100,13 @@ export default function PaymentForm({
   }, [paymentData, verifiedOrder, shippingAddress, tokenReceived]);
 
   const processPaymentWithToken = async (token_name: string) => {
-    if (!verifiedOrder || !accessToken || !shippingAddress || !paymentData) return;
+    if (!verifiedOrder || !shippingAddress || !paymentData) return;
 
     try {
       const url = new URL(API_ENDPOINTS.CHECKOUT.SUBMIT_PAYMENT);
 
-      const resp = await fetcher<SubmitPaymentResponse>(url.toString(), {
+      const resp = await authFetcher<SubmitPaymentResponse>(url.toString(), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
         body: JSON.stringify({
           token_name, // Token from APS PayFort
           language: "en",
@@ -137,7 +134,7 @@ export default function PaymentForm({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!paymentData || !verifiedOrder || !shippingAddress) {
       setError("Please fill the shipping address first.");
       return;
@@ -162,8 +159,10 @@ export default function PaymentForm({
     }
 
     // Clear any existing dynamic fields
-    const existingDynamicFields = form.querySelectorAll('[data-dynamic="true"]');
-    existingDynamicFields.forEach(field => field.remove());
+    const existingDynamicFields = form.querySelectorAll(
+      '[data-dynamic="true"]',
+    );
+    existingDynamicFields.forEach((field) => field.remove());
 
     // Add card fields to the hidden form
     const cardFields = {
@@ -287,7 +286,9 @@ export default function PaymentForm({
           {isProcessing && (
             <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
-              <p className="text-blue-800 text-sm">Processing your payment securely...</p>
+              <p className="text-blue-800 text-sm">
+                Processing your payment securely...
+              </p>
             </div>
           )}
 
@@ -443,13 +444,37 @@ export default function PaymentForm({
         {/* Static tokenization fields from paymentData */}
         {paymentData && (
           <>
-            <input type="hidden" name="service_command" value={paymentData.service_command} />
+            <input
+              type="hidden"
+              name="service_command"
+              value={paymentData.service_command}
+            />
             <input type="hidden" name="language" value={paymentData.language} />
-            <input type="hidden" name="merchant_identifier" value={paymentData.merchant_identifier} />
-            <input type="hidden" name="access_code" value={paymentData.access_code} />
-            <input type="hidden" name="merchant_reference" value={paymentData.merchant_reference} />
-            <input type="hidden" name="return_url" value={paymentData.return_url} />
-            <input type="hidden" name="signature" value={paymentData.signature} />
+            <input
+              type="hidden"
+              name="merchant_identifier"
+              value={paymentData.merchant_identifier}
+            />
+            <input
+              type="hidden"
+              name="access_code"
+              value={paymentData.access_code}
+            />
+            <input
+              type="hidden"
+              name="merchant_reference"
+              value={paymentData.merchant_reference}
+            />
+            <input
+              type="hidden"
+              name="return_url"
+              value={paymentData.return_url}
+            />
+            <input
+              type="hidden"
+              name="signature"
+              value={paymentData.signature}
+            />
           </>
         )}
         {/* Card fields will be added dynamically on submit */}

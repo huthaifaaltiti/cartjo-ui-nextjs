@@ -11,23 +11,28 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { useGeneralContext } from "@/contexts/General.context";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ExtendedSession } from "@/types/session";
 import { useVerifyEmail } from "@/contexts/VerifyEmailContext";
 import { useTranslations } from "next-intl";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 export default function EmailVerificationContent() {
-  const t = useTranslations("routes.emailVerification.components.EmailVerificationContent");
+  const t = useTranslations(
+    "routes.emailVerification.components.EmailVerificationContent",
+  );
   const { locale } = useGeneralContext();
-  const { data: sessionData } = useSession();
   const router = useRouter();
-  
-  const isLoggedIn = !!sessionData;
-  const sessionEmail = (sessionData as ExtendedSession)?.user?.email;
+
+  const { session } = useSelector((state: RootState) => state.authentication);
+
+  const isLoggedIn = !!session;
+  const sessionEmail = session?.email;
   const { reVerify } = useVerifyEmail();
 
-  const [status, setStatus] = useState<"loading" | "success" | "error" | "expired" | "manual">("loading");
+  const [status, setStatus] = useState<
+    "loading" | "success" | "error" | "expired" | "manual"
+  >("loading");
   const [message, setMessage] = useState("");
   const [countdown] = useState(10);
   const [email, setEmail] = useState(sessionEmail || "");
@@ -66,7 +71,7 @@ export default function EmailVerificationContent() {
       if (response?.isSuccess) {
         setResendSuccess(true);
         setMessage(response?.message || t("verificationSent", { email }));
-        
+
         setTimeout(() => setResendSuccess(false), 5000);
       } else {
         setMessage(response?.message || t("resendFailed"));
@@ -94,7 +99,6 @@ export default function EmailVerificationContent() {
 
         {/* Main Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-          
           {/* Loading State */}
           {status === "loading" && (
             <div className="text-center">
@@ -106,9 +110,18 @@ export default function EmailVerificationContent() {
               </h2>
               <p className="text-gray-600 mb-6">{t("loadingDesc")}</p>
               <div className="flex items-center justify-center gap-2">
-                <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
-                <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
-                <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                <div
+                  className="w-2 h-2 bg-purple-600 rounded-full animate-bounce"
+                  style={{ animationDelay: "0ms" }}
+                ></div>
+                <div
+                  className="w-2 h-2 bg-purple-600 rounded-full animate-bounce"
+                  style={{ animationDelay: "150ms" }}
+                ></div>
+                <div
+                  className="w-2 h-2 bg-purple-600 rounded-full animate-bounce"
+                  style={{ animationDelay: "300ms" }}
+                ></div>
               </div>
             </div>
           )}
@@ -131,9 +144,7 @@ export default function EmailVerificationContent() {
                     {t("successDesc")}
                   </p>
                 </div>
-                <p className="text-xs text-gray-600">
-                  {t("successExtra")}
-                </p>
+                <p className="text-xs text-gray-600">{t("successExtra")}</p>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4 mb-6">
@@ -207,9 +218,7 @@ export default function EmailVerificationContent() {
               <h2 className="text-2xl font-bold text-gray-800 mb-3">
                 {t("expiredTitle")}
               </h2>
-              <p className="text-gray-600 mb-6">
-                {t("expiredDesc")}
-              </p>
+              <p className="text-gray-600 mb-6">{t("expiredDesc")}</p>
 
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 mb-6">
                 <div className="flex items-center gap-3 mb-4">
@@ -281,9 +290,7 @@ export default function EmailVerificationContent() {
               <h2 className="text-2xl font-bold text-gray-800 mb-3">
                 {t("manualTitle")}
               </h2>
-              <p className="text-gray-600 mb-6">
-                {t("manualDesc")}
-              </p>
+              <p className="text-gray-600 mb-6">{t("manualDesc")}</p>
 
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-6">
                 <input
@@ -329,7 +336,11 @@ export default function EmailVerificationContent() {
 
               <div className="space-y-3">
                 <button
-                  onClick={() => router.push("/auth?redirectTo=/email-verification&resend=true")}
+                  onClick={() =>
+                    router.push(
+                      "/auth?redirectTo=/email-verification&resend=true",
+                    )
+                  }
                   className="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-colors duration-200"
                 >
                   {t("alreadyHaveAccount")}

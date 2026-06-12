@@ -28,14 +28,12 @@ export default function PaymentInitializer({
 }: PaymentInitializerProps) {
   // 1) Create signature
   useEffect(() => {
-
     const init = async () => {
       // const url = new URL(API_ENDPOINTS.CHECKOUT.PROCESS_PAYMENT);
 
       try {
         // const resp = await fetcher<SubmitPaymentResponse>(
         //   url.toString(),
-
         //   {
         //     method: "POST",
         //     headers: {
@@ -50,18 +48,15 @@ export default function PaymentInitializer({
         //     }),
         //   }
         // );
-
         // if (resp?.isSuccess && resp.data) {
         //   setPaymentData(resp?.data);
-
         //   const url = new URL(resp.data.return_url);
         //   const encrypted = url.searchParams.get("order");
-
         //   setOrderEncrypted(encrypted);
         // }
       } catch (err) {
         setError("Failed to initialize payment.");
-        console.log({err})
+        console.log({ err });
       }
     };
 
@@ -84,11 +79,10 @@ export default function PaymentInitializer({
         //   },
         //   body: JSON.stringify({ encryptedOrder: orderEncrypted }),
         // });
-
         // if (resp?.isSuccess) setVerifiedOrder(resp.data);
       } catch (err) {
         setError("Failed to verify payment.");
-        console.log({err})
+        console.log({ err });
       }
     };
 

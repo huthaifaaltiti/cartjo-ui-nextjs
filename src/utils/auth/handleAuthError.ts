@@ -1,13 +1,21 @@
-import { signOut, getSession } from "next-auth/react";
+import { Locale } from "@/enums/locale.enum";
+
+const handleLogout = async () => {
+  await fetch("/api/auth/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      lang: Locale.EN,
+    }),
+  });
+};
 
 export async function handleAuthError(response: Response) {
   if (response.status === 401) {
-    const session = await getSession();
+    await handleLogout();
 
-    if (session) {
-      // Only sign out if user WAS logged in (expired token)
-      await signOut();
-    }
     throw new Error("Unauthorized");
   }
 

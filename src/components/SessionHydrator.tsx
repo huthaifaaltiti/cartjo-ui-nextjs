@@ -5,11 +5,12 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { hydrateSession } from "@/redux/slices/authentication";
 import { CartJOSession } from "@/types/cartjoSession.type";
+import { TokenSession } from "@/types/tokenSession.type";
 
 export default function SessionHydrator({
   initialSession,
 }: {
-  initialSession: CartJOSession | null;
+  initialSession: CartJOSession | TokenSession | null;
 }) {
   const hasHydrated = useRef(false);
 

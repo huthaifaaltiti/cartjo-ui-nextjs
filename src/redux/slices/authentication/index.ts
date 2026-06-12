@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartJOSession } from "@/types/cartjoSession.type";
 import isAdminClientSide from "@/utils/isAdminClientSide.util";
+import { TokenSession } from "@/types/tokenSession.type";
 
 interface AuthenticationState {
   isAuthenticated: boolean;
-  session: CartJOSession | null;
+  session: CartJOSession | TokenSession | null;
   isAdmin: boolean;
   loading: boolean;
 }
@@ -31,7 +32,10 @@ const authenticationSlice = createSlice({
     clearSession: () => ({ ...initialState }),
 
     // Call this on app boot to hydrate from server (passed via initialSession prop)
-    hydrateSession: (state, action: PayloadAction<CartJOSession | null>) => {
+    hydrateSession: (
+      state,
+      action: PayloadAction<CartJOSession | TokenSession | null>,
+    ) => {
       state.session = action.payload;
       state.isAuthenticated = action.payload !== null;
       state.isAdmin = isAdminClientSide(action.payload);
