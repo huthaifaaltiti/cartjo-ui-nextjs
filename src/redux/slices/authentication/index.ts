@@ -21,7 +21,10 @@ const authenticationSlice = createSlice({
   name: "authentication",
   initialState,
   reducers: {
-    setSession: (state, action: PayloadAction<CartJOSession>) => {
+    setSession: (
+      state,
+      action: PayloadAction<CartJOSession | TokenSession>,
+    ) => {
       state.session = action.payload;
       state.isAuthenticated = true;
       state.isAdmin = isAdminClientSide(action.payload);

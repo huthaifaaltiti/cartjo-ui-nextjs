@@ -1,20 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login } from "./actions";
 import { CartJOSession } from "@/types/cartjoSession.type";
+import { TokenSession } from "@/types/tokenSession.type";
 
 export interface LoginState {
   isLoading: boolean;
   error: object | null;
   message: string;
-  user?: CartJOSession | null;
-  status?: "idle" | "loading" | "success" | "error";
+  loggedInSession: CartJOSession | TokenSession | null;
+  status: "idle" | "loading" | "success" | "error";
 }
 
 const initialState: LoginState = {
   isLoading: false,
   error: null,
   message: "",
-  user: null,
+  loggedInSession: null,
   status: "idle",
 };
 
@@ -36,13 +37,13 @@ const loginSlice = createSlice({
         state.isLoading = false;
         state.status = "success";
         state.message = message ?? "";
-        state.user = user ?? null;
+        state.loggedInSession = user ?? null;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.status = "error";
         state.message = action.payload?.message ?? "Login failed";
-        state.user = null;
+        state.loggedInSession = null;
       });
   },
 });

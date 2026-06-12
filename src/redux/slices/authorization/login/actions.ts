@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
-import { Media } from "@/types/media.type";
 import { LOGIN } from "./constants";
+import { TokenSession } from "@/types/tokenSession.type";
 
 export interface LoginPayload {
   identifier: string;
@@ -11,18 +11,8 @@ export interface LoginPayload {
   lang?: Locale | string;
 }
 
-export interface LoginUser {
-  id: string;
-  email?: string;
-  username?: string;
-  role: string;
-  firstName?: string;
-  lastName?: string;
-  profilePic?: Media;
-}
-
 export interface LoginResponse extends BaseResponse {
-  user?: LoginUser;
+  user?: TokenSession;
 }
 
 export const login = createAsyncThunk<

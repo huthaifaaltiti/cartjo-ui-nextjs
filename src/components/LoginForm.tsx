@@ -100,7 +100,7 @@ const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     status: loginStatus,
-    user,
+    loggedInSession,
     message,
     isLoading,
   } = useSelector((state: RootState) => state.login);
@@ -126,10 +126,9 @@ const LoginForm = () => {
     };
   }, []);
 
-  // Handle login result
   useEffect(() => {
-    if (loginStatus === "success" && user) {
-      dispatch(setSession(user));
+    if (!!loggedInSession) {
+      dispatch(setSession(loggedInSession));
 
       showSuccessToast({
         title: t("general.toast.title.success"),
@@ -155,7 +154,7 @@ const LoginForm = () => {
         dismissText: t("general.toast.dismissText"),
       });
     }
-  }, [loginStatus, user, message]);
+  }, [loginStatus, loggedInSession, message]);
 
   const defaultValues = useMemo(
     () => ({
