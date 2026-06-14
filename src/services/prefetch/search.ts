@@ -27,12 +27,21 @@ export async function prefetchSearchData({
       getSearchProductsQueryOptions({
         locale: locale ?? Locale.EN,
         querySearch,
+        categoryId: undefined,
+        subCategoryId: undefined,
+        priceFrom: 0,
+        priceTo: 0,
+        ratingFrom: 0,
+        createdFrom: "",
+        createdTo: "",
+        beforeNumOfDays: 0,
         typeHint,
-        queryFn: () =>
+        queryFn: ({ pageParam }) =>
           fetchSearchProducts({
             lang: locale ?? Locale.EN,
             querySearch,
             typeHint,
+            lastId: pageParam as string,
             fetcher: async (path) => {
               {
                 const { data, ok, status } =

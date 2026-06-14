@@ -26,6 +26,12 @@ export interface SearchProductsParams {
 export const getSearchProductsQueryOptions = (params: SearchProductsParams) => {
   const { queryFn, ...filters } = params;
 
+  const normalizedFilters = {
+    ...filters,
+    typeHint: filters.typeHint ?? "",
+    querySearch: filters.querySearch ?? "",
+  };
+
   const getNextPageParam = (lastPage: DataListResponse<Product>) => {
     if (!lastPage?.data?.length) return undefined;
 
@@ -34,7 +40,7 @@ export const getSearchProductsQueryOptions = (params: SearchProductsParams) => {
   };
 
   return {
-    queryKey: [PUBLIC_SEARCHED_PRODUCTS_QUERY_KEY, filters],
+    queryKey: [PUBLIC_SEARCHED_PRODUCTS_QUERY_KEY, normalizedFilters],
     queryFn,
     getNextPageParam,
     initialPageParam: undefined as string | undefined,
