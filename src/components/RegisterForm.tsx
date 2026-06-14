@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { apiRequest } from "@/utils/apiRequest";
 import { Input } from "@/components/ui/input";
 import {
@@ -36,18 +35,34 @@ import PasswordRules from "./user/PasswordRules";
 import TwoColumnFormFields from "./shared/TwoColumnFormFields";
 import GeneralCheckbox from "./shared/GeneralCheckbox";
 import LoadingButton from "./shared/LoadingButton";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { normalizePhoneNumber } from "@/utils/normalizePhoneNumber";
 import { COUNTRY_CONFIGS } from "@/config/countryPhone.config";
 import { validationConfig } from "@/config/validationConfig";
 import { Locale } from "@/enums/locale.enum";
+import { CartJOSession } from "@/types/cartjoSession.type";
+import { useRouter } from "next/navigation";
+import { setSession } from "@/redux/slices/authentication";
+
+interface SuccessRegistrationResponse {
+  accessToken: string;
+  refreshToken: string;
+  isSuccess: boolean;
+  message: string;
+  user: CartJOSession;
+}
 
 const RegisterForm = () => {
   const t = useTranslations();
+
+  const dispatch = useDispatch<AppDispatch>();
+
   const { isArabic, locale, dir } = useSelector(
     (state: RootState) => state.general,
   );
+
+  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -198,8 +213,8 @@ const RegisterForm = () => {
   const registerMutation = useMutation({
     mutationFn: async (data: z.infer<typeof formSchema>) => {
       try {
-        const response = await apiRequest<{ msg: string }>(
-          API_ENDPOINTS.AUTH.REGISTER,
+        const response = await apiRequest<SuccessRegistrationResponse>(
+          "/api/auth/register",
           {
             method: "POST",
             body: JSON.stringify({
@@ -233,12 +248,17 @@ const RegisterForm = () => {
         throw error;
       }
     },
-    onSuccess: (data) => {
+    onSuccess: async (data: SuccessRegistrationResponse) => {
       showSuccessToast({
         title: t("general.toast.title.success"),
-        description: data.msg,
+        description: data.message,
         dismissText: t("general.toast.dismissText"),
       });
+
+      if (data?.isSuccess) {
+        dispatch(setSession(data?.user));
+        router.push("/");
+      }
     },
     onError: (error: Error) => {
       showErrorToast({
