@@ -3,6 +3,7 @@
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import assets from "@public/assets/assets.json";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 const GoogleAuthentication = ({
   signIn = false,
@@ -27,7 +28,13 @@ const GoogleAuthentication = ({
       type="button"
       className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white p-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all shadow-sm"
     >
-      <img src={assets.image.svg.google_g} alt="Google" className="h-5 w-5" />
+      <Image
+        src={assets.image.svg.google_g}
+        alt="Google"
+        width={20}
+        height={20}
+        className="h-5 w-5"
+      />
       {signUp && t("signUpWithGoogle")}
       {signIn && t("signInWithGoogle")}
     </button>

@@ -84,7 +84,7 @@ const UserProfilePasswordInfoContent = () => {
       trigger: trigger,
       getValues: getValues,
     });
-  }, [form, setPasswordInfo]);
+  }, [form, setPasswordInfo, trigger, getValues]);
 
   return (
     <Form {...form}>

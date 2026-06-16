@@ -16,21 +16,22 @@ import {
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
 import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
+import { BaseResponse } from "@/types/service-response.type";
 
 type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean },
 > = {
   cardItem: T;
   queryKey: string;
-  deleteFn: (id: string, lang: Locale) => Promise<any>;
+  deleteFn: (id: string, lang: Locale) => Promise<BaseResponse>;
 
-  unDeleteFn: (id: string, lang: Locale) => Promise<any>;
+  unDeleteFn: (id: string, lang: Locale) => Promise<BaseResponse>;
 
   switchUserActiveStatusFn: (
     id: string,
     lang: string,
     isActive: boolean,
-  ) => Promise<any>;
+  ) => Promise<BaseResponse>;
 
   showEditButton?: boolean;
 
@@ -86,7 +87,7 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [deleteFn, cardItem._id, queryClient, queryKey, t, locale, setChangeBanners]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
@@ -118,7 +119,7 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [unDeleteFn, cardItem._id, queryClient, queryKey, t, locale, setChangeBanners]);
 
   const handleToggleActiveStatus = useCallback(async () => {
     setIsLoading(true);
@@ -155,6 +156,7 @@ const BannersCardActions = <
     }
   }, [
     switchUserActiveStatusFn,
+    setChangeBanners,
     cardItem._id,
     cardItem.isActive,
     queryClient,

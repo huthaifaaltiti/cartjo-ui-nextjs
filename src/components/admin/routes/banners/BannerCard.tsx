@@ -6,19 +6,20 @@ import BannersCardActions from "./BannersCardActions";
 import { isArabicLocale } from "@/config/locales.config";
 import EditBannerForm from "./EditBannerForm";
 import { BANNERS_QUERY_KEY } from "@/hooks/react-query/query-options/banners";
+import { BaseResponse } from "@/types/service-response.type";
 
 type BannerCardProps = {
   item: Banner;
 
-  deleteBanner: (bannerId: string, lang: string) => Promise<any>;
+  deleteBanner: (bannerId: string, lang: string) => Promise<BaseResponse>;
 
-  unDeleteBanner: (bannerId: string, lang: string) => Promise<any>;
+  unDeleteBanner: (bannerId: string, lang: string) => Promise<BaseResponse>;
 
   switchBannerActiveStatus: (
     bannerId: string,
     lang: string,
     isActive: boolean,
-  ) => Promise<any>;
+  ) => Promise<BaseResponse>;
 };
 
 const BannerCard = ({

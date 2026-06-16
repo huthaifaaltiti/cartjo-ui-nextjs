@@ -6,6 +6,14 @@ import { publicRoutes, protectedRoutes, adminRoutes } from "./lib/auth-routes";
 import { TOKEN_KEYS } from "./constants/tokenKeys.constants";
 import { Locale } from "./enums/locale.enum";
 import { API_ENDPOINTS } from "./lib/apiEndpoints";
+import { TokenSession } from "./types/tokenSession.type";
+
+type JwtPayload = {
+  exp?: number;
+  iat?: number;
+  sub?: string;
+  [key: string]: unknown;
+};
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -25,7 +33,7 @@ function getLocalePrefix(pathname: string): string {
 }
 
 // Edge-compatible JWT decoding (using atob instead of Buffer)
-function decodeTokenPayload(token: string): Record<string, any> | null {
+function decodeTokenPayload(token: string): (TokenSession & JwtPayload) | null {
   try {
     const base64 = token.split(".")[1];
     if (!base64) return null;
@@ -56,7 +64,7 @@ export default async function middleware(request: NextRequest) {
   const refreshToken = request.cookies.get(TOKEN_KEYS.REFRESH_TOKEN)?.value;
 
   // Initialize the response with i18n
-  let response = intlMiddleware(request);
+  const response = intlMiddleware(request);
 
   // 2. ── SERVER-SIDE SILENT REFRESH ──────────────────────────────────────────
   // If access token is gone but refresh token exists, repair the session NOW

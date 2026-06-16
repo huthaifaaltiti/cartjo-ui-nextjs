@@ -7,6 +7,7 @@ import StatusBadge from "@/components/shared/StatusBadge";
 import { Statuses } from "@/enums/statuses.enum";
 import { CircleDollarSign, Truck } from "lucide-react";
 import Variant from "@/components/shared/Variant";
+import Image from "next/image";
 
 type OrderCardProps = {
   item: Order;
@@ -148,12 +149,19 @@ const OrderCard = ({ item }: OrderCardProps) => {
                 <div className="w-14 h-14 flex-shrink-0">
                   {(product?.variant?.mainImage?.url ||
                     product?.mainImage?.url) && (
-                    <img
+                    <Image
                       src={
                         product?.variant?.mainImage?.url ||
-                        product?.mainImage?.url
+                        product?.mainImage?.url ||
+                        "/placeholder.png"
                       }
-                      alt={isArabic ? product?.name?.ar : product?.name?.en}
+                      alt={
+                        isArabic
+                          ? product?.name?.ar
+                          : product?.name?.en || "product image"
+                      }
+                      width={56}
+                      height={56}
                       className="w-14 h-14 object-cover rounded-md"
                     />
                   )}

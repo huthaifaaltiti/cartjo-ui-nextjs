@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
 import { useTranslations } from "next-intl";
@@ -33,17 +33,20 @@ const AuthCallbackHandler = () => {
     defaultValue: "",
   });
 
-  const authErrorMessages: Record<string, string> = {
-    GOOGLE_NO_CODE: t(
-      "routes.auth.components.AuthTabs.components.login.errors.google.noCode",
-    ),
-    GOOGLE_EMAIL_MISSING: t(
-      "routes.auth.components.AuthTabs.components.login.errors.google.emailMissing",
-    ),
-    GOOGLE_AUTH_FAILED: t(
-      "routes.auth.components.AuthTabs.components.login.errors.google.failed",
-    ),
-  };
+  const authErrorMessages: Record<string, string> = useMemo(
+    () => ({
+      GOOGLE_NO_CODE: t(
+        "routes.auth.components.AuthTabs.components.login.errors.google.noCode",
+      ),
+      GOOGLE_EMAIL_MISSING: t(
+        "routes.auth.components.AuthTabs.components.login.errors.google.emailMissing",
+      ),
+      GOOGLE_AUTH_FAILED: t(
+        "routes.auth.components.AuthTabs.components.login.errors.google.failed",
+      ),
+    }),
+    [t],
+  );
 
   // Handle backend OAuth errors
   useEffect(() => {
@@ -61,7 +64,7 @@ const AuthCallbackHandler = () => {
     router.replace("/auth", {
       scroll: false,
     });
-  }, [authError, router, t]);
+  }, [authError, authErrorMessages, router, t]);
 
   // Handle OAuth tokens
   // Store access/refresh tokens in HttpOnly cookies
@@ -96,6 +99,8 @@ const AuthCallbackHandler = () => {
         router.replace(redirectTo || "/");
         router.refresh();
       } catch (error) {
+        console.log({ error });
+
         setStatus("error");
 
         showErrorToast({

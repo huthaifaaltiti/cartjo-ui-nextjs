@@ -50,15 +50,12 @@ const CartProductCard = ({
 
   const quantity = item.quantity;
 
-  const formatPrice = useCallback(
-    (price: number) => {
-      return new Intl.NumberFormat("en-US", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      }).format(price);
-    },
-    [item, isArabic],
-  );
+  const formatPrice = useCallback((price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(price);
+  }, []);
 
   const handleGoToProductPage = useCallback(() => {
     let categorySlug, subCategorySlug;
@@ -75,7 +72,7 @@ const CartProductCard = ({
     router.push(
       `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${item.productId}`,
     );
-  }, [item, isArabic]);
+  }, [item, router]);
 
   const handleRemoveFromCart = useCallback(
     async (quantityMount?: number) => {
@@ -114,7 +111,7 @@ const CartProductCard = ({
         setIsAddToCartLoading(false);
       }
     },
-    [dispatch, item, locale, t],
+    [dispatch, item, locale, t, quantity, requireAuth],
   );
 
   const handleAddToCart = useCallback(
@@ -152,7 +149,7 @@ const CartProductCard = ({
         setIsAddToCartLoading(false);
       }
     },
-    [dispatch, item, locale, t],
+    [dispatch, item, locale, t, requireAuth],
   );
 
   const handleQuantityChange = useCallback(

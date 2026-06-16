@@ -82,7 +82,7 @@ const LogoCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [deleteFn, cardItem._id, queryClient, queryKey, t, locale, setChangeLogo]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
@@ -114,7 +114,15 @@ const LogoCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [
+    unDeleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    t,
+    locale,
+    setChangeLogo,
+  ]);
 
   const handleToggleActiveStatus = useCallback(async () => {
     setIsLoading(true);
@@ -151,7 +159,7 @@ const LogoCardActions = <
     }
   }, [
     switchUserActiveStatusFn,
-
+    setChangeLogo,
     cardItem._id,
     cardItem.isActive,
     queryClient,

@@ -4,6 +4,7 @@ import {
   Dispatch,
   RefObject,
   SetStateAction,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -63,6 +64,41 @@ export default function PaymentForm({
   const [cardHolder, setCardHolder] = useState("");
   const [cardType, setCardType] = useState<string | null>(null);
 
+  const processPaymentWithToken = useCallback(
+    async (token_name: string) => {
+      if (!verifiedOrder || !shippingAddress || !paymentData) return;
+
+      try {
+        const url = new URL(API_ENDPOINTS.CHECKOUT.SUBMIT_PAYMENT);
+
+        const resp = await authFetcher<SubmitPaymentResponse>(url.toString(), {
+          method: "POST",
+          body: JSON.stringify({
+            token_name,
+            language: "en",
+            currency: verifiedOrder.currency,
+            amount: parseFloat(verifiedOrder.amount),
+            customer_email: verifiedOrder.email,
+            merchant_reference: paymentData.merchant_reference,
+            shippingAddress,
+          }),
+        });
+
+        if (resp?.isSuccess && resp?.data) {
+          window.location.href = `/checkout/success?orderId=${resp?.data.order._id}`;
+        } else {
+          setError(resp?.message || t("errors.paymentFailed"));
+          setIsProcessing(false);
+        }
+      } catch (err) {
+        console.error("Payment processing error:", err);
+        setError(t("errors.checkoutErr"));
+        setIsProcessing(false);
+      }
+    },
+    [verifiedOrder, shippingAddress, paymentData, setError, t],
+  );
+
   // Listen for APS PayFort tokenization response
   useEffect(() => {
     if (!paymentData || !verifiedOrder || !shippingAddress || tokenReceived)
@@ -97,40 +133,14 @@ export default function PaymentForm({
 
     window.addEventListener("message", handleAPSResponse);
     return () => window.removeEventListener("message", handleAPSResponse);
-  }, [paymentData, verifiedOrder, shippingAddress, tokenReceived]);
-
-  const processPaymentWithToken = async (token_name: string) => {
-    if (!verifiedOrder || !shippingAddress || !paymentData) return;
-
-    try {
-      const url = new URL(API_ENDPOINTS.CHECKOUT.SUBMIT_PAYMENT);
-
-      const resp = await authFetcher<SubmitPaymentResponse>(url.toString(), {
-        method: "POST",
-        body: JSON.stringify({
-          token_name, // Token from APS PayFort
-          language: "en",
-          currency: verifiedOrder.currency,
-          amount: parseFloat(verifiedOrder.amount),
-          customer_email: verifiedOrder.email,
-          merchant_reference: paymentData.merchant_reference,
-          shippingAddress,
-        }),
-      });
-
-      if (resp?.isSuccess && resp?.data) {
-        // Payment successful! Redirect to success page
-        window.location.href = `/checkout/success?orderId=${resp?.data.order._id}`;
-      } else {
-        setError(resp?.message || t("errors.paymentFailed"));
-        setIsProcessing(false);
-      }
-    } catch (err) {
-      console.error("Payment processing error:", err);
-      setError(t("errors.checkoutErr"));
-      setIsProcessing(false);
-    }
-  };
+  }, [
+    paymentData,
+    verifiedOrder,
+    shippingAddress,
+    tokenReceived,
+    setError,
+    processPaymentWithToken, // <-- Dependency added here closes the warning loop
+  ]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -182,7 +192,6 @@ export default function PaymentForm({
     });
 
     // Submit the form to APS PayFort
-    // This will trigger the iframe to load and eventually send back a postMessage with token
     form.submit();
   };
 
@@ -441,7 +450,6 @@ export default function PaymentForm({
         target="aps_payment_iframe"
         style={{ display: "none" }}
       >
-        {/* Static tokenization fields from paymentData */}
         {paymentData && (
           <>
             <input
@@ -477,7 +485,6 @@ export default function PaymentForm({
             />
           </>
         )}
-        {/* Card fields will be added dynamically on submit */}
       </form>
 
       {/* Hidden iframe that receives the APS PayFort response */}

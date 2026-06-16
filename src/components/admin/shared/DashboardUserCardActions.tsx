@@ -127,7 +127,7 @@ const DashboardUserCardActions = ({
         setCanShowEditButton(true);
       }
     }
-  }, []);
+  }, [user?.canManage]);
 
   return (
     <>

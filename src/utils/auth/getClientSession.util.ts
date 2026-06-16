@@ -1,4 +1,4 @@
-async function getClientSession() {
+export default async function getClientSession() {
   const res = await fetch("/api/auth/session");
 
   if (!res.ok) return null;

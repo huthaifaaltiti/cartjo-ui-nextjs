@@ -50,7 +50,10 @@ const DashboardProductCard = ({
   const [showActions, setShowActions] = useState<boolean>(false);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState<number>(0);
 
-  const variants: VariantServer[] = product.variants ?? [];
+  const variants: VariantServer[] = useMemo(
+    () => product.variants ?? [],
+    [product],
+  );
   const selectedVariant: VariantServer | undefined =
     variants[selectedVariantIndex];
 

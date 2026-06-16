@@ -66,7 +66,7 @@ const ProductCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, product._id, queryClient, queryKey, t]);
+  }, [deleteFn, product._id, queryClient, queryKey, locale, t]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
@@ -89,7 +89,7 @@ const ProductCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, product._id, queryClient, queryKey, t]);
+  }, [unDeleteFn, product._id, queryClient, queryKey, locale, t]);
 
   const handleToggleActiveStatus = useCallback(async () => {
     setIsLoading(true);

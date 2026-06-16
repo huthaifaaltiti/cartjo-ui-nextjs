@@ -47,8 +47,10 @@ const ProductRowCard = ({
   const t = useTranslations();
   const { requireAuth } = useRequireAuth();
 
-  const activeVariants: VariantServer[] =
-    item.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [];
+  const activeVariants: VariantServer[] = useMemo(
+    () => item.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [],
+    [item],
+  );
 
   const [isWishListed, setIsWishListed] = useState<boolean>(
     item?.isWishListed || false,
@@ -111,7 +113,7 @@ const ProductRowCard = ({
     } finally {
       setIsWishListLoading(false);
     }
-  }, [locale, item, t]);
+  }, [dispatch, requireAuth, locale, item, t]);
 
   const handleRemoveWishListItem = useCallback(async () => {
     if (!requireAuth()) return;
@@ -144,7 +146,7 @@ const ProductRowCard = ({
     } finally {
       setIsWishListLoading(false);
     }
-  }, [locale, item, t]);
+  }, [dispatch, requireAuth, locale, item, t]);
 
   const handleWishListedItemState = () => {
     if (!requireAuth()) return;
@@ -218,7 +220,7 @@ const ProductRowCard = ({
     router.push(
       `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${item._id}`,
     );
-  }, [item, isArabic]);
+  }, [item, router]);
 
   return (
     <RowCardWrapper

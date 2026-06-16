@@ -45,8 +45,10 @@ const ProductVertCard = ({
 
   const title = isArabic ? item?.name?.ar : item?.name?.en;
 
-  const activeVariants: VariantServer[] =
-    item.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [];
+  const activeVariants: VariantServer[] = useMemo(
+    () => item.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [],
+    [item],
+  );
 
   const [isWishListed, setIsWishListed] = useState<boolean>(
     item?.isWishListed || false,
@@ -145,7 +147,7 @@ const ProductVertCard = ({
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, item, t, dispatch]);
+  }, [locale, item, t, dispatch, requireAuth]);
 
   const handleAddWishListItem = useCallback(async () => {
     if (!requireAuth()) return;
@@ -171,7 +173,7 @@ const ProductVertCard = ({
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, item, t, dispatch]);
+  }, [locale, item, t, dispatch, requireAuth]);
 
   const handleWishListedItemState = () => {
     if (!requireAuth()) return;
@@ -202,7 +204,7 @@ const ProductVertCard = ({
     router.push(
       `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${item._id}`,
     );
-  }, [item, isArabic]);
+  }, [item, router]);
 
   return (
     <CardWrapper isHovered={isHovered}>

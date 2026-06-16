@@ -37,10 +37,13 @@ const UserMenu = () => {
     const qWish = userContextData?.data?.counters?.wishlistItemsCount ?? 0;
 
     return {
-      wishlistItemsCount: itemsCount || qWish,
-      cartItemsCount: totalItemsCount || qCart,
+      wishlistItemsCount: itemsCount ?? qWish,
+      cartItemsCount: totalItemsCount ?? qCart,
     };
   }, [itemsCount, totalItemsCount, userContextData]);
+
+  console.log({counters})
+  console.log({cartItemsCount: totalItemsCount, wishlistitemsCount:itemsCount})
 
   const canManage = isAdminClientSide(session) ?? false;
 

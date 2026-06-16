@@ -82,7 +82,16 @@ const TypeHintConfigCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [
+    deleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    locale,
+    ,
+    setChangeBanners,
+    t,
+  ]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
@@ -114,7 +123,15 @@ const TypeHintConfigCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [
+    unDeleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    locale,
+    setChangeBanners,
+    t,
+  ]);
 
   const handleToggleActiveStatus = useCallback(async () => {
     setIsLoading(true);
@@ -156,6 +173,7 @@ const TypeHintConfigCardActions = <
     queryClient,
     queryKey,
     locale,
+    setChangeBanners,
     t,
   ]);
 

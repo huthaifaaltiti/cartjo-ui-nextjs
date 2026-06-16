@@ -42,7 +42,7 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
       STATIC_NATIONALITIES.sort((a, b) =>
         a.name[locale as Locale].localeCompare(b.name[locale as Locale])
       ),
-    [data]
+    [data, locale]
   );
 
   const formSchema = z.object({
@@ -136,7 +136,7 @@ const UserProfilePersonalInfoContent = ({ user }: { user: User | null }) => {
       trigger: trigger,
       getValues: getValues,
     });
-  }, [form, setPersonalForm]);
+  }, [form, setPersonalForm, getValues, trigger]);
 
   return (
     <Form {...form}>

@@ -132,7 +132,7 @@ const OrdersList = () => {
       setCreatedAfter(createdFromValue || "");
       setCreatedBefore(createdToValue || "");
     },
-    [createdAfter, createdBefore, setCreatedAfter, setCreatedBefore],
+    [setCreatedAfter, setCreatedBefore],
   );
 
   const showLoader = isLoading || isSessionLoading;

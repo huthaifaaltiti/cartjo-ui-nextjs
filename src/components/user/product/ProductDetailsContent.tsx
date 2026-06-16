@@ -15,7 +15,6 @@ import {
   removeWishlistItem,
 } from "@/redux/slices/wishlist/actions";
 import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import {
   showErrorToast,
@@ -31,7 +30,6 @@ const ProductDetailsContent = ({ product }: { product: Product }) => {
   const t = useTranslations("");
   const dispatch = useDispatch<AppDispatch>();
   const { requireAuth } = useRequireAuth();
-  const { accessToken: token } = useAuthContext();
 
   const pathname = usePathname();
   const pathnameSections = pathname.split("/").slice(2);
@@ -56,7 +54,7 @@ const ProductDetailsContent = ({ product }: { product: Product }) => {
     if (variant?.variantId) {
       dispatch(setSelectedServerVariant(variant));
     }
-  }, [product, variant]);
+  }, [dispatch, product, variant]);
 
   const handleAddToCart = useCallback(async (): Promise<
     DataResponse<Cart> | undefined
@@ -81,7 +79,6 @@ const ProductDetailsContent = ({ product }: { product: Product }) => {
           variantId: variant.variantId,
           quantity,
           lang: locale,
-          token,
         }),
       ).unwrap();
 
@@ -105,7 +102,7 @@ const ProductDetailsContent = ({ product }: { product: Product }) => {
     } finally {
       setIsAddToCartLoading(false);
     }
-  }, [requireAuth, variant, quantity, locale, token, dispatch, t, product]);
+  }, [requireAuth, variant, quantity, locale, dispatch, t, product]);
 
   const handleToggleWishlist = async () => {
     if (!requireAuth()) return;
@@ -120,7 +117,6 @@ const ProductDetailsContent = ({ product }: { product: Product }) => {
           removeWishlistItem({
             productId: product._id,
             lang: locale,
-            token,
           }),
         ).unwrap();
       } else {
@@ -128,7 +124,6 @@ const ProductDetailsContent = ({ product }: { product: Product }) => {
           addWishlistItem({
             product,
             lang: locale,
-            token,
           }),
         ).unwrap();
       }

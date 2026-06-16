@@ -99,7 +99,7 @@ export default function CashPayment() {
 
   useEffect(() => {
     if (shippingAddress) dispatch(setOrderShippingAddress(shippingAddress));
-  }, [shippingAddress]);
+  }, [dispatch, shippingAddress]);
 
   return (
     <>

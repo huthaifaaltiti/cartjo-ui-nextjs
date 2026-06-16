@@ -42,8 +42,10 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
 
   const title = isArabic ? product?.name?.ar : product?.name?.en;
 
-  const activeVariants: VariantServer[] =
-    product.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [];
+  const activeVariants: VariantServer[] = useMemo(
+    () => product.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [],
+    [product?.variants],
+  );
 
   const [isWishListed] = useState(product?.isWishListed || false);
   const [isHovered, setIsHovered] = useState(false);
@@ -105,7 +107,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, product._id, t]);
+  }, [dispatch, requireAuth, locale, product._id, t]);
 
   const handleWishListedItemState = () =>
     isWishListed ? handleRemoveWishListItem() : () => ({});
@@ -152,7 +154,14 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
     } finally {
       setIsAddToCartLoading(false);
     }
-  }, [locale, product._id, t]);
+  }, [
+    dispatch,
+    requireAuth,
+    currentVariant?.variantId,
+    locale,
+    product._id,
+    t,
+  ]);
 
   const handleGoToProductPage = useCallback(() => {
     let categorySlug, subCategorySlug;
@@ -173,7 +182,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
     router.push(
       `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${product._id}`,
     );
-  }, [product, isArabic]);
+  }, [product, router]);
 
   return (
     <CardWrapper>

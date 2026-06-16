@@ -48,7 +48,7 @@ const UserOrderDetailedCard = ({ itemId }: { itemId: string }) => {
     };
 
     getOrderDetails();
-  }, [dispatch, itemId, userId, locale]);
+  }, [dispatch, itemId, userId, locale, error, selectedOrder?._id]);
 
   if (loading) {
     return (

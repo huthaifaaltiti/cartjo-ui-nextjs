@@ -10,7 +10,7 @@ import { AppDispatch } from "@/redux/store";
 import { clearSession } from "@/redux/slices/authentication";
 import { showSuccessToast } from "./CustomToast";
 
-export function LogoutBtn({ withIcon = true }: { withIcon?: Boolean }) {
+export function LogoutBtn({ withIcon = true }: { withIcon?: boolean }) {
   const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
@@ -42,7 +42,7 @@ export function LogoutBtn({ withIcon = true }: { withIcon?: Boolean }) {
       router.push("/");
       router.refresh();
     }
-  }, [router]);
+  }, [dispatch, router, locale, t]);
 
   return (
     <button

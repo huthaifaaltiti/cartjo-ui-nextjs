@@ -61,7 +61,7 @@ export default function PaymentInitializer({
     };
 
     init();
-  }, []);
+  }, [setError]);
 
   // 2) Verify encrypted order
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function PaymentInitializer({
     };
 
     verify();
-  }, [orderEncrypted]);
+  }, [orderEncrypted, setError]);
 
   return null;
 }

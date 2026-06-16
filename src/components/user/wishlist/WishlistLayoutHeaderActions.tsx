@@ -41,10 +41,14 @@ const WishlistLayoutHeaderActions: React.FC = () => {
     if (!isLoading) setModalState({ type: null, isOpen: false, error: null });
   };
 
-  const dispatchAction = async (type: "delete" | "cart") => {
-    if (type === "delete") {
-      return await dispatch(removeAllWishlistItems({ lang: locale })).unwrap();
-    } else {
+  const dispatchAction = useCallback(
+    async (type: "delete" | "cart") => {
+      if (type === "delete") {
+        return await dispatch(
+          removeAllWishlistItems({ lang: locale }),
+        ).unwrap();
+      }
+
       const payloadItems = items
         .map((item) => {
           const variantId =
@@ -68,8 +72,9 @@ const WishlistLayoutHeaderActions: React.FC = () => {
           items: payloadItems,
         }),
       ).unwrap();
-    }
-  };
+    },
+    [dispatch, locale, items],
+  );
 
   const handleConfirm = useCallback(async () => {
     if (!modalState.type) return;
@@ -107,7 +112,7 @@ const WishlistLayoutHeaderActions: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, modalState.type, locale, queryClient, t]);
+  }, [dispatchAction, modalState.type, queryClient, t]);
 
   const renderButton = (
     onClick: () => void,

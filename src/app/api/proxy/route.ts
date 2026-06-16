@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     let path: string;
     let method: string;
     let extraHeaders: Record<string, string> = {};
-    let finalBody: any;
+    let finalBody: FormData | string | undefined;
 
     if (isMultipart) {
       // 1. Read metadata out of transport headers
@@ -147,7 +147,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({}, { status: nestRes.status });
     }
 
-    let data: any;
+    let data: unknown;
     try {
       data = JSON.parse(text);
     } catch {

@@ -78,7 +78,7 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [deleteFn, cardItem._id, queryClient, queryKey, locale, t]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
@@ -108,7 +108,7 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [unDeleteFn, cardItem._id, queryClient, queryKey, locale, t]);
 
   const handleToggleActiveStatus = useCallback(async () => {
     setIsLoading(true);

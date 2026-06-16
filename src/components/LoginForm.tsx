@@ -124,7 +124,7 @@ const LoginForm = () => {
     return () => {
       dispatch(resetLoginState());
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!!loggedInSession) {
@@ -154,14 +154,14 @@ const LoginForm = () => {
         dismissText: t("general.toast.dismissText"),
       });
     }
-  }, [loginStatus, loggedInSession, message]);
+  }, [dispatch, redirectTo, router, t, loginStatus, loggedInSession, message]);
 
   const defaultValues = useMemo(
     () => ({
       identifier: identifier ?? "",
       password: "",
     }),
-    [],
+    [identifier],
   );
 
   const form = useForm<z.infer<typeof formSchema>>({

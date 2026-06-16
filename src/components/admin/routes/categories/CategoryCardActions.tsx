@@ -75,7 +75,15 @@ const CategoryCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [
+    deleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    t,
+    locale,
+    setChangeCategories,
+  ]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
@@ -100,7 +108,15 @@ const CategoryCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, cardItem._id, queryClient, queryKey, t]);
+  }, [
+    unDeleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    t,
+    locale,
+    setChangeCategories,
+  ]);
 
   const handleToggleActiveStatus = useCallback(async () => {
     setIsLoading(true);
@@ -131,7 +147,7 @@ const CategoryCardActions = <
     }
   }, [
     switchUserActiveStatusFn,
-
+    setChangeCategories,
     cardItem._id,
     cardItem.isActive,
     queryClient,
