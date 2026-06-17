@@ -27,6 +27,10 @@ export interface PageProps {
   params: Promise<{ locale: Locale }>;
 }
 
+export interface DashboardLayoutProps extends PageProps {
+  children: React.ReactNode;
+}
+
 export interface ErrorPageProps {
   error?: Error & { digest?: string };
   reset?: () => void;

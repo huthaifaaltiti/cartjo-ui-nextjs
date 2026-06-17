@@ -22,7 +22,7 @@ const ProductComments = ({ productId }: { productId: string }) => {
     isError,
     error,
     refetch,
-  } = useProductCommentsQuery(productId, "en");
+  } = useProductCommentsQuery(productId);
 
   const comments = useMemo(() => {
     const pages = data?.pages || [];

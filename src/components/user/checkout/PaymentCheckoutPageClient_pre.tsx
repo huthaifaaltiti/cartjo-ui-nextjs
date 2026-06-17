@@ -46,7 +46,6 @@ export default function PaymentCheckoutPageClient() {
                 formRef={formRef}
                 paymentData={paymentData}
                 verifiedOrder={verifiedOrder}
-                accessToken={""}
                 error={error}
                 setError={setError}
               />

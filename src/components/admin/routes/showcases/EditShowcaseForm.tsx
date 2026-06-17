@@ -43,7 +43,7 @@ import { DataResponse } from "@/types/service-response.type";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
-  activeTypeHintConfigsList: string[],
+  activeTypeHintConfigsList: DataResponse<string[]> | undefined,
 ) => {
   const {
     titleMinChars,
@@ -210,7 +210,7 @@ const editFormSchema = (
 
       type: z
         .string()
-        .refine((val) => activeTypeHintConfigsList.includes(val), {
+        .refine((val) => activeTypeHintConfigsList?.data?.includes(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid",
           ),
@@ -258,7 +258,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
   const {
-    data: activeTypeHintConfigsList = [],
+    data: activeTypeHintConfigsList,
     isLoading: isActiveTypeHintConfigLoading,
     isFetching: isActiveTypeHintConfigFetching,
   } = useActiveTypeHintConfigsQuery();
@@ -333,7 +333,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
 
   const isFormTypeHintConfigsListLoading =
     (isActiveTypeHintConfigLoading || isActiveTypeHintConfigFetching) &&
-    activeTypeHintConfigsList?.length === 0;
+    activeTypeHintConfigsList?.data?.length === 0;
 
   return (
     <div className="space-y-6">
@@ -571,7 +571,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {activeTypeHintConfigsList?.map((th, i) => (
+                        {activeTypeHintConfigsList?.data?.map((th, i) => (
                           <SelectItem
                             key={`TypeHintItem_${i}`}
                             value={th}

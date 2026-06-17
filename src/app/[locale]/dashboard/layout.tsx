@@ -2,16 +2,18 @@ import DashboardSideNav from "@/components/admin/layout/DashboardSideNav";
 import { getSession, checkIsAdmin } from "@/lib/session.server";
 import { getQueryClient } from "@/utils/queryUtils";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { PageProps } from "@/types/common";
 import { redirect } from "next/navigation";
 import { prefetchActiveLogo } from "@/services/prefetch/activeLogo";
+
+interface NextLayoutProps {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>; // Next.js forces dynamic route slugs to be a string at build time
+}
 
 export default async function DashboardLayout({
   children,
   params,
-}: PageProps & {
-  children: React.ReactNode;
-}) {
+}: NextLayoutProps) {
   const { locale } = await params;
 
   const session = await getSession();

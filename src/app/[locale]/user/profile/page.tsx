@@ -33,7 +33,7 @@ const UserProfilePage = async ({ params }: PageProps) => {
   }
   if (token) {
     await queryClient.prefetchQuery(
-      getStaticNationalityListQueryOptions(locale, token),
+      getStaticNationalityListQueryOptions(locale),
     );
   }
 

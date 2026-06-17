@@ -16,8 +16,7 @@ import {
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 
 const UserCardActions = ({ user }: { user: User }) => {
-  const { deleteUser, unDeleteUser, accessToken, switchUserActiveStatus } =
-    useTotalUsers();
+  const { deleteUser, unDeleteUser, switchUserActiveStatus } = useTotalUsers();
   const queryClient = useQueryClient();
   const t = useTranslations();
   const locale = useLocale();
@@ -27,7 +26,7 @@ const UserCardActions = ({ user }: { user: User }) => {
   const handleDelete = async () => {
     setIsLoading(true);
     try {
-      const resp = await deleteUser(accessToken, user._id);
+      const resp = await deleteUser(user._id);
 
       if (resp.isSuccess) {
         showSuccessToast({
@@ -51,7 +50,7 @@ const UserCardActions = ({ user }: { user: User }) => {
   const handleUnDelete = async () => {
     setIsLoading(true);
     try {
-      const resp = await unDeleteUser(accessToken, user._id);
+      const resp = await unDeleteUser(user._id);
 
       if (resp.isSuccess) {
         showSuccessToast({
@@ -76,10 +75,9 @@ const UserCardActions = ({ user }: { user: User }) => {
     setIsLoading(true);
     try {
       const resp = await switchUserActiveStatus(
-        accessToken,
         locale,
         !user?.isActive,
-        user._id
+        user._id,
       );
 
       if (resp.isSuccess) {
@@ -132,7 +130,7 @@ const UserCardActions = ({ user }: { user: User }) => {
           >
             <Package className="w-1 h-1" />
             {t(
-              "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser"
+              "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser",
             )}
           </Button>
         ) : (
@@ -143,7 +141,7 @@ const UserCardActions = ({ user }: { user: User }) => {
           >
             <PackageOpen />
             {t(
-              "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.restoreUser"
+              "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.restoreUser",
             )}
           </Button>
         )}

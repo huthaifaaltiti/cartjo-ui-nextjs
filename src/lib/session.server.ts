@@ -80,7 +80,9 @@ export async function isAdmin(): Promise<boolean> {
   );
 }
 
-export function checkIsAdmin(session: CartJOSession | null): boolean {
+export function checkIsAdmin(
+  session: CartJOSession | TokenSession | null,
+): boolean {
   if (!session) return false;
 
   const role = session.role.toLowerCase();

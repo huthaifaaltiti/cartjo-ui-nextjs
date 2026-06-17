@@ -7,12 +7,10 @@ export const STATIC_NATIONALITY_LIST_QUERY_KEY =
 
 export const getStaticNationalityListQueryOptions = (
   locale: Locale | string,
-  token: string,
 ) => ({
   queryKey: [STATIC_NATIONALITY_LIST_QUERY_KEY, locale],
   queryFn: () =>
     fetchStaticNationalist({
-      token,
       lang: locale,
     }),
   staleTime: STALE_TIME,

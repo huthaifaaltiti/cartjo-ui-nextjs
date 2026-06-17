@@ -36,7 +36,6 @@ interface PaymentFormProps {
   formRef: RefObject<HTMLFormElement | null>;
   paymentData: PaymentData | null;
   verifiedOrder: VerifiedOrder | null;
-  accessToken: string | null;
   error: string | null;
   setError: Dispatch<SetStateAction<string | null>>;
 }

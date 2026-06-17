@@ -43,7 +43,7 @@ import { DataResponse } from "@/types/service-response.type";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
-  activeTypeHintConfigsList: string[],
+  activeTypeHintConfigsList: string[] | null | undefined,
 ) => {
   const {
     titleMinChars,
@@ -219,7 +219,7 @@ const createFormSchema = (
 
       type: z
         .string()
-        .refine((val) => activeTypeHintConfigsList.includes(val), {
+        .refine((val) => activeTypeHintConfigsList?.includes(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid",
           ),
@@ -267,12 +267,12 @@ const CreateShowcaseForm = () => {
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
   const {
-    data: activeTypeHintConfigsList = [],
+    data: activeTypeHintConfigsList,
     isLoading: isActiveTypeHintConfigLoading,
     isFetching: isActiveTypeHintConfigFetching,
   } = useActiveTypeHintConfigsQuery();
 
-  const formSchema = createFormSchema(t, activeTypeHintConfigsList);
+  const formSchema = createFormSchema(t, activeTypeHintConfigsList?.data);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -346,7 +346,7 @@ const CreateShowcaseForm = () => {
 
   const isFormTypeHintConfigsListLoading =
     (isActiveTypeHintConfigLoading || isActiveTypeHintConfigFetching) &&
-    activeTypeHintConfigsList?.length === 0;
+    activeTypeHintConfigsList?.data?.length === 0;
 
   return (
     <div className="space-y-6">
@@ -584,7 +584,7 @@ const CreateShowcaseForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {activeTypeHintConfigsList
+                        {activeTypeHintConfigsList?.data
                           ?.filter((th: string) => {
                             const toExclude = [
                               "static",
