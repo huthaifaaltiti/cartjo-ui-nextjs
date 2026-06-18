@@ -371,7 +371,10 @@ const EditTypeHintConfigForm = ({
                     )}
                   </FormLabel>
                   <FormControl>
-                    <Calendar24 value={field.value} onChange={field.onChange} />
+                    <Calendar24
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
