@@ -10,6 +10,7 @@ import BackToHomePage from "@/components/shared/BackToHomePage";
 
 export default function OrderSummary() {
   const t = useTranslations("routes.checkout.components.OrderSummary");
+
   const { totalAmount } = useSelector((state: RootState) => state.cart);
   const { currency, shippingAddress, deliveryCost } = useSelector(
     (state: RootState) => state.orders,

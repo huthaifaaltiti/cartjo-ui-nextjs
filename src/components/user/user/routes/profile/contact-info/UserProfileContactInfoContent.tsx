@@ -26,12 +26,12 @@ const UserProfileContactInfoContent = ({ user }: { user: User | null }) => {
   const formSchema = z.object({
     phoneNumber: z.string().regex(/^7[789]\d{7}$/, {
       message: t(
-        "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.validations.phoneNumber.pattern"
+        "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.validations.phoneNumber.pattern",
       ),
     }),
     email: z.string().email({
       message: t(
-        "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.validations.email.invalid"
+        "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.validations.email.invalid",
       ),
     }),
   });
@@ -51,7 +51,7 @@ const UserProfileContactInfoContent = ({ user }: { user: User | null }) => {
       trigger: trigger,
       getValues: getValues,
     });
-  }, [form, setContactForm]);
+  }, [form, setContactForm, getValues, trigger]);
 
   return (
     <Form {...form}>
@@ -64,7 +64,7 @@ const UserProfileContactInfoContent = ({ user }: { user: User | null }) => {
               <FormItem className={isArabic ? "text-right" : "text-left"}>
                 <FormLabel className="text-sm font-normal text-gray-600">
                   {t(
-                    "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.dataSet.phoneNumber.label"
+                    "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.dataSet.phoneNumber.label",
                   )}
                 </FormLabel>
                 <FormControl>
@@ -75,7 +75,7 @@ const UserProfileContactInfoContent = ({ user }: { user: User | null }) => {
                         : "placeholder:text-left"
                     }`}
                     placeholder={t(
-                      "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.dataSet.phoneNumber.placeholder"
+                      "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.dataSet.phoneNumber.placeholder",
                     )}
                     {...field}
                   />
@@ -93,7 +93,7 @@ const UserProfileContactInfoContent = ({ user }: { user: User | null }) => {
               <FormItem className={isArabic ? "text-right" : "text-left"}>
                 <FormLabel className="text-sm font-normal text-gray-500">
                   {t(
-                    "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.dataSet.email.label"
+                    "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.dataSet.email.label",
                   )}
                 </FormLabel>
                 <FormControl>
@@ -105,7 +105,7 @@ const UserProfileContactInfoContent = ({ user }: { user: User | null }) => {
                         : "placeholder:text-left"
                     }`}
                     placeholder={t(
-                      "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.dataSet.email.placeholder"
+                      "routes.user.layout.routes.profile.components.UserProfileContactInfoContent.dataSet.email.placeholder",
                     )}
                     {...field}
                   />

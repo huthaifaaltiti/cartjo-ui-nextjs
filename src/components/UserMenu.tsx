@@ -1,8 +1,6 @@
 "use client";
 
 import { memo, useEffect, useMemo } from "react";
-import { useSession } from "next-auth/react";
-import { Session } from "next-auth";
 import UserSignInLink from "./UserSignInLink";
 import UserDashboardLink from "./admin/UserDashboardLink";
 import UserAccountLinkMenu from "./UserAccountLinkMenu";
@@ -12,52 +10,45 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { hydrateWishlistCounters } from "@/redux/slices/wishlist";
 import { hydrateCartCounters } from "@/redux/slices/cart";
-
-type ExtendedSession = Session & {
-  user: {
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    role?: string;
-    canManage?: boolean;
-  };
-};
+import isAdminClientSide from "@/utils/isAdminClientSide.util";
 
 const UserMenu = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { data: sessionData, status } = useSession();
   const { data: userContextData } = useUserContextQuery();
 
+  const { session, loading } = useSelector(
+    (state: RootState) => state.authentication,
+  );
   const { totalItemsCount } = useSelector((state: RootState) => state.cart);
   const { itemsCount } = useSelector((state: RootState) => state.wishlist);
 
   useEffect(() => {
-    if (!userContextData?.isSuccess) return;
+    if (userContextData?.isSuccess && userContextData.data?.counters) {
+      const { cartItemsCount, wishlistItemsCount } =
+        userContextData.data.counters;
+      dispatch(hydrateCartCounters(cartItemsCount));
+      dispatch(hydrateWishlistCounters(wishlistItemsCount));
+    }
+  }, [userContextData, dispatch]);
+  
+  const counters = useMemo(() => {
+    const qCart = userContextData?.data?.counters?.cartItemsCount ?? 0;
+    const qWish = userContextData?.data?.counters?.wishlistItemsCount ?? 0;
 
-    const counters = userContextData.data?.counters;
-    if (!counters) return;
+    return {
+      wishlistItemsCount: itemsCount ?? qWish,
+      cartItemsCount: totalItemsCount ?? qCart,
+    };
+  }, [itemsCount, totalItemsCount, userContextData]);
 
-    dispatch(hydrateCartCounters(counters.cartItemsCount));
-    dispatch(hydrateWishlistCounters(counters.wishlistItemsCount));
-  }, [userContextData?.isSuccess, dispatch]);
+  const canManage = isAdminClientSide(session) ?? false;
 
-  const counters = useMemo(
-    () => ({
-      wishlistItemsCount: itemsCount,
-      cartItemsCount: totalItemsCount,
-    }),
-    [itemsCount, totalItemsCount]
-  );
-
-  const session = sessionData as ExtendedSession | null;
-  const canManage = session?.user?.canManage ?? false;
-
-  if (status === "loading") return <UserSignInLink />;
+  if (loading && !session) return <UserSignInLink />;
   if (!session) return <UserSignInLink />;
 
   return (
-    <div className="w-uto flex items-center gap-1">
+    <div className="w-auto flex items-center gap-1">
       {canManage && <UserDashboardLink />}
 
       <div className="w-auto flex items-center gap-2">

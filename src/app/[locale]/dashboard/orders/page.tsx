@@ -1,21 +1,24 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { getQueryClient } from "@/utils/queryUtils";
-import { DataListResponse } from "@/types/service-response.type";
-import { getOrdersQueryOptions } from "@/utils/queryOptions";
-import { Order } from "@/types/order.type";
 import OrdersPageContainer from "@/components/admin/routes/orders/OrdersPageContainer";
 import { requireAuth } from "@/utils/authRedirect";
+import { getAccessToken } from "@/lib/tokens.server";
+import { Locale } from "@/enums/locale.enum";
+import { prefetchDashboardOrdersData } from "@/services/prefetch/dashboard/orders";
 
-export default async function DashboardOrdersPage() {
-  const token = await getAccessTokenFromServerSession();
-  requireAuth(token)
+interface PageProps {
+  params: Promise<{ locale: Locale }>;
+}
+
+export default async function DashboardOrdersPage({ params }: PageProps) {
+  const { locale } = await params;
+
+  const token = await getAccessToken();
+  requireAuth(token);
 
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchInfiniteQuery<DataListResponse<Order>>(
-    getOrdersQueryOptions(token!)
-  );
+  await prefetchDashboardOrdersData({ queryClient, locale });
 
   const dehydratedState = dehydrate(queryClient);
 

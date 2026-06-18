@@ -24,16 +24,18 @@ import ImageUploader, {
 } from "@/components/shared/ImageUploader";
 import { useLogos } from "@/contexts/LogosContext";
 import LoadingButton from "@/components/shared/LoadingButton";
-import { User } from "@/types/user";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { MEDIA_CONFIG } from "@/config/media.config";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
+import { Logo } from "@/types/logo";
 
 const createFormSchema = (
-  t: (key: string, options?: Record<string, string | number | Date>) => string
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
 ) => {
   const {
     nameMinChars,
@@ -46,7 +48,7 @@ const createFormSchema = (
   return z.object({
     logoImage: z.string().min(imageMinChars, {
       message: t(
-        "routes.dashboard.routes.logos.components.CreateLogoForm.validations.logoImage.required"
+        "routes.dashboard.routes.logos.components.CreateLogoForm.validations.logoImage.required",
       ),
     }),
     name: z
@@ -54,13 +56,13 @@ const createFormSchema = (
       .min(nameMinChars, {
         message: t(
           "routes.dashboard.routes.logos.components.CreateLogoForm.validations.name.minChars",
-          { min: nameMinChars }
+          { min: nameMinChars },
         ),
       })
       .max(nameMaxChars, {
         message: t(
           "routes.dashboard.routes.logos.components.CreateLogoForm.validations.name_ar.maxChars",
-          { max: nameMaxChars }
+          { max: nameMaxChars },
         ),
       }),
     altText: z
@@ -68,13 +70,13 @@ const createFormSchema = (
       .min(altTextMinChars, {
         message: t(
           "routes.dashboard.routes.logos.components.CreateLogoForm.validations.altText.minChars",
-          { min: altTextMinChars }
+          { min: altTextMinChars },
         ),
       })
       .max(altTextMaxChars, {
         message: t(
           "routes.dashboard.routes.logos.components.CreateLogoForm.validations.altText.maxChars",
-          { max: altTextMaxChars }
+          { max: altTextMaxChars },
         ),
       }),
   });
@@ -86,7 +88,7 @@ const CreateLogoForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { accessToken, queryKey } = useLogos();
+  const { queryKey } = useLogos();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
@@ -144,29 +146,24 @@ const CreateLogoForm = () => {
         formData.append("image", logoImage.file);
       }
 
-      const response = await fetch(API_ENDPOINTS.DASHBOARD.LOGOS.CREATE, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      const response = await authFetcher<DataResponse<Logo>>(
+        API_ENDPOINTS.DASHBOARD.LOGOS.CREATE,
+        {
+          method: "POST",
+          body: formData,
         },
-      });
+      );
 
-      if (!response.ok) {
-        const errorData = await response.json();
+      if (!response.isSuccess) {
         throw new Error(
-          errorData?.message ||
-            t("routes.dashboard.routes.logos.createLogo.actionFailed")
+          response?.message ||
+            t("routes.dashboard.routes.logos.createLogo.actionFailed"),
         );
       }
 
-      return response.json();
+      return response;
     },
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -239,14 +236,14 @@ const CreateLogoForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.logos.components.CreateLogoForm.fields.name.label"
+                        "routes.dashboard.routes.logos.components.CreateLogoForm.fields.name.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.logos.components.CreateLogoForm.fields.name.placeholder"
+                          "routes.dashboard.routes.logos.components.CreateLogoForm.fields.name.placeholder",
                         )}
                         {...field}
                       />
@@ -265,14 +262,14 @@ const CreateLogoForm = () => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.dashboard.routes.logos.components.CreateLogoForm.fields.altText.label"
+                        "routes.dashboard.routes.logos.components.CreateLogoForm.fields.altText.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.dashboard.routes.logos.components.CreateLogoForm.fields.altText.placeholder"
+                          "routes.dashboard.routes.logos.components.CreateLogoForm.fields.altText.placeholder",
                         )}
                         {...field}
                       />

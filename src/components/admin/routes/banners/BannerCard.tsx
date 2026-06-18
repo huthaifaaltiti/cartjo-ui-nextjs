@@ -1,42 +1,32 @@
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { BaseResponse } from "@/types/service-response.type";
 import { Banner } from "@/types/banner.type";
-import { Locale } from "@/types/locale";
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import BannersCardActions from "./BannersCardActions";
 import { isArabicLocale } from "@/config/locales.config";
 import EditBannerForm from "./EditBannerForm";
+import { BANNERS_QUERY_KEY } from "@/hooks/react-query/query-options/banners";
+import { BaseResponse } from "@/types/service-response.type";
 
 type BannerCardProps = {
   item: Banner;
-  deleteBanner: (
-    accessToken: string | null,
-    userId: string,
-    lang: Locale,
-  ) => Promise<BaseResponse>;
-  unDeleteBanner: (
-    accessToken: string | null,
-    userId: string,
-    lang: Locale,
-  ) => Promise<BaseResponse>;
-  accessToken: string | null;
+
+  deleteBanner: (bannerId: string, lang: string) => Promise<BaseResponse>;
+
+  unDeleteBanner: (bannerId: string, lang: string) => Promise<BaseResponse>;
+
   switchBannerActiveStatus: (
-    token: string | null,
+    bannerId: string,
     lang: string,
     isActive: boolean,
-    userId: string,
   ) => Promise<BaseResponse>;
-  queryKey: string;
 };
 
 const BannerCard = ({
   item: banner,
   deleteBanner,
   unDeleteBanner,
-  accessToken,
   switchBannerActiveStatus,
-  queryKey,
 }: BannerCardProps) => {
   const t = useTranslations();
   const locale = useLocale();
@@ -147,9 +137,8 @@ const BannerCard = ({
           cardItem={banner}
           deleteFn={deleteBanner}
           unDeleteFn={unDeleteBanner}
-          accessToken={accessToken}
           switchUserActiveStatusFn={switchBannerActiveStatus}
-          queryKey={queryKey}
+          queryKey={BANNERS_QUERY_KEY}
           showEditButton={true}
           renderEditForm={() => <EditBannerForm banner={banner} />}
         />

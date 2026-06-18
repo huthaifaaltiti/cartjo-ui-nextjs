@@ -9,19 +9,18 @@ import {
 } from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useTranslations } from "next-intl";
 import { ExportFormats } from "@/enums/exportFormats.enum";
+import { authFetcher } from "@/utils/authFetcher";
 
 const ExportOrders = () => {
   const t = useTranslations();
-  const { accessToken } = useAuthContext();
 
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [exportingFormat, setExportingFormat] = useState<ExportFormats | null>(
-    null
+    null,
   );
 
   const disabledExport = !startDate || !endDate || exportingFormat !== null;
@@ -32,17 +31,13 @@ const ExportOrders = () => {
     try {
       setExportingFormat(format);
 
-      const response = await fetch(
+      const blob = await authFetcher<Blob>(
         `${API_ENDPOINTS.ORDER.Export}?startDate=${startDate}&endDate=${endDate}&format=${format}`,
         {
           method: "GET",
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
+        },
       );
 
-      if (!response.ok) throw new Error("Export failed");
-
-      const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -66,7 +61,7 @@ const ExportOrders = () => {
           <PopoverTrigger asChild>
             <Button variant="outline" size="sm" className="h-8 px-3">
               {t(
-                "routes.dashboard.routes.orders.components.ExportOrders.title"
+                "routes.dashboard.routes.orders.components.ExportOrders.title",
               )}
             </Button>
           </PopoverTrigger>
@@ -74,7 +69,7 @@ const ExportOrders = () => {
           <PopoverContent className="w-56 p-4 space-y-3 bg-white-50 border rounded-md shadow-md">
             <Label className="text-xs text-gray-600">
               {t(
-                "routes.dashboard.routes.orders.components.ExportOrders.selectDates"
+                "routes.dashboard.routes.orders.components.ExportOrders.selectDates",
               )}
             </Label>
 
@@ -96,7 +91,7 @@ const ExportOrders = () => {
               >
                 {exportingFormat === ExportFormats.EXCEL
                   ? t(
-                      "routes.dashboard.routes.orders.components.ExportOrders.exporting"
+                      "routes.dashboard.routes.orders.components.ExportOrders.exporting",
                     )
                   : "Excel"}
               </Button>
@@ -110,7 +105,7 @@ const ExportOrders = () => {
               >
                 {exportingFormat === ExportFormats.PDF
                   ? t(
-                      "routes.dashboard.routes.orders.components.ExportOrders.exporting"
+                      "routes.dashboard.routes.orders.components.ExportOrders.exporting",
                     )
                   : "PDF"}
               </Button>

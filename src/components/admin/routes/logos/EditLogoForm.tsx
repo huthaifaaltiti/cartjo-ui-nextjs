@@ -24,7 +24,6 @@ import ImageUploader, {
 } from "@/components/shared/ImageUploader";
 import { useLogos } from "@/contexts/LogosContext";
 import LoadingButton from "@/components/shared/LoadingButton";
-import { User } from "@/types/user";
 import { Logo } from "@/types/logo";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { validationConfig } from "@/config/validationConfig";
@@ -32,6 +31,8 @@ import { isArabicLocale } from "@/config/locales.config";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { MEDIA_CONFIG } from "@/config/media.config";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -87,7 +88,7 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { accessToken, queryKey } = useLogos();
+  const { queryKey } = useLogos();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
@@ -145,32 +146,24 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
         formData.append("image", logoImage.file);
       }
 
-      const response = await fetch(
+      const response = await authFetcher<DataResponse<Logo>>(
         `${API_ENDPOINTS.DASHBOARD.LOGOS.EDIT}/${logo?._id}`,
         {
           method: "PUT",
           body: formData,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
         },
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
+      if (!response.isSuccess) {
         throw new Error(
-          errorData?.message ||
+          response?.message ||
             t("routes.dashboard.routes.logos.editLogo.actionFailed"),
         );
       }
 
-      return response.json();
+      return response;
     },
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<Logo>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),

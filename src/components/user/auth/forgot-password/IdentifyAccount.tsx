@@ -14,7 +14,7 @@ import { useTranslations } from "next-intl";
 
 const IdentifyAccount = () => {
   const t = useTranslations(
-    "routes.auth.routes.forgotPassword.components.IdentifyAccount"
+    "routes.auth.routes.forgotPassword.components.IdentifyAccount",
   );
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -27,13 +27,13 @@ const IdentifyAccount = () => {
 
   useEffect(() => {
     dispatch(resetForgotPasswordState());
-  }, [locale]);
+  }, [dispatch, locale]);
 
   const handleIdentifierChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setIdentifier(e.target.value));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleNext = useCallback(async () => {
@@ -41,7 +41,7 @@ const IdentifyAccount = () => {
       dispatch(
         setErrors({
           identifier: t("noIdentifier"),
-        })
+        }),
       );
       return;
     }
@@ -49,7 +49,7 @@ const IdentifyAccount = () => {
     dispatch(setErrors({}));
 
     await dispatch(sendIdentifier({ identifier, lang: locale }));
-  }, [identifier, dispatch]);
+  }, [identifier, dispatch, locale, t]);
 
   return (
     <div className="max-w-md mx-auto space-y-6">

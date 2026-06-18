@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { signIn } from "next-auth/react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
 import { useTranslations } from "next-intl";
@@ -15,24 +14,39 @@ const AuthCallbackHandler = () => {
   const t = useTranslations();
 
   const handledRef = useRef(false);
+
   const [status, setStatus] = useState<AuthStatus>("idle");
 
-  const [authToken] = useQueryState("authToken", { defaultValue: "" });
-  const [authError] = useQueryState("authError", { defaultValue: "" });
-  const [provider] = useQueryState("provider", { defaultValue: "" });
-  const [redirectTo] = useQueryState("redirectTo", { defaultValue: "" });
+  const [accessToken] = useQueryState("accessToken", {
+    defaultValue: "",
+  });
+  const [refreshToken] = useQueryState("refreshToken", {
+    defaultValue: "",
+  });
+  const [authError] = useQueryState("authError", {
+    defaultValue: "",
+  });
+  const [provider] = useQueryState("provider", {
+    defaultValue: "",
+  });
+  const [redirectTo] = useQueryState("redirectTo", {
+    defaultValue: "",
+  });
 
-  const authErrorMessages: Record<string, string> = {
-    GOOGLE_NO_CODE: t(
-      "routes.auth.components.AuthTabs.components.login.errors.google.noCode",
-    ),
-    GOOGLE_EMAIL_MISSING: t(
-      "routes.auth.components.AuthTabs.components.login.errors.google.emailMissing",
-    ),
-    GOOGLE_AUTH_FAILED: t(
-      "routes.auth.components.AuthTabs.components.login.errors.google.failed",
-    ),
-  };
+  const authErrorMessages: Record<string, string> = useMemo(
+    () => ({
+      GOOGLE_NO_CODE: t(
+        "routes.auth.components.AuthTabs.components.login.errors.google.noCode",
+      ),
+      GOOGLE_EMAIL_MISSING: t(
+        "routes.auth.components.AuthTabs.components.login.errors.google.emailMissing",
+      ),
+      GOOGLE_AUTH_FAILED: t(
+        "routes.auth.components.AuthTabs.components.login.errors.google.failed",
+      ),
+    }),
+    [t],
+  );
 
   // Handle backend OAuth errors
   useEffect(() => {
@@ -47,32 +61,60 @@ const AuthCallbackHandler = () => {
       dismissText: t("general.toast.dismissText"),
     });
 
-    router.replace("/auth", { scroll: false });
-  }, [authError, router, t]);
+    router.replace("/auth", {
+      scroll: false,
+    });
+  }, [authError, authErrorMessages, router, t]);
 
-  // Handle token sign-in
+  // Handle OAuth tokens
+  // Store access/refresh tokens in HttpOnly cookies
   useEffect(() => {
-    if (!authToken || handledRef.current) return;
+    if (!accessToken || !refreshToken || handledRef.current) {
+      return;
+    }
 
     handledRef.current = true;
+
     setStatus("loading");
 
-    signIn("credentials", {
-      token: authToken,
-      redirect: false,
-    })
-      .then((res) => {
-        if (!res?.ok) throw new Error("oauth_failed");
+    const handleAuth = async () => {
+      try {
+        const response = await fetch("/api/auth/google-callback", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            accessToken,
+            refreshToken,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("oauth_failed");
+        }
 
         setStatus("success");
 
         router.replace(redirectTo || "/");
-      })
-      .catch(() => {
+        router.refresh();
+      } catch (error) {
+        console.log({ error });
+
         setStatus("error");
+
+        showErrorToast({
+          title: t("general.toast.title.error"),
+          description: t("general.toast.defaultError"),
+          dismissText: t("general.toast.dismissText"),
+        });
+
         router.replace("/auth?error=oauth_failed");
-      });
-  }, [authToken, redirectTo, router, t]);
+      }
+    };
+
+    handleAuth();
+  }, [accessToken, refreshToken, redirectTo, router, t]);
 
   return <AuthCallbackView provider={provider} status={status} />;
 };

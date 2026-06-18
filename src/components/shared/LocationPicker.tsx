@@ -29,7 +29,7 @@ interface LocationPickerProps {
 async function reverseGeocode(lat: number, lng: number): Promise<string> {
   try {
     const res = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
     );
     const data = await res.json();
     return data?.display_name || "";
@@ -58,7 +58,7 @@ function SearchBox({
     if (!value.trim()) return setResults([]);
 
     const res = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${value}&addressdetails=1&limit=5`
+      `https://nominatim.openstreetmap.org/search?format=json&q=${value}&addressdetails=1&limit=5`,
     );
     const data = await res.json();
     setResults(data);
@@ -149,7 +149,7 @@ function UseMyLocationButton({
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 0,
-      }
+      },
     );
   };
 
@@ -200,7 +200,7 @@ function MoveMapTo({ coords }: { coords: LatLngExpression }) {
 
   useEffect(() => {
     map.setView(coords, 16);
-  }, [coords]);
+  }, [coords, map]);
 
   return null;
 }
@@ -213,7 +213,7 @@ export default function LocationPicker({
   onChange,
 }: LocationPickerProps) {
   const [position, setPosition] = useState<LatLngExpression | null>(
-    defaultPosition ? defaultPosition : null
+    defaultPosition ? defaultPosition : null,
   );
 
   // Sync with defaultPosition changes

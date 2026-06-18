@@ -1,10 +1,9 @@
 "use client";
 
 import { memo, useCallback, useMemo, useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Product, VariantServer } from "@/types/product.type";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import {
   showErrorToast,
   showSuccessToast,
@@ -29,20 +28,24 @@ import ProductVariantDescription from "@/components/shared/card/ProductVariantDe
 import ItemRatingStats from "@/components/shared/card/ItemRatingStats";
 import ProductVariantSelector from "@/components/shared/card/ProductVariantSelector";
 import { setWishlistItemSelectedVariant } from "@/redux/slices/wishlist";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 const WishlistProductCard = ({ item: product }: { item: Product }) => {
   const dispatch = useDispatch<AppDispatch>();
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { accessToken } = useAuthContext();
+
+  const { requireAuth } = useRequireAuth();
 
   const router = useRouter();
 
   const title = isArabic ? product?.name?.ar : product?.name?.en;
 
-  const activeVariants: VariantServer[] =
-    product.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [];
+  const activeVariants: VariantServer[] = useMemo(
+    () => product.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [],
+    [product?.variants],
+  );
 
   const [isWishListed] = useState(product?.isWishListed || false);
   const [isHovered, setIsHovered] = useState(false);
@@ -76,15 +79,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
   };
 
   const handleRemoveWishListItem = useCallback(async () => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-
-      redirect("/auth");
-    }
+    if (!requireAuth()) return;
 
     try {
       setIsWishListing(true);
@@ -93,7 +88,6 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
         removeWishlistItem({
           productId: product?._id,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -113,21 +107,13 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, accessToken, product._id, t]);
+  }, [dispatch, requireAuth, locale, product._id, t]);
 
   const handleWishListedItemState = () =>
     isWishListed ? handleRemoveWishListItem() : () => ({});
 
   const handleSendWishListItemToCart = useCallback(async () => {
-    if (!accessToken) {
-      showWarningToast({
-        title: t("general.toast.title.warning"),
-        description: t("general.toast.description.loginRequired"),
-        dismissText: t("general.toast.dismissText"),
-      });
-
-      return;
-    }
+    if (!requireAuth()) return;
 
     if (!currentVariant?.variantId) {
       showWarningToast({
@@ -147,7 +133,6 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
           productId: product?._id,
           variantId: currentVariant?.variantId,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -169,7 +154,14 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
     } finally {
       setIsAddToCartLoading(false);
     }
-  }, [locale, accessToken, product._id, t]);
+  }, [
+    dispatch,
+    requireAuth,
+    currentVariant?.variantId,
+    locale,
+    product._id,
+    t,
+  ]);
 
   const handleGoToProductPage = useCallback(() => {
     let categorySlug, subCategorySlug;
@@ -190,7 +182,7 @@ const WishlistProductCard = ({ item: product }: { item: Product }) => {
     router.push(
       `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${product._id}`,
     );
-  }, [product, isArabic]);
+  }, [product, router]);
 
   return (
     <CardWrapper>

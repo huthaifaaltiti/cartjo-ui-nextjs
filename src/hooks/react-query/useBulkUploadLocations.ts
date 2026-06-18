@@ -1,37 +1,29 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { CustomSession } from "@/lib/authOptions";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
 
 export const useBulkUploadLocations = () => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession();
 
   return useMutation({
     mutationFn: async (file: File) => {
-      const token = (session as CustomSession)?.accessToken;
-
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch(
+      const response = await authFetcher<DataResponse<Location>>(
         API_ENDPOINTS.DASHBOARD.LOCATIONS.BULK_UPLOAD_LOCATIONS,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           body: formData,
-        }
+        },
       );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.isSuccess) {
+        throw new Error(`Could not upload locations. Response: ${response}`);
       }
 
-      const result = await response.json();
-      return result;
+      return response;
     },
     onSuccess: (data) => {
       if (data.isSuccess) {

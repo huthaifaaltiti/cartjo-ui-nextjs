@@ -1,132 +1,52 @@
-import { useSession } from "next-auth/react";
-import { useLocale } from "next-intl";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { CustomSession } from "@/lib/authOptions";
 import { DataListResponse } from "@/types/service-response.type";
 import { Showcase } from "@/types/showcase.type";
-import { handleUnauthorizedResponse } from "@/utils/handleUnauthorizedResponse";
 import { useAuthContext } from "../useAuthContext";
 import { Locale } from "@/types/locale";
-
-interface FetchShowcasesParams {
-  token: string | null;
-  lang?: Locale | string;
-  limit?: number;
-  lastId?: string;
-  search?: string;
-}
-
-export const fetchActiveShowcases = async (
-  token?: string,
-  lang = "en",
-  limit = PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE,
-): Promise<DataListResponse<Showcase>> => {
-  const url = new URL(`${API_ENDPOINTS.DASHBOARD.SHOWCASES.ACTIVE}`);
-
-  if (lang) url.searchParams.append("lang", lang);
-  if (limit) url.searchParams.append("limit", String(limit));
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) throw new Error("Could not retrieve active showcase(s)");
-
-  const resObj = await res.json();
-
-  return resObj;
-};
-
-export const fetchShowcases = async ({
-  token,
-  lang = "en",
-  limit = PAGINATION_LIMITS.SHOWCASES,
-  lastId,
-  search,
-}: FetchShowcasesParams): Promise<DataListResponse<Showcase>> => {
-  const url = new URL(`${API_ENDPOINTS.DASHBOARD.SHOWCASES.ALL}`);
-
-  url.searchParams.append("limit", limit.toString());
-  if (lang) url.searchParams.append("lang", lang);
-  if (lastId) url.searchParams.append("lastId", lastId);
-  if (search) url.searchParams.append("search", search);
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  handleUnauthorizedResponse(res, lang);
-
-  if (!res.ok) throw new Error("Could not retrieve showcases");
-
-  const resObj = await res.json();
-
-  return resObj;
-};
-
-export const getActiveShowcasesQueryOptions = ({
-  limit,
-  locale = "en",
-  token,
-}: {
-  limit: number;
-  locale?: Locale | string;
-  token?: string | null;
-}) => ({
-  queryKey: ["activeShowcases", limit, locale],
-  queryFn: () => fetchActiveShowcases(token ?? undefined, locale, limit),
-  staleTime: STALE_TIME,
-  gcTime: GC_TIME,
-});
+import {
+  fetchActiveShowcases,
+  fetchShowcases,
+} from "@/services/showcase.service";
+import { authFetcher } from "@/utils/authFetcher";
+import { getActiveShowcasesQueryOptions } from "./query-options/activeShowcases";
+import { getShowcasesQueryOptions } from "./query-options/showcases";
 
 export const useShowcasesQuery = ({ search }: { search: string }) => {
-  const { data: session } = useSession();
-  const locale = useLocale();
-  const accessToken = (session as CustomSession)?.accessToken;
+  const { isAuthenticated, isSessionLoading, userId, locale } =
+    useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Showcase>>({
-    queryKey: ["showcases", search],
-    queryFn: ({ pageParam }) => {
-      if (!accessToken) throw new Error("No access token found");
-
-      return fetchShowcases({
-        token: accessToken,
-        lang: locale,
-        limit: PAGINATION_LIMITS.SHOWCASES,
-        lastId: pageParam as string,
-        search,
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      if (lastPage.data && lastPage.data.length > 0) {
-        const lastItem = lastPage.data[lastPage.data.length - 1];
-        return lastItem._id;
-      }
-      return undefined;
-    },
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!accessToken,
+    ...getShowcasesQueryOptions({
+      locale,
+      search,
+      queryFn: (context) => {
+        return fetchShowcases({
+          lang: (context.queryKey[2] as string) || locale,
+          limit: PAGINATION_LIMITS.DASHBOARD_VIEW.SHOWCASES ?? 20,
+          lastId: context?.pageParam as string,
+          search: (context.queryKey[1] as string) || search,
+          fetcher: (path) => authFetcher(path),
+        });
+      },
+    }),
+    enabled: isAuthenticated && !!userId && !isSessionLoading,
   });
 };
 
-export const useActiveShowcasesQuery = (itemsNumPerShowcase: number) => {
-  const { accessToken, locale, status } = useAuthContext();
+export const useActiveShowcasesQuery = ({ limit }: { limit: number }) => {
+  const { locale, isSessionLoading } = useAuthContext();
 
   return useQuery({
     ...getActiveShowcasesQueryOptions({
-      limit: itemsNumPerShowcase,
       locale,
-      token: accessToken,
+      queryFn: () =>
+        fetchActiveShowcases({
+          lang: locale as Locale,
+          limit,
+          fetcher: (path) => authFetcher(path),
+        }),
     }),
-    enabled: status !== "loading",
+    enabled: !isSessionLoading,
   });
 };

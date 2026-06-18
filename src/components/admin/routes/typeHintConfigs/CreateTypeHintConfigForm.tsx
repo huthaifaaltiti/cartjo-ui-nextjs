@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import { showSuccessToast } from "@/components/shared/CustomToast";
 import LoadingButton from "@/components/shared/LoadingButton";
-import { User } from "@/types/user";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
@@ -28,6 +27,9 @@ import { isArabicWithNumOnly } from "@/utils/text/containsArabic";
 import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
+import { TypeHintConfig } from "@/types/typeHintConfig.type";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -146,7 +148,7 @@ const CreateTypeHintConfigForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { token: accessToken, queryKey } = useTypeHintConfig();
+  const { queryKey } = useTypeHintConfig();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
@@ -174,34 +176,24 @@ const CreateTypeHintConfigForm = () => {
         lang: locale,
       };
 
-      const response = await fetch(
+      const response = await authFetcher<DataResponse<TypeHintConfig>>(
         API_ENDPOINTS.DASHBOARD.TYPE_HINT_CONFIGS.CREATE,
         {
           method: "POST",
           body: JSON.stringify({ ...dataObj }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
         },
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-
+      if (!response.isSuccess) {
         throw new Error(
-          errorData?.message ||
-            t("routes.dashboard.routes.typeHintConfigs.errors.failedCreation"),
+          response?.message ||
+            t("routes.dashboard.routes.banners.errors.failedCreation"),
         );
       }
 
-      return response.json();
+      return response;
     },
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<TypeHintConfig>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),

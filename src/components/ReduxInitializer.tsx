@@ -19,6 +19,6 @@ export default function ReduxInitializer({
     if (categories.length > 0) {
       dispatch(setCategories(categories));
     }
-  }, [categoriesResult]);
+  }, [dispatch, categoriesResult]);
   return <>{children}</>;
 }

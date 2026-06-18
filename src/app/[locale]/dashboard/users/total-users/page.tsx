@@ -1,17 +1,26 @@
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { fetchTotalUsers } from "@/hooks/react-query/useTotalUsersQuery";
 import TotalUsersPage from "@/components/admin/routes/users/totalUsers/TotalUsersPage";
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import { requireAuth } from "@/utils/authRedirect";
+import { getAccessToken } from "@/lib/tokens.server";
+import { PageProps } from "@/types/common";
+import { getQueryClient } from "@/utils/queryUtils";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { prefetchTotalUsers } from "@/services/prefetch/totalUsers";
 
-export default async function Page() {
-  const accessToken = await getAccessTokenFromServerSession();
-  requireAuth(accessToken)
+export default async function Page({ params }: PageProps) {
+  const { locale } = await params;
 
-  const { users } = await fetchTotalUsers({
-    token: accessToken,
-    limit: PAGINATION_LIMITS.TOTAL_USERS,
-  });
+  const token = await getAccessToken();
+  requireAuth(token);
 
-  return <TotalUsersPage initialUsers={users} accessToken={accessToken} />;
+  const queryClient = getQueryClient();
+
+  await prefetchTotalUsers({ queryClient, locale });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <TotalUsersPage />;
+    </HydrationBoundary>
+  );
 }

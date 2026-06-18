@@ -1,18 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
-import { fetcher } from "@/utils/fetcher";
 import { LOGIN } from "./constants";
+import { TokenSession } from "@/types/tokenSession.type";
 
 export interface LoginPayload {
   identifier: string;
   password: string;
+  rememberMe?: boolean;
   lang?: Locale | string;
 }
 
 export interface LoginResponse extends BaseResponse {
-  token?: string;
+  user?: TokenSession;
 }
 
 export const login = createAsyncThunk<
@@ -21,23 +21,27 @@ export const login = createAsyncThunk<
   { rejectValue: BaseResponse }
 >(
   LOGIN.LOGIN,
-  async ({ identifier, password, lang = "en" }, { rejectWithValue }) => {
+  async (
+    { identifier, password, rememberMe, lang = "en" },
+    { rejectWithValue },
+  ) => {
     try {
-      const response = await fetcher<LoginResponse>(
-        API_ENDPOINTS.AUTH.LOGIN,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ identifier, password, lang }),
-        },
-        true,
-      );
+      const resp = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier, password, rememberMe, lang }),
+      });
 
-      if (!response.token) {
-        return rejectWithValue(response);
+      const result: LoginResponse = await resp.json();
+
+      if (!resp.ok) {
+        return rejectWithValue({
+          isSuccess: false,
+          message: result.message ?? "Login failed",
+        });
       }
 
-      return response;
+      return result;
     } catch (error) {
       return rejectWithValue({
         isSuccess: false,

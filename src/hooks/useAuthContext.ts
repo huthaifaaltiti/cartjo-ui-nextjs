@@ -1,25 +1,25 @@
-import { useSession } from "next-auth/react";
+"use client";
+
 import { useLocale } from "next-intl";
-import { CustomSession, CustomUser } from "@/lib/authOptions";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import { Locale } from "@/types/locale";
 
 export const useAuthContext = () => {
-  const { data: session, status } = useSession();
   const locale: Locale | string = useLocale();
-  const accessToken: string | null = (session as CustomSession)?.accessToken;
-  const user: CustomUser | undefined = (session as CustomSession)?.user;
-  const userId: string | undefined = (session as CustomSession)?.user?.id;
-  const isAuthenticated: boolean = status === "unauthenticated" || !!accessToken;
-  const isSessionLoading: boolean = status === "loading";
+
+  const { session, loading } = useSelector(
+    (state: RootState) => state.authentication,
+  );
+
+  const isAuthenticated = !!session;
 
   return {
-    session: session as CustomSession | null,
+    session,
     locale,
-    accessToken,
-    userId,
-    user,
-    status,
+    userId: session?._id,
+    user: session,
     isAuthenticated,
-    isSessionLoading
+    isSessionLoading: loading,
   };
 };

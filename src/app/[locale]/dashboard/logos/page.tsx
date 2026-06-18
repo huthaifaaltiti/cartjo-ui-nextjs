@@ -1,17 +1,26 @@
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
-import { fetchLogos } from "@/hooks/react-query/useLogosQuery";
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import LogosPage from "@/components/admin/routes/logos/LogosPage";
 import { requireAuth } from "@/utils/authRedirect";
+import { getAccessToken } from "@/lib/tokens.server";
+import { PageProps } from "@/types/common";
+import { getQueryClient } from "@/utils/queryUtils";
+import { prefetchDashboardLogosData } from "@/services/prefetch/logos";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-export default async function Page() {
-  const accessToken = await getAccessTokenFromServerSession();
-  requireAuth(accessToken)
+export default async function DashboardLogosPage({ params }: PageProps) {
+  const { locale } = await params;
 
-  const { data } = await fetchLogos({
-    token: accessToken,
-    limit: PAGINATION_LIMITS.LOGOS,
-  });
+  const token = await getAccessToken();
+  requireAuth(token);
 
-  return <LogosPage initialLogos={data} accessToken={accessToken} />;
+  const queryClient = getQueryClient();
+
+  await prefetchDashboardLogosData({ queryClient, locale });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <LogosPage />
+    </HydrationBoundary>
+  );
 }

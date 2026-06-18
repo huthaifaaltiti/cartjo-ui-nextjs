@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
   AUTH: {
     REGISTER: `${API_URL}/api/v1/authentication/register`,
     LOGIN: `${API_URL}/api/v1/authorization/login`,
+    REFRESH: `${API_URL}/api/v1/authorization/refresh`,
     FORGOT_PASSWORD: {
       ROOT: `${API_URL}/api/v1/authentication/forgot-password`,
       SEND_IDENTIFIER: "send-identifier",
@@ -12,7 +13,10 @@ export const API_ENDPOINTS = {
     },
     GOOGLE: `${API_URL}/api/v1/authentication/google`,
   },
-  AUTHORIZATION: { LOGIN: `${API_URL}/api/v1/authorization/login` },
+  AUTHORIZATION: {
+    LOGIN: `${API_URL}/api/v1/authorization/login`,
+    LOGOUT: `${API_URL}/api/v1/authorization/logout`,
+  },
   DASHBOARD: {
     LOCATIONS: {
       BULK_UPLOAD_LOCATIONS: `${API_URL}/api/v1/location/bulk-upload`,
@@ -145,6 +149,7 @@ export const API_ENDPOINTS = {
   },
   USER: {
     PROFILE: `${API_URL}/api/v1/user`,
+    GET_ME: `${API_URL}/api/v1/user/me`,
     NATIONALITY_STATIC_LIST: `${API_URL}/api/v1/nationality/all-static`,
     UPDATE_PROFILE: `${API_URL}/api/v1/user/update`,
     CONTEXT: `${API_URL}/api/v1/user-context`,

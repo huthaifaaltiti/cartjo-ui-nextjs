@@ -19,7 +19,7 @@ const CartLayoutHeaderActions: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { itemsCount } = useSelector((state: RootState) => state.cart);
   const t = useTranslations();
-  const { accessToken, locale } = useAuthContext();
+  const { locale } = useAuthContext();
   const queryClient = useQueryClient();
 
   const [modalState, setModalState] = useState<{
@@ -39,17 +39,18 @@ const CartLayoutHeaderActions: React.FC = () => {
     if (!isLoading) setModalState({ type: null, isOpen: false, error: null });
   };
 
-  const dispatchAction = async (type: "delete" | "wishlist") => {
-    if (type === "delete") {
-      return await dispatch(
-        removeAllItemsFromServer({ lang: locale, token: accessToken })
-      ).unwrap();
-    } else {
-      return await dispatch(
-        wishlistItems({ lang: locale, token: accessToken })
-      ).unwrap();
-    }
-  };
+  const dispatchAction = useCallback(
+    async (type: "delete" | "wishlist") => {
+      if (type === "delete") {
+        return await dispatch(
+          removeAllItemsFromServer({ lang: locale }),
+        ).unwrap();
+      } else {
+        return await dispatch(wishlistItems({ lang: locale })).unwrap();
+      }
+    },
+    [dispatch, locale],
+  );
 
   const handleConfirm = useCallback(async () => {
     if (!modalState.type) return;
@@ -79,20 +80,20 @@ const CartLayoutHeaderActions: React.FC = () => {
             : t(
                 `routes.cart.components.CartLayoutHeaderActions.${
                   modalState.type === "delete" ? "deleteError" : "wishlistError"
-                }`
+                }`,
               ),
       }));
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, modalState.type, accessToken, locale, queryClient, t]);
+  }, [dispatchAction, modalState.type, queryClient, t]);
 
   const renderButton = (
     onClick: () => void,
     Icon: React.ElementType,
     labelKey: string,
     loadingLabelKey?: string,
-    disabled = false
+    disabled = false,
   ) => (
     <Button
       variant="default"
@@ -115,7 +116,7 @@ const CartLayoutHeaderActions: React.FC = () => {
           PackageMinus,
           "routes.cart.components.CartLayoutHeaderActions.emptyCart",
           "routes.cart.components.CartLayoutHeaderActions.deleting",
-          itemsCount === 0
+          itemsCount === 0,
         )}
 
         {renderButton(
@@ -123,7 +124,7 @@ const CartLayoutHeaderActions: React.FC = () => {
           Box,
           "routes.cart.components.CartLayoutHeaderActions.sendToCart",
           "routes.cart.components.CartLayoutHeaderActions.sendingToCart",
-          itemsCount === 0
+          itemsCount === 0,
         )}
       </div>
 
@@ -132,18 +133,18 @@ const CartLayoutHeaderActions: React.FC = () => {
         title={t(
           modalState.type === "delete"
             ? "routes.cart.components.CartLayoutHeaderActions.confirmDeleteTitle"
-            : "routes.cart.components.CartLayoutHeaderActions.confirmWishlistItemsTitle"
+            : "routes.cart.components.CartLayoutHeaderActions.confirmWishlistItemsTitle",
         )}
         txt={t(
           modalState.type === "delete"
             ? "routes.cart.components.CartLayoutHeaderActions.confirmDeleteMessage"
             : "routes.cart.components.CartLayoutHeaderActions.confirmWishlistItemsMessage",
-          { count: itemsCount }
+          { count: itemsCount },
         )}
         submitText={t(
           modalState.type === "delete"
             ? "routes.cart.components.CartLayoutHeaderActions.confirmDelete"
-            : "routes.cart.components.CartLayoutHeaderActions.confirmWishlist"
+            : "routes.cart.components.CartLayoutHeaderActions.confirmWishlist",
         )}
         cancelText={t("routes.cart.components.CartLayoutHeaderActions.cancel")}
         variant="danger"

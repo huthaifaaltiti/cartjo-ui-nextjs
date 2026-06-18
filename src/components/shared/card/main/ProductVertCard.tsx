@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Product, VariantServer } from "@/types/product.type";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { DataResponse } from "@/types/service-response.type";
 import { Cart } from "@/types/cart.type";
 import {
@@ -38,7 +37,6 @@ const ProductVertCard = ({
   isArabic: boolean;
 }) => {
   const router = useRouter();
-  const { accessToken } = useAuthContext();
   const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector((state: RootState) => state.wishlist);
   const { locale } = useSelector((state: RootState) => state.general);
@@ -47,8 +45,10 @@ const ProductVertCard = ({
 
   const title = isArabic ? item?.name?.ar : item?.name?.en;
 
-  const activeVariants: VariantServer[] =
-    item.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [];
+  const activeVariants: VariantServer[] = useMemo(
+    () => item.variants?.filter((v) => v.isActive && !v.isDeleted) ?? [],
+    [item],
+  );
 
   const [isWishListed, setIsWishListed] = useState<boolean>(
     item?.isWishListed || false,
@@ -102,7 +102,6 @@ const ProductVertCard = ({
           variantId: currentVariant?.variantId,
           quantity: 1,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -125,7 +124,7 @@ const ProductVertCard = ({
   };
 
   const handleRemoveWishListItem = useCallback(async () => {
-    if (!accessToken) return;
+    if (!requireAuth()) return;
 
     try {
       setIsWishListing(true);
@@ -134,7 +133,6 @@ const ProductVertCard = ({
         removeWishlistItem({
           productId: item?._id,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -149,10 +147,10 @@ const ProductVertCard = ({
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, accessToken, item, t, dispatch]);
+  }, [locale, item, t, dispatch, requireAuth]);
 
   const handleAddWishListItem = useCallback(async () => {
-    if (!accessToken) return;
+    if (!requireAuth()) return;
 
     try {
       setIsWishListing(true);
@@ -161,7 +159,6 @@ const ProductVertCard = ({
         addWishlistItem({
           product: item,
           lang: locale,
-          token: accessToken,
         }),
       ).unwrap();
 
@@ -176,7 +173,7 @@ const ProductVertCard = ({
     } finally {
       setIsWishListing(false);
     }
-  }, [locale, accessToken, item, t, dispatch]);
+  }, [locale, item, t, dispatch, requireAuth]);
 
   const handleWishListedItemState = () => {
     if (!requireAuth()) return;
@@ -207,7 +204,7 @@ const ProductVertCard = ({
     router.push(
       `/${categorySlug}/${subCategorySlug}/${productSlug}?p_id=${item._id}`,
     );
-  }, [item, isArabic]);
+  }, [item, router]);
 
   return (
     <CardWrapper isHovered={isHovered}>

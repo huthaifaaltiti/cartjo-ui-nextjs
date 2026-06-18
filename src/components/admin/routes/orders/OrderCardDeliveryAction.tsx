@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import {
   showErrorToast,
   showSuccessToast,
-  showWarningToast,
 } from "@/components/shared/CustomToast";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useDispatch } from "react-redux";
@@ -18,6 +17,7 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 type OrderCardDeliveryActionProps = {
   orderId: string;
@@ -29,23 +29,19 @@ const OrderCardDeliveryAction = ({
   setIsLoading,
 }: OrderCardDeliveryActionProps) => {
   const t = useTranslations("");
-  const { accessToken, locale } = useAuthContext();
+
+  const { requireAuth } = useRequireAuth();
+  const { locale } = useAuthContext();
+
   const dispatch = useDispatch<AppDispatch>();
 
   const statuses: string[] = Object.values(OrderDeliveryStatus).filter(
-    (st) => st !== OrderDeliveryStatus.FAILED
+    (st) => st !== OrderDeliveryStatus.FAILED,
   );
 
   const setPaymentStatus = useCallback(
     async (status: OrderDeliveryStatus) => {
-      if (!accessToken) {
-        showWarningToast({
-          title: t("general.toast.title.warning"),
-          description: t("general.toast.description.loginRequired"),
-          dismissText: t("general.toast.dismissText"),
-        });
-        return;
-      }
+      if (!requireAuth()) return;
 
       try {
         setIsLoading(true);
@@ -54,8 +50,7 @@ const OrderCardDeliveryAction = ({
             orderId: orderId,
             status: status,
             lang: locale,
-            token: accessToken,
-          })
+          }),
         ).unwrap();
 
         if (response.isSuccess) {
@@ -75,14 +70,14 @@ const OrderCardDeliveryAction = ({
         setIsLoading(false);
       }
     },
-    [accessToken, orderId, dispatch, locale, t]
+    [requireAuth, orderId, dispatch, locale, t, setIsLoading],
   );
 
   return (
     <Select onValueChange={setPaymentStatus}>
       <SelectTrigger className="w-full text-xs">
         {t(
-          "routes.dashboard.routes.orders.components.OrderCardDeliveryAction.title"
+          "routes.dashboard.routes.orders.components.OrderCardDeliveryAction.title",
         )}
       </SelectTrigger>
       <SelectContent>

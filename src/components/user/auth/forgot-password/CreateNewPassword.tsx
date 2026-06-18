@@ -17,7 +17,7 @@ import { resetPassword } from "@/redux/slices/authorization/forgotPassword/actio
 
 const CreateNewPassword = () => {
   const t = useTranslations(
-    "routes.auth.routes.forgotPassword.components.CreateNewPassword"
+    "routes.auth.routes.forgotPassword.components.CreateNewPassword",
   );
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -40,21 +40,20 @@ const CreateNewPassword = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setNewPassword(e.target.value));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleConfirmPasswordChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setConfirmPassword(e.target.value));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleBack = () => {
     dispatch(setStep(1));
   };
-
-  const handleReset = async () => {
+  const handleReset = useCallback(async () => {
     const newErrors: Record<string, string> = {};
     if (!isPasswordValid) newErrors.password = t("passwordNotMeetRules");
     if (newPassword !== confirmPassword)
@@ -71,17 +70,26 @@ const CreateNewPassword = () => {
         code: verificationCode,
         newPassword,
         lang: locale,
-      })
+      }),
     );
-  };
+  }, [
+    dispatch,
+    isPasswordValid,
+    newPassword,
+    confirmPassword,
+    identifier,
+    verificationCode,
+    locale,
+    t,
+  ]);
 
   useEffect(() => {
     setShowRules(newPassword.length > 0);
   }, [newPassword]);
 
-  useEffect(() => {
-    handleReset();
-  }, [locale]);
+  // useEffect(() => {
+  //   handleReset();
+  // }, [locale, handleReset]);
 
   return (
     <div className="space-y-6 max-w-md mx-auto">
@@ -218,7 +226,7 @@ const CreateNewPassword = () => {
               countDownAmount={5}
               withRelocation={true}
               relocationPath={`/auth?identifier=${encodeURIComponent(
-                identifier
+                identifier,
               )}`}
               size="sm"
               color="purple"

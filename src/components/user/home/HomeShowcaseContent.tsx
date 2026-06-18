@@ -20,7 +20,9 @@ const HomeShowcaseContent = () => {
   const t = useTranslations();
 
   const { data, isLoading, isFetching, isError, error } =
-    useActiveShowcasesQuery(PAGINATION_LIMITS.ACTIVE_ITEMS_IN_HOME_SHOWCASE);
+    useActiveShowcasesQuery({
+      limit: PAGINATION_LIMITS.PUBLIC_VIEW.ACTIVE_SHOWCASE,
+    });
 
   const activeShowcasesList = useMemo(() => {
     if (!data?.data) return [];

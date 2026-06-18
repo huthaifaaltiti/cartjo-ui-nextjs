@@ -1,38 +1,26 @@
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
-import { fetchSubCategories } from "@/hooks/react-query/useSubCategoriesQuery";
-import { fetchCategories } from "@/hooks/react-query/useCategoriesQuery";
-import { Category } from "@/types/category.type";
-import { SubCategory } from "@/types/subCategory";
 import SubCategoriesPage from "@/components/admin/routes/subCategories/SubCategoriesPage";
 import { requireAuth } from "@/utils/authRedirect";
+import { getAccessToken } from "@/lib/tokens.server";
+import { prefetchDashboardSubCategories } from "@/services/prefetch/dashboard-subCategory";
+import { PageProps } from "@/types/common";
+import { getQueryClient } from "@/utils/queryUtils";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-export default async function Page() {
-  const accessToken = await getAccessTokenFromServerSession();
-  requireAuth(accessToken);
+export default async function Page({ params }: PageProps) {
+  const { locale } = await params;
 
-  let categories: Category[] = [];
-  let subCategories: SubCategory[] = [];
+  const token = await getAccessToken();
+  requireAuth(token);
 
-  if (accessToken) {
-    const catsResp = await fetchCategories({
-      token: accessToken,
-      limit: 100,
-    });
+  const queryClient = getQueryClient();
 
-    const subCatsResp = await fetchSubCategories({
-      token: accessToken,
-      limit: 200,
-    });
+  await prefetchDashboardSubCategories({ queryClient, locale });
 
-    categories = catsResp?.data || [];
-    subCategories = subCatsResp?.data || [];
-  }
+  const dehydratedState = dehydrate(queryClient);
 
   return (
-    <SubCategoriesPage
-      initialCategories={categories}
-      initialSubCategories={subCategories}
-      accessToken={accessToken}
-    />
+    <HydrationBoundary state={dehydratedState}>
+      <SubCategoriesPage />;
+    </HydrationBoundary>
   );
 }

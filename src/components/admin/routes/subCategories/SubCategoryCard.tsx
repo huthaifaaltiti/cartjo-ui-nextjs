@@ -9,20 +9,12 @@ import ImageWithFallback from "@/components/shared/ImageWithFallback";
 
 type SubCategoryCardProps = {
   item: SubCategory;
-  deleteSubCategory: (
-    accessToken: string | null,
-    userId: string
-  ) => Promise<BaseResponse>;
-  unDeleteSubCategory: (
-    accessToken: string | null,
-    userId: string
-  ) => Promise<BaseResponse>;
-  accessToken: string | null;
+  deleteSubCategory: (userId: string) => Promise<BaseResponse>;
+  unDeleteSubCategory: (userId: string) => Promise<BaseResponse>;
   switchSubCategoryActiveStatus: (
-    token: string | null,
     lang: string,
     isActive: boolean,
-    userId: string
+    userId: string,
   ) => Promise<BaseResponse>;
   queryKey: string;
 };
@@ -31,7 +23,6 @@ const SubCategoryCard = ({
   item: subCategory,
   deleteSubCategory,
   unDeleteSubCategory,
-  accessToken,
   switchSubCategoryActiveStatus,
   queryKey,
 }: SubCategoryCardProps) => {
@@ -100,7 +91,6 @@ const SubCategoryCard = ({
           cardItem={subCategory}
           deleteFn={deleteSubCategory}
           unDeleteFn={unDeleteSubCategory}
-          accessToken={accessToken}
           switchUserActiveStatusFn={switchSubCategoryActiveStatus}
           queryKey={queryKey}
           showEditButton={true}

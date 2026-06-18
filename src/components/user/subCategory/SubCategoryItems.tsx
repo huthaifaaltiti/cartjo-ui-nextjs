@@ -9,10 +9,8 @@ import InfiniteScrollList from "@/components/shared/InfiniteScrollList";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoSubCategoryItems from "./NoSubCategoryItems";
 import SubCategoryProductCard from "./SubCategoryProductCard";
-import PriceRange from "../used-filters/PriceRange";
-import RatingRange from "../used-filters/RatingRange";
-import DateRangeWithDaysNum from "../used-filters/DateRangeWithDaysNum";
 import GridItemsSkeleton from "@/components/shared/loaders/GridItemsSkeleton";
+import SearchQueryFilters from "../SearchQueryFilters";
 
 const SubCategoryItems = ({
   categoryId,
@@ -122,6 +120,32 @@ const SubCategoryItems = ({
     [refetch, setCreatedFrom, setCreatedTo, setBeforeNumOfDays],
   );
 
+  const handleClearFilters = useCallback(() => {
+    setPriceFrom(0);
+    setPriceTo(0);
+    setRatingFrom(0);
+    setCreatedFrom("");
+    setCreatedTo("");
+    setBeforeNumOfDays(0);
+    refetch();
+  }, [
+    refetch,
+    setPriceFrom,
+    setPriceTo,
+    setRatingFrom,
+    setCreatedFrom,
+    setCreatedTo,
+    setBeforeNumOfDays,
+  ]);
+
+  const hasActiveFilters =
+    priceFrom > 0 ||
+    priceTo > 0 ||
+    ratingFrom > 0 ||
+    !!createdFrom ||
+    !!createdTo ||
+    beforeNumOfDays > 0;
+
   const showError = isError && error?.message;
   const showNoData =
     !isFetching && !showError && subCategoryProducts.length === 0;
@@ -155,32 +179,26 @@ const SubCategoryItems = ({
     return (
       <div className={containerClass}>
         <div className="w-full flex flex-col gap-4">
-          {/* Filters */}
-          <div className="w-full flex items-center flex-wrap gap-4 border-b border-grey-50/20 py-1">
-            <PriceRange
-              setPriceFrom={setPriceFrom}
-              setPriceTo={setPriceTo}
-              onApplyFilter={handleApplyPriceFilter}
-              initialFrom={priceFrom}
-              initialTo={priceTo}
-            />
-            <RatingRange
-              setRatingFrom={setRatingFrom}
-              onApplyFilter={handleApplyRangeFilter}
-              initialFrom={ratingFrom}
-            />
-            <DateRangeWithDaysNum
-              setCreatedFrom={setCreatedFrom}
-              setCreatedTo={setCreatedTo}
-              setBeforeNumOfDays={setBeforeNumOfDays}
-              onApplyFilter={handleApplyDateFilter}
-              initialCreatedFrom={createdFrom}
-              initialCreatedTo={createdTo}
-              initialBeforeNumOfDays={beforeNumOfDays}
-            />
-          </div>
+          <SearchQueryFilters
+            hasActiveFilters={hasActiveFilters}
+            priceFrom={priceFrom}
+            priceTo={priceTo}
+            ratingFrom={ratingFrom}
+            createdFrom={createdFrom}
+            createdTo={createdTo}
+            beforeNumOfDays={beforeNumOfDays}
+            setPriceFrom={setPriceFrom}
+            setPriceTo={setPriceTo}
+            setRatingFrom={setRatingFrom}
+            setCreatedFrom={setCreatedFrom}
+            setCreatedTo={setCreatedTo}
+            setBeforeNumOfDays={setBeforeNumOfDays}
+            onApplyPriceFilter={handleApplyPriceFilter}
+            onApplyRangeFilter={handleApplyRangeFilter}
+            onApplyDateFilter={handleApplyDateFilter}
+            onClearFilters={handleClearFilters}
+          />
 
-          {/* items */}
           <div className="w-full">
             <NoSubCategoryItems />;
           </div>
@@ -193,32 +211,26 @@ const SubCategoryItems = ({
     return (
       <div className={containerClass}>
         <div className="w-full flex flex-col gap-4">
-          {/* Filters */}
-          <div className="w-full flex items-center flex-wrap gap-4 border-b border-grey-50/20 py-1">
-            <PriceRange
-              setPriceFrom={setPriceFrom}
-              setPriceTo={setPriceTo}
-              onApplyFilter={handleApplyPriceFilter}
-              initialFrom={priceFrom}
-              initialTo={priceTo}
-            />
-            <RatingRange
-              setRatingFrom={setRatingFrom}
-              onApplyFilter={handleApplyRangeFilter}
-              initialFrom={ratingFrom}
-            />
-            <DateRangeWithDaysNum
-              setCreatedFrom={setCreatedFrom}
-              setCreatedTo={setCreatedTo}
-              setBeforeNumOfDays={setBeforeNumOfDays}
-              onApplyFilter={handleApplyDateFilter}
-              initialCreatedFrom={createdFrom}
-              initialCreatedTo={createdTo}
-              initialBeforeNumOfDays={beforeNumOfDays}
-            />
-          </div>
+          <SearchQueryFilters
+            hasActiveFilters={hasActiveFilters}
+            priceFrom={priceFrom}
+            priceTo={priceTo}
+            ratingFrom={ratingFrom}
+            createdFrom={createdFrom}
+            createdTo={createdTo}
+            beforeNumOfDays={beforeNumOfDays}
+            setPriceFrom={setPriceFrom}
+            setPriceTo={setPriceTo}
+            setRatingFrom={setRatingFrom}
+            setCreatedFrom={setCreatedFrom}
+            setCreatedTo={setCreatedTo}
+            setBeforeNumOfDays={setBeforeNumOfDays}
+            onApplyPriceFilter={handleApplyPriceFilter}
+            onApplyRangeFilter={handleApplyRangeFilter}
+            onApplyDateFilter={handleApplyDateFilter}
+            onClearFilters={handleClearFilters}
+          />
 
-          {/* items */}
           <div className="w-full">
             <InfiniteScrollList
               isLoading={isLoading}

@@ -22,7 +22,6 @@ const DashboardUserCardActions = ({
   user,
   deleteUser,
   unDeleteUser,
-  accessToken,
   switchUserActiveStatus,
   queryKey,
 }: DashboardUserCardActionsProps) => {
@@ -41,7 +40,7 @@ const DashboardUserCardActions = ({
   const handleDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await deleteUser(accessToken, user._id);
+      const resp = await deleteUser(user._id);
 
       if (resp.isSuccess) {
         showSuccessToast({
@@ -60,12 +59,12 @@ const DashboardUserCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [accessToken, deleteUser, queryClient, queryKey, t, user._id]);
+  }, [deleteUser, queryClient, queryKey, t, user._id]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await unDeleteUser(accessToken, user._id);
+      const resp = await unDeleteUser(user._id);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -83,16 +82,15 @@ const DashboardUserCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [accessToken, unDeleteUser, queryClient, queryKey, t, user._id]);
+  }, [unDeleteUser, queryClient, queryKey, t, user._id]);
 
   const handleSwitchUserActiveStatus = useCallback(async () => {
     setIsLoading(true);
     try {
       const resp = await switchUserActiveStatus(
-        accessToken,
         locale,
         !user?.isActive,
-        user._id
+        user._id,
       );
       if (resp.isSuccess) {
         showSuccessToast({
@@ -112,7 +110,6 @@ const DashboardUserCardActions = ({
       await invalidateQuery(queryClient, queryKey);
     }
   }, [
-    accessToken,
     locale,
     queryClient,
     queryKey,
@@ -130,7 +127,7 @@ const DashboardUserCardActions = ({
         setCanShowEditButton(true);
       }
     }
-  }, []);
+  }, [user?.canManage]);
 
   return (
     <>
@@ -170,7 +167,7 @@ const DashboardUserCardActions = ({
             >
               <Package className="w-1 h-1" />
               {t(
-                "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser"
+                "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser",
               )}
             </Button>
           ) : (
@@ -183,7 +180,7 @@ const DashboardUserCardActions = ({
             >
               <PackageOpen />
               {t(
-                "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.restoreUser"
+                "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.restoreUser",
               )}
             </Button>
           )}
@@ -202,7 +199,7 @@ const DashboardUserCardActions = ({
       </div>
 
       <Modal isOpen={isAdminEditModalOpen} onClose={handleCloseEditAdminModal}>
-        <EditAdminUserForm accessToken={accessToken} user={user} />
+        <EditAdminUserForm user={user} />
       </Modal>
     </>
   );

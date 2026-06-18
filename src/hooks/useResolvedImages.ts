@@ -53,10 +53,10 @@ export function useResolvedImages(urls: string[] | undefined) {
   const [loading, setLoading] = useState(false);
   const abortRef = useRef(false);
 
-  const safeUrls = urls ?? [];
-
   useEffect(() => {
     abortRef.current = false;
+
+    const safeUrls = urls ?? [];
 
     if (!safeUrls.length) {
       setLoading(false);
@@ -124,7 +124,7 @@ export function useResolvedImages(urls: string[] | undefined) {
     return () => {
       abortRef.current = true;
     };
-  }, [safeUrls.join(",")]);
+  }, [urls]);
 
   return { imageMap, loading };
 }

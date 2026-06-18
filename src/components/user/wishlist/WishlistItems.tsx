@@ -32,7 +32,6 @@ const WishlistItems = () => {
     fetchNextPage,
     isError,
     error,
-    refetch,
   } = useWishlistQuery();
 
   const fetchedItems = useMemo(
@@ -49,10 +48,6 @@ const WishlistItems = () => {
   useEffect(() => {
     if (fetchedItems.length > 0) dispatch(setWishlistItems(fetchedItems));
   }, [fetchedItems, dispatch]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   if (showLoader) return <PageLoader />;
 

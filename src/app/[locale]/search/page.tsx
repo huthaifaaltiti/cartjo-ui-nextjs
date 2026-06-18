@@ -1,35 +1,25 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { getSearchProductsQueryOptions } from "@/utils/queryOptions";
 import { getQueryClient } from "@/utils/queryUtils";
-import { DataListResponse } from "@/types/service-response.type";
-import { Product } from "@/types/product.type";
 import { Locale } from "@/types/locale";
 import { LoggedUserWishlistProvider } from "@/contexts/LoggedUserWishList.context";
 import SearchItems from "@/components/user/search/SearchItems";
 import { HomeContextProvider } from "@/contexts/HomeContext";
-import { getSuggestedProductsQueryOptions } from "@/hooks/react-query/useSuggestedProductQuery";
-import { SUGGESTED_PRODUCTS_LIMIT } from "@/config/product.config";
+import { prefetchSearchData } from "@/services/prefetch/search";
 
 interface PageProps {
   params: Promise<{ locale: Locale | string; category: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
 export default async function SearchPage({ params, searchParams }: PageProps) {
   const { locale } = await params;
-  const { q } = await searchParams;
+  const { q, typeHint } = await searchParams;
 
   const querySearch = q as string;
 
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchInfiniteQuery<DataListResponse<Product>>(
-    getSearchProductsQueryOptions(locale, querySearch),
-  );
-
-  await queryClient.prefetchQuery<DataListResponse<Product>>(
-    getSuggestedProductsQueryOptions(locale, SUGGESTED_PRODUCTS_LIMIT),
-  );
+  await prefetchSearchData({ queryClient, locale, querySearch, typeHint });
 
   const dehydratedState = dehydrate(queryClient);
 

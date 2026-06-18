@@ -1,19 +1,28 @@
-import { fetchShowcases } from "@/hooks/react-query/useShowcasesQuery";
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
 import ShowcasesPage from "@/components/admin/routes/showcases/ShowcasesPage";
 import { requireAuth } from "@/utils/authRedirect";
+import { prefetchDashboardShowcasesData } from "@/services/prefetch/dashboard/showcases";
+import { getQueryClient } from "@/utils/queryUtils";
+import { PageProps } from "@/types/common";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getAccessToken } from "@/lib/tokens.server";
 
-const Page = async () => {
-  const token = await getAccessTokenFromServerSession();
-  requireAuth(token)
+const Page = async ({ params }: PageProps) => {
+  const { locale } = await params;
 
-  const { data } = await fetchShowcases({
-    token,
-    limit: PAGINATION_LIMITS.SHOWCASES,
-  });
+  const token = await getAccessToken();
+  requireAuth(token);
 
-  return <ShowcasesPage data={data} token={token} />;
+  const queryClient = getQueryClient();
+
+  await prefetchDashboardShowcasesData({ queryClient, locale });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <ShowcasesPage />;
+    </HydrationBoundary>
+  );
 };
 
 export default Page;

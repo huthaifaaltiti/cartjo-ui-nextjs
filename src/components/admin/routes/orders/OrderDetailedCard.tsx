@@ -33,17 +33,15 @@ const OrderDetailedCard = ({ orderId }: Props) => {
   const { selectedOrder, loading, error } = useSelector(
     (state: RootState) => state.orders,
   );
-  const { accessToken, locale } = useAuthContext();
+  const { locale } = useAuthContext();
 
   useEffect(() => {
     if (!orderId) return;
     const getOrderDetails = async () => {
-      await dispatch(
-        getOrder({ id: orderId, lang: locale, token: accessToken }),
-      );
+      await dispatch(getOrder({ id: orderId, lang: locale }));
     };
     getOrderDetails();
-  }, [orderId, dispatch, locale, accessToken]);
+  }, [orderId, dispatch, locale]);
 
   useEffect(() => {
     if (orderId) {

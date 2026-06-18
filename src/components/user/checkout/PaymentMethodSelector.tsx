@@ -14,6 +14,7 @@ export default function PaymentMethodSelector({
   onChange,
 }: PaymentMethodSelectorProps) {
   const t = useTranslations("routes.checkout.components.PaymentMethodSelector");
+  
   return (
     <div className="mb-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-4">

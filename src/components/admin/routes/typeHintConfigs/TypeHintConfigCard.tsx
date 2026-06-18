@@ -10,18 +10,14 @@ import EditTypeHintConfigForm from "./EditTypeHintConfigForm";
 type TypeHintConfigCardProps = {
   item: TypeHintConfig;
   deleteTypeHintConfig: (
-    accessToken: string | null,
     typeHintConfigId: string,
     lang: Locale,
   ) => Promise<BaseResponse>;
   unDeleteTypeHintConfig: (
-    accessToken: string | null,
     typeHintConfigId: string,
     lang: Locale,
   ) => Promise<BaseResponse>;
-  accessToken: string | null;
   switchTypeHintConfigActiveStatus: (
-    accessToken: string | null,
     lang: string,
     isActive: boolean,
     typeHintConfigId: string,
@@ -35,7 +31,6 @@ const TypeHintConfigCard = ({
   unDeleteTypeHintConfig,
   switchTypeHintConfigActiveStatus,
   queryKey,
-  accessToken,
 }: TypeHintConfigCardProps) => {
   const t = useTranslations();
   const locale = useLocale();
@@ -150,7 +145,6 @@ const TypeHintConfigCard = ({
             cardItem={typeHintConfig}
             deleteFn={deleteTypeHintConfig}
             unDeleteFn={unDeleteTypeHintConfig}
-            accessToken={accessToken}
             switchUserActiveStatusFn={switchTypeHintConfigActiveStatus}
             queryKey={queryKey}
             showEditButton={true}

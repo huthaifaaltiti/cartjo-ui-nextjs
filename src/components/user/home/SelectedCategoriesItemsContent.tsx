@@ -11,7 +11,10 @@ import ErrorMessage from "@/components/shared/ErrorMessage";
 import NoData from "@/components/shared/NoData";
 import { useGeneralContext } from "@/contexts/General.context";
 import SelectedCategoriesItemsContentHeader from "./SelectedCategoriesItemsContentHeader";
-import { getCategoriesPicksQueryOptions } from "@/hooks/react-query/useProductsQuery";
+import { getCategoriesPicksQueryOptions } from "@/hooks/react-query/query-options/categoryPicks";
+import { fetchCategoriesPicks } from "@/services/category.service";
+import { Locale } from "@/enums/locale.enum";
+import { authFetcher } from "@/utils/authFetcher";
 
 const SelectedCategoriesItemsContent = ({
   randomCategories,
@@ -19,15 +22,20 @@ const SelectedCategoriesItemsContent = ({
   randomCategories: Category[];
 }) => {
   const t = useTranslations();
-  const { accessToken, locale } = useAuthContext();
+  const { locale } = useAuthContext();
   const { isArabic } = useGeneralContext();
 
   const results = useQueries({
-    queries: randomCategories.map((category) =>
+    queries: randomCategories.map((category: Category) =>
       getCategoriesPicksQueryOptions({
         categoryId: category._id,
         locale: locale,
-        token: accessToken ?? "",
+        queryFn: () =>
+          fetchCategoriesPicks({
+            lang: locale ?? Locale.EN,
+            categoryId: category?._id,
+            fetcher: (path) => authFetcher(path),
+          }),
       }),
     ),
   });

@@ -1,86 +1,17 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
-import { useSession } from "next-auth/react";
-import { CustomSession } from "@/lib/authOptions";
-import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
+import { QueryFunctionContext, useInfiniteQuery } from "@tanstack/react-query";
 import { DataListResponse } from "@/types/service-response.type";
 import { Order } from "@/types/order.type";
 import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
 import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
-
-interface FetchOrdersParams {
-  token: string;
-  lang?: string;
-  limit?: number;
-  lastId?: string;
-  search?: string;
-  amountMin?: number;
-  amountMax?: number;
-  paymentMethod?: PaymentMethods;
-  paymentStatus?: PaymentStatus;
-  deliveryStatus?: OrderDeliveryStatus;
-  createdAfter?: string;
-  createdBefore?: string;
-}
-
-export const fetchOrders = async ({
-  token,
-  lang = "en",
-  limit = PAGINATION_LIMITS.ORDERS,
-  lastId,
-  search,
-  amountMin,
-  amountMax,
-  paymentMethod,
-  paymentStatus,
-  deliveryStatus,
-  createdAfter,
-  createdBefore,
-}: FetchOrdersParams): Promise<DataListResponse<Order>> => {
-  const url = new URL(API_ENDPOINTS.ORDER.GetAll);
-
-  url.searchParams.append("limit", limit.toString());
-  url.searchParams.append("lang", lang);
-
-  if (amountMin !== undefined && amountMin > 0)
-    url.searchParams.append("amountMin", String(amountMin));
-  if (amountMax !== undefined && amountMax > 0)
-    url.searchParams.append("amountMax", String(amountMax));
-
-  if (paymentMethod)
-    url.searchParams.append("paymentMethod", String(paymentMethod));
-
-  if (paymentStatus)
-    url.searchParams.append("paymentStatus", String(paymentStatus));
-
-  if (deliveryStatus)
-    url.searchParams.append("deliveryStatus", String(deliveryStatus));
-
-  if (createdBefore !== undefined && createdBefore)
-    url.searchParams.append("createdBefore", String(createdBefore));
-  if (createdAfter !== undefined && createdAfter)
-    url.searchParams.append("createdAfter", String(createdAfter));
-
-  if (lastId) url.searchParams.append("lastId", lastId);
-  if (search) url.searchParams.append("search", search);
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) throw new Error("Could not retrieve orders");
-
-  return res.json();
-};
+import { getOrdersQueryOptions } from "./query-options/orders";
+import { useAuthContext } from "../useAuthContext";
+import { fetchOrders } from "@/services/order.service";
+import { PAGINATION_LIMITS } from "@/config/paginationConfig";
+import { authFetcher } from "@/utils/authFetcher";
 
 export const useOrdersQuery = ({
   searchQuery,
-  queryKey,
   amountMin,
   amountMax,
   paymentMethod,
@@ -90,7 +21,6 @@ export const useOrdersQuery = ({
   createdBefore,
 }: {
   searchQuery: string;
-  queryKey: string;
   amountMin?: number;
   amountMax?: number;
   paymentMethod?: PaymentMethods;
@@ -99,52 +29,36 @@ export const useOrdersQuery = ({
   createdAfter?: string;
   createdBefore?: string;
 }) => {
-  const { data: session } = useSession();
-  const locale = useLocale();
-  const accessToken = (session as CustomSession)?.accessToken;
+  const { locale, isAuthenticated, isSessionLoading, userId } =
+    useAuthContext();
 
   return useInfiniteQuery<DataListResponse<Order>>({
-    queryKey: [
-      queryKey,
+    ...getOrdersQueryOptions({
+      locale,
       searchQuery,
-      amountMin,
       amountMax,
+      amountMin,
       paymentMethod,
       paymentStatus,
       deliveryStatus,
       createdAfter,
       createdBefore,
-    ],
-    queryFn: ({ pageParam }) => {
-      if (!accessToken) throw new Error("No access token found");
-
-      return fetchOrders({
-        token: accessToken,
-        lang: locale,
-        limit: PAGINATION_LIMITS.ORDERS,
-        lastId: pageParam as string,
-        search: searchQuery,
-        amountMin,
-        amountMax,
-        paymentMethod,
-        paymentStatus,
-        deliveryStatus,
-        createdAfter,
-        createdBefore,
-      });
-    },
-
-    getNextPageParam: (lastPage) => {
-      if (lastPage.data && lastPage.data.length > 0) {
-        const lastItem = lastPage.data[lastPage.data.length - 1];
-        return lastItem._id;
-      }
-      return undefined;
-    },
-
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!accessToken,
+      queryFn: (context: QueryFunctionContext) =>
+        fetchOrders({
+          lang: locale,
+          lastId: context.pageParam as string,
+          limit: PAGINATION_LIMITS.DASHBOARD_VIEW.ORDERS ?? 20,
+          search: searchQuery,
+          amountMax,
+          amountMin,
+          paymentMethod,
+          paymentStatus,
+          deliveryStatus,
+          createdAfter,
+          createdBefore,
+          fetcher: (path) => authFetcher(path),
+        }),
+    }),
+    enabled: !isSessionLoading && isAuthenticated && !!userId,
   });
 };

@@ -1,22 +1,24 @@
 "use client";
 
 import { memo } from "react";
-import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { ExtendedSession } from "@/types/session";
 import NoLoggedUserState from "../../shared/NoLoggedUserState";
 import ManageDashboard from "../ManageDashboard";
 import RegularUserLoggedState from "../../shared/RegularUserLoggedState";
 import LoadingSpinner from "../../shared/LoadingSpinner";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import isAdminClientSide from "@/utils/isAdminClientSide.util";
 
 const AuthUserDashboard = () => {
   const t = useTranslations();
-  const { data: sessionData, status } = useSession();
 
-  const session = sessionData as ExtendedSession | null;
-  const canManage = session?.user?.canManage ?? false;
+  const { session, loading } = useSelector(
+    (state: RootState) => state.authentication,
+  );
+  const canManage = isAdminClientSide(session) ?? false;
 
-  if (status === "loading") {
+  if (loading) {
     return (
       <div className="w-full h-[80vh] flex items-center justify-center">
         <LoadingSpinner
