@@ -6,8 +6,8 @@ import { useQueryState } from "nuqs";
 import { useTranslations } from "next-intl";
 import AuthCallbackView from "./AuthCallbackView";
 import { showErrorToast } from "@/components/shared/CustomToast";
-import { AppDispatch, RootState } from "@/redux/store";
-import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { useDispatch } from "react-redux";
 import { setSession } from "@/redux/slices/authentication";
 
 type AuthStatus = "idle" | "loading" | "success" | "error";
