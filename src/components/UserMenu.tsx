@@ -42,9 +42,6 @@ const UserMenu = () => {
     };
   }, [itemsCount, totalItemsCount, userContextData]);
 
-  console.log({counters})
-  console.log({cartItemsCount: totalItemsCount, wishlistitemsCount:itemsCount})
-
   const canManage = isAdminClientSide(session) ?? false;
 
   if (loading && !session) return <UserSignInLink />;
