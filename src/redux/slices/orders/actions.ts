@@ -6,19 +6,19 @@ import {
   DataListResponse,
   DataResponse,
 } from "@/types/service-response.type";
-import { fetcher } from "@/utils/fetcher";
 import { Order } from "@/types/order.type";
 import { ORDER_CONSTANTS } from "./constants";
 import { PaymentStatus } from "@/enums/paymentStatus.enum";
 import { ShippingAddress } from "@/types/shippingAddress.type";
 import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
+import { authFetcher } from "@/utils/authFetcher";
+import { Locale as LocaleEnum } from "@/enums/locale.enum";
 
 // GET /api/v1/order/all
 export const getOrders = createAsyncThunk<
   DataListResponse<Order>,
   {
     lang?: Locale | string;
-    token: string;
     limit?: number;
     lastId?: string;
     search?: string;
@@ -27,7 +27,7 @@ export const getOrders = createAsyncThunk<
 >(
   ORDER_CONSTANTS.getOrders,
   async (
-    { lang = "en", token, limit = 10, lastId, search },
+    { lang = LocaleEnum.EN, limit = 10, lastId, search },
     { rejectWithValue },
   ) => {
     try {
@@ -40,12 +40,12 @@ export const getOrders = createAsyncThunk<
       if (lastId) url.searchParams.set("lastId", lastId);
       if (search) url.searchParams.set("search", search);
 
-      const response = await fetcher<DataListResponse<Order>>(url.toString(), {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await authFetcher<DataListResponse<Order>>(
+        url.toString(),
+        {
+          method: "GET",
         },
-      });
+      );
 
       if (!response.isSuccess) {
         return rejectWithValue(response);
@@ -64,20 +64,17 @@ export const getOrders = createAsyncThunk<
 
 export const getOrder = createAsyncThunk<
   DataResponse<Order>,
-  { id: string; lang?: Locale | string; token: string },
+  { id: string; lang?: Locale | string },
   { rejectValue: BaseResponse }
 >(
   ORDER_CONSTANTS.getOrder,
-  async ({ id, lang = "en", token }, { rejectWithValue }) => {
+  async ({ id, lang = LocaleEnum.EN }, { rejectWithValue }) => {
     try {
       const url = new URL(API_ENDPOINTS.ORDER.GetOne.replace(":id", id));
       url.searchParams.set("lang", String(lang));
 
-      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Order>>(url.toString(), {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       if (!response.isSuccess) {
@@ -101,23 +98,18 @@ export const changePaymentStatus = createAsyncThunk<
     orderId: string;
     status: PaymentStatus;
     lang?: Locale | string;
-    token: string;
   },
   { rejectValue: BaseResponse }
 >(
   ORDER_CONSTANTS.changePaymentStatus,
-  async ({ orderId, status, lang = "en", token }, { rejectWithValue }) => {
+  async ({ orderId, status, lang = LocaleEnum.EN }, { rejectWithValue }) => {
     try {
       const url = new URL(
         API_ENDPOINTS.ORDER.ChangePaymentStatus.replace(":id", orderId),
       );
 
-      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ orderId, status, lang }),
       });
 
@@ -137,23 +129,19 @@ export const changePaymentStatus = createAsyncThunk<
 // POST delete order -> expects body: { lang }
 export const deleteOrder = createAsyncThunk<
   DataResponse<Order>,
-  { id: string; lang?: Locale | string; token: string },
+  { id: string; lang?: Locale | string },
   { rejectValue: BaseResponse }
 >(
   ORDER_CONSTANTS.deleteOrder,
-  async ({ id, lang = "en", token }, { rejectWithValue }) => {
+  async ({ id, lang = LocaleEnum.EN }, { rejectWithValue }) => {
     try {
       const url = new URL(
         API_ENDPOINTS.ORDER.Delete.replace(":id", id),
         process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL,
       );
 
-      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ lang }),
       });
 
@@ -173,23 +161,19 @@ export const deleteOrder = createAsyncThunk<
 // POST restore order -> expects body: { lang }
 export const restoreOrder = createAsyncThunk<
   DataResponse<Order>,
-  { id: string; lang?: Locale | string; token: string },
+  { id: string; lang?: Locale | string },
   { rejectValue: BaseResponse }
 >(
   ORDER_CONSTANTS.restoreOrder,
-  async ({ id, lang = "en", token }, { rejectWithValue }) => {
+  async ({ id, lang = LocaleEnum.EN }, { rejectWithValue }) => {
     try {
       const url = new URL(
         API_ENDPOINTS.ORDER.UnDelete.replace(":id", id),
         process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL,
       );
 
-      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ lang }),
       });
 
@@ -219,24 +203,19 @@ export const createOrder = createAsyncThunk<
     paymentMethod: string;
     shippingAddress: ShippingAddress;
     lang?: Locale | string;
-    token: string;
   },
   { rejectValue: BaseResponse }
 >(ORDER_CONSTANTS.createOrder, async (payload, { rejectWithValue }) => {
   try {
-    const { token, ...body } = payload;
+    const { ...body } = payload;
 
     const url = new URL(
       API_ENDPOINTS.ORDER.Create,
       process.env.NEXT_PUBLIC_API_URL || process.env.APP_URL,
     );
 
-    const response = await fetcher<DataResponse<Order>>(url.toString(), {
+    const response = await authFetcher<DataResponse<Order>>(url.toString(), {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
       body: JSON.stringify({ ...body }),
     });
 
@@ -253,21 +232,18 @@ export const createOrder = createAsyncThunk<
 
 export const getMyOrder = createAsyncThunk<
   DataResponse<Order>,
-  { id: string; lang?: Locale | string; token: string; userId: string },
+  { id: string; lang?: Locale | string; userId: string | undefined },
   { rejectValue: BaseResponse }
 >(
   ORDER_CONSTANTS.getMyOrder,
-  async ({ id, lang = "en", token, userId }, { rejectWithValue }) => {
+  async ({ id, lang = LocaleEnum.EN, userId }, { rejectWithValue }) => {
     try {
       const url = new URL(`${API_ENDPOINTS.ORDER.GetMyOrder}/${userId}/${id}`);
 
       url.searchParams.set("lang", String(lang));
 
-      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Order>>(url.toString(), {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       if (!response.isSuccess) {
@@ -291,23 +267,18 @@ export const changeDeliveryStatus = createAsyncThunk<
     orderId: string;
     status: OrderDeliveryStatus;
     lang?: Locale | string;
-    token: string;
   },
   { rejectValue: BaseResponse }
 >(
   ORDER_CONSTANTS.changeDeliveryStatus,
-  async ({ orderId, status, lang = "en", token }, { rejectWithValue }) => {
+  async ({ orderId, status, lang = LocaleEnum.EN }, { rejectWithValue }) => {
     try {
       const url = new URL(
         API_ENDPOINTS.ORDER.ChangeDeliveryStatus.replace(":id", orderId),
       );
 
-      const response = await fetcher<DataResponse<Order>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Order>>(url.toString(), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ orderId, status, lang }),
       });
 

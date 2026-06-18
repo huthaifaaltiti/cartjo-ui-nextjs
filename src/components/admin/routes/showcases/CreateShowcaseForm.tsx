@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/form";
 import { showSuccessToast } from "@/components/shared/CustomToast";
 import LoadingButton from "@/components/shared/LoadingButton";
-import { User } from "@/types/user";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { validationConfig } from "@/config/validationConfig";
 import { isArabicLocale } from "@/config/locales.config";
@@ -38,10 +37,13 @@ import {
 } from "@/components/ui/select";
 import { useActiveTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintConfigsQuery";
 import RequestingDataLoader from "@/components/shared/RequestingDataLoader";
+import { authFetcher } from "@/utils/authFetcher";
+import { Showcase } from "@/types/showcase.type";
+import { DataResponse } from "@/types/service-response.type";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
-  activeTypeHintConfigsList: string[]
+  activeTypeHintConfigsList: string[] | null | undefined,
 ) => {
   const {
     titleMinChars,
@@ -61,18 +63,18 @@ const createFormSchema = (
         .min(titleMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_ar.minChars",
-            { min: titleMinChars }
+            { min: titleMinChars },
           ),
         })
         .max(titleMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_ar.maxChars",
-            { max: titleMaxChars }
+            { max: titleMaxChars },
           ),
         })
         .refine((val) => isArabicWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_ar.arabicCharsOnly"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_ar.arabicCharsOnly",
           ),
         }),
       title_en: z
@@ -80,18 +82,18 @@ const createFormSchema = (
         .min(titleMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_en.minChars",
-            { min: titleMinChars }
+            { min: titleMinChars },
           ),
         })
         .max(titleMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_en.maxChars",
-            { max: titleMaxChars }
+            { max: titleMaxChars },
           ),
         })
         .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_en.englishCharsOnly"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.title_en.englishCharsOnly",
           ),
         }),
       description_ar: z
@@ -99,18 +101,18 @@ const createFormSchema = (
         .min(descMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_ar.minChars",
-            { min: descMinChars }
+            { min: descMinChars },
           ),
         })
         .max(descMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_ar.maxChars",
-            { max: descMaxChars }
+            { max: descMaxChars },
           ),
         })
         .refine((val) => isArabicWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_ar.arabicCharsOnly"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_ar.arabicCharsOnly",
           ),
         }),
       description_en: z
@@ -118,18 +120,18 @@ const createFormSchema = (
         .min(descMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_en.minChars",
-            { min: descMinChars }
+            { min: descMinChars },
           ),
         })
         .max(descMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_en.maxChars",
-            { max: descMaxChars }
+            { max: descMaxChars },
           ),
         })
         .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_en.englishCharsOnly"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.description_en.englishCharsOnly",
           ),
         }),
       showAllButtonText_ar: z
@@ -137,18 +139,18 @@ const createFormSchema = (
         .min(linkBtnTextMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_ar.minChars",
-            { min: linkBtnTextMinChars }
+            { min: linkBtnTextMinChars },
           ),
         })
         .max(linkBtnTextMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_ar.maxChars",
-            { max: linkBtnTextMaxChars }
+            { max: linkBtnTextMaxChars },
           ),
         })
         .refine((val) => isArabicWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_ar.arabicCharsOnly"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_ar.arabicCharsOnly",
           ),
         }),
       showAllButtonText_en: z
@@ -156,18 +158,18 @@ const createFormSchema = (
         .min(linkBtnTextMinChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_en.minChars",
-            { min: linkBtnTextMinChars }
+            { min: linkBtnTextMinChars },
           ),
         })
         .max(linkBtnTextMaxChars, {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_en.maxChars",
-            { max: linkBtnTextMaxChars }
+            { max: linkBtnTextMaxChars },
           ),
         })
         .refine((val) => isEnglishWithNumOnly(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_en.englishCharsOnly"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonText_en.englishCharsOnly",
           ),
         }),
       showAllButtonLink: z
@@ -181,9 +183,9 @@ const createFormSchema = (
           {
             message: t(
               "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.minChars",
-              { min: linkMinChars }
+              { min: linkMinChars },
             ),
-          }
+          },
         )
         .refine(
           (val) => {
@@ -193,9 +195,9 @@ const createFormSchema = (
           {
             message: t(
               "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.maxChars",
-              { max: linkMaxChars }
+              { max: linkMaxChars },
             ),
-          }
+          },
         )
         .refine(
           (val) => {
@@ -210,22 +212,22 @@ const createFormSchema = (
           },
           {
             message: t(
-              "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.invalidUrl"
+              "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.showAllButtonLink.invalidUrl",
             ),
-          }
+          },
         ),
 
       type: z
         .string()
-        .refine((val) => activeTypeHintConfigsList.includes(val), {
+        .refine((val) => activeTypeHintConfigsList?.includes(val), {
           message: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid",
           ),
         }),
       startDate: z
         .date({
           invalid_type_error: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.startDate.invalid"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.startDate.invalid",
           ),
         })
         .nullable()
@@ -233,7 +235,7 @@ const createFormSchema = (
       endDate: z
         .date({
           invalid_type_error: t(
-            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.endDate.invalid"
+            "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.endDate.invalid",
           ),
         })
         .nullable()
@@ -247,7 +249,7 @@ const createFormSchema = (
             path: ["endDate"],
             code: "custom",
             message: t(
-              "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.endDate.mustBeAfterStart"
+              "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.endDate.mustBeAfterStart",
             ),
           });
         }
@@ -261,16 +263,16 @@ const CreateShowcaseForm = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { accessToken, queryKey } = useShowcases();
+  const { queryKey } = useShowcases();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
   const {
-    data: activeTypeHintConfigsList = [],
+    data: activeTypeHintConfigsList,
     isLoading: isActiveTypeHintConfigLoading,
     isFetching: isActiveTypeHintConfigFetching,
   } = useActiveTypeHintConfigsQuery();
 
-  const formSchema = createFormSchema(t, activeTypeHintConfigsList);
+  const formSchema = createFormSchema(t, activeTypeHintConfigsList?.data);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -290,35 +292,28 @@ const CreateShowcaseForm = () => {
 
   const registerMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const response = await fetch(API_ENDPOINTS.DASHBOARD.SHOWCASES.CREATE, {
-        method: "POST",
-        body: JSON.stringify({
-          ...data,
-          showAllButtonLink: `/search?typeHint=${data.type}`,
-          lang: locale,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+      const response = await authFetcher<DataResponse<Showcase>>(
+        API_ENDPOINTS.DASHBOARD.SHOWCASES.CREATE,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            ...data,
+            showAllButtonLink: `/search?typeHint=${data.type}`,
+            lang: locale,
+          }),
         },
-      });
+      );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-
+      if (!response?.isSuccess) {
         throw new Error(
-          errorData?.message ||
-            t("routes.dashboard.routes.showcases.errors.failedCreation")
+          response?.message ||
+            t("routes.dashboard.routes.showcases.errors.failedCreation"),
         );
       }
 
-      return response.json();
+      return response;
     },
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<Showcase>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -351,7 +346,7 @@ const CreateShowcaseForm = () => {
 
   const isFormTypeHintConfigsListLoading =
     (isActiveTypeHintConfigLoading || isActiveTypeHintConfigFetching) &&
-    activeTypeHintConfigsList?.length === 0;
+    activeTypeHintConfigsList?.data?.length === 0;
 
   return (
     <div className="space-y-6">
@@ -589,7 +584,7 @@ const CreateShowcaseForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {activeTypeHintConfigsList
+                        {activeTypeHintConfigsList?.data
                           ?.filter((th: string) => {
                             const toExclude = [
                               "static",

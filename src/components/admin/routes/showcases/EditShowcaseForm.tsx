@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/form";
 import { showSuccessToast } from "@/components/shared/CustomToast";
 import LoadingButton from "@/components/shared/LoadingButton";
-import { User } from "@/types/user";
 import { Showcase } from "@/types/showcase.type";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { validationConfig } from "@/config/validationConfig";
@@ -39,10 +38,12 @@ import {
 } from "@/components/ui/select";
 import { useActiveTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintConfigsQuery";
 import RequestingDataLoader from "@/components/shared/RequestingDataLoader";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
-  activeTypeHintConfigsList: string[],
+  activeTypeHintConfigsList: DataResponse<string[]> | undefined,
 ) => {
   const {
     titleMinChars,
@@ -209,7 +210,7 @@ const editFormSchema = (
 
       type: z
         .string()
-        .refine((val) => activeTypeHintConfigsList.includes(val), {
+        .refine((val) => activeTypeHintConfigsList?.data?.includes(val), {
           message: t(
             "routes.dashboard.routes.showcases.components.CreateShowcaseForm.validations.type.invalid",
           ),
@@ -253,11 +254,11 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { accessToken, queryKey } = useShowcases();
+  const { queryKey } = useShowcases();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
   const {
-    data: activeTypeHintConfigsList = [],
+    data: activeTypeHintConfigsList,
     isLoading: isActiveTypeHintConfigLoading,
     isFetching: isActiveTypeHintConfigFetching,
   } = useActiveTypeHintConfigsQuery();
@@ -275,41 +276,31 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
       showAllButtonText_en: showcase?.showAllButtonText?.en || "",
       showAllButtonLink: showcase?.showAllButtonLink || "",
       type: showcase?.type || "",
-      startDate:new Date( showcase?.startDate) || null,
+      startDate: new Date(showcase?.startDate) || null,
       endDate: new Date(showcase?.endDate) || null,
     },
   });
 
   const registerMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const response = await fetch(
+      const response = await authFetcher<DataResponse<Showcase>>(
         `${API_ENDPOINTS.DASHBOARD.SHOWCASES.EDIT}/${showcase?._id}`,
         {
           method: "PUT",
           body: JSON.stringify({ ...data, lang: locale }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
         },
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-
+      if (!response?.isSuccess) {
         throw new Error(
-          errorData?.message ||
+          response?.message ||
             t("routes.dashboard.routes.showcases.errors.failedCreation"),
         );
       }
 
-      return response.json();
+      return response;
     },
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<Showcase>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -342,7 +333,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
 
   const isFormTypeHintConfigsListLoading =
     (isActiveTypeHintConfigLoading || isActiveTypeHintConfigFetching) &&
-    activeTypeHintConfigsList?.length === 0;
+    activeTypeHintConfigsList?.data?.length === 0;
 
   return (
     <div className="space-y-6">
@@ -580,7 +571,7 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {activeTypeHintConfigsList?.map((th, i) => (
+                        {activeTypeHintConfigsList?.data?.map((th, i) => (
                           <SelectItem
                             key={`TypeHintItem_${i}`}
                             value={th}

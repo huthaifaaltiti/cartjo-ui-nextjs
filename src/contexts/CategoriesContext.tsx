@@ -1,122 +1,77 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useState } from "react";
-
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
 import { BaseResponse } from "@/types/service-response.type";
+import { authFetcher } from "@/utils/authFetcher";
+import { CATEGORIES_KEY } from "@/hooks/react-query/query-options/categories";
 
 type CategoriesContextType = {
   queryKey: string;
   searchQuery: string;
-  accessToken: string | null;
   setSearchQuery: (searchQuery: string) => void;
-  deleteCategory: (
-    token: string | null,
-    catId: string,
-    lang: Locale
-  ) => Promise<BaseResponse>;
-  unDeleteCategory: (
-    token: string | null,
-    catId: string,
-    lang: Locale
-  ) => Promise<BaseResponse>;
+  deleteCategory: (catId: string, lang: Locale) => Promise<BaseResponse>;
+  unDeleteCategory: (catId: string, lang: Locale) => Promise<BaseResponse>;
   switchCategoryActiveStatus: (
-    token: string | null,
     lang: Locale | string,
     isActive: boolean,
-    catId: string
+    catId: string,
   ) => Promise<BaseResponse>;
 };
 
 type CategoriesContextProviderType = {
-  accessToken: string | null;
   children: ReactNode;
 };
 
 const CategoriesContext = createContext<undefined | CategoriesContextType>(
-  undefined
+  undefined,
 );
 
 export const CategoriesContextProvider = ({
-  accessToken,
   children,
 }: CategoriesContextProviderType) => {
-  const queryKey: string = "categories";
+  const queryKey: string = CATEGORIES_KEY;
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const deleteCategory = async (
-    token: string | null,
     catId: string,
-    lang: Locale
+    lang: Locale,
   ): Promise<BaseResponse> => {
-    const res = await fetch(
+    return await authFetcher(
       `${API_ENDPOINTS.DASHBOARD.CATEGORIES.DELETE}/${catId}`,
       {
         method: "DELETE",
         body: JSON.stringify({ lang }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+      },
     );
-
-    if (!res.ok) {
-      throw new Error("Failed to delete category");
-    }
-
-    const resJson = await res.json();
-    return resJson;
   };
 
   const unDeleteCategory = async (
-    token: string | null,
     catId: string,
-    lang: Locale
+    lang: Locale,
   ): Promise<BaseResponse> => {
-    const res = await fetch(
+    return await authFetcher(
       `${API_ENDPOINTS.DASHBOARD.CATEGORIES.UN_DELETE}/${catId}`,
       {
         method: "DELETE",
         body: JSON.stringify({ lang }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+      },
     );
-
-    if (!res.ok) {
-      throw new Error("Failed to un-delete category");
-    }
-
-    const resJson = await res.json();
-    return resJson;
   };
 
   const switchCategoryActiveStatus = async (
-    token: string | null,
     lang: Locale | string,
     isActive: boolean,
-    catId: string
+    catId: string,
   ): Promise<BaseResponse> => {
-    const res = await fetch(
+    return await authFetcher(
       `${API_ENDPOINTS.DASHBOARD.CATEGORIES.SWITCH_ACTIVE_STATUS}/${catId}`,
       {
         method: "PUT",
         body: JSON.stringify({ lang, isActive }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+      },
     );
-
-    if (!res.ok) throw new Error("Could not switch active status");
-
-    const resJson = await res.json();
-    return resJson;
   };
 
   return (
@@ -124,7 +79,6 @@ export const CategoriesContextProvider = ({
       value={{
         queryKey,
         searchQuery,
-        accessToken,
         setSearchQuery,
         deleteCategory,
         unDeleteCategory,
@@ -141,7 +95,7 @@ export const useCategories = () => {
 
   if (context === undefined)
     throw new Error(
-      "Categories context should be used within categories context provider"
+      "Categories context should be used within categories context provider",
     );
 
   return context;

@@ -8,7 +8,6 @@ import { PaymentData, VerifiedOrder } from "@/types/payment.types";
 // import { SubmitPaymentResponse } from "./PaymentForm";
 
 interface PaymentInitializerProps {
-  accessToken: string | null;
   email: string | undefined | null;
   totalAmount: number;
   orderEncrypted: string | null;
@@ -19,7 +18,6 @@ interface PaymentInitializerProps {
 }
 
 export default function PaymentInitializer({
-  accessToken,
   // email,
   // totalAmount,
   orderEncrypted,
@@ -30,15 +28,12 @@ export default function PaymentInitializer({
 }: PaymentInitializerProps) {
   // 1) Create signature
   useEffect(() => {
-    if (!accessToken) return;
-
     const init = async () => {
       // const url = new URL(API_ENDPOINTS.CHECKOUT.PROCESS_PAYMENT);
 
       try {
         // const resp = await fetcher<SubmitPaymentResponse>(
         //   url.toString(),
-
         //   {
         //     method: "POST",
         //     headers: {
@@ -53,27 +48,24 @@ export default function PaymentInitializer({
         //     }),
         //   }
         // );
-
         // if (resp?.isSuccess && resp.data) {
         //   setPaymentData(resp?.data);
-
         //   const url = new URL(resp.data.return_url);
         //   const encrypted = url.searchParams.get("order");
-
         //   setOrderEncrypted(encrypted);
         // }
       } catch (err) {
         setError("Failed to initialize payment.");
-        console.log({err})
+        console.log({ err });
       }
     };
 
     init();
-  }, [accessToken]);
+  }, [setError]);
 
   // 2) Verify encrypted order
   useEffect(() => {
-    if (!orderEncrypted || !accessToken) return;
+    if (!orderEncrypted) return;
 
     const verify = async () => {
       // const url = new URL(API_ENDPOINTS.CHECKOUT.VERIFY_PAYMENT);
@@ -87,16 +79,15 @@ export default function PaymentInitializer({
         //   },
         //   body: JSON.stringify({ encryptedOrder: orderEncrypted }),
         // });
-
         // if (resp?.isSuccess) setVerifiedOrder(resp.data);
       } catch (err) {
         setError("Failed to verify payment.");
-        console.log({err})
+        console.log({ err });
       }
     };
 
     verify();
-  }, [orderEncrypted]);
+  }, [orderEncrypted, setError]);
 
   return null;
 }

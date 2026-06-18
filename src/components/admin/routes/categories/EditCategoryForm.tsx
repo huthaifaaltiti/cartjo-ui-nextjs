@@ -24,7 +24,6 @@ import ImageUploader, {
 } from "@/components/shared/ImageUploader";
 import { useCategories } from "@/contexts/CategoriesContext";
 import LoadingButton from "@/components/shared/LoadingButton";
-import { User } from "@/types/user";
 import { Category } from "@/types/category.type";
 import { isArabicLocale } from "@/config/locales.config";
 import { validationConfig } from "@/config/validationConfig";
@@ -34,6 +33,8 @@ import { invalidateQuery } from "@/utils/queryUtils";
 import { MEDIA_CONFIG } from "@/config/media.config";
 import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -103,7 +104,7 @@ const EditCategoryForm = ({ category }: Props) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { accessToken, queryKey } = useCategories();
+  const { queryKey } = useCategories();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
@@ -183,29 +184,26 @@ const EditCategoryForm = ({ category }: Props) => {
         formData.append("image_en", categoryImage_en.file);
       }
 
-      const response = await fetch(
+      const response = await authFetcher<DataResponse<Category>>(
         `${API_ENDPOINTS.DASHBOARD.CATEGORIES.EDIT}/${category?._id}`,
         {
           method: "PUT",
           body: formData,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
         },
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.message || "Category update failed");
+      if (!response.isSuccess) {
+        throw new Error(
+          response?.message ||
+            t(
+              "routes.dashboard.routes.categories.createCategory.creationFailed",
+            ),
+        );
       }
 
-      return response.json();
+      return response;
     },
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<Category>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),

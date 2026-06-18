@@ -8,11 +8,10 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { DataResponse } from "@/types/service-response.type";
 import { User } from "@/types/user";
-import { fetcher } from "@/utils/fetcher";
+import { authFetcher } from "@/utils/authFetcher";
 import { useTranslations } from "next-intl";
 import { createContext, ReactNode, useContext, useState } from "react";
 
-// Define form value types
 type ContactFormValues = {
   email: string;
   phoneNumber: string;
@@ -66,7 +65,7 @@ export const UserProfileContextProvider = ({
   children,
 }: UserProfileContextProviderProps) => {
   const t = useTranslations();
-  const { accessToken, userId, locale } = useAuthContext();
+  const { userId, locale } = useAuthContext();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [contactForm, setContactForm] = useState<
@@ -118,14 +117,13 @@ export const UserProfileContextProvider = ({
 
       setIsSubmitting(true);
 
-      const response = await fetcher<DataResponse<User>>(new URL(url), {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
+      const response = await authFetcher<DataResponse<User>>(
+        new URL(url).toString(),
+        {
+          method: "PUT",
+          body: JSON.stringify(body),
         },
-        body: JSON.stringify(body),
-      });
+      );
 
       if (response.isSuccess) {
         showSuccessToast({

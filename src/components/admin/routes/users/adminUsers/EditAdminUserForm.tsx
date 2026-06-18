@@ -25,38 +25,39 @@ import { User } from "@/types/user";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicLocale } from "@/config/locales.config";
+import { authFetcher } from "@/utils/authFetcher";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
     firstName: z.string().min(2, {
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.firstName.min"
+        "routes.auth.components.AuthTabs.components.register.validations.firstName.min",
       ),
     }),
     lastName: z.string().min(2, {
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.lastName.min"
+        "routes.auth.components.AuthTabs.components.register.validations.lastName.min",
       ),
     }),
     phoneNumber: z.string().regex(/^7[789]\d{7}$/, {
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.pattern"
+        "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.pattern",
       ),
     }),
     email: z.string().email({
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.email.invalid"
+        "routes.auth.components.AuthTabs.components.register.validations.email.invalid",
       ),
     }),
     password: z.string().min(6, {
       message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.password.min"
+        "routes.auth.components.AuthTabs.components.register.validations.password.min",
       ),
     }),
     termsAccepted: z.literal(true, {
       errorMap: () => ({
         message: t(
-          "routes.auth.components.AuthTabs.components.register.validations.termsAccepted.required"
+          "routes.auth.components.AuthTabs.components.register.validations.termsAccepted.required",
         ),
       }),
     }),
@@ -66,11 +67,10 @@ const createFormSchema = (t: (key: string) => string) =>
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 
 interface EditAdminUserFormProps {
-  accessToken: string | null;
   user: User;
 }
 
-const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
+const EditAdminUserForm = ({ user }: EditAdminUserFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
@@ -132,23 +132,16 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
         formData.append("profilePic", img);
       }
 
-      const response = await fetch(
-        `${API_ENDPOINTS.DASHBOARD.USERS.UPDATE_ADMIN}/${user?._id}`,
-        {
-          method: "PUT",
-          body: formData,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await authFetcher<{
+        isSuccess: boolean;
+        message: string;
+        user: User;
+      }>(`${API_ENDPOINTS.DASHBOARD.USERS.UPDATE_ADMIN}/${user?._id}`, {
+        method: "PUT",
+        body: formData,
+      });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.message || "Registration failed");
-      }
-
-      return response.json();
+      return response;
     },
     onSuccess: (data: { isSuccess: boolean; message: string; user: User }) => {
       if (data?.isSuccess) {
@@ -223,14 +216,14 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.firstName.label"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.firstName.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.firstName.placeholder"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.firstName.placeholder",
                         )}
                         {...field}
                       />
@@ -249,14 +242,14 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.lastName.label"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.lastName.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.lastName.placeholder"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.lastName.placeholder",
                         )}
                         {...field}
                       />
@@ -278,14 +271,14 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.label"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.label",
                       )}
                     </FormLabel>
                     <FormControl>
                       <Input
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.placeholder"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.phoneNumber.placeholder",
                         )}
                         {...field}
                       />
@@ -304,7 +297,7 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
                   <FormItem className={getFormItemClassName()}>
                     <FormLabel className="text-sm font-normal">
                       {t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.email.label"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.email.label",
                       )}
                     </FormLabel>
                     <FormControl>
@@ -312,7 +305,7 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
                         type="email"
                         className={getInputClassName()}
                         placeholder={t(
-                          "routes.auth.components.AuthTabs.components.register.dataSet.email.placeholder"
+                          "routes.auth.components.AuthTabs.components.register.dataSet.email.placeholder",
                         )}
                         {...field}
                       />
@@ -332,7 +325,7 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
               <FormItem className={getFormItemClassName()}>
                 <FormLabel className="text-sm font-normal">
                   {t(
-                    "routes.auth.components.AuthTabs.components.register.dataSet.password.label"
+                    "routes.auth.components.AuthTabs.components.register.dataSet.password.label",
                   )}
                 </FormLabel>
                 <FormControl>
@@ -340,10 +333,10 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
                     <Input
                       type={showPassword ? "text" : "password"}
                       className={getInputClassName(
-                        isArabic ? "pl-10" : "pr-10"
+                        isArabic ? "pl-10" : "pr-10",
                       )}
                       placeholder={t(
-                        "routes.auth.components.AuthTabs.components.register.dataSet.password.placeholder"
+                        "routes.auth.components.AuthTabs.components.register.dataSet.password.placeholder",
                       )}
                       {...field}
                     />
@@ -392,7 +385,7 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
                     className="text-sm font-normal cursor-pointer"
                   >
                     {t(
-                      "routes.auth.components.AuthTabs.components.register.dataSet.marketingEmails.label"
+                      "routes.auth.components.AuthTabs.components.register.dataSet.marketingEmails.label",
                     )}
                   </FormLabel>
                 </FormItem>
@@ -421,7 +414,7 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
                     className="text-sm font-normal cursor-pointer"
                   >
                     {t(
-                      "routes.auth.components.AuthTabs.components.register.dataSet.termsAccepted.label"
+                      "routes.auth.components.AuthTabs.components.register.dataSet.termsAccepted.label",
                     )}
                   </FormLabel>
                   <FormMessage />
@@ -438,7 +431,7 @@ const EditAdminUserForm = ({ accessToken, user }: EditAdminUserFormProps) => {
             {registerMutation.isPending
               ? t("general.loadingStates.loadingApi")
               : t(
-                  "routes.auth.components.AuthTabs.components.register.actions.proceed"
+                  "routes.auth.components.AuthTabs.components.register.actions.proceed",
                 )}
           </Button>
         </form>

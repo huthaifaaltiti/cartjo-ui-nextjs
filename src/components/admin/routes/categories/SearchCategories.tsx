@@ -2,7 +2,6 @@
 
 import { memo } from "react";
 import { useTranslations } from "next-intl";
-
 import { useCategories } from "@/contexts/CategoriesContext";
 import SearchBar from "@/components/shared/SearchBar";
 
@@ -14,7 +13,7 @@ const SearchCategories = () => {
     <div className="w-full px-2 md:px-0">
       <SearchBar
         placeholder={t(
-          "routes.dashboard.routes.categories.components.SearchBar.placeholder"
+          "routes.dashboard.routes.categories.components.SearchBar.placeholder",
         )}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}

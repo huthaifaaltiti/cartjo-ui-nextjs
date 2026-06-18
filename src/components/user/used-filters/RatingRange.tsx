@@ -53,7 +53,7 @@ const RatingRange = ({
     setFromValue(defaultRange.from);
     setRatingFrom(defaultRange.from);
     onApplyFilter?.(defaultRange.from);
-  }, [setRatingFrom, onApplyFilter]);
+  }, [setRatingFrom, onApplyFilter, defaultRange.from]);
 
   return (
     <div className="w-auto flex items-center gap-2">
@@ -64,14 +64,13 @@ const RatingRange = ({
             size="sm"
             className={`flex items-center gap-2 h-8 px-3 ${
               isActiveFilter ? "border-[2px] border-primary-500" : ""
-            }`} 
+            }`}
           >
             <Star className="w-4 h-4 text-secondary-900" />
             <span className="text-sm text-secondary-900">
               {t("components.filters.RatingRange.rating")}
             </span>
           </Button>
-
         </PopoverTrigger>
 
         <PopoverContent className="w-80 p-4 space-y-6">

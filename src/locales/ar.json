@@ -670,7 +670,11 @@
         "users": {
           "title": "إدارة المستخدمين",
           "desc": "إدارة بيانات المستخدمين",
+          "noData": "لا يوجد بيانات للبحث: {search}",
           "components": {
+            "UsersPageContainer": {
+              "noData": "بيانات المستخدمين غير متاحة حاليا"
+            },
             "DashboardUsersStatCards": {
               "totalUsers": "إجمالي المستخدمين",
               "activeUsers": "المستخدمون النشطون",
@@ -980,6 +984,11 @@
         "products": {
           "title": "إدارة المنتجات",
           "desc": "إدارة بيانات المنتجات",
+          "errors": {
+            "failedLoadData": "فشل تحميل المنتجات",
+            "failedCreation": "فشل إنشاء المنتج",
+            "failedEdit": "فشل تعديل المنتج"
+          },
           "createProduct": {
             "label": "إنشاء منتج",
             "uploadImage": "تحميل صورة المنتج"
@@ -1553,6 +1562,7 @@
         "showcases": {
           "title": "إدارة العروض",
           "desc": "إدارة بيانات العروض",
+          "failed": "فشل تحميل العروض",
           "createShowcase": {
             "label": "إنشاء عرض",
             "actionFailed": "فشل إنشاء العرض"
@@ -1964,6 +1974,9 @@
           "components": {
             "SearchBar": {
               "placeholder": "ابحث عن رقم المعاملة، البريد الإلكتروني، رقم المرجع، أو رقم المستخدم"
+            },
+            "OrdersList": {
+              "noData": "لا يوجد طلبات لعرضها"
             },
             "OrderCard": {
               "status": {

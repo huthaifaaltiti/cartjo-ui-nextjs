@@ -20,19 +20,16 @@ type ProductCardActionsProps = {
   isDeleted: boolean;
   isActive: boolean;
   deleteFn: (
-    token: string | null,
     locale: string,
     prodId: string,
     varId: string,
   ) => Promise<BaseResponse>;
   unDeleteFn: (
-    token: string | null,
     lang: string,
     prodId: string,
     varId: string,
   ) => Promise<BaseResponse>;
   switchActiveStatusFn: (
-    token: string | null,
     lang: string,
     isActive: boolean,
     prodId: string,
@@ -49,7 +46,7 @@ const ProductCardActions = ({
   unDeleteFn,
   switchActiveStatusFn,
 }: ProductCardActionsProps) => {
-  const { token, queryKey } = useProducts();
+  const { queryKey } = useProducts();
   const t = useTranslations();
   const locale = useLocale();
   const queryClient = useQueryClient();
@@ -59,7 +56,7 @@ const ProductCardActions = ({
   const handleDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await deleteFn(token, locale, productId, variantId);
+      const resp = await deleteFn(locale, productId, variantId);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -77,12 +74,12 @@ const ProductCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, token, variantId, productId, queryClient, queryKey, t]);
+  }, [deleteFn, variantId, productId, queryClient, queryKey, locale, t]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await unDeleteFn(token, locale, productId, variantId);
+      const resp = await unDeleteFn(locale, productId, variantId);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -100,13 +97,12 @@ const ProductCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, token, variantId, productId, queryClient, queryKey, t]);
+  }, [unDeleteFn, variantId, productId, queryClient, queryKey, locale, t]);
 
   const handleToggleActiveStatus = useCallback(async () => {
     setIsLoading(true);
     try {
       const resp = await switchActiveStatusFn(
-        token,
         locale,
         !isActive,
         productId,
@@ -131,7 +127,7 @@ const ProductCardActions = ({
     }
   }, [
     switchActiveStatusFn,
-    token,
+
     locale,
     isActive,
     queryClient,

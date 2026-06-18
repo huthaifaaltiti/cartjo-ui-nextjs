@@ -1,19 +1,28 @@
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
-import { fetchTypeHintConfigs } from "@/hooks/react-query/useTypeHintConfigsQuery";
 import TypeHintConfigsPage from "@/components/admin/routes/typeHintConfigs/TypeHintConfigsPage";
 import { requireAuth } from "@/utils/authRedirect";
+import { PageProps } from "@/types/common";
+import { getAccessToken } from "@/lib/tokens.server";
+import { getQueryClient } from "@/utils/queryUtils";
+import { prefetchDashboardTypeHintConfigsData } from "@/services/prefetch/dashboard/typeHintConfigs";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-const Page = async () => {
-  const token = await getAccessTokenFromServerSession();
-  requireAuth(token)
+const Page = async ({ params }: PageProps) => {
+  const { locale } = await params;
 
-  const { data } = await fetchTypeHintConfigs({
-    token,
-    limit: PAGINATION_LIMITS.TYPE_HINT_CONFIGS,
-  });
+  const token = await getAccessToken();
+  requireAuth(token);
 
-  return <TypeHintConfigsPage data={data} token={token} />;
+  const queryClient = getQueryClient();
+
+  await prefetchDashboardTypeHintConfigsData({ queryClient, locale });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <TypeHintConfigsPage />
+    </HydrationBoundary>
+  );
 };
 
 export default Page;

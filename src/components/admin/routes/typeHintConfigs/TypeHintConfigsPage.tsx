@@ -1,20 +1,14 @@
 import { memo } from "react";
 import { TypeHintConfigContextProvider } from "@/contexts/TypeHintConfig.context";
-import { TypeHintConfig } from "@/types/typeHintConfig.type";
 import SearchTypeHintConfigs from "./SearchTypeHintConfigs";
 import ModalCreateButton from "@/components/shared/ModalCreateButton";
 import { Blocks } from "lucide-react";
 import CreateTypeHintConfigForm from "./CreateTypeHintConfigForm";
 import TypeHintConfigsList from "./TypeHintConfigsList";
 
-type TypeHintConfigsPageProps = {
-  data: TypeHintConfig[];
-  token: string | null;
-};
-
-const TypeHintConfigsPage = ({ data, token }: TypeHintConfigsPageProps) => {
+const TypeHintConfigsPage = () => {
   return (
-    <TypeHintConfigContextProvider token={token}>
+    <TypeHintConfigContextProvider>
       <div className="w-full flex flex-col items-start gap-1 md:flex-row md:items-center md:justify-between md:gap-5 mb-3">
         <SearchTypeHintConfigs />
         <ModalCreateButton
@@ -23,7 +17,7 @@ const TypeHintConfigsPage = ({ data, token }: TypeHintConfigsPageProps) => {
           ModalContent={<CreateTypeHintConfigForm />}
         />
       </div>
-      <TypeHintConfigsList initialData={data} />
+      <TypeHintConfigsList />
     </TypeHintConfigContextProvider>
   );
 };

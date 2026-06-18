@@ -1,16 +1,25 @@
-import { getServerSession } from "next-auth";
 import UsersPageContainer from "@/components/admin/routes/users/UsersPageContainer";
-import { authOptions, CustomSession } from "@/lib/authOptions";
-import { fetchUsersStats } from "@/hooks/react-query/useUsersStats";
-import { ExtendedSession } from "@/types/session";
 import { requireAuth } from "@/utils/authRedirect";
+import { getAccessToken } from "@/lib/tokens.server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { PageProps } from "@/types/common";
+import { getQueryClient } from "@/utils/queryUtils";
+import { prefetchDashboardUsersData } from "@/services/prefetch/dashboard/users";
 
-export default async function UsersPage() {
-  const session = (await getServerSession(authOptions)) as ExtendedSession;
-  const accessToken = (session as CustomSession)?.accessToken;
-  requireAuth(accessToken);
+export default async function UsersPage({ params }: PageProps) {
+  const { locale } = await params;
 
-  const { stats } = await fetchUsersStats(accessToken);
+  const token = await getAccessToken();
+  requireAuth(token);
 
-  return <UsersPageContainer stats={stats} />;
+  const queryClient = getQueryClient();
+  await prefetchDashboardUsersData({ queryClient, locale });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <UsersPageContainer />
+    </HydrationBoundary>
+  );
 }

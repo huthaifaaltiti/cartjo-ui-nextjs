@@ -2,22 +2,24 @@
 
 import { memo } from "react";
 import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import { ExtendedSession } from "@/types/session";
 import UserAvatarByName from "@/components/shared/UserAvatarByName";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import UserInfoRowSkeleton from "./UserInfoRowSkeleton";
 import UserInfoNoData from "./UserInfoNoData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const UserInfoRow = () => {
   const t = useTranslations();
-  const { data: sessionData, status } = useSession();
-  const session = sessionData as ExtendedSession | null;
 
-  const showLoader = status === "loading";
-  const showData = status === "authenticated" && session;
-  const showError = status === "unauthenticated";
-  const showNoData = status === "authenticated" && !session;
+  const { session, loading, isAuthenticated } = useSelector(
+    (state: RootState) => state.authentication,
+  );
+
+  const showLoader = loading;
+  const showData = session;
+  const showError = !loading && !session;
+  const showNoData = isAuthenticated && !session;
 
   const containerClass = "w-full min-w-10";
 
@@ -48,7 +50,7 @@ const UserInfoRow = () => {
   }
 
   if (showData) {
-    const { firstName, lastName, email } = session?.user;
+    const { firstName, lastName, email } = session;
 
     return (
       <div className={containerClass}>

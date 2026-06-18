@@ -15,7 +15,7 @@ import RecommendedProducts from "./recommended-products/RecommendedProducts";
 const ProductDetailsPage = ({ productId }: { productId: string }) => {
   const t = useTranslations();
   const { data, isLoading, isFetching, isFetched, isError, error } =
-    useProductQuery({ lang: "en", productId });
+    useProductQuery({ productId });
 
   const product = useMemo(() => {
     const p = data?.data;

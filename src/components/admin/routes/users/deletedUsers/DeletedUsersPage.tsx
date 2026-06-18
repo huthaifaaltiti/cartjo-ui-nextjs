@@ -1,24 +1,14 @@
 import { memo } from "react";
 import { DeletedUsersContextProvider } from "@/contexts/DeletedUsersContext";
-import { User } from "@/types/user";
 import SearchDeletedUsers from "./SearchDeletedUsers";
 import DeletedUsersList from "./DeletedUsersList";
 
-interface DeletedUsersPageProps {
-  initialUsers: User[];
-  accessToken: string | null;
-}
-
-const DeletedUsersPage = ({
-  initialUsers,
-  accessToken,
-}: DeletedUsersPageProps) => {
+const DeletedUsersPage = () => {
   return (
-    <DeletedUsersContextProvider accessToken={accessToken}>
+    <DeletedUsersContextProvider>
       <SearchDeletedUsers />
-
       <div className="w-full mt-3">
-        <DeletedUsersList initialUsers={initialUsers} />
+        <DeletedUsersList />
       </div>
     </DeletedUsersContextProvider>
   );

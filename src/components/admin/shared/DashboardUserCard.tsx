@@ -10,20 +10,12 @@ import DashboardUserCardActions from "./DashboardUserCardActions";
 
 export type UserCardProps = {
   user: User;
-  deleteUser: (
-    accessToken: string | null,
-    userId: string
-  ) => Promise<DeleteUserResponse>;
-  unDeleteUser: (
-    accessToken: string | null,
-    userId: string
-  ) => Promise<UnDeleteUserResponse>;
-  accessToken: string | null;
+  deleteUser: (userId: string) => Promise<DeleteUserResponse>;
+  unDeleteUser: (userId: string) => Promise<UnDeleteUserResponse>;
   switchUserActiveStatus: (
-    token: string | null,
     lang: Locale | string,
     isActive: boolean,
-    userId: string
+    userId: string,
   ) => Promise<SwitchUserActiveStatusResponse>;
   queryKey: string;
 };
@@ -32,7 +24,6 @@ const DashboardUserCard = ({
   user,
   deleteUser,
   unDeleteUser,
-  accessToken,
   switchUserActiveStatus,
   queryKey,
 }: UserCardProps) => {
@@ -82,7 +73,6 @@ const DashboardUserCard = ({
             user={user}
             deleteUser={deleteUser}
             unDeleteUser={unDeleteUser}
-            accessToken={accessToken}
             switchUserActiveStatus={switchUserActiveStatus}
             queryKey={queryKey}
           />

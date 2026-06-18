@@ -1,11 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { useSession } from "next-auth/react";
-import PaymentInitializer from "./PaymentInitializer";
 import OrderSummary from "./OrderSummary";
 import { PaymentData } from "@/types/payment.types";
 import CardsPayment from "./CardsPayment";
@@ -15,15 +12,21 @@ import { PaymentMethods } from "@/enums/paymentMethods.enum";
 import { useCartQuery } from "@/hooks/react-query/useCartQuery";
 import { setCartItems } from "@/redux/slices/cart";
 import { CartItem } from "@/types/cartItem.type";
+import PageLoader from "@/components/shared/PageLoader";
+import NoCartItems from "../cart/NoCartItems";
+import ErrorMessage from "@/components/shared/ErrorMessage";
+import { useTranslations } from "next-intl";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import AuthRedirect from "@/components/shared/AuthRedirect";
 
 export default function PaymentCheckoutPageClient() {
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
-  const { totalAmount } = useSelector((state: RootState) => state.cart);
+  const { isSessionLoading, isAuthenticated } = useAuthContext();
 
-  const { data } = useCartQuery();
+  const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
-  const { data: sessionData } = useSession();
-  const { accessToken } = useAuthContext();
+  const { data, isLoading, isError, error } = useCartQuery();
 
   const fetchedItems = useMemo(
     () => data?.pages?.flatMap((page) => page?.data?.items || []) ?? [],
@@ -42,9 +45,9 @@ export default function PaymentCheckoutPageClient() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethods>(
     PaymentMethods.Cash,
   );
-  const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
-  const [orderEncrypted, setOrderEncrypted] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [paymentData] = useState<PaymentData | null>(null);
+  // const [orderEncrypted, setOrderEncrypted] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (fetchedItems.length > 0) {
@@ -59,47 +62,66 @@ export default function PaymentCheckoutPageClient() {
     }
   }, [fetchedItems, cartSummary, dispatch]);
 
-  return (
-    <>
-      <PaymentInitializer
-        accessToken={accessToken}
-        email={sessionData?.user?.email}
-        totalAmount={totalAmount}
-        setPaymentData={setPaymentData}
-        setOrderEncrypted={setOrderEncrypted}
-        setVerifiedOrder={() => {}}
-        setError={setError}
-        orderEncrypted={orderEncrypted}
-      />
+  const showLoader = isLoading || isSessionLoading;
+  const showData = (cartItems as CartItem[])?.length !== 0;
+  const showNoData = !cartItems || (cartItems as CartItem[])?.length === 0;
 
+
+  if (showLoader) return <PageLoader />;
+
+  if (!isAuthenticated) {
+    return <AuthRedirect redirectLocation="/checkout" />;
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full min-h-[50vh] flex items-center justify-center">
+        <ErrorMessage
+          message={error?.message || t("routes.checkout.errors.failedLoadData")}
+        />
+      </div>
+    );
+  }
+
+  if (showNoData) {
+    return <NoCartItems />;
+  }
+
+  if (showData) {
+    return (
       <div className="min-h-screen py-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <PaymentMethodSelector
-                  selected={paymentMethod}
-                  onChange={(val) => setPaymentMethod(val)}
-                />
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* <PaymentInitializer
+            accessToken={accessToken}
+            email={sessionData?.user?.email}
+            totalAmount={totalAmount}
+            setPaymentData={setPaymentData}
+            setOrderEncrypted={setOrderEncrypted}
+            setVerifiedOrder={() => {}}
+            setError={setError}
+            orderEncrypted={orderEncrypted}
+          /> */}
 
-                {error && (
-                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-red-800 text-sm">{error}</p>
-                  </div>
-                )}
+          {/* LEFT */}
+          <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+            <PaymentMethodSelector
+              selected={paymentMethod}
+              onChange={setPaymentMethod}
+            />
 
-                {paymentMethod === PaymentMethods.Card && <CardsPayment />}
-                {paymentMethod === PaymentMethods.Cash && <CashPayment />}
-                {paymentData && <div>paymentData</div>}
-              </div>
-            </div>
+            {paymentMethod === PaymentMethods.Card && <CardsPayment />}
+            {paymentMethod === PaymentMethods.Cash && <CashPayment />}
+            {paymentData && <div>paymentData</div>}
+          </div>
 
-            <div className="lg:col-span-1">
-              <OrderSummary />
-            </div>
+          {/* RIGHT */}
+          <div className="lg:col-span-1">
+            <OrderSummary />
           </div>
         </div>
       </div>
-    </>
-  );
+    );
+  }
+
+  return null;
 }

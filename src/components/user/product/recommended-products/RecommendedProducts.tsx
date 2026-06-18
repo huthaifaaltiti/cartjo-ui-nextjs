@@ -8,7 +8,7 @@ import { getQueryUIState } from "@/utils/uiStateHelpers";
 import RecommendedProductsLoading from "./RecommendedProductsLoading";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import RecProductsData from "./RecProductsData";
-import { SUGGESTED_PRODUCTS_LIMIT } from "@/config/product.config";
+import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 
 interface RecommendedProductsProps {
   title?: string;
@@ -24,7 +24,11 @@ const RecommendedProducts = ({
   const locale = useLocale();
   const t = useTranslations();
   const { data, isLoading, isFetching, isFetched, isError, error } =
-    useSuggestedProductQuery(locale, SUGGESTED_PRODUCTS_LIMIT, productId);
+    useSuggestedProductQuery(
+      locale,
+      PAGINATION_LIMITS.OTHERS.PUBLIC_SUGGESTED_PRODUCTS_ITEMS ?? 4,
+      productId,
+    );
 
   const products = useMemo(() => {
     if (!data?.data) return [];

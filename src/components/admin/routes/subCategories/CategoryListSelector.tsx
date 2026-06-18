@@ -1,12 +1,8 @@
 "use client";
 
 import { memo } from "react";
-import { useLocale, useTranslations } from "next-intl";
-
+import { useTranslations } from "next-intl";
 import { Category } from "@/types/category.type";
-
-import { isArabicLocale } from "@/config/locales.config";
-
 import {
   Select,
   SelectContent,
@@ -15,16 +11,19 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useSubCategories } from "@/contexts/SubCategoriesContext";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 
-type CategoriesListProps = {
-  categoriesList: Category[];
-};
-
-const CategoryListSelector = ({ categoriesList }: CategoriesListProps) => {
-  const { selectedCatId, setSelectedCatId } = useSubCategories();
-  const locale = useLocale();
+const CategoryListSelector = () => {
   const t = useTranslations();
-  const isArabic = isArabicLocale(locale);
+
+  const { isArabic } = useSelector((state: RootState) => state.general);
+
+  const { selectedCatId, setSelectedCatId } = useSubCategories();
+  const { data } = useCategoriesQuery("");
+  const categoriesList: Category[] =
+    data?.pages.flatMap((page) => page.data) || [];
 
   return (
     <div className="w-full md:max-w-sm px-2 md:px-0">
@@ -37,7 +36,7 @@ const CategoryListSelector = ({ categoriesList }: CategoriesListProps) => {
         <SelectTrigger className="w-full text-text-primary-100 text-sm shadow-none">
           <SelectValue
             placeholder={t(
-              "routes.dashboard.routes.subCategories.components.CategoryListSelector.select.all"
+              "routes.dashboard.routes.subCategories.components.CategoryListSelector.select.all",
             )}
           />
         </SelectTrigger>
@@ -45,10 +44,10 @@ const CategoryListSelector = ({ categoriesList }: CategoriesListProps) => {
         <SelectContent>
           <SelectItem value="__all__">
             {t(
-              "routes.dashboard.routes.subCategories.components.CategoryListSelector.select.one"
+              "routes.dashboard.routes.subCategories.components.CategoryListSelector.select.one",
             )}
           </SelectItem>
-          {categoriesList.map((cat) => (
+          {categoriesList?.map((cat) => (
             <SelectItem
               key={cat._id}
               value={cat._id}

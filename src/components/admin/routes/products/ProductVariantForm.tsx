@@ -34,7 +34,6 @@ import { validationConfig } from "@/config/validationConfig";
 import FormErrorMessage from "@/components/shared/FormErrorMessage";
 import { Variant, VariantAttribute } from "@/types/product.type";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useProducts } from "@/contexts/Products.context";
@@ -43,6 +42,8 @@ import { RootState } from "@/redux/store";
 import VariantFormActions from "./VariantFormActions";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { Statuses } from "@/enums/statuses.enum";
+import { authFetcher } from "@/utils/authFetcher";
+import { DataResponse } from "@/types/service-response.type";
 
 export interface VariantValidationErrors {
   [variantIndex: number]: {
@@ -120,8 +121,6 @@ const ProductVariantForm = forwardRef<
   } = useProducts();
   const queryClient = useQueryClient();
 
-  const { accessToken } = useAuthContext();
-
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [errors, setErrors] = useState<VariantValidationErrors>({});
   const [deletedImages, setDeletedImages] = useState<string[]>([]);
@@ -132,7 +131,7 @@ const ProductVariantForm = forwardRef<
     if (isEditMode && variants?.[0]) {
       initialVariantsRef.current = JSON.parse(JSON.stringify(variants));
     }
-  }, [isEditMode]);
+  }, [isEditMode, variants]);
 
   useEffect(() => {
     if (!variants || variants.length === 0) {
@@ -234,7 +233,8 @@ const ProductVariantForm = forwardRef<
       if (!variant.attributes || variant.attributes.length === 0) {
         variantErrors.attributesArray = t("validations.attributes.min");
       } else {
-        const attributeErrors: VariantValidationErrors[number]["attributes"] = {};
+        const attributeErrors: VariantValidationErrors[number]["attributes"] =
+          {};
 
         variant.attributes.forEach((attr, attrIndex) => {
           if (!attr.value?.trim()) {
@@ -346,7 +346,7 @@ const ProductVariantForm = forwardRef<
         [variantIndex]: variantErrors,
       }));
     },
-    [variants, validateVariant],
+    [variants, validateVariant, setVariants],
   );
 
   const updateAttribute = useCallback(
@@ -382,7 +382,7 @@ const ProductVariantForm = forwardRef<
         [variantIndex]: variantErrors,
       }));
     },
-    [variants, validateVariant],
+    [variants, validateVariant, setVariants],
   );
 
   const addVariant = useCallback(() => {
@@ -391,7 +391,7 @@ const ProductVariantForm = forwardRef<
     if (!isValid) return;
 
     setVariants([...variants, createEmptyVariant()]);
-  }, [variants, validateAll]);
+  }, [variants, validateAll, setVariants]);
 
   const addAttribute = useCallback(
     (variantIndex: number) => {
@@ -402,7 +402,7 @@ const ProductVariantForm = forwardRef<
       });
       setVariants(newVariants);
     },
-    [variants],
+    [variants, setVariants],
   );
 
   const removeAttribute = useCallback(
@@ -423,11 +423,13 @@ const ProductVariantForm = forwardRef<
         [variantIndex]: variantErrors,
       }));
     },
-    [variants, validateVariant],
+    [variants, validateVariant, setVariants],
   );
 
   const getFieldError = (variantIndex: number, field: string) => {
-    return errors[variantIndex]?.[field as keyof VariantValidationErrors[number]];
+    return errors[variantIndex]?.[
+      field as keyof VariantValidationErrors[number]
+    ];
   };
 
   const getAttributeError = (
@@ -530,23 +532,18 @@ const ProductVariantForm = forwardRef<
 
       const method = hasId ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      const response = await authFetcher<DataResponse<Variant>>(url, {
         method,
         body: formData,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
       });
 
-      const responseObj = await response.json();
-
-      if (responseObj?.isSuccess) {
+      if (response?.isSuccess) {
         // update the reference used for diff
         initialVariantsRef.current[variantIndex] = structuredClone(variant);
 
         showSuccessToast({
           title: tg("toast.title.success"),
-          description: responseObj.message,
+          description: response.message,
           dismissText: tg("toast.dismissText"),
         });
 
@@ -554,7 +551,7 @@ const ProductVariantForm = forwardRef<
       } else {
         showErrorToast({
           title: tg("toast.title.error"),
-          description: responseObj?.message,
+          description: response?.message,
           dismissText: tg("toast.dismissText"),
         });
       }
@@ -660,13 +657,10 @@ const ProductVariantForm = forwardRef<
     }
 
     return formData;
-  };;
+  };
 
   const updateVariantLocally = useCallback(
-    (
-      variantId: string,
-      updates: Partial<Pick<Variant, "isDeleted" | "isActive">>,
-    ) => {
+    (variantId: string, updates: Pick<Variant, "isDeleted" | "isActive">) => {
       const newVariants = variants.map((v) =>
         v.variantId === variantId ? { ...v, ...updates } : v,
       );
@@ -723,10 +717,9 @@ const ProductVariantForm = forwardRef<
                         variantId={variant?.variantId}
                         isDeleted={variant?.isDeleted ?? false}
                         isActive={variant?.isActive ?? false}
-                        deleteFn={async (token, locale, prodId, varId) => {
+                        deleteFn={async (locale, prodId, varId) => {
                           const resp = await deleteProductVariant(
-                            token,
-                            locale,
+                            locale as string,
                             prodId,
                             varId,
                           );
@@ -740,10 +733,9 @@ const ProductVariantForm = forwardRef<
 
                           return resp;
                         }}
-                        unDeleteFn={async (token, locale, prodId, varId) => {
+                        unDeleteFn={async (locale, prodId, varId) => {
                           const resp = await unDeleteProductVariant(
-                            token,
-                            locale,
+                            locale as string,
                             prodId,
                             varId,
                           );
@@ -755,23 +747,21 @@ const ProductVariantForm = forwardRef<
                           return resp;
                         }}
                         switchActiveStatusFn={async (
-                          token,
                           locale,
                           newStatus,
                           prodId,
                           varId,
                         ) => {
                           const resp = await switchProductVariantActiveStatus(
-                            token,
-                            locale,
-                            newStatus,
-                            prodId,
+                            locale as string,
+                            Boolean(newStatus),
+                            String(prodId),
                             varId,
                           );
 
                           if (resp?.isSuccess) {
                             updateVariantLocally(varId, {
-                              isActive: newStatus,
+                              isActive: Boolean(newStatus),
                             });
                           }
 

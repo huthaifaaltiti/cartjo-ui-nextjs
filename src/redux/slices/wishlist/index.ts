@@ -71,10 +71,13 @@ const wishlistSlice = createSlice({
         const removedProductId = action.meta.arg.productId;
 
         state.loading = false;
+
         state.items = state.items.filter(
           (i) => i._id.toString() !== removedProductId.toString(),
         );
-        state.itemsCount = state.items.length ?? 0;
+
+        state.itemsCount =
+          Math.max(0, state.itemsCount - 1) ?? state.items.length ?? 0;
       })
 
       .addCase(removeWishlistItem.rejected, (state, action) => {
@@ -91,14 +94,13 @@ const wishlistSlice = createSlice({
         const addedProduct = action.meta.arg.product;
 
         state.loading = false;
-        state.items = [
-          ...state.items,
-          {
-            ...addedProduct,
-            isWishListed: true,
-          },
-        ];
-        state.itemsCount = state.items.length ?? 0;
+
+        state.items.push({
+          ...addedProduct,
+          isWishListed: true,
+        });
+
+        state.itemsCount += 1;
       })
 
       .addCase(addWishlistItem.rejected, (state, action) => {

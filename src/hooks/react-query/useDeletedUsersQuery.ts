@@ -1,89 +1,28 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
-import { useSession } from "next-auth/react";
-
-import { CustomSession } from "@/lib/authOptions";
-import { GC_TIME, STALE_TIME } from "@/config/reactQueryOptions";
+import { QueryFunctionContext, useInfiniteQuery } from "@tanstack/react-query";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { User } from "@/types/user";
+import { DeletedUsersResp, fetchDeletedUsers } from "@/services/user.service";
+import { authFetcher } from "@/utils/authFetcher";
+import { useAuthContext } from "../useAuthContext";
+import { getDeletedUsersQueryOptions } from "./query-options/deletedUsers";
 
-interface ActiveUsersResp {
-  isSuccess: boolean;
-  message: string;
-  usersNum: number;
-  users: User[];
-}
+export const useDeletedUsersQuery = (search: string) => {
+  const { isAuthenticated, isSessionLoading, userId, locale } =
+    useAuthContext();
 
-interface FetchUsersParams {
-  token: string | null;
-  lang?: string;
-  limit?: number;
-  lastId?: string;
-  search?: string;
-  isDeleted?: boolean;
-}
-
-export const fetchDeletedUsers = async ({
-  token,
-  lang = "en",
-  limit = PAGINATION_LIMITS.DELETED_USERS,
-  lastId,
-  search,
-  isDeleted,
-}: FetchUsersParams): Promise<ActiveUsersResp> => {
-  const url = new URL(`${API_ENDPOINTS.DASHBOARD.USERS.GET_DELETED_USERS}`);
-
-  url.searchParams.append("limit", limit.toString());
-  if (lang) url.searchParams.append("lang", lang);
-  if (lastId) url.searchParams.append("lastId", lastId);
-  if (search) url.searchParams.append("search", search);
-  if (typeof isDeleted === "boolean")
-    url.searchParams.append("isDeleted", isDeleted.toString());
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) throw new Error("Could not retrieve deleted users");
-
-  const resObj = await res.json();
-
-  return resObj;
-};
-
-export const useDeletedUsersQuery = (search?: string) => {
-  const { data: session } = useSession();
-  const locale = useLocale();
-  const accessToken = (session as CustomSession)?.accessToken;
-
-  return useInfiniteQuery<ActiveUsersResp>({
-    queryKey: ["deletedUsers", search],
-    queryFn: ({ pageParam }) => {
-      if (!accessToken) throw new Error("No access token found");
-
-      return fetchDeletedUsers({
-        token: accessToken,
-        lang: locale,
-        limit: PAGINATION_LIMITS.DELETED_USERS,
-        lastId: pageParam as string,
-        search,
-        isDeleted: true,
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      // Return the _id of the last user for pagination
-      if (lastPage.users && lastPage.users.length > 0) {
-        const lastUser = lastPage.users[lastPage.users.length - 1];
-        return lastUser._id;
-      }
-      return undefined; // No more pages
-    },
-    initialPageParam: undefined,
-    staleTime: STALE_TIME,
-    gcTime: GC_TIME,
-    enabled: !!accessToken,
+  return useInfiniteQuery<DeletedUsersResp>({
+    ...getDeletedUsersQueryOptions({
+      search,
+      locale,
+      queryFn: (context: QueryFunctionContext) =>
+        fetchDeletedUsers({
+          lang: locale,
+          limit: PAGINATION_LIMITS.DASHBOARD_VIEW.DELETED_USERS,
+          lastId: context?.pageParam as string,
+          search,
+          isDeleted: true,
+          fetcher: (path) => authFetcher(path),
+        }),
+    }),
+    enabled: isAuthenticated && !!userId && !isSessionLoading,
   });
 };

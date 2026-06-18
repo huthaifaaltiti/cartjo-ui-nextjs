@@ -1,3 +1,5 @@
+"use client";
+
 import { memo, useState } from "react";
 import { Comment } from "@/types/comment.type";
 import { Clock, Edit2, Star, Trash2 } from "lucide-react";
@@ -7,8 +9,6 @@ import { useTranslations } from "next-intl";
 import { UserRole } from "@/enums/user-role.enum";
 import AdminBadge from "@/components/shared/AdminBadge";
 import { usePublicProductContext } from "@/contexts/PublicProduct.context";
-import { useSession } from "next-auth/react";
-import { ExtendedSession } from "@/types/session";
 import ProductAddCommentLoading from "./ProductAddCommentLoading";
 import EditComment from "./EditComment";
 import {
@@ -18,6 +18,8 @@ import {
 } from "@/components/shared/CustomToast";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
 import { containsArabic } from "@/utils/text/containsArabic";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 const StarRating = ({
   rating,
@@ -59,11 +61,11 @@ const ProductCommentCard = ({
   refetch: () => void;
 }) => {
   const t = useTranslations();
-  const { data: sessionData, status } = useSession();
-  const session = sessionData as ExtendedSession | null;
-  const user = session?.user;
+  const { session } = useSelector((state: RootState) => state.authentication);
 
-  const isOwnComment = user?.id === comment?.userId?._id;
+  const user = session;
+
+  const isOwnComment = user?._id === comment?.userId?._id;
 
   const { updateComment, deleteComment } = usePublicProductContext();
 

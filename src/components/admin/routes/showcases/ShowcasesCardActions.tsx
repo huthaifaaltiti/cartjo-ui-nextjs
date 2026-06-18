@@ -18,35 +18,28 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
 
 type DashboardCardActionsProps<
-  T extends { _id: string; isDeleted: boolean; isActive: boolean }
+  T extends { _id: string; isDeleted: boolean; isActive: boolean },
 > = {
   cardItem: T;
-  deleteFn: (token: string | null, id: string, lang: Locale) => Promise<BaseResponse>;
-  unDeleteFn: (
-    token: string | null,
-    id: string,
-    lang: Locale
-  ) => Promise<BaseResponse>;
+  deleteFn: (id: string, lang: Locale) => Promise<BaseResponse>;
+  unDeleteFn: (id: string, lang: Locale) => Promise<BaseResponse>;
   switchUserActiveStatusFn: (
-    token: string | null,
     lang: string,
     isActive: boolean,
-    id: string
+    id: string,
   ) => Promise<BaseResponse>;
-  accessToken: string | null;
   queryKey: string;
   showEditButton?: boolean;
   renderEditForm?: (item: T) => React.ReactNode;
 };
 
 const BannersCardActions = <
-  T extends { _id: string; isDeleted: boolean; isActive: boolean }
+  T extends { _id: string; isDeleted: boolean; isActive: boolean },
 >({
   cardItem,
   deleteFn,
   unDeleteFn,
   switchUserActiveStatusFn,
-  accessToken,
   queryKey,
   showEditButton = false,
   renderEditForm,
@@ -61,7 +54,7 @@ const BannersCardActions = <
   const handleDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await deleteFn(accessToken, cardItem._id, locale);
+      const resp = await deleteFn(cardItem._id, locale);
       if (resp.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -85,12 +78,12 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, accessToken, cardItem._id, queryClient, queryKey, t]);
+  }, [deleteFn, cardItem._id, queryClient, queryKey, locale, t]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await unDeleteFn(accessToken, cardItem._id, locale);
+      const resp = await unDeleteFn(cardItem._id, locale);
 
       if (resp.isSuccess) {
         showSuccessToast({
@@ -115,16 +108,15 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, accessToken, cardItem._id, queryClient, queryKey, t]);
+  }, [unDeleteFn, cardItem._id, queryClient, queryKey, locale, t]);
 
   const handleToggleActiveStatus = useCallback(async () => {
     setIsLoading(true);
     try {
       const resp = await switchUserActiveStatusFn(
-        accessToken,
         locale,
         !cardItem.isActive,
-        cardItem._id
+        cardItem._id,
       );
       if (resp.isSuccess) {
         showSuccessToast({
@@ -151,7 +143,6 @@ const BannersCardActions = <
     }
   }, [
     switchUserActiveStatusFn,
-    accessToken,
     cardItem._id,
     cardItem.isActive,
     queryClient,

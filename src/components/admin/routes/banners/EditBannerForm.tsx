@@ -22,10 +22,8 @@ import {
 import ImageUploader, {
   ImageUploaderRef,
 } from "@/components/shared/ImageUploader";
-import { useBanners } from "@/contexts/Banners.context";
 import LoadingButton from "@/components/shared/LoadingButton";
 import ToggleSwitch from "@/components/shared/ToggleSwitch";
-import { User } from "@/types/user";
 import { Banner } from "@/types/banner.type";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { validationConfig } from "@/config/validationConfig";
@@ -36,7 +34,9 @@ import { isArabicWithNumOnly } from "@/utils/text/containsArabic";
 import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { Calendar24 } from "@/components/shared/Calendar24";
 import { MEDIA_CONFIG } from "@/config/media.config";
-import { DataListResponse } from "@/types/service-response.type";
+import { DataListResponse, DataResponse } from "@/types/service-response.type";
+import { authFetcher } from "@/utils/authFetcher";
+import { BANNERS_QUERY_KEY } from "@/hooks/react-query/query-options/banners";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -162,9 +162,10 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
   const t = useTranslations();
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
-  const { token: accessToken, queryKey } = useBanners();
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
+
+  const queryKey = BANNERS_QUERY_KEY;
 
   const [withAction, setWithAction] = useState<boolean>(false);
 
@@ -252,33 +253,24 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
         formData.append("image_en", bannerImage_en.file);
       }
 
-      const response = await fetch(
+      const response = await authFetcher<DataResponse<Banner>>(
         `${API_ENDPOINTS.DASHBOARD.BANNERS.EDIT}/${banner?._id}`,
         {
           method: "PUT",
           body: formData,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
         },
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-
+      if (!response.isSuccess) {
         throw new Error(
-          errorData?.message ||
+          response?.message ||
             t("routes.dashboard.routes.banners.errors.failedCreation"),
         );
       }
 
-      return response.json();
+      return response;
     },
-    onSuccess: async (data: {
-      isSuccess: boolean;
-      message: string;
-      user: User;
-    }) => {
+    onSuccess: async (data: DataResponse<Banner>) => {
       if (data?.isSuccess) {
         showSuccessToast({
           title: t("general.toast.title.success"),
@@ -323,24 +315,19 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
 
   const setDefaultMutation = useMutation({
     mutationFn: async () => {
-      const response = await fetch(
+      const response = await authFetcher<DataResponse<Banner>>(
         `${API_ENDPOINTS.DASHBOARD.BANNERS.SET_DEFAULT}/${banner?._id}`,
         {
           method: "PUT",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify({ lang: locale }),
         },
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.message || "Failed to set default banner");
+      if (!response.isSuccess) {
+        throw new Error(response?.message || "Failed to set default banner");
       }
 
-      return response.json();
+      return response;
     },
 
     // ⚡ optimistic update (important UX)

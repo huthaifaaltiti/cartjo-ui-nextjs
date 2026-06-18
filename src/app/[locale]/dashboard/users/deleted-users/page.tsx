@@ -1,18 +1,25 @@
-import { fetchDeletedUsers } from "@/hooks/react-query/useDeletedUsersQuery";
-import { getAccessTokenFromServerSession } from "@/lib/serverSession";
-import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import DeletedUsersPage from "@/components/admin/routes/users/deletedUsers/DeletedUsersPage";
 import { requireAuth } from "@/utils/authRedirect";
+import { getAccessToken } from "@/lib/tokens.server";
+import { getQueryClient } from "@/utils/queryUtils";
+import { PageProps } from "@/types/common";
+import { prefetchDeletedUsers } from "@/services/prefetch/deletedUsers";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-export default async function Page() {
-  const accessToken = await getAccessTokenFromServerSession();
-  requireAuth(accessToken)
+export default async function Page({ params }: PageProps) {
+  const { locale } = await params;
 
-  const { users } = await fetchDeletedUsers({
-    token: accessToken,
-    limit: PAGINATION_LIMITS.DELETED_USERS,
-    isDeleted: true,
-  });
+  const token = await getAccessToken();
+  requireAuth(token);
 
-  return <DeletedUsersPage initialUsers={users} accessToken={accessToken} />;
+  const queryClient = getQueryClient();
+  await prefetchDeletedUsers({ queryClient, locale });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <DeletedUsersPage />;
+    </HydrationBoundary>
+  );
 }

@@ -1,33 +1,28 @@
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { Locale } from "@/types/locale";
 import { BaseResponse, DataResponse } from "@/types/service-response.type";
-import { fetcher } from "@/utils/fetcher";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { WISHLIST_CONSTANTS } from "./constants";
 import { Wishlist } from "@/types/wishlist.type";
 import { Cart } from "@/types/cart.type";
 import { Product } from "@/types/product.type";
+import { authFetcher } from "@/utils/authFetcher";
 
 export const removeWishlistItem = createAsyncThunk<
   DataResponse<Wishlist>,
   {
     productId: string;
     lang?: Locale | string;
-    token: string;
   },
   { rejectValue: BaseResponse }
 >(
   WISHLIST_CONSTANTS.removeItem,
-  async ({ productId, lang = "en", token }, { rejectWithValue }) => {
+  async ({ productId, lang = "en" }, { rejectWithValue }) => {
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.REMOVE);
 
-      const response = await fetcher<DataResponse<Wishlist>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Wishlist>>(url.toString(), {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ productId, lang }),
       });
 
@@ -51,23 +46,21 @@ export const addWishlistItem = createAsyncThunk<
   {
     product: Product;
     lang?: Locale | string;
-    token: string;
   },
   { rejectValue: BaseResponse }
 >(
   WISHLIST_CONSTANTS.addItem,
-  async ({ product, lang = "en", token }, { rejectWithValue }) => {
+  async ({ product, lang = "en" }, { rejectWithValue }) => {
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.ADD);
 
-      const response = await fetcher<DataResponse<Wishlist>>(url.toString(), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await authFetcher<DataResponse<Wishlist>>(
+        url.toString(),
+        {
+          method: "POST",
+          body: JSON.stringify({ productId: product?._id, lang }),
         },
-        body: JSON.stringify({ productId: product?._id, lang }),
-      });
+      );
 
       if (!response.isSuccess) {
         return rejectWithValue(response);
@@ -90,21 +83,16 @@ export const sendWishlistItemToCart = createAsyncThunk<
     productId: string;
     variantId: string;
     lang?: Locale | string;
-    token: string;
   },
   { rejectValue: BaseResponse }
 >(
   WISHLIST_CONSTANTS.sendItemToCart,
-  async ({ productId, variantId, lang = "en", token }, { rejectWithValue }) => {
+  async ({ productId, variantId, lang = "en" }, { rejectWithValue }) => {
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.SEND_TO_CART);
 
-      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Cart>>(url.toString(), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ productId, variantId, lang }),
       });
 
@@ -127,21 +115,16 @@ export const removeAllWishlistItems = createAsyncThunk<
   DataResponse<Cart>,
   {
     lang?: Locale | string;
-    token: string;
   },
   { rejectValue: BaseResponse }
 >(
   WISHLIST_CONSTANTS.removeAllItems,
-  async ({ lang = "en", token }, { rejectWithValue }) => {
+  async ({ lang = "en" }, { rejectWithValue }) => {
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.REMOVE_ALL);
 
-      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Cart>>(url.toString(), {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ lang }),
       });
 
@@ -164,22 +147,17 @@ export const sendAllWishlistItemsToCart = createAsyncThunk<
   DataResponse<Cart>,
   {
     lang?: Locale | string;
-    token: string;
     items: { productId: string; variantId: string }[];
   },
   { rejectValue: BaseResponse }
 >(
   WISHLIST_CONSTANTS.sendAllItemsToCart,
-  async ({ lang = "en", token, items }, { rejectWithValue }) => {
+  async ({ lang = "en", items }, { rejectWithValue }) => {
     try {
       const url = new URL(API_ENDPOINTS.LOGGED_USER.WISHLIST.SEND_ALL_TO_CART);
 
-      const response = await fetcher<DataResponse<Cart>>(url.toString(), {
+      const response = await authFetcher<DataResponse<Cart>>(url.toString(), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ lang, items }),
       });
 

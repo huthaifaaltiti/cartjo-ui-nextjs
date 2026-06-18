@@ -5,6 +5,7 @@ import DateRangeWithDaysNum from "./used-filters/DateRangeWithDaysNum";
 import RatingRange from "./used-filters/RatingRange";
 import PriceRange from "./used-filters/PriceRange";
 import assets from "@public/assets/assets.json";
+import Image from "next/image";
 
 interface FiltersProps {
   priceFrom: number;
@@ -89,9 +90,11 @@ const SearchQueryFilters = ({
         onClick={onClearFilters}
         className="flex items-center gap-2 text-text-primary-100 hover:text-text-primary-100 transition-all cursor-pointer disabled:cursor-not-allowed disabled:hover:text-text-primary-100"
       >
-        <img
+        <Image
           src={assets.image.svg.clear_filters_grey}
           alt="clear filters"
+          width={16}
+          height={16}
           className="w-4 h-4"
         />
 
