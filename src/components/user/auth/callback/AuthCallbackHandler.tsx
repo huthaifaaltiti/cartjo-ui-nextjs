@@ -6,12 +6,17 @@ import { useQueryState } from "nuqs";
 import { useTranslations } from "next-intl";
 import AuthCallbackView from "./AuthCallbackView";
 import { showErrorToast } from "@/components/shared/CustomToast";
+import { AppDispatch, RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setSession } from "@/redux/slices/authentication";
 
 type AuthStatus = "idle" | "loading" | "success" | "error";
 
 const AuthCallbackHandler = () => {
   const router = useRouter();
   const t = useTranslations();
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const handledRef = useRef(false);
 
@@ -32,6 +37,7 @@ const AuthCallbackHandler = () => {
   const [redirectTo] = useQueryState("redirectTo", {
     defaultValue: "",
   });
+  const [userQuery] = useQueryState("user", { defaultValue: "" });
 
   const authErrorMessages: Record<string, string> = useMemo(
     () => ({
@@ -79,6 +85,15 @@ const AuthCallbackHandler = () => {
 
     const handleAuth = async () => {
       try {
+        let parsedUser = null;
+        if (userQuery) {
+          try {
+            parsedUser = JSON.parse(decodeURIComponent(userQuery));
+          } catch (e) {
+            console.error("Failed to parse user from query", e);
+          }
+        }
+
         const response = await fetch("/api/auth/google-callback", {
           method: "POST",
           headers: {
@@ -87,14 +102,21 @@ const AuthCallbackHandler = () => {
           body: JSON.stringify({
             accessToken,
             refreshToken,
+            user: parsedUser,
           }),
         });
+
+        const respObject = await response.json();
 
         if (!response.ok) {
           throw new Error("oauth_failed");
         }
 
         setStatus("success");
+
+        if (respObject.user) {
+          dispatch(setSession(respObject.user));
+        }
 
         router.replace(redirectTo || "/");
         router.refresh();
@@ -114,7 +136,7 @@ const AuthCallbackHandler = () => {
     };
 
     handleAuth();
-  }, [accessToken, refreshToken, redirectTo, router, t]);
+  }, [accessToken, refreshToken, userQuery, redirectTo, router, dispatch, t]);
 
   return <AuthCallbackView provider={provider} status={status} />;
 };

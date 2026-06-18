@@ -3,7 +3,7 @@ import { setAuthCookies } from "@/lib/tokens.server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { accessToken, refreshToken } = await req.json();
+    const { accessToken, refreshToken, user } = await req.json();
 
     if (!accessToken || !refreshToken) {
       return NextResponse.json(
@@ -14,7 +14,10 @@ export async function POST(req: NextRequest) {
 
     await setAuthCookies(accessToken, refreshToken);
 
-    return NextResponse.json({ isSuccess: true });
+    return NextResponse.json({
+      isSuccess: true,
+      user: user || null,
+    });
   } catch {
     return NextResponse.json(
       { isSuccess: false, message: "Failed to store session" },
