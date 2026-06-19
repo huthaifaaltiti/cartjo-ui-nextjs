@@ -44,6 +44,7 @@ import StatusBadge from "@/components/shared/StatusBadge";
 import { Statuses } from "@/enums/statuses.enum";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
+import { SellingType } from "@/enums/sellingType.enum";
 
 export interface VariantValidationErrors {
   [variantIndex: number]: {
@@ -87,7 +88,7 @@ const createEmptyVariant = (): Variant => ({
   attributes: [
     {
       key: ProductVariantAttributeKey.SELLING_TYPE,
-      value: "",
+      value: SellingType.PIECE,
     },
   ],
 });
