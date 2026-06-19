@@ -519,11 +519,36 @@ const ProductVariantForm = forwardRef<
 
       const hasId: boolean = !!variant?.variantId || false;
 
-      const action = hasId ? "UPDATE" : "CREATE";
+      const formData = new FormData();
 
-      const formData = getChangedPayload(variant, variantIndex, action);
+      formData.append("description_ar", variant.description_ar);
+      formData.append("description_en", variant.description_en);
+      formData.append("price", String(variant.price));
+      formData.append("currency", variant.currency);
+      formData.append("discountRate", String(variant.discountRate));
+      formData.append("totalAmountCount", String(variant.totalAmountCount));
 
-      if (!formData) return;
+      // main image
+      if (variant.mainImage?.file) {
+        formData.append("mainImage", variant.mainImage.file);
+      }
+
+      // additional images
+      variant.images?.files?.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      // deleted images
+      deletedImages.forEach((url, index) => {
+        formData.append(`deletedImages[${index}]`, url);
+      });
+
+      // attributes
+      variant.attributes.forEach((attr, index) => {
+        formData.append(`attributes[${index}][key]`, attr.key);
+        formData.append(`attributes[${index}][value]`, attr.value);
+      });
+
       formData.append("lang", locale);
 
       const url = hasId
@@ -562,102 +587,102 @@ const ProductVariantForm = forwardRef<
     }
   };
 
-  const getChangedPayload = (
-    variant: Variant,
-    variantIndex: number,
-    action: "CREATE" | "UPDATE",
-  ) => {
-    const formData = new FormData();
+  // const getChangedPayload = (
+  //   variant: Variant,
+  //   variantIndex: number,
+  //   action: "CREATE" | "UPDATE",
+  // ) => {
+  //   const formData = new FormData();
 
-    const initial =
-      action === "UPDATE" ? initialVariantsRef.current[variantIndex] : null;
+  //   const initial =
+  //     action === "UPDATE" ? initialVariantsRef.current[variantIndex] : null;
 
-    const isCreate = action === "CREATE" || !initial;
+  //   const isCreate = action === "CREATE" || !initial;
 
-    // helper
-    const appendIfChanged = (
-      key: string,
-      value: string | number | null,
-      initialValue: string | undefined | number | null,
-    ) => {
-      if (value === undefined || value === null) return;
+  //   // helper
+  //   const appendIfChanged = (
+  //     key: string,
+  //     value: string | number | null,
+  //     initialValue: string | undefined | number | null,
+  //   ) => {
+  //     if (value === undefined || value === null) return;
 
-      if (isCreate || value !== initialValue) {
-        if (value !== undefined && value !== null) {
-          formData.append(key, String(value));
-        }
-      }
-    };
+  //     if (isCreate || value !== initialValue) {
+  //       if (value !== undefined && value !== null) {
+  //         formData.append(key, String(value));
+  //       }
+  //     }
+  //   };
 
-    // 🔹 BASIC FIELDS
-    appendIfChanged(
-      "description_ar",
-      variant.description_ar,
-      initial?.description_ar,
-    );
-    appendIfChanged(
-      "description_en",
-      variant.description_en,
-      initial?.description_en,
-    );
-    appendIfChanged("price", variant.price, initial?.price);
-    appendIfChanged("currency", variant.currency, initial?.currency);
-    appendIfChanged(
-      "discountRate",
-      variant.discountRate,
-      initial?.discountRate,
-    );
-    appendIfChanged(
-      "totalAmountCount",
-      variant.totalAmountCount,
-      initial?.totalAmountCount,
-    );
+  //   // 🔹 BASIC FIELDS
+  //   appendIfChanged(
+  //     "description_ar",
+  //     variant.description_ar,
+  //     initial?.description_ar,
+  //   );
+  //   appendIfChanged(
+  //     "description_en",
+  //     variant.description_en,
+  //     initial?.description_en,
+  //   );
+  //   appendIfChanged("price", variant.price, initial?.price);
+  //   appendIfChanged("currency", variant.currency, initial?.currency);
+  //   appendIfChanged(
+  //     "discountRate",
+  //     variant.discountRate,
+  //     initial?.discountRate,
+  //   );
+  //   appendIfChanged(
+  //     "totalAmountCount",
+  //     variant.totalAmountCount,
+  //     initial?.totalAmountCount,
+  //   );
 
-    // MAIN IMAGE
-    if (isCreate) {
-      if (variant.mainImage?.file) {
-        formData.append("mainImage", variant.mainImage.file);
-      }
-    } else {
-      if (
-        variant.mainImage?.file ||
-        variant.mainImage?.url !== initial?.mainImage?.url
-      ) {
-        if (variant.mainImage?.file) {
-          formData.append("mainImage", variant.mainImage.file);
-        }
-      }
-    }
+  //   // MAIN IMAGE
+  //   if (isCreate) {
+  //     if (variant.mainImage?.file) {
+  //       formData.append("mainImage", variant.mainImage.file);
+  //     }
+  //   } else {
+  //     if (
+  //       variant.mainImage?.file ||
+  //       variant.mainImage?.url !== initial?.mainImage?.url
+  //     ) {
+  //       if (variant.mainImage?.file) {
+  //         formData.append("mainImage", variant.mainImage.file);
+  //       }
+  //     }
+  //   }
 
-    // DELETED IMAGES (only update)
-    if (!isCreate) {
-      deletedImages.forEach((url, i) => {
-        formData.append(`deletedImages[${i}]`, url);
-      });
-    }
+  //   // DELETED IMAGES (only update)
+  //   if (!isCreate) {
+  //     deletedImages.forEach((url, i) => {
+  //       formData.append(`deletedImages[${i}]`, url);
+  //     });
+  //   }
 
-    // NEW IMAGES
-    if (variant.images?.files?.length) {
-      variant.images.files.forEach((file) => {
-        formData.append("images", file);
-      });
-    }
+  //   // NEW IMAGES
+  //   if (variant.images?.files?.length) {
+  //     variant.images.files.forEach((file) => {
+  //       formData.append("images", file);
+  //     });
+  //   }
 
-    // ATTRIBUTES
-    const attrsChanged =
-      isCreate ||
-      JSON.stringify(variant.attributes) !==
-        JSON.stringify(initial?.attributes);
+  //   // ATTRIBUTES
+  //   const attrsChanged =
+  //     isCreate ||
+  //     JSON.stringify(variant.attributes) !==
+  //       JSON.stringify(initial?.attributes);
 
-    if (attrsChanged) {
-      variant.attributes.forEach((attr, index) => {
-        formData.append(`attributes[${index}][key]`, attr.key);
-        formData.append(`attributes[${index}][value]`, attr.value);
-      });
-    }
+  //   if (attrsChanged) {
+  //     variant.attributes.forEach((attr, index) => {
+  //       formData.append(`attributes[${index}][key]`, attr.key);
+  //       formData.append(`attributes[${index}][value]`, attr.value);
+  //     });
+  //   }
 
-    return formData;
-  };
+  //   return formData;
+  // };
 
   const updateVariantLocally = useCallback(
     (variantId: string, updates: Pick<Variant, "isDeleted" | "isActive">) => {
