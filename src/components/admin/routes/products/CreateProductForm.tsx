@@ -57,7 +57,7 @@ import { validationConfig } from "@/config/validationConfig";
 import { containsArabic } from "@/utils/text/containsArabic";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
-import { Product } from "@/types/product.type";
+import { Product, Variant } from "@/types/product.type";
 import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
 
 const currencyValues: string[] = [];
@@ -329,20 +329,24 @@ const CreateProductForm = () => {
 
       // Variants
       if (data?.variants && data?.variants?.length > 0) {
-        data.variants.forEach((variant, index) => {
-          if (variant?.sku)
+        data.variants.forEach((variant: Variant, index) => {
+          if (variant?.sku) {
             formData.append(`variants[${index}][sku]`, variant?.sku);
+          }
 
-          if (variant?.description_ar)
+          if (variant?.description_ar) {
             formData.append(
               `variants[${index}][description_ar]`,
               variant?.description_ar,
             );
-          if (variant?.description_en)
+          }
+          if (variant?.description_en) {
             formData.append(
               `variants[${index}][description_en]`,
               variant?.description_en,
             );
+          }
+
           formData.append(`variants[${index}][price]`, String(variant.price));
           formData.append(`variants[${index}][currency]`, variant.currency);
           formData.append(
