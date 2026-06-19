@@ -157,12 +157,7 @@ const createFormSchema = (
         "routes.dashboard.routes.products.components.CreateProductForm.validations.subCategory.required",
       ),
     }),
-    tags: z.array(z.string()).min(validationConfig.product.tags.min, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.tags.min",
-        { count: validationConfig.product.tags.min },
-      ),
-    }),
+    tags: z.array(z.string()).optional(),
     variants: z.array(
       z.object({
         sku: z.string().optional(),
@@ -265,6 +260,9 @@ const CreateProductForm = () => {
 
   const formSchema = createFormSchema(t, activeTypeHintConfigsList);
 
+  const staticTypeHint =
+    activeTypeHintConfigsList.find((th) => th === "static") ?? "static";
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -275,7 +273,7 @@ const CreateProductForm = () => {
       subCategoryId: "",
       description_ar: "",
       description_en: "",
-      typeHints: [],
+      typeHints: [staticTypeHint],
       tags: [],
       variants: [],
     },
