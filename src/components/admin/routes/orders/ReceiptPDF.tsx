@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text -- react-pdf Image components */
+
 "use client";
 
 import {
