@@ -10,7 +10,7 @@ import { LocaleProvider } from "@/contexts/LocaleContext";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
 import { HomeEffectsContextProvider } from "@/contexts/HomeEffectsContext";
 import { GeneralContextProvider } from "@/contexts/General.context";
-import ReduxProvider from "../../redux/ReduxProvider";
+import ReduxProvider from "../../../redux/ReduxProvider";
 import {
   METADATA_ROUTES_NAMES,
   routesMetadata,
