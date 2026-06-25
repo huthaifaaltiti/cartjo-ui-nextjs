@@ -8,7 +8,7 @@ import RegularUserLoggedState from "../../shared/RegularUserLoggedState";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import isAdminClientSide from "@/utils/isAdminClientSide.util";
+import { checkCanAccessDashboardClientSide, isAdminClientSide } from "@/utils/session-access.utils";
 
 const AuthUserDashboard = () => {
   const t = useTranslations();
@@ -16,7 +16,9 @@ const AuthUserDashboard = () => {
   const { session, loading } = useSelector(
     (state: RootState) => state.authentication,
   );
-  const canManage = isAdminClientSide(session) ?? false;
+  const isAdmin = isAdminClientSide(session) ?? false;
+  const checkCanAccessDashboard = checkCanAccessDashboardClientSide(session) ?? false;
+  const canManage = isAdmin && checkCanAccessDashboard;
 
   if (loading) {
     return (

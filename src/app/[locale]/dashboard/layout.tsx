@@ -1,7 +1,11 @@
 import DashboardSideNav from "@/components/admin/layout/DashboardSideNav";
-import { getSession, checkIsAdmin } from "@/lib/session.server";
+import {
+  getSession,
+  checkIsAdmin,
+  checkCanAccessDashboard,
+} from "@/lib/session.server";
 import { getQueryClient } from "@/utils/queryUtils";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { prefetchActiveLogo } from "@/services/prefetch/activeLogo";
 
@@ -17,12 +21,12 @@ export default async function DashboardLayout({
   const { locale } = await params;
 
   const session = await getSession();
-
-  const canManage = checkIsAdmin(session);
-
+  const isAdmin = checkIsAdmin(session);
+  const canAccessDashboard = checkCanAccessDashboard(session);
+  const canManage = isAdmin && canAccessDashboard;
   if (!session || !canManage) redirect("/");
 
-  const queryClient = getQueryClient();
+  const queryClient: QueryClient = getQueryClient();
 
   await prefetchActiveLogo({ queryClient, locale });
 

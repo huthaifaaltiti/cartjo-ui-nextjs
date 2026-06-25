@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { hydrateWishlistCounters } from "@/redux/slices/wishlist";
 import { hydrateCartCounters } from "@/redux/slices/cart";
-import isAdminClientSide from "@/utils/isAdminClientSide.util";
+import { isAdminClientSide } from "@/utils/session-access.utils";
 
 const UserMenu = () => {
   const dispatch = useDispatch<AppDispatch>();

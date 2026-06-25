@@ -1,8 +1,9 @@
+import { Permission } from "@/enums/permission.enum";
 import { UserRole } from "@/enums/user-role.enum";
 import { CartJOSession } from "@/types/cartjoSession.type";
 import { TokenSession } from "@/types/tokenSession.type";
 
-export default function isAdminClientSide(
+export function isAdminClientSide(
   session: CartJOSession | TokenSession | null,
 ): boolean {
   if (!session) return false;
@@ -13,4 +14,14 @@ export default function isAdminClientSide(
     role === UserRole.ADMINISTRATOR.toLocaleLowerCase() ||
     role === UserRole.OWNER.toLocaleLowerCase()
   );
+}
+
+export function checkCanAccessDashboardClientSide(
+  session: CartJOSession | TokenSession | null,
+): boolean {
+  if (!session) return false;
+
+  const userPermissions: string[] = session.permissions ?? [];
+
+  return userPermissions.includes(Permission.DASHBOARD_ACCESS) ?? false;
 }

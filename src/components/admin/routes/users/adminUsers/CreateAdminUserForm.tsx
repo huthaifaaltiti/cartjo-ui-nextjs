@@ -26,12 +26,18 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicLocale } from "@/config/locales.config";
 import { authFetcher } from "@/utils/authFetcher";
+import { validationConfig } from "@/config/validationConfig";
+import { normalizePhoneNumber } from "@/utils/normalizePhoneNumber";
+import { COUNTRY_CONFIGS } from "@/config/countryPhone.config";
 
-const createFormSchema = (t: (key: string) => string) =>
+const createFormSchema = (
+  t: (key: string, values?: Record<string, string | number | Date>) => string,
+) =>
   z.object({
     firstName: z.string().min(2, {
       message: t(
         "routes.auth.components.AuthTabs.components.register.validations.firstName.min",
+        { min: validationConfig.auth.name.min },
       ),
     }),
     lastName: z.string().min(2, {
@@ -39,11 +45,22 @@ const createFormSchema = (t: (key: string) => string) =>
         "routes.auth.components.AuthTabs.components.register.validations.lastName.min",
       ),
     }),
-    phoneNumber: z.string().regex(/^7[789]\d{7}$/, {
-      message: t(
-        "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.pattern",
+    phoneNumber: z
+      .string()
+      .min(1, {
+        message: t(
+          "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.required",
+        ),
+      })
+      .trim()
+      .transform((val) => normalizePhoneNumber(val, COUNTRY_CONFIGS.JO))
+      .pipe(
+        z.string().regex(/^7[789]\d{7}$/, {
+          message: t(
+            "routes.auth.components.AuthTabs.components.register.validations.phoneNumber.pattern",
+          ),
+        }),
       ),
-    }),
     email: z.string().email({
       message: t(
         "routes.auth.components.AuthTabs.components.register.validations.email.invalid",
@@ -52,6 +69,7 @@ const createFormSchema = (t: (key: string) => string) =>
     password: z.string().min(6, {
       message: t(
         "routes.auth.components.AuthTabs.components.register.validations.password.min",
+        { min: validationConfig.auth.password.min },
       ),
     }),
     termsAccepted: z.literal(true, {

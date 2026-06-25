@@ -1,5 +1,4 @@
 import { PreferredLanguage } from "@/enums/Preferred-language.enum";
-
 export interface UserContext {
   _id: string;
   userId: string;
@@ -15,5 +14,6 @@ export interface UserContext {
     wishlistItemsCount: number;
     cartItemsCount: number;
   };
+  fullPermissions: Record<string, string>;
   __v: number;
 }
