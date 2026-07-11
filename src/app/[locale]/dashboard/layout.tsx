@@ -1,13 +1,23 @@
 import DashboardSideNav from "@/components/admin/layout/DashboardSideNav";
-import { getSession, checkIsAdmin } from "@/lib/session.server";
+import {
+  getSession,
+  checkIsAdmin,
+  checkCanAccessDashboard,
+} from "@/lib/session.server";
 import { getQueryClient } from "@/utils/queryUtils";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { prefetchActiveLogo } from "@/services/prefetch/activeLogo";
+import { getAccessToken } from "@/lib/tokens.server";
+import { requireAuth } from "@/utils/authRedirect";
 
 interface NextLayoutProps {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>; // Next.js forces dynamic route slugs to be a string at build time
+  params: Promise<{ locale: string }>;
 }
 
 export default async function DashboardLayout({
@@ -17,12 +27,16 @@ export default async function DashboardLayout({
   const { locale } = await params;
 
   const session = await getSession();
+  const token = await getAccessToken();
 
-  const canManage = checkIsAdmin(session);
+  requireAuth(token);
 
+  const isAdmin = checkIsAdmin(session);
+  const canAccessDashboard = checkCanAccessDashboard(session);
+  const canManage = isAdmin && canAccessDashboard;
   if (!session || !canManage) redirect("/");
 
-  const queryClient = getQueryClient();
+  const queryClient: QueryClient = getQueryClient();
 
   await prefetchActiveLogo({ queryClient, locale });
 
