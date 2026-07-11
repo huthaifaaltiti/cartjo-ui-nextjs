@@ -1,6 +1,8 @@
 // ---
 
+import { CartJOSession } from "./cartjoSession.type";
 import { Locale } from "./locale";
+import { TokenSession } from "./tokenSession.type";
 
 export interface Name {
   ar: string;
@@ -58,3 +60,5 @@ export type FormHandler<T> = {
 export type Direction = "rtl" | "ltr";
 
 export type ViewMode = "public" | "admin";
+
+export type AuthSession = CartJOSession | TokenSession | null;

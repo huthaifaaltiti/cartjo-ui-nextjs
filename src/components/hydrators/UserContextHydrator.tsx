@@ -1,30 +1,26 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getQueryClient } from "@/utils/queryUtils";
-import { userContextQuery } from "@/hooks/react-query/useUserContextQuery";
 import { Locale } from "@/types/locale";
-import { DataResponse } from "@/types/service-response.type";
-import { UserContext } from "@/types/userContext.type";
-import { getAccessToken } from "@/lib/tokens.server";
+import { prefetchUserContext } from "@/services/prefetch/userContext";
+import { CartJOSession } from "@/types/cartjoSession.type";
+import { TokenSession } from "@/types/tokenSession.type";
 
 export default async function UserContextHydrator({
   locale,
+  session,
   children,
 }: {
   locale: Locale;
+  session: CartJOSession | TokenSession | null;
   children: React.ReactNode;
 }) {
-  const token = await getAccessToken();
   const queryClient = getQueryClient();
 
-  if (token) {
-    await queryClient.prefetchQuery<DataResponse<UserContext>>(
-      userContextQuery(locale, token),
-    );
-  }
+  await prefetchUserContext({ queryClient, locale, session });
+
+  const dehydratedState = dehydrate(queryClient);
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      {children}
-    </HydrationBoundary>
+    <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
   );
 }

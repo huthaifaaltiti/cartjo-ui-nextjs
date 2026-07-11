@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartJOSession } from "@/types/cartjoSession.type";
-import isAdminClientSide from "@/utils/isAdminClientSide.util";
 import { TokenSession } from "@/types/tokenSession.type";
+import { isAdminClientSide } from "@/utils/session-access.utils";
 
 interface AuthenticationState {
   isAuthenticated: boolean;
