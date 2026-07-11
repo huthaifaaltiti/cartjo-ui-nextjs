@@ -25,3 +25,15 @@ export function checkCanAccessDashboardClientSide(
 
   return userPermissions.includes(Permission.DASHBOARD_ACCESS) ?? false;
 }
+
+export function hasRequiredPermissionsClientSide({
+  sessionPermissions,
+  requiredPermissions,
+}: {
+  sessionPermissions: string[] | null | undefined;
+  requiredPermissions: string[];
+}): boolean {
+  if (!sessionPermissions) return false;
+
+  return requiredPermissions.every((perm) => sessionPermissions.includes(perm));
+}

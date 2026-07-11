@@ -12,7 +12,7 @@ export const useAuthContext = () => {
     (state: RootState) => state.authentication,
   );
 
-  const isAuthenticated: Boolean = !!session;
+  const isAuthenticated: boolean = !!session;
 
   return {
     session,
