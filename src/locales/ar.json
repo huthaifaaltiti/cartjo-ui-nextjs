@@ -26,7 +26,8 @@
       "dismissText": "إخفاء"
     },
     "authorization": {
-      "unAuthorizedToken": "رمز المستخدم غير مصرح به"
+      "unAuthorizedToken": "رمز المستخدم غير مصرح به",
+      "noPermission": "صلاحيات غير كافية"
     },
     "items": {
       "noMoreItems": "لا توجد المزيد من العناصر لعرضها",
@@ -384,6 +385,10 @@
     "ReviewsCount": {
       "reviews": "تعليقات",
       "review": "تعليق"
+    },
+    "UnauthorizedState": {
+      "title": "تم رفض الوصول",
+      "desc": "ليس لديك الصلاحيات اللازمة لإجراء هذا العمل. يرجى التحقق من صلاحياتك أو الاتصال بمسؤول النظام."
     }
   },
   "routes": {

@@ -10,6 +10,7 @@ import ErrorMessage from "@/components/shared/ErrorMessage";
 import { useTranslations } from "next-intl";
 import { usePermission } from "@/hooks/usePermission";
 import { Permission } from "@/enums/permission.enum";
+import UnauthorizedState from "../../shared/UnauthorizedState";
 
 const UsersPageContainer = () => {
   const t = useTranslations(
@@ -32,6 +33,11 @@ const UsersPageContainer = () => {
     return <AuthRedirect redirectLocation={"/dashboard/users"} />;
   }
 
+  // Authorization (Permission) Check
+  if (!canReadUser) {
+    return <UnauthorizedState />;
+  }
+
   if (showError) {
     return (
       <div className="w-full min-h-[50vh] flex items-center justify-center">
@@ -49,11 +55,11 @@ const UsersPageContainer = () => {
       </div>
     );
 
-  if (showData) {
+  if (showData && canReadUser) {
     return (
       <div className="w-full h-full p-3">
         <div className="w-full border-b">
-          {canReadUser && <DashboardUsersStatCards stats={data?.stats} />}
+          <DashboardUsersStatCards stats={data?.stats} />
           <DashboardUsersStatCardsLinks />
         </div>
       </div>

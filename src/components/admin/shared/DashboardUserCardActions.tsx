@@ -11,10 +11,13 @@ import { UserCardProps } from "./DashboardUserCard";
 import {
   showErrorToast,
   showSuccessToast,
+  showWarningToast,
 } from "@/components/shared/CustomToast";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
 import EditAdminUserForm from "../routes/users/adminUsers/EditAdminUserForm";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
 
 type DashboardUserCardActionsProps = UserCardProps;
 
@@ -36,6 +39,11 @@ const DashboardUserCardActions = ({
 
   const handleOpenEditAdminModal = () => setIsAdminEditModalOpen(true);
   const handleCloseEditAdminModal = () => setIsAdminEditModalOpen(false);
+
+  const { canActivateUser, canDeActivateUser } = usePermission({
+    canActivateUser: Permission.USERS_ACTIVATE,
+    canDeActivateUser: Permission.USERS_DEACTIVATE,
+  });
 
   const handleDelete = useCallback(async () => {
     setIsLoading(true);
@@ -85,6 +93,18 @@ const DashboardUserCardActions = ({
   }, [unDeleteUser, queryClient, queryKey, t, user._id]);
 
   const handleSwitchUserActiveStatus = useCallback(async () => {
+    const hasAccess = user?.isActive ? canDeActivateUser : canActivateUser;
+
+    if (!hasAccess) {
+      showWarningToast({
+        title: t("general.toast.title.error"),
+        description: t("general.authorization.noPermission"),
+        dismissText: t("general.toast.dismissText"),
+      });
+
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await switchUserActiveStatus(
@@ -117,6 +137,8 @@ const DashboardUserCardActions = ({
     t,
     user._id,
     user?.isActive,
+    canActivateUser,
+    canDeActivateUser,
   ]);
 
   useEffect(() => {
@@ -144,17 +166,19 @@ const DashboardUserCardActions = ({
           </div>
         )}
 
-        <div className="w-1/4">
-          <ToggleSwitch
-            value={user?.isActive}
-            onChange={handleSwitchUserActiveStatus}
-            width={50}
-            height={22}
-            trackColorInactive="#E55050"
-            trackColorActive="#16610E"
-            isDisabled={false}
-          />
-        </div>
+        {(canActivateUser || canDeActivateUser) && (
+          <div className="w-1/4">
+            <ToggleSwitch
+              value={user?.isActive}
+              onChange={handleSwitchUserActiveStatus}
+              width={50}
+              height={22}
+              trackColorInactive="#E55050"
+              trackColorActive="#16610E"
+              isDisabled={false}
+            />
+          </div>
+        )}
 
         <div className="w-3/4">
           {!user?.isDeleted ? (

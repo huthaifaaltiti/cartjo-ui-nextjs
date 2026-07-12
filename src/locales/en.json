@@ -26,7 +26,8 @@
       "dismissText": "Dismiss"
     },
     "authorization": {
-      "unAuthorizedToken": "Unauthorized user token"
+      "unAuthorizedToken": "Unauthorized user token",
+      "noPermission": "Insufficient permissions"
     },
     "items": {
       "noMoreItems": "No more items to show",
@@ -383,6 +384,10 @@
     "ReviewsCount": {
       "review": "Review",
       "reviews": "Reviews"
+    },
+    "UnauthorizedState": {
+      "title": "Access Denied",
+      "desc": "You do not have the necessary permissions to perform this action, check your permissions or contact yous system admin."
     }
   },
   "routes": {
