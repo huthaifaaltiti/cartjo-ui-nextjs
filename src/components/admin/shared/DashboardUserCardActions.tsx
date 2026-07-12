@@ -40,11 +40,13 @@ const DashboardUserCardActions = ({
   const handleOpenEditAdminModal = () => setIsAdminEditModalOpen(true);
   const handleCloseEditAdminModal = () => setIsAdminEditModalOpen(false);
 
-  const { canActivateUser, canDeActivateUser, canDeleteUser } = usePermission({
-    canActivateUser: Permission.USERS_ACTIVATE,
-    canDeActivateUser: Permission.USERS_DEACTIVATE,
-    canDeleteUser: Permission.USERS_DELETE,
-  });
+  const { canActivateUser, canDeActivateUser, canDeleteUser, canRestoreUser } =
+    usePermission({
+      canActivateUser: Permission.USERS_ACTIVATE,
+      canDeActivateUser: Permission.USERS_DEACTIVATE,
+      canDeleteUser: Permission.USERS_DELETE,
+      canRestoreUser: Permission.USERS_RESTORE,
+    });
 
   const handleDelete = useCallback(async () => {
     if (!canDeleteUser) {
@@ -76,6 +78,11 @@ const DashboardUserCardActions = ({
   }, [deleteUser, queryClient, queryKey, t, user._id, canDeleteUser]);
 
   const handleUnDelete = useCallback(async () => {
+    if (!canRestoreUser) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await unDeleteUser(user._id);
@@ -96,7 +103,7 @@ const DashboardUserCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteUser, queryClient, queryKey, t, user._id]);
+  }, [unDeleteUser, queryClient, queryKey, t, user._id, canRestoreUser]);
 
   const handleSwitchUserActiveStatus = useCallback(async () => {
     const hasAccess = user?.isActive ? canDeActivateUser : canActivateUser;
@@ -182,35 +189,35 @@ const DashboardUserCardActions = ({
         )}
 
         <div className="w-3/4">
-          {!user?.isDeleted ? (
-            canDeleteUser && (
-              <Button
-                disabled={isLoading}
-                className={`${
-                  canShowEditButton ? "min-w-40 w-auto" : "w-full"
-                } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
-                onClick={handleDelete}
-              >
-                <Package className="w-1 h-1" />
-                {t(
-                  "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser",
-                )}
-              </Button>
-            )
-          ) : (
-            <Button
-              disabled={isLoading}
-              className={`${
-                canShowEditButton ? "min-w-40 w-auto" : ""
-              } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
-              onClick={handleUnDelete}
-            >
-              <PackageOpen />
-              {t(
-                "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.restoreUser",
+          {!user?.isDeleted
+            ? canDeleteUser && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    canShowEditButton ? "min-w-40 w-auto" : "w-full"
+                  } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
+                  onClick={handleDelete}
+                >
+                  <Package className="w-1 h-1" />
+                  {t(
+                    "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser",
+                  )}
+                </Button>
+              )
+            : canRestoreUser && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    canShowEditButton ? "min-w-40 w-auto" : ""
+                  } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
+                  onClick={handleUnDelete}
+                >
+                  <PackageOpen />
+                  {t(
+                    "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.restoreUser",
+                  )}
+                </Button>
               )}
-            </Button>
-          )}
         </div>
 
         {canShowEditButton && (
