@@ -40,13 +40,19 @@ const DashboardUserCardActions = ({
   const handleOpenEditAdminModal = () => setIsAdminEditModalOpen(true);
   const handleCloseEditAdminModal = () => setIsAdminEditModalOpen(false);
 
-  const { canActivateUser, canDeActivateUser, canDeleteUser, canRestoreUser } =
-    usePermission({
-      canActivateUser: Permission.USERS_ACTIVATE,
-      canDeActivateUser: Permission.USERS_DEACTIVATE,
-      canDeleteUser: Permission.USERS_DELETE,
-      canRestoreUser: Permission.USERS_RESTORE,
-    });
+  const {
+    canActivateUser,
+    canDeActivateUser,
+    canDeleteUser,
+    canRestoreUser,
+    canUpdateUser,
+  } = usePermission({
+    canActivateUser: Permission.USERS_ACTIVATE,
+    canDeActivateUser: Permission.USERS_DEACTIVATE,
+    canDeleteUser: Permission.USERS_DELETE,
+    canRestoreUser: Permission.USERS_RESTORE,
+    canUpdateUser: Permission.USERS_UPDATE,
+  });
 
   const handleDelete = useCallback(async () => {
     if (!canDeleteUser) {
@@ -220,21 +226,28 @@ const DashboardUserCardActions = ({
               )}
         </div>
 
-        {canShowEditButton && (
+        {canShowEditButton && canUpdateUser && (
           <Button
             disabled={isLoading}
             className="min-w-40 w-auto min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all"
             onClick={handleOpenEditAdminModal}
           >
             <Package className="w-1 h-1" />
-            Edit Admin Details
+            {t(
+              "routes.dashboard.routes.users.components.DashboardUserCardActions.editAdminDetails",
+            )}
           </Button>
         )}
       </div>
 
-      <Modal isOpen={isAdminEditModalOpen} onClose={handleCloseEditAdminModal}>
-        <EditAdminUserForm user={user} />
-      </Modal>
+      {canShowEditButton && canUpdateUser && (
+        <Modal
+          isOpen={isAdminEditModalOpen}
+          onClose={handleCloseEditAdminModal}
+        >
+          <EditAdminUserForm user={user} />
+        </Modal>
+      )}
     </>
   );
 };

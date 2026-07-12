@@ -693,6 +693,9 @@
               "activeUsers": "Active users",
               "deletedUsers": "Deleted users",
               "adminUsers": "Admin users"
+            },
+            "DashboardUserCardActions": {
+              "editAdminDetails": "Edit Admin Details"
             }
           },
           "errors": {

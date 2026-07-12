@@ -26,6 +26,9 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { isArabicLocale } from "@/config/locales.config";
 import { authFetcher } from "@/utils/authFetcher";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -81,6 +84,10 @@ const EditAdminUserForm = ({ user }: EditAdminUserFormProps) => {
   const [img, setImg] = useState<File | null>(null);
   const [imgUrl, setImgUrl] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const { canUpdateUser } = usePermission({
+    canUpdateUser: Permission.USERS_UPDATE,
+  });
 
   const formSchema = createFormSchema(t);
 
@@ -162,6 +169,11 @@ const EditAdminUserForm = ({ user }: EditAdminUserFormProps) => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canUpdateUser) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     registerMutation.mutate(values);
   };
 

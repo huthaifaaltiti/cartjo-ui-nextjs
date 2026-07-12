@@ -685,6 +685,9 @@
               "activeUsers": "المستخدمون النشطون",
               "deletedUsers": "المستخدمون المحذوفون",
               "adminUsers": "المستخدمون الإداريون"
+            },
+            "DashboardUserCardActions": {
+              "editAdminDetails": "تعديل بيانات المسؤول"
             }
           },
           "errors": {
