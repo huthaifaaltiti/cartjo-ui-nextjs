@@ -11,13 +11,13 @@ import { UserCardProps } from "./DashboardUserCard";
 import {
   showErrorToast,
   showSuccessToast,
-  showWarningToast,
 } from "@/components/shared/CustomToast";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
 import EditAdminUserForm from "../routes/users/adminUsers/EditAdminUserForm";
 import { usePermission } from "@/hooks/usePermission";
 import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type DashboardUserCardActionsProps = UserCardProps;
 
@@ -40,12 +40,18 @@ const DashboardUserCardActions = ({
   const handleOpenEditAdminModal = () => setIsAdminEditModalOpen(true);
   const handleCloseEditAdminModal = () => setIsAdminEditModalOpen(false);
 
-  const { canActivateUser, canDeActivateUser } = usePermission({
+  const { canActivateUser, canDeActivateUser, canDeleteUser } = usePermission({
     canActivateUser: Permission.USERS_ACTIVATE,
     canDeActivateUser: Permission.USERS_DEACTIVATE,
+    canDeleteUser: Permission.USERS_DELETE,
   });
 
   const handleDelete = useCallback(async () => {
+    if (!canDeleteUser) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await deleteUser(user._id);
@@ -67,7 +73,7 @@ const DashboardUserCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteUser, queryClient, queryKey, t, user._id]);
+  }, [deleteUser, queryClient, queryKey, t, user._id, canDeleteUser]);
 
   const handleUnDelete = useCallback(async () => {
     setIsLoading(true);
@@ -96,12 +102,7 @@ const DashboardUserCardActions = ({
     const hasAccess = user?.isActive ? canDeActivateUser : canActivateUser;
 
     if (!hasAccess) {
-      showWarningToast({
-        title: t("general.toast.title.error"),
-        description: t("general.authorization.noPermission"),
-        dismissText: t("general.toast.dismissText"),
-      });
-
+      showNoPermissionToast(t);
       return;
     }
 
@@ -182,18 +183,20 @@ const DashboardUserCardActions = ({
 
         <div className="w-3/4">
           {!user?.isDeleted ? (
-            <Button
-              disabled={isLoading}
-              className={`${
-                canShowEditButton ? "min-w-40 w-auto" : "w-full"
-              } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
-              onClick={handleDelete}
-            >
-              <Package className="w-1 h-1" />
-              {t(
-                "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser",
-              )}
-            </Button>
+            canDeleteUser && (
+              <Button
+                disabled={isLoading}
+                className={`${
+                  canShowEditButton ? "min-w-40 w-auto" : "w-full"
+                } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
+                onClick={handleDelete}
+              >
+                <Package className="w-1 h-1" />
+                {t(
+                  "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser",
+                )}
+              </Button>
+            )
           ) : (
             <Button
               disabled={isLoading}
