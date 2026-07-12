@@ -29,6 +29,9 @@ import { authFetcher } from "@/utils/authFetcher";
 import { validationConfig } from "@/config/validationConfig";
 import { normalizePhoneNumber } from "@/utils/normalizePhoneNumber";
 import { COUNTRY_CONFIGS } from "@/config/countryPhone.config";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const createFormSchema = (
   t: (key: string, values?: Record<string, string | number | Date>) => string,
@@ -95,6 +98,10 @@ const CreateAdminUserForm = () => {
   const [img, setImg] = useState<File | null>(null);
   const [imgUrl, setImgUrl] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const { canCreateUser } = usePermission({
+    canCreateUser: Permission.USERS_CREATE,
+  });
 
   const formSchema = createFormSchema(t);
 
@@ -180,6 +187,11 @@ const CreateAdminUserForm = () => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canCreateUser) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     registerMutation.mutate(values);
   };
 
