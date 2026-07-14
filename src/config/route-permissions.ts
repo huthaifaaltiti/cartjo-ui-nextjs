@@ -55,6 +55,7 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.BANNERS_CREATE,
     Permission.BANNERS_UPDATE,
     Permission.BANNERS_DELETE,
+    Permission.BANNERS_RESTORE,
     Permission.BANNERS_ACTIVATE,
     Permission.BANNERS_DEACTIVATE,
   ],
