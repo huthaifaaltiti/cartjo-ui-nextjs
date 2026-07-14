@@ -37,6 +37,9 @@ import { BANNERS_QUERY_KEY } from "@/hooks/react-query/query-options/banners";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
 import { Banner } from "@/types/banner.type";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -188,6 +191,10 @@ const CreateBannerForm = () => {
     url: "",
   });
 
+  const { canCreateBanner } = usePermission({
+    canCreateBanner: Permission.BANNERS_CREATE,
+  });
+
   const formSchema = createFormSchema(t);
 
   const form = useForm<FormData>({
@@ -292,6 +299,11 @@ const CreateBannerForm = () => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canCreateBanner) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     registerMutation.mutate(values);
   };
 

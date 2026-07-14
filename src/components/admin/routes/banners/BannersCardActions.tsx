@@ -17,6 +17,9 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
 import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
 import { BaseResponse } from "@/types/service-response.type";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean },
@@ -57,7 +60,26 @@ const BannersCardActions = <
   const [isLoading, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const {
+    canDeleteBanner,
+    canRestoreBanner,
+    canActivateBanner,
+    canDeActivateBanner,
+    canUpdateBanner,
+  } = usePermission({
+    canDeleteBanner: Permission.BANNERS_DELETE,
+    canRestoreBanner: Permission.BANNERS_RESTORE,
+    canActivateBanner: Permission.BANNERS_ACTIVATE,
+    canDeActivateBanner: Permission.BANNERS_DEACTIVATE,
+    canUpdateBanner: Permission.BANNERS_UPDATE,
+  });
+
   const handleDelete = useCallback(async () => {
+    if (!canDeleteBanner) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await deleteFn(cardItem._id, locale);
@@ -87,9 +109,23 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, cardItem._id, queryClient, queryKey, t, locale, setChangeBanners]);
+  }, [
+    deleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    t,
+    locale,
+    setChangeBanners,
+    canDeleteBanner,
+  ]);
 
   const handleUnDelete = useCallback(async () => {
+    if (!canRestoreBanner) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await unDeleteFn(cardItem._id, locale);
@@ -119,9 +155,27 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, cardItem._id, queryClient, queryKey, t, locale, setChangeBanners]);
+  }, [
+    unDeleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    t,
+    locale,
+    setChangeBanners,
+    canRestoreBanner,
+  ]);
 
   const handleToggleActiveStatus = useCallback(async () => {
+    const hasAccess = cardItem?.isActive
+      ? canDeActivateBanner
+      : canActivateBanner;
+
+    if (!hasAccess) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await switchUserActiveStatusFn(
@@ -163,6 +217,8 @@ const BannersCardActions = <
     queryKey,
     locale,
     t,
+    canDeActivateBanner,
+    canActivateBanner,
   ]);
 
   return (
@@ -181,43 +237,47 @@ const BannersCardActions = <
         )}
 
         <div className="w-1/4">
-          <ToggleSwitch
-            value={cardItem.isActive}
-            onChange={handleToggleActiveStatus}
-            width={50}
-            height={22}
-            trackColorInactive="#E55050"
-            trackColorActive="#16610E"
-            isDisabled={false}
-          />
+          {(canDeActivateBanner || canActivateBanner) && (
+            <ToggleSwitch
+              value={cardItem.isActive}
+              onChange={handleToggleActiveStatus}
+              width={50}
+              height={22}
+              trackColorInactive="#E55050"
+              trackColorActive="#16610E"
+              isDisabled={false}
+            />
+          )}
         </div>
 
         <div className="w-full flex items-center justify-center gap-4 flex-wrap sm:flex-nowrap">
-          {!cardItem.isDeleted ? (
-            <Button
-              disabled={isLoading}
-              className={`${
-                showEditButton ? "w-full" : "w-full"
-              } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
-              onClick={handleDelete}
-            >
-              <Package className="w-1 h-1" />
-              {t("general.actions.delete")}
-            </Button>
-          ) : (
-            <Button
-              disabled={isLoading}
-              className={`${
-                showEditButton ? "w-full" : "w-full"
-              } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
-              onClick={handleUnDelete}
-            >
-              <PackageOpen className="w-1 h-1" />
-              {t("general.actions.restore")}
-            </Button>
-          )}
+          {!cardItem.isDeleted
+            ? canDeleteBanner && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    showEditButton ? "w-full" : "w-full"
+                  } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
+                  onClick={handleDelete}
+                >
+                  <Package className="w-1 h-1" />
+                  {t("general.actions.delete")}
+                </Button>
+              )
+            : canRestoreBanner && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    showEditButton ? "w-full" : "w-full"
+                  } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
+                  onClick={handleUnDelete}
+                >
+                  <PackageOpen className="w-1 h-1" />
+                  {t("general.actions.restore")}
+                </Button>
+              )}
 
-          {showEditButton && renderEditForm && (
+          {canUpdateBanner && showEditButton && renderEditForm && (
             <Button
               disabled={isLoading}
               className="w-full min-h-3 bg-gray-500 hover:bg-gray-600 text-white-50 transition-all"
@@ -230,7 +290,7 @@ const BannersCardActions = <
         </div>
       </div>
 
-      {renderEditForm && (
+      {canUpdateBanner && renderEditForm && (
         <Modal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}

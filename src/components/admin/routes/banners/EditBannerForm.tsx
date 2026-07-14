@@ -37,6 +37,9 @@ import { MEDIA_CONFIG } from "@/config/media.config";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
 import { authFetcher } from "@/utils/authFetcher";
 import { BANNERS_QUERY_KEY } from "@/hooks/react-query/query-options/banners";
+import { Permission } from "@/enums/permission.enum";
+import { usePermission } from "@/hooks/usePermission";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -185,6 +188,10 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
     url: "",
   });
 
+  const { canUpdateBanner } = usePermission({
+    canUpdateBanner: Permission.BANNERS_UPDATE,
+  });
+
   const formSchema = editFormSchema(t);
 
   const form = useForm<FormData>({
@@ -287,6 +294,10 @@ const EditBannerForm = ({ banner }: { banner: Banner }) => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canUpdateBanner) {
+      showNoPermissionToast(t);
+      return;
+    }
     registerMutation.mutate(values);
   };
 
