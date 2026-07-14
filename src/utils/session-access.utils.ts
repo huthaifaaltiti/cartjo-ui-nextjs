@@ -26,14 +26,38 @@ export function checkCanAccessDashboardClientSide(
   return userPermissions.includes(Permission.DASHBOARD_ACCESS) ?? false;
 }
 
+interface HasRequiredPermissionsParams {
+  requiredPermissions: string[];
+  sessionPermissions: string[] | null;
+}
+
 export function hasRequiredPermissionsClientSide({
   sessionPermissions,
   requiredPermissions,
-}: {
-  sessionPermissions: string[] | null | undefined;
-  requiredPermissions: string[];
-}): boolean {
+}: HasRequiredPermissionsParams): boolean {
   if (!sessionPermissions) return false;
 
   return requiredPermissions.every((perm) => sessionPermissions.includes(perm));
+}
+
+export function hasRequiredPermissionsServerSide({
+  requiredPermissions,
+  sessionPermissions,
+}: HasRequiredPermissionsParams): boolean {
+  // No permissions required -> always allowed
+  if (!requiredPermissions || requiredPermissions.length === 0) {
+    return true;
+  }
+
+  // No session permissions available -> deny
+  if (!sessionPermissions || sessionPermissions.length === 0) {
+    return false;
+  }
+
+  const sessionPermissionsSet = new Set(sessionPermissions);
+
+  // ANY one required permission is enough
+  return requiredPermissions.some((permission) =>
+    sessionPermissionsSet.has(permission),
+  );
 }
