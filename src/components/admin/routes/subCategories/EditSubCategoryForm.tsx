@@ -44,6 +44,9 @@ import { MEDIA_CONFIG } from "@/config/media.config";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
 import { Category } from "@/types/category.type";
+import { Permission } from "@/enums/permission.enum";
+import { usePermission } from "@/hooks/usePermission";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -159,6 +162,10 @@ const EditCategoryForm = ({ subCategory }: Props) => {
     url: "",
   });
 
+  const { canUpdateSubCategory } = usePermission({
+    canUpdateSubCategory: Permission.SUB_CATEGORIES_UPDATE,
+  });
+
   const formSchema = editFormSchema(t);
 
   const form = useForm<FormData>({
@@ -242,6 +249,11 @@ const EditCategoryForm = ({ subCategory }: Props) => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canUpdateSubCategory) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     registerMutation.mutate(values);
   };
 
