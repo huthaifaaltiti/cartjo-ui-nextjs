@@ -35,6 +35,9 @@ import { MEDIA_CONFIG } from "@/config/media.config";
 import { authFetcher } from "@/utils/authFetcher";
 import { Category } from "@/types/category.type";
 import { DataResponse } from "@/types/service-response.type";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -119,6 +122,10 @@ const CreateCategoryForm = () => {
   }>({
     file: null,
     url: "",
+  });
+
+  const { canCreateCategory } = usePermission({
+    canCreateCategory: Permission.CATEGORIES_CREATE,
   });
 
   const formSchema = createFormSchema(t);
@@ -219,6 +226,10 @@ const CreateCategoryForm = () => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canCreateCategory) {
+      showNoPermissionToast(t);
+      return;
+    }
     registerMutation.mutate(values);
   };
 

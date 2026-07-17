@@ -837,6 +837,9 @@
               },
               "errors": {
                 "failedCreation": "فشل إنشاء الفئة"
+              },
+              "actions": {
+                "create": "إنشاء تصنيف رئيسي"
               }
             },
             "EditCategoryForm": {

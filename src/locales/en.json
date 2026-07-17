@@ -835,6 +835,9 @@
               },
               "errors": {
                 "failedCreation": "Category creation failed"
+              },
+              "actions": {
+                "create": "Create Category"
               }
             },
             "EditCategoryForm": {
