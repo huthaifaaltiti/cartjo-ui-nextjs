@@ -92,6 +92,17 @@ export async function POST(req: NextRequest) {
 
     let nestRes = await makeRequest(accessToken);
 
+    // Unauthorized session
+    if (nestRes.status === 403) {
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: "Forbidden",
+        },
+        { status: 403 },
+      );
+    }
+
     if (nestRes.status === 401 && refreshToken) {
       const refreshed = await silentRefresh();
 
