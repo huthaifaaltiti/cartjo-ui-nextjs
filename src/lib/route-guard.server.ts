@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session.server";
 import { getAccessToken } from "@/lib/tokens.server";
-import { DashboardModule } from "@/enums/dashboard-module.enum";
 import { ROUTE_PERMISSIONS } from "@/config/route-permissions";
 import { hasRequiredPermissionsServerSide } from "@/utils/session-access.utils";
 import { requireAuth } from "@/utils/authRedirect";
+import { AppRoute } from "@/enums/app-route.enum";
 
-export async function guardRoute(module: DashboardModule) {
+export async function guardRoute(module: AppRoute) {
   const [session, token] = await Promise.all([getSession(), getAccessToken()]);
 
   requireAuth(token);

@@ -1,10 +1,10 @@
-import { DashboardModule } from "@/enums/dashboard-module.enum";
+import { AppRoute } from "@/enums/app-route.enum";
 import { Permission } from "@/enums/permission.enum";
 
 export const ROUTE_PERMISSIONS: Partial<
-  Record<DashboardModule, Permission | Permission[]>
+  Record<AppRoute, Permission | Permission[]>
 > = {
-  [DashboardModule.USERS]: [
+  [AppRoute.DASHBOARD_USERS]: [
     Permission.USERS_READ,
     Permission.USERS_CREATE,
     Permission.USERS_UPDATE,
@@ -14,7 +14,7 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.USERS_DEACTIVATE,
   ],
 
-  [DashboardModule.CATEGORIES]: [
+  [AppRoute.DASHBOARD_CATEGORIES]: [
     Permission.CATEGORIES_READ,
     Permission.CATEGORIES_CREATE,
     Permission.CATEGORIES_UPDATE,
@@ -23,7 +23,7 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.CATEGORIES_DEACTIVATE,
   ],
 
-  [DashboardModule.SUB_CATEGORIES]: [
+  [AppRoute.DASHBOARD_SUB_CATEGORIES]: [
     Permission.SUB_CATEGORIES_READ,
     Permission.SUB_CATEGORIES_CREATE,
     Permission.SUB_CATEGORIES_UPDATE,
@@ -32,7 +32,7 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.SUB_CATEGORIES_DEACTIVATE,
   ],
 
-  [DashboardModule.PRODUCTS]: [
+  [AppRoute.DASHBOARD_PRODUCTS]: [
     Permission.PRODUCTS_READ,
     Permission.PRODUCTS_CREATE,
     Permission.PRODUCTS_UPDATE,
@@ -41,7 +41,7 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.PRODUCTS_DEACTIVATE,
   ],
 
-  [DashboardModule.LOGOS]: [
+  [AppRoute.DASHBOARD_LOGOS]: [
     Permission.LOGOS_READ,
     Permission.LOGOS_CREATE,
     Permission.LOGOS_UPDATE,
@@ -50,7 +50,7 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.LOGOS_DEACTIVATE,
   ],
 
-  [DashboardModule.BANNERS]: [
+  [AppRoute.DASHBOARD_BANNERS]: [
     Permission.BANNERS_READ,
     Permission.BANNERS_CREATE,
     Permission.BANNERS_UPDATE,
@@ -60,7 +60,7 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.BANNERS_DEACTIVATE,
   ],
 
-  [DashboardModule.TYPE_HINT_CONFIGS]: [
+  [AppRoute.DASHBOARD_TYPE_HINT_CONFIGS]: [
     Permission.TYPE_HINT_CONFIGS_READ,
     Permission.TYPE_HINT_CONFIGS_CREATE,
     Permission.TYPE_HINT_CONFIGS_UPDATE,
@@ -69,7 +69,7 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.TYPE_HINT_CONFIGS_DEACTIVATE,
   ],
 
-  [DashboardModule.SHOWCASES]: [
+  [AppRoute.DASHBOARD_SHOWCASES]: [
     Permission.SHOWCASES_READ,
     Permission.SHOWCASES_CREATE,
     Permission.SHOWCASES_UPDATE,
@@ -78,11 +78,13 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.SHOWCASES_DEACTIVATE,
   ],
 
-  [DashboardModule.ORDERS]: [
+  [AppRoute.DASHBOARD_ORDERS]: [
     Permission.ORDERS_READ,
     Permission.ORDERS_CREATE,
     Permission.ORDERS_UPDATE,
     Permission.ORDERS_CANCEL,
     Permission.ORDERS_REFUND,
   ],
+
+  [AppRoute.USER_PROFILE]: [Permission.PROFILE_READ, Permission.PROFILE_UPDATE],
 };

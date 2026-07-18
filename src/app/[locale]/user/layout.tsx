@@ -6,12 +6,16 @@ import UserAccountMenu from "@/components/user/user/layout/user-account/UserAcco
 import UserInfoRow from "@/components/user/user/layout/user-info/UserInfoRow";
 import UserOthersActions from "@/components/user/user/layout/user-others/UserOthersActions";
 import UserQuickActions from "@/components/user/user/layout/user-quick-actions/UserQuickActions";
+import { AppRoute } from "@/enums/app-route.enum";
+import { guardRoute } from "@/lib/route-guard.server";
 
 export default async function UserPageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await guardRoute(AppRoute.USER_PROFILE);
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <TopBar />
