@@ -1,5 +1,5 @@
 import UsersPageHeader from "@/components/admin/routes/users/UsersPageHeader";
-import { DashboardModule } from "@/enums/dashboard-module.enum";
+import { AppRoute } from "@/enums/app-route.enum";
 import { guardRoute } from "@/lib/route-guard.server";
 
 export default async function UsersPageLayout({
@@ -7,7 +7,7 @@ export default async function UsersPageLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await guardRoute(DashboardModule.USERS);
+  await guardRoute(AppRoute.DASHBOARD_USERS);
 
   return (
     <div className="w-full h-full">

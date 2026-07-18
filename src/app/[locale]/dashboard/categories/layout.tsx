@@ -1,5 +1,5 @@
 import CategoriesPageHeader from "@/components/admin/routes/categories/CategoriesPageHeader";
-import { DashboardModule } from "@/enums/dashboard-module.enum";
+import { AppRoute } from "@/enums/app-route.enum";
 import { guardRoute } from "@/lib/route-guard.server";
 
 export default async function UsersPageLayout({
@@ -7,7 +7,7 @@ export default async function UsersPageLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await guardRoute(DashboardModule.CATEGORIES);
+  await guardRoute(AppRoute.DASHBOARD_CATEGORIES);
 
   return (
     <div className="w-full h-full">
