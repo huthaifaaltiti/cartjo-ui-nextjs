@@ -4,6 +4,8 @@ import { Permission } from "@/enums/permission.enum";
 export const ROUTE_PERMISSIONS: Partial<
   Record<AppRoute, Permission | Permission[]>
 > = {
+  [AppRoute.DASHBOARD]: [Permission.DASHBOARD_ACCESS],
+  
   [AppRoute.DASHBOARD_USERS]: [
     Permission.USERS_READ,
     Permission.USERS_CREATE,

@@ -1,5 +1,6 @@
 export enum AppRoute {
   // Dashboard admin routes
+  DASHBOARD = "Dashboard",
   DASHBOARD_USERS = "UsersManagement",
   DASHBOARD_CATEGORIES = "CategoriesManagement",
   DASHBOARD_SUB_CATEGORIES = "SubCategoriesManagement",

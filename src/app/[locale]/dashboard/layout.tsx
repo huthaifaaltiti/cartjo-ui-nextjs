@@ -1,9 +1,5 @@
 import DashboardSideNav from "@/components/admin/layout/DashboardSideNav";
-import {
-  getSession,
-  checkIsAdmin,
-  checkCanAccessDashboard,
-} from "@/lib/session.server";
+import { checkIsAdmin, checkCanAccessDashboard } from "@/lib/session.server";
 import { getQueryClient } from "@/utils/queryUtils";
 import {
   dehydrate,
@@ -12,8 +8,8 @@ import {
 } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { prefetchActiveLogo } from "@/services/prefetch/activeLogo";
-import { getAccessToken } from "@/lib/tokens.server";
-import { requireAuth } from "@/utils/authRedirect";
+import { guardRoute } from "@/lib/route-guard.server";
+import { AppRoute } from "@/enums/app-route.enum";
 
 interface NextLayoutProps {
   children: React.ReactNode;
@@ -26,10 +22,7 @@ export default async function DashboardLayout({
 }: NextLayoutProps) {
   const { locale } = await params;
 
-  const session = await getSession();
-  const token = await getAccessToken();
-
-  requireAuth(token);
+  const { session } = await guardRoute(AppRoute.DASHBOARD);
 
   const isAdmin = checkIsAdmin(session);
   const canAccessDashboard = checkCanAccessDashboard(session);
