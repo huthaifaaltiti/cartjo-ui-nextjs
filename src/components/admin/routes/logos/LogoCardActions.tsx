@@ -17,6 +17,9 @@ import {
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
 import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
+import { Permission } from "@/enums/permission.enum";
+import { usePermission } from "@/hooks/usePermission";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean },
@@ -53,7 +56,26 @@ const LogoCardActions = <
   const [isLoading, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const {
+    canDeleteLogo,
+    canRestoreLogo,
+    canActivateLogo,
+    canDeActivateLogo,
+    canUpdateLogo,
+  } = usePermission({
+    canDeleteLogo: Permission.LOGOS_DELETE,
+    canRestoreLogo: Permission.LOGOS_RESTORE,
+    canActivateLogo: Permission.LOGOS_ACTIVATE,
+    canDeActivateLogo: Permission.LOGOS_DEACTIVATE,
+    canUpdateLogo: Permission.LOGOS_UPDATE,
+  });
+
   const handleDelete = useCallback(async () => {
+    if (!canDeleteLogo) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await deleteFn(cardItem._id, locale);
@@ -82,9 +104,23 @@ const LogoCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, cardItem._id, queryClient, queryKey, t, locale, setChangeLogo]);
+  }, [
+    deleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    t,
+    locale,
+    setChangeLogo,
+    canDeleteLogo,
+  ]);
 
   const handleUnDelete = useCallback(async () => {
+    if (!canRestoreLogo) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await unDeleteFn(cardItem._id, locale);
@@ -122,9 +158,17 @@ const LogoCardActions = <
     t,
     locale,
     setChangeLogo,
+    canRestoreLogo,
   ]);
 
   const handleToggleActiveStatus = useCallback(async () => {
+    const hasAccess = cardItem?.isActive ? canDeActivateLogo : canActivateLogo;
+
+    if (!hasAccess) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await switchUserActiveStatusFn(
@@ -166,6 +210,8 @@ const LogoCardActions = <
     queryKey,
     locale,
     t,
+    canActivateLogo,
+    canDeActivateLogo,
   ]);
 
   return (
@@ -184,43 +230,47 @@ const LogoCardActions = <
         )}
 
         <div className="w-1/4">
-          <ToggleSwitch
-            value={cardItem.isActive}
-            onChange={handleToggleActiveStatus}
-            width={50}
-            height={22}
-            trackColorInactive="#E55050"
-            trackColorActive="#16610E"
-            isDisabled={false}
-          />
+          {(canActivateLogo || canDeActivateLogo) && (
+            <ToggleSwitch
+              value={cardItem.isActive}
+              onChange={handleToggleActiveStatus}
+              width={50}
+              height={22}
+              trackColorInactive="#E55050"
+              trackColorActive="#16610E"
+              isDisabled={false}
+            />
+          )}
         </div>
 
         <div className="w-full flex items-center justify-center gap-4 flex-wrap sm:flex-nowrap">
-          {!cardItem.isDeleted ? (
-            <Button
-              disabled={isLoading}
-              className={`${
-                showEditButton ? "w-full" : "w-full"
-              } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
-              onClick={handleDelete}
-            >
-              <Package className="w-1 h-1" />
-              {t("general.actions.delete")}
-            </Button>
-          ) : (
-            <Button
-              disabled={isLoading}
-              className={`${
-                showEditButton ? "w-full" : "w-full"
-              } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
-              onClick={handleUnDelete}
-            >
-              <PackageOpen className="w-1 h-1" />
-              {t("general.actions.restore")}
-            </Button>
-          )}
+          {!cardItem.isDeleted
+            ? canDeleteLogo && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    showEditButton ? "w-full" : "w-full"
+                  } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
+                  onClick={handleDelete}
+                >
+                  <Package className="w-1 h-1" />
+                  {t("general.actions.delete")}
+                </Button>
+              )
+            : canRestoreLogo && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    showEditButton ? "w-full" : "w-full"
+                  } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
+                  onClick={handleUnDelete}
+                >
+                  <PackageOpen className="w-1 h-1" />
+                  {t("general.actions.restore")}
+                </Button>
+              )}
 
-          {showEditButton && renderEditForm && (
+          {showEditButton && renderEditForm && canUpdateLogo && (
             <Button
               disabled={isLoading}
               className="w-full min-h-3 bg-gray-500 hover:bg-gray-600 text-white-50 transition-all"
@@ -233,7 +283,7 @@ const LogoCardActions = <
         </div>
       </div>
 
-      {renderEditForm && (
+      {renderEditForm && canUpdateLogo && (
         <Modal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}

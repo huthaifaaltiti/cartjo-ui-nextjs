@@ -33,6 +33,9 @@ import { MEDIA_CONFIG } from "@/config/media.config";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
 import { Logo } from "@/types/logo";
+import { showNoPermissionToast } from "@/utils/permissionToast";
+import { Permission } from "@/enums/permission.enum";
+import { usePermission } from "@/hooks/usePermission";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -99,6 +102,10 @@ const CreateLogoForm = () => {
   }>({
     file: null,
     url: "",
+  });
+
+  const { canCreateLogo } = usePermission({
+    canCreateLogo: Permission.LOGOS_CREATE,
   });
 
   const formSchema = createFormSchema(t);
@@ -183,6 +190,10 @@ const CreateLogoForm = () => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canCreateLogo) {
+      showNoPermissionToast(t);
+      return;
+    }
     registerMutation.mutate(values);
   };
 
