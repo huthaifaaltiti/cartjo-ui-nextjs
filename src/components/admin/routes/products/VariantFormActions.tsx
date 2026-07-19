@@ -13,6 +13,9 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "@/components/shared/CustomToast";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type ProductCardActionsProps = {
   productId: string;
@@ -53,7 +56,23 @@ const ProductCardActions = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const {
+    canDeleteProduct,
+    canRestoreProduct,
+    canActivateProduct,
+    canDeActivateProduct,
+  } = usePermission({
+    canDeleteProduct: Permission.PRODUCTS_DELETE,
+    canRestoreProduct: Permission.PRODUCTS_RESTORE,
+    canActivateProduct: Permission.PRODUCTS_ACTIVATE,
+    canDeActivateProduct: Permission.PRODUCTS_DEACTIVATE,
+  });
+
   const handleDelete = useCallback(async () => {
+    if (!canDeleteProduct) {
+      showNoPermissionToast(t);
+      return;
+    }
     setIsLoading(true);
     try {
       const resp = await deleteFn(locale, productId, variantId);
@@ -74,9 +93,23 @@ const ProductCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, variantId, productId, queryClient, queryKey, locale, t]);
+  }, [
+    deleteFn,
+    variantId,
+    productId,
+    queryClient,
+    queryKey,
+    locale,
+    t,
+    canDeleteProduct,
+  ]);
 
   const handleUnDelete = useCallback(async () => {
+    if (!canRestoreProduct) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await unDeleteFn(locale, productId, variantId);
@@ -97,9 +130,24 @@ const ProductCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, variantId, productId, queryClient, queryKey, locale, t]);
+  }, [
+    unDeleteFn,
+    variantId,
+    productId,
+    queryClient,
+    queryKey,
+    locale,
+    t,
+    canRestoreProduct,
+  ]);
 
   const handleToggleActiveStatus = useCallback(async () => {
+    const hasAccess = isActive ? canDeActivateProduct : canActivateProduct;
+
+    if (!hasAccess) {
+      showNoPermissionToast(t);
+      return;
+    }
     setIsLoading(true);
     try {
       const resp = await switchActiveStatusFn(
@@ -135,6 +183,8 @@ const ProductCardActions = ({
     t,
     variantId,
     productId,
+    canDeActivateProduct,
+    canActivateProduct,
   ]);
 
   const handleAction = (

@@ -45,6 +45,9 @@ import { Statuses } from "@/enums/statuses.enum";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
 import { SellingType } from "@/enums/sellingType.enum";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 export interface VariantValidationErrors {
   [variantIndex: number]: {
@@ -127,6 +130,11 @@ const ProductVariantForm = forwardRef<
   const [deletedImages, setDeletedImages] = useState<string[]>([]);
 
   const initialVariantsRef = useRef<Variant[]>([]);
+
+  const { canUpdateProduct, canCreateProduct } = usePermission({
+    canUpdateProduct: Permission.PRODUCTS_UPDATE,
+    canCreateProduct: Permission.PRODUCTS_CREATE,
+  });
 
   useEffect(() => {
     if (isEditMode && variants?.[0]) {
@@ -503,6 +511,11 @@ const ProductVariantForm = forwardRef<
   };
 
   const handleSaveVariant = async (variantIndex: number) => {
+    if (!canUpdateProduct) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     const isValid = validateVariant(variants[variantIndex], variantIndex);
 
     if (Object.keys(isValid).length > 0) {
@@ -588,103 +601,6 @@ const ProductVariantForm = forwardRef<
     }
   };
 
-  // const getChangedPayload = (
-  //   variant: Variant,
-  //   variantIndex: number,
-  //   action: "CREATE" | "UPDATE",
-  // ) => {
-  //   const formData = new FormData();
-
-  //   const initial =
-  //     action === "UPDATE" ? initialVariantsRef.current[variantIndex] : null;
-
-  //   const isCreate = action === "CREATE" || !initial;
-
-  //   // helper
-  //   const appendIfChanged = (
-  //     key: string,
-  //     value: string | number | null,
-  //     initialValue: string | undefined | number | null,
-  //   ) => {
-  //     if (value === undefined || value === null) return;
-
-  //     if (isCreate || value !== initialValue) {
-  //       if (value !== undefined && value !== null) {
-  //         formData.append(key, String(value));
-  //       }
-  //     }
-  //   };
-
-  //   // 🔹 BASIC FIELDS
-  //   appendIfChanged(
-  //     "description_ar",
-  //     variant.description_ar,
-  //     initial?.description_ar,
-  //   );
-  //   appendIfChanged(
-  //     "description_en",
-  //     variant.description_en,
-  //     initial?.description_en,
-  //   );
-  //   appendIfChanged("price", variant.price, initial?.price);
-  //   appendIfChanged("currency", variant.currency, initial?.currency);
-  //   appendIfChanged(
-  //     "discountRate",
-  //     variant.discountRate,
-  //     initial?.discountRate,
-  //   );
-  //   appendIfChanged(
-  //     "totalAmountCount",
-  //     variant.totalAmountCount,
-  //     initial?.totalAmountCount,
-  //   );
-
-  //   // MAIN IMAGE
-  //   if (isCreate) {
-  //     if (variant.mainImage?.file) {
-  //       formData.append("mainImage", variant.mainImage.file);
-  //     }
-  //   } else {
-  //     if (
-  //       variant.mainImage?.file ||
-  //       variant.mainImage?.url !== initial?.mainImage?.url
-  //     ) {
-  //       if (variant.mainImage?.file) {
-  //         formData.append("mainImage", variant.mainImage.file);
-  //       }
-  //     }
-  //   }
-
-  //   // DELETED IMAGES (only update)
-  //   if (!isCreate) {
-  //     deletedImages.forEach((url, i) => {
-  //       formData.append(`deletedImages[${i}]`, url);
-  //     });
-  //   }
-
-  //   // NEW IMAGES
-  //   if (variant.images?.files?.length) {
-  //     variant.images.files.forEach((file) => {
-  //       formData.append("images", file);
-  //     });
-  //   }
-
-  //   // ATTRIBUTES
-  //   const attrsChanged =
-  //     isCreate ||
-  //     JSON.stringify(variant.attributes) !==
-  //       JSON.stringify(initial?.attributes);
-
-  //   if (attrsChanged) {
-  //     variant.attributes.forEach((attr, index) => {
-  //       formData.append(`attributes[${index}][key]`, attr.key);
-  //       formData.append(`attributes[${index}][value]`, attr.value);
-  //     });
-  //   }
-
-  //   return formData;
-  // };
-
   const updateVariantLocally = useCallback(
     (variantId: string, updates: Pick<Variant, "isDeleted" | "isActive">) => {
       const newVariants = variants.map((v) =>
@@ -704,16 +620,18 @@ const ProductVariantForm = forwardRef<
           <h3 className="font-semibold text-lg">{t("title")}</h3>
         </div>
 
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="flex items-center gap-2"
-          onClick={addVariant}
-        >
-          <Plus className="h-4 w-4" />
-          <span>{t("addVariant")}</span>
-        </Button>
+        {canCreateProduct && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+            onClick={addVariant}
+          >
+            <Plus className="h-4 w-4" />
+            <span>{t("addVariant")}</span>
+          </Button>
+        )}
       </div>
 
       <div className="p-4 space-y-6">
@@ -796,19 +714,22 @@ const ProductVariantForm = forwardRef<
                       />
                     )}
 
-                    {isEditMode && variant?.variantId && productId && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleSaveVariant(variantIndex)}
-                        disabled={loadingIndex === variantIndex}
-                      >
-                        <Save className="h-4 w-4" />
-                      </Button>
-                    )}
+                    {isEditMode &&
+                      variant?.variantId &&
+                      productId &&
+                      canUpdateProduct && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleSaveVariant(variantIndex)}
+                          disabled={loadingIndex === variantIndex}
+                        >
+                          <Save className="h-4 w-4" />
+                        </Button>
+                      )}
 
-                    {!variant?.variantId && isEditMode && (
+                    {!variant?.variantId && isEditMode && canCreateProduct && (
                       <Button
                         type="button"
                         variant="ghost"

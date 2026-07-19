@@ -59,6 +59,9 @@ import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
 import { Product, Variant } from "@/types/product.type";
 import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -258,6 +261,10 @@ const CreateProductForm = () => {
     form.setValue("mainImage", url);
   };
 
+  const { canCreateProduct } = usePermission({
+    canCreateProduct: Permission.PRODUCTS_CREATE,
+  });
+
   const formSchema = createFormSchema(t, activeTypeHintConfigsList);
 
   const staticTypeHint =
@@ -427,6 +434,11 @@ const CreateProductForm = () => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canCreateProduct) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     const isValid = variantFormRef.current?.validateAll();
     if (!isValid) return;
 
