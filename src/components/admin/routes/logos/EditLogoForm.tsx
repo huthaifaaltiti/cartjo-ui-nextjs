@@ -33,6 +33,9 @@ import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { MEDIA_CONFIG } from "@/config/media.config";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -99,6 +102,10 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
   }>({
     file: null,
     url: logo?.media?.url || "",
+  });
+
+  const { canUpdateLogo } = usePermission({
+    canUpdateLogo: Permission.LOGOS_UPDATE,
   });
 
   const formSchema = editFormSchema(t);
@@ -180,6 +187,11 @@ const EditLogoForm = ({ logo }: { logo: Logo }) => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canUpdateLogo) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     registerMutation.mutate(values);
   };
 

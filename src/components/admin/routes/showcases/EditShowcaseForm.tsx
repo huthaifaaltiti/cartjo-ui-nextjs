@@ -40,6 +40,9 @@ import { useActiveTypeHintConfigsQuery } from "@/hooks/react-query/useTypeHintCo
 import RequestingDataLoader from "@/components/shared/RequestingDataLoader";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -263,6 +266,10 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
     isFetching: isActiveTypeHintConfigFetching,
   } = useActiveTypeHintConfigsQuery();
 
+  const { canUpdateShowcase } = usePermission({
+    canUpdateShowcase: Permission.SHOWCASES_UPDATE,
+  });
+
   const formSchema = editFormSchema(t, activeTypeHintConfigsList);
 
   const form = useForm<FormData>({
@@ -319,6 +326,11 @@ const EditShowcaseForm = ({ showcase }: { showcase: Showcase }) => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canUpdateShowcase) {
+      showNoPermissionToast(t);
+      return;
+    }
+    
     registerMutation.mutate(values);
   };
 

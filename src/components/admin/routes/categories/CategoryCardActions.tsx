@@ -16,6 +16,9 @@ import {
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
 import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean },
@@ -52,7 +55,26 @@ const CategoryCardActions = <
   const [isLoading, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const {
+    canDeleteCategory,
+    canRestoreCategory,
+    canActivateCategory,
+    canDeActivateCategory,
+    canUpdateCategory,
+  } = usePermission({
+    canDeleteCategory: Permission.CATEGORIES_DELETE,
+    canRestoreCategory: Permission.CATEGORIES_RESTORE,
+    canActivateCategory: Permission.CATEGORIES_ACTIVATE,
+    canDeActivateCategory: Permission.CATEGORIES_DEACTIVATE,
+    canUpdateCategory: Permission.CATEGORIES_UPDATE,
+  });
+
   const handleDelete = useCallback(async () => {
+    if (!canDeleteCategory) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await deleteFn(cardItem._id, locale);
@@ -83,9 +105,15 @@ const CategoryCardActions = <
     t,
     locale,
     setChangeCategories,
+    canDeleteCategory,
   ]);
 
   const handleUnDelete = useCallback(async () => {
+    if (!canRestoreCategory) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await unDeleteFn(cardItem._id, locale);
@@ -116,9 +144,18 @@ const CategoryCardActions = <
     t,
     locale,
     setChangeCategories,
+    canRestoreCategory,
   ]);
 
   const handleToggleActiveStatus = useCallback(async () => {
+    const hasAccess = cardItem?.isActive
+      ? canDeActivateCategory
+      : canActivateCategory;
+
+    if (!hasAccess) {
+      showNoPermissionToast(t);
+      return;
+    }
     setIsLoading(true);
     try {
       const resp = await switchUserActiveStatusFn(
@@ -154,6 +191,8 @@ const CategoryCardActions = <
     queryKey,
     locale,
     t,
+    canActivateCategory,
+    canDeActivateCategory,
   ]);
 
   return (
@@ -172,43 +211,47 @@ const CategoryCardActions = <
         )}
 
         <div className="w-1/4">
-          <ToggleSwitch
-            value={cardItem.isActive}
-            onChange={handleToggleActiveStatus}
-            width={50}
-            height={22}
-            trackColorInactive="#E55050"
-            trackColorActive="#16610E"
-            isDisabled={false}
-          />
+          {(canDeActivateCategory || canActivateCategory) && (
+            <ToggleSwitch
+              value={cardItem.isActive}
+              onChange={handleToggleActiveStatus}
+              width={50}
+              height={22}
+              trackColorInactive="#E55050"
+              trackColorActive="#16610E"
+              isDisabled={false}
+            />
+          )}
         </div>
 
         <div className="w-full flex items-center justify-center gap-4 flex-wrap sm:flex-nowrap">
-          {!cardItem.isDeleted ? (
-            <Button
-              disabled={isLoading}
-              className={`${
-                showEditButton ? "w-full" : "w-full"
-              } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
-              onClick={handleDelete}
-            >
-              <Package className="w-1 h-1" />
-              {t("general.actions.delete")}
-            </Button>
-          ) : (
-            <Button
-              disabled={isLoading}
-              className={`${
-                showEditButton ? "w-full" : "w-full"
-              } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
-              onClick={handleUnDelete}
-            >
-              <PackageOpen className="w-1 h-1" />
-              {t("general.actions.restore")}
-            </Button>
-          )}
+          {!cardItem.isDeleted
+            ? canDeleteCategory && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    showEditButton ? "w-full" : "w-full"
+                  } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
+                  onClick={handleDelete}
+                >
+                  <Package className="w-1 h-1" />
+                  {t("general.actions.delete")}
+                </Button>
+              )
+            : canRestoreCategory && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    showEditButton ? "w-full" : "w-full"
+                  } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
+                  onClick={handleUnDelete}
+                >
+                  <PackageOpen className="w-1 h-1" />
+                  {t("general.actions.restore")}
+                </Button>
+              )}
 
-          {showEditButton && renderEditForm && (
+          {showEditButton && renderEditForm && canUpdateCategory && (
             <Button
               disabled={isLoading}
               className="w-full min-h-3 bg-gray-500 hover:bg-gray-600 text-white-50 transition-all"
@@ -221,7 +264,7 @@ const CategoryCardActions = <
         </div>
       </div>
 
-      {renderEditForm && (
+      {renderEditForm && canUpdateCategory && (
         <Modal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}

@@ -7,6 +7,7 @@ import { TOKEN_KEYS } from "./constants/tokenKeys.constants";
 import { Locale } from "./enums/locale.enum";
 import { API_ENDPOINTS } from "./lib/apiEndpoints";
 import { TokenSession } from "./types/tokenSession.type";
+import { clearAuthCookies } from "./lib/tokens.server";
 
 type JwtPayload = {
   exp?: number;
@@ -100,9 +101,13 @@ export default async function middleware(request: NextRequest) {
           path: "/",
           maxAge: 60 * 60 * 24 * 7, // 7 days
         });
+      } else {
+        await clearAuthCookies();
       }
     } catch (error) {
       console.error("[Middleware Refresh Error]:", error);
+
+      await clearAuthCookies();
     }
   }
 

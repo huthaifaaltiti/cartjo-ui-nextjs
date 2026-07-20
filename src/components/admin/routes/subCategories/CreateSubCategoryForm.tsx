@@ -44,6 +44,9 @@ import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
 import { SubCategory } from "@/types/subCategory";
 import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
+import { Permission } from "@/enums/permission.enum";
+import { usePermission } from "@/hooks/usePermission";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -137,6 +140,10 @@ const CreateSubCategoryForm = () => {
   }>({
     file: null,
     url: "",
+  });
+
+  const { canCreateSubCategory } = usePermission({
+    canCreateSubCategory: Permission.SUB_CATEGORIES_CREATE,
   });
 
   const formSchema = createFormSchema(t);
@@ -238,6 +245,10 @@ const CreateSubCategoryForm = () => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canCreateSubCategory) {
+      showNoPermissionToast(t);
+      return;
+    }
     registerMutation.mutate(values);
   };
 

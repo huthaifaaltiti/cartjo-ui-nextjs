@@ -18,6 +18,9 @@ import {
 } from "@/components/ui/select";
 import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type OrderCardDeliveryActionProps = {
   orderId: string;
@@ -39,9 +42,18 @@ const OrderCardDeliveryAction = ({
     (st) => st !== OrderDeliveryStatus.FAILED,
   );
 
-  const setPaymentStatus = useCallback(
+  const { canChangeOrderDeliveryStatus } = usePermission({
+    canChangeOrderDeliveryStatus: Permission.ORDERS_CHANGE_DELIVERY_STATUS,
+  });
+
+  const setDeliveryStatus = useCallback(
     async (status: OrderDeliveryStatus) => {
       if (!requireAuth()) return;
+
+      if (!canChangeOrderDeliveryStatus) {
+        showNoPermissionToast(t);
+        return;
+      }
 
       try {
         setIsLoading(true);
@@ -70,11 +82,19 @@ const OrderCardDeliveryAction = ({
         setIsLoading(false);
       }
     },
-    [requireAuth, orderId, dispatch, locale, t, setIsLoading],
+    [
+      requireAuth,
+      orderId,
+      dispatch,
+      locale,
+      t,
+      setIsLoading,
+      canChangeOrderDeliveryStatus,
+    ],
   );
 
   return (
-    <Select onValueChange={setPaymentStatus}>
+    <Select onValueChange={setDeliveryStatus}>
       <SelectTrigger className="w-full text-xs">
         {t(
           "routes.dashboard.routes.orders.components.OrderCardDeliveryAction.title",

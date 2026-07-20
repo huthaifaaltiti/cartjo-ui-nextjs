@@ -59,6 +59,9 @@ import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
 import { Product, Variant } from "@/types/product.type";
 import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -157,12 +160,7 @@ const createFormSchema = (
         "routes.dashboard.routes.products.components.CreateProductForm.validations.subCategory.required",
       ),
     }),
-    tags: z.array(z.string()).min(validationConfig.product.tags.min, {
-      message: t(
-        "routes.dashboard.routes.products.components.CreateProductForm.validations.tags.min",
-        { count: validationConfig.product.tags.min },
-      ),
-    }),
+    tags: z.array(z.string()).optional(),
     variants: z.array(
       z.object({
         sku: z.string().optional(),
@@ -263,7 +261,14 @@ const CreateProductForm = () => {
     form.setValue("mainImage", url);
   };
 
+  const { canCreateProduct } = usePermission({
+    canCreateProduct: Permission.PRODUCTS_CREATE,
+  });
+
   const formSchema = createFormSchema(t, activeTypeHintConfigsList);
+
+  const staticTypeHint =
+    activeTypeHintConfigsList.find((th) => th === "static") ?? "static";
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -275,7 +280,7 @@ const CreateProductForm = () => {
       subCategoryId: "",
       description_ar: "",
       description_en: "",
-      typeHints: [],
+      typeHints: [staticTypeHint],
       tags: [],
       variants: [],
     },
@@ -429,6 +434,11 @@ const CreateProductForm = () => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canCreateProduct) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     const isValid = variantFormRef.current?.validateAll();
     if (!isValid) return;
 

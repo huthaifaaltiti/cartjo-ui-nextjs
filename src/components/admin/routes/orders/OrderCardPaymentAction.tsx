@@ -18,6 +18,9 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type OrderCardPaymentActionProps = {
   orderId: string;
@@ -39,9 +42,18 @@ const OrderCardPaymentAction = ({
     (st) => st !== PaymentStatus.FAILED,
   );
 
+  const { canChangeOrderPaymentStatus } = usePermission({
+    canChangeOrderPaymentStatus: Permission.ORDERS_CHANGE_PAYMENT_STATUS,
+  });
+
   const setPaymentStatus = useCallback(
     async (status: PaymentStatus) => {
       if (!requireAuth()) return;
+
+      if (!canChangeOrderPaymentStatus) {
+        showNoPermissionToast(t);
+        return;
+      }
 
       try {
         setIsLoading(true);
@@ -70,7 +82,15 @@ const OrderCardPaymentAction = ({
         setIsLoading(false);
       }
     },
-    [requireAuth, orderId, dispatch, locale, t, setIsLoading],
+    [
+      requireAuth,
+      orderId,
+      dispatch,
+      locale,
+      t,
+      setIsLoading,
+      canChangeOrderPaymentStatus,
+    ],
   );
 
   return (

@@ -15,6 +15,9 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "@/components/shared/CustomToast";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type ProductCardActionsProps = {
   setShowActions: (showActions: boolean) => void;
@@ -45,7 +48,26 @@ const ProductCardActions = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const {
+    canDeleteProduct,
+    canRestoreProduct,
+    canActivateProduct,
+    canDeActivateProduct,
+    canUpdateProduct,
+  } = usePermission({
+    canDeleteProduct: Permission.PRODUCTS_DELETE,
+    canRestoreProduct: Permission.PRODUCTS_RESTORE,
+    canActivateProduct: Permission.PRODUCTS_ACTIVATE,
+    canDeActivateProduct: Permission.PRODUCTS_DEACTIVATE,
+    canUpdateProduct: Permission.PRODUCTS_UPDATE,
+  });
+
   const handleDelete = useCallback(async () => {
+    if (!canDeleteProduct) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await deleteFn(locale, product._id);
@@ -66,9 +88,22 @@ const ProductCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, product._id, queryClient, queryKey, locale, t]);
+  }, [
+    deleteFn,
+    product._id,
+    queryClient,
+    queryKey,
+    locale,
+    t,
+    canDeleteProduct,
+  ]);
 
   const handleUnDelete = useCallback(async () => {
+    if (!canRestoreProduct) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await unDeleteFn(locale, product._id);
@@ -89,9 +124,26 @@ const ProductCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, product._id, queryClient, queryKey, locale, t]);
+  }, [
+    unDeleteFn,
+    product._id,
+    queryClient,
+    queryKey,
+    locale,
+    t,
+    canRestoreProduct,
+  ]);
 
   const handleToggleActiveStatus = useCallback(async () => {
+    const hasAccess = product?.isActive
+      ? canDeActivateProduct
+      : canActivateProduct;
+
+    if (!hasAccess) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await switchActiveStatusFn(
@@ -125,6 +177,8 @@ const ProductCardActions = ({
     queryClient,
     queryKey,
     t,
+    canDeActivateProduct,
+    canActivateProduct,
   ]);
 
   const handleAction = (
@@ -159,53 +213,59 @@ const ProductCardActions = ({
             </div>
           )}
 
-          <button
-            onClick={() => handleAction("edit")}
-            className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-1 text-gray-700"
-          >
-            <Edit size={16} />
-            <span>
-              {t("general.actions.edit", { default: "Edit Product" })}
-            </span>
-          </button>
+          {canUpdateProduct && (
+            <button
+              onClick={() => handleAction("edit")}
+              className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-1 text-gray-700"
+            >
+              <Edit size={16} />
+              <span>
+                {t("general.actions.edit", { default: "Edit Product" })}
+              </span>
+            </button>
+          )}
 
           <div className="border-t border-gray-100 my-1" />
 
           <div className="w-full flex items-start gap-3 p-2">
-            {!product.isDeleted ? (
-              <Button
-                disabled={isLoading}
-                className={`w-auto min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
-                onClick={() => handleAction("delete")}
-              >
-                <Package className="w-1 h-1" />
-                {t("general.actions.delete")}
-              </Button>
-            ) : (
-              <Button
-                disabled={isLoading}
-                className={`w-auto min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
-                onClick={() => handleAction("un-delete")}
-              >
-                <PackageOpen className="w-1 h-1" />
-                {t("general.actions.restore")}
-              </Button>
-            )}
+            {!product.isDeleted
+              ? canDeleteProduct && (
+                  <Button
+                    disabled={isLoading}
+                    className={`w-auto min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
+                    onClick={() => handleAction("delete")}
+                  >
+                    <Package className="w-1 h-1" />
+                    {t("general.actions.delete")}
+                  </Button>
+                )
+              : canRestoreProduct && (
+                  <Button
+                    disabled={isLoading}
+                    className={`w-auto min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
+                    onClick={() => handleAction("un-delete")}
+                  >
+                    <PackageOpen className="w-1 h-1" />
+                    {t("general.actions.restore")}
+                  </Button>
+                )}
 
-            <ToggleSwitch
-              value={product.isActive}
-              onChange={handleToggleActiveStatus}
-              width={50}
-              height={22}
-              trackColorInactive="#E55050"
-              trackColorActive="#16610E"
-              isDisabled={false}
-            />
+            {(canActivateProduct || canDeActivateProduct) && (
+              <ToggleSwitch
+                value={product.isActive}
+                onChange={handleToggleActiveStatus}
+                width={50}
+                height={22}
+                trackColorInactive="#E55050"
+                trackColorActive="#16610E"
+                isDisabled={false}
+              />
+            )}
           </div>
         </div>
       </div>
 
-      {renderEditForm && (
+      {renderEditForm && canUpdateProduct && (
         <Modal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}

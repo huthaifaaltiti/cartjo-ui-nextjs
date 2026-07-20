@@ -26,7 +26,8 @@
       "dismissText": "Dismiss"
     },
     "authorization": {
-      "unAuthorizedToken": "Unauthorized user token"
+      "unAuthorizedToken": "Unauthorized user token",
+      "noPermission": "Insufficient permissions"
     },
     "items": {
       "noMoreItems": "No more items to show",
@@ -192,6 +193,15 @@
         "retry": "Retry",
         "signInWithDiffAccount": "Sign in with a different account",
         "contactSupport": "If the problem continues, please contact support via 0797662401 or try again later."
+      },
+      "ForbiddenView": {
+        "eyebrow": "Error 403",
+        "title": "You don't have access to this page",
+        "description": "Your account doesn't have the permission needed to view this. If you think that's wrong, ask an admin to grant access — otherwise, here's the way back.",
+        "goBack": "Go back",
+        "backToHome": "Back to home",
+        "contactPrompt": "Need this unlocked?",
+        "contactLink": "Contact your admin"
       }
     },
     "data": {
@@ -383,6 +393,10 @@
     "ReviewsCount": {
       "review": "Review",
       "reviews": "Reviews"
+    },
+    "UnauthorizedState": {
+      "title": "Access Denied",
+      "desc": "You do not have the necessary permissions to perform this action, check your permissions or contact yous system admin."
     }
   },
   "routes": {
@@ -688,6 +702,9 @@
               "activeUsers": "Active users",
               "deletedUsers": "Deleted users",
               "adminUsers": "Admin users"
+            },
+            "DashboardUserCardActions": {
+              "editAdminDetails": "Edit Admin Details"
             }
           },
           "errors": {
@@ -818,6 +835,9 @@
               },
               "errors": {
                 "failedCreation": "Category creation failed"
+              },
+              "actions": {
+                "create": "Create Category"
               }
             },
             "EditCategoryForm": {

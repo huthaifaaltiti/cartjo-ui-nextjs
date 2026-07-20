@@ -16,6 +16,9 @@ import {
 } from "@/components/shared/CustomToast";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type DashboardCardActionsProps<
   T extends { _id: string; isDeleted: boolean; isActive: boolean },
@@ -51,7 +54,26 @@ const BannersCardActions = <
   const [isLoading, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const {
+    canDeleteShowcase,
+    canRestoreShowcase,
+    canActivateShowcase,
+    canDeActivateShowcase,
+    canUpdateShowcase,
+  } = usePermission({
+    canDeleteShowcase: Permission.SHOWCASES_DELETE,
+    canRestoreShowcase: Permission.SHOWCASES_RESTORE,
+    canActivateShowcase: Permission.SHOWCASES_ACTIVATE,
+    canDeActivateShowcase: Permission.SHOWCASES_DEACTIVATE,
+    canUpdateShowcase: Permission.SHOWCASES_UPDATE,
+  });
+
   const handleDelete = useCallback(async () => {
+    if (!canDeleteShowcase) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await deleteFn(cardItem._id, locale);
@@ -78,9 +100,22 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteFn, cardItem._id, queryClient, queryKey, locale, t]);
+  }, [
+    deleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    locale,
+    t,
+    canDeleteShowcase,
+  ]);
 
   const handleUnDelete = useCallback(async () => {
+    if (!canRestoreShowcase) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await unDeleteFn(cardItem._id, locale);
@@ -108,9 +143,26 @@ const BannersCardActions = <
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteFn, cardItem._id, queryClient, queryKey, locale, t]);
+  }, [
+    unDeleteFn,
+    cardItem._id,
+    queryClient,
+    queryKey,
+    locale,
+    t,
+    canRestoreShowcase,
+  ]);
 
   const handleToggleActiveStatus = useCallback(async () => {
+    const hasAccess = cardItem?.isActive
+      ? canDeActivateShowcase
+      : canActivateShowcase;
+
+    if (!hasAccess) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await switchUserActiveStatusFn(
@@ -149,6 +201,8 @@ const BannersCardActions = <
     queryKey,
     locale,
     t,
+    canDeActivateShowcase,
+    canActivateShowcase,
   ]);
 
   return (
@@ -167,43 +221,47 @@ const BannersCardActions = <
         )}
 
         <div className="w-1/4">
-          <ToggleSwitch
-            value={cardItem.isActive}
-            onChange={handleToggleActiveStatus}
-            width={50}
-            height={22}
-            trackColorInactive="#E55050"
-            trackColorActive="#16610E"
-            isDisabled={false}
-          />
+          {(canActivateShowcase || canDeActivateShowcase) && (
+            <ToggleSwitch
+              value={cardItem.isActive}
+              onChange={handleToggleActiveStatus}
+              width={50}
+              height={22}
+              trackColorInactive="#E55050"
+              trackColorActive="#16610E"
+              isDisabled={false}
+            />
+          )}
         </div>
 
         <div className="w-full flex items-center justify-center gap-4 flex-wrap sm:flex-nowrap">
-          {!cardItem.isDeleted ? (
-            <Button
-              disabled={isLoading}
-              className={`${
-                showEditButton ? "w-full" : "w-full"
-              } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
-              onClick={handleDelete}
-            >
-              <Package className="w-1 h-1" />
-              {t("general.actions.delete")}
-            </Button>
-          ) : (
-            <Button
-              disabled={isLoading}
-              className={`${
-                showEditButton ? "w-full" : "w-full"
-              } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
-              onClick={handleUnDelete}
-            >
-              <PackageOpen className="w-1 h-1" />
-              {t("general.actions.restore")}
-            </Button>
-          )}
+          {!cardItem.isDeleted
+            ? canDeActivateShowcase && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    showEditButton ? "w-full" : "w-full"
+                  } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
+                  onClick={handleDelete}
+                >
+                  <Package className="w-1 h-1" />
+                  {t("general.actions.delete")}
+                </Button>
+              )
+            : canRestoreShowcase && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    showEditButton ? "w-full" : "w-full"
+                  } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
+                  onClick={handleUnDelete}
+                >
+                  <PackageOpen className="w-1 h-1" />
+                  {t("general.actions.restore")}
+                </Button>
+              )}
 
-          {showEditButton && renderEditForm && (
+          {showEditButton && renderEditForm && canUpdateShowcase && (
             <Button
               disabled={isLoading}
               className="w-full min-h-3 bg-gray-500 hover:bg-gray-600 text-white-50 transition-all"
@@ -216,7 +274,7 @@ const BannersCardActions = <
         </div>
       </div>
 
-      {renderEditForm && (
+      {renderEditForm && canUpdateShowcase && (
         <Modal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}

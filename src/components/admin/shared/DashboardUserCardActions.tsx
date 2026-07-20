@@ -15,6 +15,9 @@ import {
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import Modal from "@/components/shared/Modal";
 import EditAdminUserForm from "../routes/users/adminUsers/EditAdminUserForm";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 type DashboardUserCardActionsProps = UserCardProps;
 
@@ -37,7 +40,26 @@ const DashboardUserCardActions = ({
   const handleOpenEditAdminModal = () => setIsAdminEditModalOpen(true);
   const handleCloseEditAdminModal = () => setIsAdminEditModalOpen(false);
 
+  const {
+    canActivateUser,
+    canDeActivateUser,
+    canDeleteUser,
+    canRestoreUser,
+    canUpdateUser,
+  } = usePermission({
+    canActivateUser: Permission.USERS_ACTIVATE,
+    canDeActivateUser: Permission.USERS_DEACTIVATE,
+    canDeleteUser: Permission.USERS_DELETE,
+    canRestoreUser: Permission.USERS_RESTORE,
+    canUpdateUser: Permission.USERS_UPDATE,
+  });
+
   const handleDelete = useCallback(async () => {
+    if (!canDeleteUser) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await deleteUser(user._id);
@@ -59,9 +81,14 @@ const DashboardUserCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [deleteUser, queryClient, queryKey, t, user._id]);
+  }, [deleteUser, queryClient, queryKey, t, user._id, canDeleteUser]);
 
   const handleUnDelete = useCallback(async () => {
+    if (!canRestoreUser) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await unDeleteUser(user._id);
@@ -82,9 +109,16 @@ const DashboardUserCardActions = ({
       setIsLoading(false);
       await invalidateQuery(queryClient, queryKey);
     }
-  }, [unDeleteUser, queryClient, queryKey, t, user._id]);
+  }, [unDeleteUser, queryClient, queryKey, t, user._id, canRestoreUser]);
 
   const handleSwitchUserActiveStatus = useCallback(async () => {
+    const hasAccess = user?.isActive ? canDeActivateUser : canActivateUser;
+
+    if (!hasAccess) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const resp = await switchUserActiveStatus(
@@ -117,6 +151,8 @@ const DashboardUserCardActions = ({
     t,
     user._id,
     user?.isActive,
+    canActivateUser,
+    canDeActivateUser,
   ]);
 
   useEffect(() => {
@@ -144,63 +180,74 @@ const DashboardUserCardActions = ({
           </div>
         )}
 
-        <div className="w-1/4">
-          <ToggleSwitch
-            value={user?.isActive}
-            onChange={handleSwitchUserActiveStatus}
-            width={50}
-            height={22}
-            trackColorInactive="#E55050"
-            trackColorActive="#16610E"
-            isDisabled={false}
-          />
-        </div>
+        {(canActivateUser || canDeActivateUser) && (
+          <div className="w-1/4">
+            <ToggleSwitch
+              value={user?.isActive}
+              onChange={handleSwitchUserActiveStatus}
+              width={50}
+              height={22}
+              trackColorInactive="#E55050"
+              trackColorActive="#16610E"
+              isDisabled={false}
+            />
+          </div>
+        )}
 
         <div className="w-3/4">
-          {!user?.isDeleted ? (
-            <Button
-              disabled={isLoading}
-              className={`${
-                canShowEditButton ? "min-w-40 w-auto" : "w-full"
-              } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
-              onClick={handleDelete}
-            >
-              <Package className="w-1 h-1" />
-              {t(
-                "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser",
+          {!user?.isDeleted
+            ? canDeleteUser && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    canShowEditButton ? "min-w-40 w-auto" : "w-full"
+                  } min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all`}
+                  onClick={handleDelete}
+                >
+                  <Package className="w-1 h-1" />
+                  {t(
+                    "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.archiveUser",
+                  )}
+                </Button>
+              )
+            : canRestoreUser && (
+                <Button
+                  disabled={isLoading}
+                  className={`${
+                    canShowEditButton ? "min-w-40 w-auto" : ""
+                  } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
+                  onClick={handleUnDelete}
+                >
+                  <PackageOpen />
+                  {t(
+                    "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.restoreUser",
+                  )}
+                </Button>
               )}
-            </Button>
-          ) : (
-            <Button
-              disabled={isLoading}
-              className={`${
-                canShowEditButton ? "min-w-40 w-auto" : ""
-              } min-h-3 bg-success-500 hover:bg-success-600 text-white-50 transition-all`}
-              onClick={handleUnDelete}
-            >
-              <PackageOpen />
-              {t(
-                "routes.dashboard.routes.users.routes.totalUsers.components.UserCardActions.restoreUser",
-              )}
-            </Button>
-          )}
         </div>
 
-        {canShowEditButton && (
+        {canShowEditButton && canUpdateUser && (
           <Button
             disabled={isLoading}
             className="min-w-40 w-auto min-h-3 bg-red-500 hover:bg-red-600 text-white-50 transition-all"
             onClick={handleOpenEditAdminModal}
           >
             <Package className="w-1 h-1" />
-            Edit Admin Details
+            {t(
+              "routes.dashboard.routes.users.components.DashboardUserCardActions.editAdminDetails",
+            )}
           </Button>
         )}
       </div>
 
-      <Modal isOpen={isAdminEditModalOpen} onClose={handleCloseEditAdminModal}>
-        <EditAdminUserForm user={user} />
-      </Modal>
+      {canShowEditButton && canUpdateUser && (
+        <Modal
+          isOpen={isAdminEditModalOpen}
+          onClose={handleCloseEditAdminModal}
+        >
+          <EditAdminUserForm user={user} />
+        </Modal>
+      )}
     </>
   );
 };

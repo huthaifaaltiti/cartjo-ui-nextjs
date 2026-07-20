@@ -1,21 +1,17 @@
+"use client";
+
 import { memo } from "react";
-import { Blocks } from "lucide-react";
 import { ShowcasesContextProvider } from "@/contexts/Showcase.context";
-import ModalCreateButton from "@/components/shared/ModalCreateButton";
 import SearchShowcases from "./SearchShowcases";
 import ShowcasesList from "./ShowcasesList";
-import CreateShowcaseForm from "./CreateShowcaseForm";
+import CreateShowcaseButton from "./CreateShowcaseButton";
 
 const ShowcasesPage = () => {
   return (
-    <ShowcasesContextProvider >
+    <ShowcasesContextProvider>
       <div className="w-full flex flex-col items-start gap-1 md:flex-row md:items-center md:justify-between md:gap-5 mb-3">
         <SearchShowcases />
-        <ModalCreateButton
-          icon={<Blocks />}
-          createTranslationKey="routes.dashboard.routes.showcases.createShowcase.label"
-          ModalContent={<CreateShowcaseForm />}
-        />
+        <CreateShowcaseButton />
       </div>
       <ShowcasesList />
     </ShowcasesContextProvider>

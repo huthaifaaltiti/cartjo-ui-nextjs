@@ -1,5 +1,3 @@
-import { requireAuth } from "@/utils/authRedirect";
-import { getAccessToken } from "@/lib/tokens.server";
 import { Locale } from "@/types/locale";
 import { prefetchDashboardBannersData } from "@/services/prefetch/dashboard/banners";
 import { getQueryClient } from "@/utils/queryUtils";
@@ -12,9 +10,6 @@ interface PageProps {
 
 const Page = async ({ params }: PageProps) => {
   const { locale } = await params;
-
-  const token = await getAccessToken();
-  requireAuth(token);
 
   const queryClient = getQueryClient();
   await prefetchDashboardBannersData({ queryClient, locale });

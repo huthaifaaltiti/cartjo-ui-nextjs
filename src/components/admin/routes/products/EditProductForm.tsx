@@ -58,6 +58,9 @@ import { containsArabic } from "@/utils/text/containsArabic";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
 import { useActiveCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const currencyValues: string[] = [];
 for (const key in Currency) {
@@ -309,6 +312,10 @@ const EditProductForm = ({ product }: CreateSubCategoryFormProps) => {
     });
   };
 
+  const { canUpdateProduct } = usePermission({
+    canUpdateProduct: Permission.PRODUCTS_UPDATE,
+  });
+
   const registerMutation = useMutation({
     mutationFn: async (data: FormData) => {
       const formData = new FormData();
@@ -390,6 +397,10 @@ const EditProductForm = ({ product }: CreateSubCategoryFormProps) => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canUpdateProduct) {
+      showNoPermissionToast(t);
+      return;
+    }
     registerMutation.mutate(values);
   };
 

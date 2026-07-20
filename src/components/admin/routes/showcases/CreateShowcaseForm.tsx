@@ -40,6 +40,9 @@ import RequestingDataLoader from "@/components/shared/RequestingDataLoader";
 import { authFetcher } from "@/utils/authFetcher";
 import { Showcase } from "@/types/showcase.type";
 import { DataResponse } from "@/types/service-response.type";
+import { usePermission } from "@/hooks/usePermission";
+import { showNoPermissionToast } from "@/utils/permissionToast";
+import { Permission } from "@/enums/permission.enum";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -272,6 +275,10 @@ const CreateShowcaseForm = () => {
     isFetching: isActiveTypeHintConfigFetching,
   } = useActiveTypeHintConfigsQuery();
 
+  const { canCreateShowcase } = usePermission({
+    canCreateShowcase: Permission.SHOWCASES_CREATE,
+  });
+
   const formSchema = createFormSchema(t, activeTypeHintConfigsList?.data);
 
   const form = useForm<FormData>({
@@ -332,6 +339,11 @@ const CreateShowcaseForm = () => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canCreateShowcase) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     registerMutation.mutate(values);
   };
 

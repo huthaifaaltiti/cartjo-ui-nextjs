@@ -30,6 +30,9 @@ import { useTypeHintConfig } from "@/contexts/TypeHintConfig.context";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
 import { TypeHintConfig } from "@/types/typeHintConfig.type";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const createFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -152,6 +155,10 @@ const CreateTypeHintConfigForm = () => {
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
+  const { canCreateTypeHintConfig } = usePermission({
+    canCreateTypeHintConfig: Permission.TYPE_HINT_CONFIGS_CREATE,
+  });
+
   const formSchema = createFormSchema(t);
 
   const form = useForm<FormData>({
@@ -212,6 +219,10 @@ const CreateTypeHintConfigForm = () => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canCreateTypeHintConfig) {
+      showNoPermissionToast(t);
+      return;
+    }
     registerMutation.mutate(values);
   };
 

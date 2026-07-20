@@ -14,9 +14,15 @@ import { useSubCategories } from "@/contexts/SubCategoriesContext";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useCategoriesQuery } from "@/hooks/react-query/useCategoriesQuery";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
 
 const CategoryListSelector = () => {
   const t = useTranslations();
+
+  const { canReadSubCategory } = usePermission({
+    canReadSubCategory: Permission.SUB_CATEGORIES_READ,
+  });
 
   const { isArabic } = useSelector((state: RootState) => state.general);
 
@@ -28,6 +34,7 @@ const CategoryListSelector = () => {
   return (
     <div className="w-full md:max-w-sm px-2 md:px-0">
       <Select
+        disabled={!canReadSubCategory}
         value={selectedCatId ?? "__all__"}
         onValueChange={(value) =>
           setSelectedCatId?.(value === "__all__" ? undefined : value)

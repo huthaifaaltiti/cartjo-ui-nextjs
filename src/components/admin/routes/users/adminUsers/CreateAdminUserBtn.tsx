@@ -6,11 +6,17 @@ import { ShieldPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/shared/Modal";
 import CreateAdminUserForm from "./CreateAdminUserForm";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
 
 const CreateAdminUserBtn = () => {
   const t = useTranslations();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const { canCreateUser } = usePermission({
+    canCreateUser: Permission.USERS_CREATE,
+  });
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
@@ -18,19 +24,21 @@ const CreateAdminUserBtn = () => {
   return (
     <>
       <div className="w-full my-2 flex items-end justify-end">
-        <Button
-          className="w-auto min-h-3 bg-primary-500 hover:bg-primary-600 text-white-50 transition-all"
-          onClick={handleOpen}
-        >
-          <ShieldPlus />
-          {t(
-            "routes.dashboard.routes.users.routes.adminUsers.components.CreateAdminUser.createAdmin",
-          )}
-        </Button>
+        {canCreateUser && (
+          <Button
+            className="w-auto min-h-3 bg-primary-500 hover:bg-primary-600 text-white-50 transition-all"
+            onClick={handleOpen}
+          >
+            <ShieldPlus />
+            {t(
+              "routes.dashboard.routes.users.routes.adminUsers.components.CreateAdminUser.createAdmin",
+            )}
+          </Button>
+        )}
       </div>
 
       <Modal isOpen={isOpen} onClose={handleClose}>
-        <CreateAdminUserForm />
+        {canCreateUser && <CreateAdminUserForm />}
       </Modal>
     </>
   );

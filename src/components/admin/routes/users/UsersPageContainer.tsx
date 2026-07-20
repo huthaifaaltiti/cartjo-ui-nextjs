@@ -4,18 +4,22 @@ import { memo } from "react";
 import DashboardUsersStatCards from "./DashboardUsersStatCards";
 import DashboardUsersStatCardsLinks from "./DashboardUsersStatCardsLinks";
 import { useUsersStats } from "@/hooks/react-query/useUsersStats";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import PageLoader from "@/components/shared/PageLoader";
 import AuthRedirect from "@/components/shared/AuthRedirect";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import { useTranslations } from "next-intl";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import UnauthorizedState from "../../shared/UnauthorizedState";
 
 const UsersPageContainer = () => {
   const t = useTranslations(
     "routes.dashboard.routes.users.components.UsersPageContainer",
   );
 
-  const { isSessionLoading, isAuthenticated } = useAuthContext();
+  const { isSessionLoading, isAuthenticated, canReadUser } = usePermission({
+    canReadUser: Permission.USERS_READ,
+  });
   const { data, isLoading, isError, error } = useUsersStats();
 
   const showLoader = isLoading || isSessionLoading;
@@ -27,6 +31,11 @@ const UsersPageContainer = () => {
 
   if (!isAuthenticated) {
     return <AuthRedirect redirectLocation={"/dashboard/users"} />;
+  }
+
+  // Authorization (Permission) Check
+  if (!canReadUser) {
+    return <UnauthorizedState />;
   }
 
   if (showError) {
@@ -46,7 +55,7 @@ const UsersPageContainer = () => {
       </div>
     );
 
-  if (showData) {
+  if (showData && canReadUser) {
     return (
       <div className="w-full h-full p-3">
         <div className="w-full border-b">

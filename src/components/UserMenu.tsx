@@ -10,12 +10,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { hydrateWishlistCounters } from "@/redux/slices/wishlist";
 import { hydrateCartCounters } from "@/redux/slices/cart";
-import isAdminClientSide from "@/utils/isAdminClientSide.util";
+import { isAdminClientSide } from "@/utils/session-access.utils";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
 
 const UserMenu = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { data: userContextData } = useUserContextQuery();
+
+  const { canAccessDashboard } = usePermission({
+    canAccessDashboard: Permission.DASHBOARD_ACCESS,
+  });
 
   const { session, loading } = useSelector(
     (state: RootState) => state.authentication,
@@ -31,7 +37,7 @@ const UserMenu = () => {
       dispatch(hydrateWishlistCounters(wishlistItemsCount));
     }
   }, [userContextData, dispatch]);
-  
+
   const counters = useMemo(() => {
     const qCart = userContextData?.data?.counters?.cartItemsCount ?? 0;
     const qWish = userContextData?.data?.counters?.wishlistItemsCount ?? 0;
@@ -44,12 +50,14 @@ const UserMenu = () => {
 
   const canManage = isAdminClientSide(session) ?? false;
 
+  const hasAccessToDashboard: boolean = canManage && canAccessDashboard;
+
   if (loading && !session) return <UserSignInLink />;
   if (!session) return <UserSignInLink />;
 
   return (
     <div className="w-auto flex items-center gap-1">
-      {canManage && <UserDashboardLink />}
+      {hasAccessToDashboard && <UserDashboardLink />}
 
       <div className="w-auto flex items-center gap-2">
         <UserAccountLinkMenu />

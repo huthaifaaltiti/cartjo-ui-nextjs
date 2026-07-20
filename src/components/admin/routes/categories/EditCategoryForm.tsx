@@ -35,6 +35,9 @@ import { isArabicOnly } from "@/utils/text/containsArabic";
 import { isEnglishWithNumOnly } from "@/utils/text/containsEnglish";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -124,6 +127,10 @@ const EditCategoryForm = ({ category }: Props) => {
   }>({
     file: null,
     url: category?.media?.en?.url || "",
+  });
+
+  const { canUpdateCategory } = usePermission({
+    canUpdateCategory: Permission.CATEGORIES_UPDATE,
   });
 
   const formSchema = editFormSchema(t);
@@ -220,6 +227,11 @@ const EditCategoryForm = ({ category }: Props) => {
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canUpdateCategory) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     registerMutation.mutate(values);
   };
 

@@ -26,7 +26,8 @@
       "dismissText": "إخفاء"
     },
     "authorization": {
-      "unAuthorizedToken": "رمز المستخدم غير مصرح به"
+      "unAuthorizedToken": "رمز المستخدم غير مصرح به",
+      "noPermission": "صلاحيات غير كافية"
     },
     "items": {
       "noMoreItems": "لا توجد المزيد من العناصر لعرضها",
@@ -193,6 +194,15 @@
         "retry": "إعادة المحاولة",
         "signInWithDiffAccount": "تسجيل الدخول بحساب مختلف",
         "contactSupport": "إذا استمرت المشكلة، يرجى الاتصال بالدعم عبر 0797662401 أو المحاولة لاحقًا."
+      },
+      "ForbiddenView": {
+        "eyebrow": "خطأ 403",
+        "title": "ليس لديك صلاحية الوصول إلى هذه الصفحة",
+        "description": "حسابك لا يملك الصلاحية اللازمة لعرض هذه الصفحة. إذا كنت تعتقد أن هذا غير صحيح، اطلب من المسؤول منحك الصلاحية — أو يمكنك العودة من هنا.",
+        "goBack": "رجوع",
+        "backToHome": "العودة للرئيسية",
+        "contactPrompt": "بحاجة لفتح الوصول؟",
+        "contactLink": "تواصل مع المسؤول"
       }
     },
     "data": {
@@ -384,6 +394,10 @@
     "ReviewsCount": {
       "reviews": "تعليقات",
       "review": "تعليق"
+    },
+    "UnauthorizedState": {
+      "title": "تم رفض الوصول",
+      "desc": "ليس لديك الصلاحيات اللازمة لإجراء هذا العمل. يرجى التحقق من صلاحياتك أو الاتصال بمسؤول النظام."
     }
   },
   "routes": {
@@ -680,6 +694,9 @@
               "activeUsers": "المستخدمون النشطون",
               "deletedUsers": "المستخدمون المحذوفون",
               "adminUsers": "المستخدمون الإداريون"
+            },
+            "DashboardUserCardActions": {
+              "editAdminDetails": "تعديل بيانات المسؤول"
             }
           },
           "errors": {
@@ -820,6 +837,9 @@
               },
               "errors": {
                 "failedCreation": "فشل إنشاء الفئة"
+              },
+              "actions": {
+                "create": "إنشاء تصنيف رئيسي"
               }
             },
             "EditCategoryForm": {

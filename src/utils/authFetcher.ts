@@ -43,13 +43,23 @@ export async function authFetcher<T>(
     });
   }
 
-  return fetcher<T>(
-    "/api/proxy",
-    {
-      method: "POST",
-      headers,
-      body: finalBody,
-    },
-    true, // skipAuthErrorHandling => /api/proxy handles token refresh lifecycle itself
-  );
+  try {
+    return await fetcher<T>(
+      "/api/proxy",
+      {
+        method: "POST",
+        headers,
+        body: finalBody,
+      },
+      true, // skipAuthErrorHandling => /api/proxy handles token refresh lifecycle itself
+    );
+  } catch (error: unknown) {
+    const err = error as { status?: number };
+
+    if (typeof window !== "undefined" && err?.status === 403) {
+      window.location.replace("/403");
+    }
+
+    throw error;
+  }
 }

@@ -4,10 +4,16 @@ import { memo } from "react";
 import { useTranslations } from "next-intl";
 import SearchBar from "@/components/shared/SearchBar";
 import { useProducts } from "@/contexts/Products.context";
+import { usePermission } from "@/hooks/usePermission";
+import { Permission } from "@/enums/permission.enum";
 
 const SearchProducts = () => {
   const { searchQuery, setSearchQuery } = useProducts();
   const t = useTranslations();
+
+  const { canReadProduct } = usePermission({
+    canReadProduct: Permission.PRODUCTS_READ,
+  });
 
   return (
     <div className="w-full">
@@ -17,6 +23,7 @@ const SearchProducts = () => {
         )}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        disabled={!canReadProduct}
       />
     </div>
   );

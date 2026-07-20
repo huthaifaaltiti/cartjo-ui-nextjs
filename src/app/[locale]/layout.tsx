@@ -97,7 +97,7 @@ export default async function LocaleLayout({
                   <GeneralContextProvider>
                     <ReduxProvider>
                       <ReduxLocaleSync />
-                      <UserContextHydrator locale={locale}>
+                      <UserContextHydrator locale={locale} session={session}>
                         <SessionHydrator initialSession={session} />
                         {children}
                       </UserContextHydrator>

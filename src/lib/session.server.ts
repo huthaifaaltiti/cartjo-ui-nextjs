@@ -4,6 +4,7 @@ import { CartJOSession } from "@/types/cartjoSession.type";
 import { cookies } from "next/headers";
 import { API_ENDPOINTS } from "./apiEndpoints";
 import { TokenSession } from "@/types/tokenSession.type";
+import { Permission } from "@/enums/permission.enum";
 
 function decodeAccessToken(token: string): TokenSession | null {
   try {
@@ -91,4 +92,14 @@ export function checkIsAdmin(
     role === UserRole.ADMINISTRATOR.toLocaleLowerCase() ||
     role === UserRole.OWNER.toLocaleLowerCase()
   );
+}
+
+export function checkCanAccessDashboard(
+  session: CartJOSession | TokenSession | null,
+): boolean {
+  if (!session) return false;
+
+  const userPermissions: string[] = session.permissions ?? [];
+
+  return userPermissions.includes(Permission.DASHBOARD_ACCESS) ?? false;
 }
