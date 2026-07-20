@@ -31,6 +31,9 @@ import { TypeHintConfig } from "@/types/typeHintConfig.type";
 import { staticTypeHintConfigs } from "@/constants/staticTypeHintConfigs.constant";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
+import { Permission } from "@/enums/permission.enum";
+import { usePermission } from "@/hooks/usePermission";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const editFormSchema = (
   t: (key: string, options?: Record<string, string | number | Date>) => string,
@@ -167,6 +170,10 @@ const EditTypeHintConfigForm = ({
   const queryClient = useQueryClient();
   const handleApiError = useHandleApiError();
 
+  const { canUpdateTypeHintConfig } = usePermission({
+    canUpdateTypeHintConfig: Permission.TYPE_HINT_CONFIGS_UPDATE,
+  });
+
   const formSchema = editFormSchema(t);
 
   const form = useForm<FormData>({
@@ -231,6 +238,10 @@ const EditTypeHintConfigForm = ({
   });
 
   const onSubmit = (values: FormData) => {
+    if (!canUpdateTypeHintConfig) {
+      showNoPermissionToast(t);
+      return;
+    }
     registerMutation.mutate(values);
   };
 
