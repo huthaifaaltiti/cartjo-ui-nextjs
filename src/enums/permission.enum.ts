@@ -75,6 +75,8 @@ export enum Permission {
   ORDERS_READ = "orders.read",
   ORDERS_CREATE = "orders.create",
   ORDERS_UPDATE = "orders.update",
+  ORDERS_DELETE = "orders.delete",
+  ORDERS_RESTORE = "orders.restore",
   ORDERS_CANCEL = "orders.cancel",
   ORDERS_REFUND = "orders.refund",
   ORDERS_EXPORT = "orders.export",

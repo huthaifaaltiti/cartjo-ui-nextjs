@@ -12,7 +12,7 @@ export function useDashboardNavLinks() {
     .filter((dnl) => {
       const dashboardNavLinkPermissions = dnl.permissions;
       const hasOverlap = sessionPermissions.some((p) =>
-        dashboardNavLinkPermissions.includes(p as Permission),
+        dashboardNavLinkPermissions?.includes(p as Permission),
       );
 
       return hasOverlap;
