@@ -12,6 +12,9 @@ import { PaymentStatus } from "@/enums/paymentStatus.enum";
 import PaymentStatusFilter from "@/components/user/used-filters/PaymentStatusFilter";
 import { OrderDeliveryStatus } from "@/enums/orderDeliveryStatus.enum";
 import DeliveryStatusFilter from "@/components/user/used-filters/DeliveryStatusFilter";
+import { Permission } from "@/enums/permission.enum";
+import { usePermission } from "@/hooks/usePermission";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 interface Props {
   setAmountMin: (value: number) => void;
@@ -35,7 +38,7 @@ interface Props {
   setCreatedBefore: (val: string) => void;
   onApplyDateFilter: (
     createdBeforeValue?: string,
-    createdAfterValue?: string
+    createdAfterValue?: string,
   ) => void;
 }
 
@@ -62,12 +65,28 @@ const OrdersListFilters = ({
 }: Props) => {
   const t = useTranslations();
 
+  const { canReadOrder, canExportOrder } = usePermission({
+    canReadOrder: Permission.ORDERS_READ,
+    canExportOrder: Permission.ORDERS_EXPORT,
+  });
+
   const handleApplyPriceFilter = (from: number, to: number) => {
+    if (!canReadOrder) {
+      showNoPermissionToast(t);
+
+      return;
+    }
     setAmountMin(from);
     setAmountMax(to);
   };
 
   const handleClearAll = useCallback(() => {
+    if (!canReadOrder) {
+      showNoPermissionToast(t);
+
+      return;
+    }
+
     setAmountMin(0);
     setAmountMax(0);
 
@@ -91,51 +110,57 @@ const OrdersListFilters = ({
     setCreatedBefore,
     setCreatedAfter,
     onApplyDateFilter,
+    canReadOrder,
+    t,
   ]);
 
   return (
     <div className="w-full flex items-center gap-2">
-      <PriceRange
-        setPriceFrom={setAmountMin}
-        setPriceTo={setAmountMax}
-        onApplyFilter={handleApplyPriceFilter}
-        initialFrom={amountMin}
-        initialTo={amountMax}
-      />
+      {canReadOrder && (
+        <>
+          <PriceRange
+            setPriceFrom={setAmountMin}
+            setPriceTo={setAmountMax}
+            onApplyFilter={handleApplyPriceFilter}
+            initialFrom={amountMin}
+            initialTo={amountMax}
+          />
 
-      <PaymentMethodFilter
-        paymentMethod={paymentMethod}
-        setPaymentMethod={setPaymentMethod}
-      />
+          <PaymentMethodFilter
+            paymentMethod={paymentMethod}
+            setPaymentMethod={setPaymentMethod}
+          />
 
-      <PaymentStatusFilter
-        paymentStatus={paymentStatus}
-        setPaymentStatus={setPaymentStatus}
-      />
+          <PaymentStatusFilter
+            paymentStatus={paymentStatus}
+            setPaymentStatus={setPaymentStatus}
+          />
 
-      <DeliveryStatusFilter
-        deliveryStatus={deliveryStatus}
-        setDeliveryStatus={setDeliveryStatus}
-      />
+          <DeliveryStatusFilter
+            deliveryStatus={deliveryStatus}
+            setDeliveryStatus={setDeliveryStatus}
+          />
 
-      <DateRange
-        setCreatedFrom={setCreatedBefore}
-        setCreatedTo={setCreatedAfter}
-        onApplyFilter={onApplyDateFilter}
-        initialCreatedFrom={createdBefore}
-        initialCreatedTo={createdAfter}
-      />
+          <DateRange
+            setCreatedFrom={setCreatedBefore}
+            setCreatedTo={setCreatedAfter}
+            onApplyFilter={onApplyDateFilter}
+            initialCreatedFrom={createdBefore}
+            initialCreatedTo={createdAfter}
+          />
 
-      <Button
-        variant="destructive"
-        size="sm"
-        className="h-8 px-3"
-        onClick={handleClearAll}
-      >
-        {t("components.filters.actions.clear")}
-      </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            className="h-8 px-3"
+            onClick={handleClearAll}
+          >
+            {t("components.filters.actions.clear")}
+          </Button>
+        </>
+      )}
 
-      <ExportOrders />
+      {canReadOrder && canExportOrder && <ExportOrders />}
     </div>
   );
 };

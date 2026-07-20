@@ -13,6 +13,9 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useTranslations } from "next-intl";
 import { ExportFormats } from "@/enums/exportFormats.enum";
 import { authFetcher } from "@/utils/authFetcher";
+import { Permission } from "@/enums/permission.enum";
+import { usePermission } from "@/hooks/usePermission";
+import { showNoPermissionToast } from "@/utils/permissionToast";
 
 const ExportOrders = () => {
   const t = useTranslations();
@@ -25,7 +28,18 @@ const ExportOrders = () => {
 
   const disabledExport = !startDate || !endDate || exportingFormat !== null;
 
+  const { canReadOrder, canExportOrder } = usePermission({
+    canReadOrder: Permission.ORDERS_READ,
+    canExportOrder: Permission.ORDERS_EXPORT,
+  });
+
   const handleExport = async (format: ExportFormats) => {
+    const canExportOrdersData = canReadOrder && canExportOrder;
+    if (!canExportOrdersData) {
+      showNoPermissionToast(t);
+      return;
+    }
+
     if (disabledExport) return;
 
     try {
