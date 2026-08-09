@@ -1,11 +1,18 @@
 "use client";
 
+import { RootState } from "@/redux/store";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import type { RootState } from "@/redux/store";
 
-export default function StaticCreatorsLogo() {
-  const isArabic = useSelector((state: RootState) => state.general.isArabic);
+export default function StaticCreatorsLogo({
+  isArabic,
+}: {
+  isArabic: boolean;
+}) {
+  const storedIsArabic = useSelector(
+    (state: RootState) => state.general.isArabic,
+  );
+  const fallbackIsArabic = isArabic || storedIsArabic;
 
   const logoSrc = `/assets/image/png/creators/logo/creators_page_logo_${
     isArabic ? "ar" : "en"
@@ -14,7 +21,7 @@ export default function StaticCreatorsLogo() {
   return (
     <Image
       src={logoSrc}
-      alt={isArabic ? "شعار المبدعين" : "Creators Logo"}
+      alt={fallbackIsArabic ? "شعار المبدعين" : "Creators Logo"}
       width={150}
       height={60}
       priority
