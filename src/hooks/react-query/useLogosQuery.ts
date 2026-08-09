@@ -12,16 +12,19 @@ import { fetchActiveLogo, fetchLogos } from "@/services/logo.service";
 import { Locale } from "@/types/locale";
 import { authFetcher } from "@/utils/authFetcher";
 import { getLogosQueryOptions } from "./query-options/logos";
+import { LogoType } from "@/enums/logoType.enum";
 
-export const useActiveLogoQuery = () => {
+export const useActiveLogoQuery = (type: LogoType = LogoType.MAIN) => {
   const { locale } = useAuthContext();
 
   return useQuery<DataResponse<Logo>>({
     ...getActiveLogoQueryOptions({
       locale,
+      type,
       queryFn: () =>
         fetchActiveLogo({
           lang: locale as Locale,
+          type,
           fetcher: (path) => authFetcher(path),
         }),
     }),

@@ -18,6 +18,7 @@ import {
   prefetchHomeData,
 } from "@/services/prefetch/home";
 import { prefetchActiveLogo } from "@/services/prefetch/activeLogo";
+import { LogoType } from "@/enums/logoType.enum";
 
 export default async function Home({
   params,
@@ -41,7 +42,7 @@ export default async function Home({
     await prefetchCategoryPicks({ randomCategories, queryClient, locale });
   }
 
-  await prefetchActiveLogo({ queryClient, locale });
+  await prefetchActiveLogo({ queryClient, locale, type: LogoType.MAIN });
 
   const dehydratedState = dehydrate(queryClient);
 

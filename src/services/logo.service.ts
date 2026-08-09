@@ -4,19 +4,23 @@ import { Locale } from "@/types/locale";
 import { Logo } from "@/types/logo";
 import { Locale as LocaleEnum } from "@/enums/locale.enum";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
+import { LogoType } from "@/enums/logoType.enum";
 
 interface FetchActiveLogoParams {
   lang?: Locale | string;
+  type?: LogoType;
   fetcher: (url: string) => Promise<DataResponse<Logo>>;
 }
 
 export const fetchActiveLogo = async ({
   lang = LocaleEnum.EN,
+  type = LogoType.MAIN,
   fetcher,
 }: FetchActiveLogoParams): Promise<DataResponse<Logo>> => {
   const url = new URL(`${API_ENDPOINTS.DASHBOARD.LOGOS.ACTIVE}`);
 
   if (lang) url.searchParams.append("lang", lang);
+  if (type) url.searchParams.append("type", type);
 
   return fetcher(url.toString());
 };
