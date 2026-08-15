@@ -713,7 +713,9 @@
           "routes": {
             "totalUsers": {
               "components": {
-                "SearchBar": { "placeholder": "Search for users" },
+                "SearchBar": {
+                  "placeholder": "Search for users"
+                },
                 "TotalUsersList": {
                   "usersFound": "users found",
                   "noUsersToLoad": "No more users to load",
@@ -735,7 +737,9 @@
             },
             "activeUsers": {
               "components": {
-                "SearchBar": { "placeholder": "Search for active users" },
+                "SearchBar": {
+                  "placeholder": "Search for active users"
+                },
                 "TotalUsersList": {
                   "usersFound": "active users found",
                   "noUsersToLoad": "No more active users to load",
@@ -757,7 +761,9 @@
             },
             "deletedUsers": {
               "components": {
-                "SearchBar": { "placeholder": "Search for deleted users" }
+                "SearchBar": {
+                  "placeholder": "Search for deleted users"
+                }
               },
               "errors": {
                 "dataLoadFailure": "Failed to load deleted users details"
@@ -765,7 +771,9 @@
             },
             "adminUsers": {
               "components": {
-                "SearchBar": { "placeholder": "Search for admin users" },
+                "SearchBar": {
+                  "placeholder": "Search for admin users"
+                },
                 "CreateAdminUser": {
                   "createAdmin": "Create Admin"
                 }
@@ -795,7 +803,9 @@
             "failedLoadData": "Failed to Load categories"
           },
           "components": {
-            "SearchBar": { "placeholder": "Search for categories" },
+            "SearchBar": {
+              "placeholder": "Search for categories"
+            },
             "CreateCategoryForm": {
               "fields": {
                 "categoryImage_ar": {
@@ -892,7 +902,9 @@
             "failedLoadData": "Failed to Load sub-categories"
           },
           "components": {
-            "SearchBar": { "placeholder": "Search for sub-categories" },
+            "SearchBar": {
+              "placeholder": "Search for sub-categories"
+            },
             "CreateSubCategoryForm": {
               "fields": {
                 "subCategoryImage_ar": {
@@ -1010,21 +1022,41 @@
             "uploadImage": "Upload product image"
           },
           "components": {
-            "SearchBar": { "placeholder": "Search for products" },
+            "SearchBar": {
+              "placeholder": "Search for products"
+            },
             "ProductVariantForm": {
               "title": "Product Variants",
               "addVariant": "Add Variant",
               "variant": "Variant",
               "fields": {
-                "mainImage": { "label": "Main Image" },
-                "additionalImages": { "label": "Additional Images" },
-                "sku": { "label": "SKU" },
-                "price": { "label": "Price" },
-                "currency": { "label": "Currency" },
-                "discount": { "label": "Discount %" },
-                "stock": { "label": "Stock Available" },
-                "desc_ar": { "label": "Description (AR)" },
-                "desc_en": { "label": "Description (EN)" },
+                "mainImage": {
+                  "label": "Main Image"
+                },
+                "additionalImages": {
+                  "label": "Additional Images"
+                },
+                "sku": {
+                  "label": "SKU"
+                },
+                "price": {
+                  "label": "Price"
+                },
+                "currency": {
+                  "label": "Currency"
+                },
+                "discount": {
+                  "label": "Discount %"
+                },
+                "stock": {
+                  "label": "Stock Available"
+                },
+                "desc_ar": {
+                  "label": "Description (AR)"
+                },
+                "desc_en": {
+                  "label": "Description (EN)"
+                },
                 "attributes": {
                   "label": "Attributes",
                   "select": "Select Attribute Type",
@@ -1358,7 +1390,8 @@
           "desc": "Manage logos data",
           "createLogo": {
             "label": "Create Logo",
-            "uploadImage": "Upload logo image",
+            "uploadImage_ar": "Upload logo image (Arabic)",
+            "uploadImage_en": "Upload logo image (English)",
             "actionFailed": "Logo creation failed"
           },
           "editLogo": {
@@ -1370,33 +1403,71 @@
             "failedLoadData": "Failed to Load logos"
           },
           "components": {
-            "SearchBar": { "placeholder": "Search for logos" },
+            "SearchBar": {
+              "placeholder": "Search for logos"
+            },
+            "LogoCard":{
+              "type":{
+                "main": "Main",
+                "creators": "Creators"
+              }
+            },
             "CreateLogoForm": {
               "fields": {
                 "logoImage": {
                   "label": "Logo image",
                   "placeholder": "Logo image"
                 },
-                "name": {
-                  "label": "Name",
-                  "placeholder": "Name"
+                "name_ar": {
+                  "label": "Name (AR)",
+                  "placeholder": "Name (AR)"
                 },
-                "altText": {
-                  "label": "Alternative text",
-                  "placeholder": "Alternative text"
+                "name_en": {
+                  "label": "Name (EN)",
+                  "placeholder": "Name (EN)"
+                },
+                "altText_ar": {
+                  "label": "Alternative text (AR)",
+                  "placeholder": "Alternative text (AR)"
+                },
+                "altText_en": {
+                  "label": "Alternative text (EN)",
+                  "placeholder": "Alternative text (EN)"
+                },
+                "type": {
+                  "label": "Logo Type",
+                  "placeholder": "Select logo type",
+                  "options": {
+                    "main": "Main",
+                    "creators": "Creators"
+                  }
                 }
               },
               "validations": {
-                "logoImage": {
-                  "required": "Logo image should be provided"
+                "logoImage_ar": {
+                  "required": "Logo image (AR) should be provided"
                 },
-                "name": {
-                  "minChars": "Name must be at least ({min}) characters long",
+                "logoImage_en": {
+                  "required": "Logo image (EN) should be provided"
+                },
+                "name_ar": {
+                  "minChars": "Name (AR) must be at least ({min}) characters long",
+                  "maxChars": "Name (AR) must be at most ({max}) characters long"
+                },
+                "name_en": {
+                  "minChars": "Name (EN) must be at least ({min}) characters long",
                   "maxChars": "Name must be at most ({max}) characters long"
                 },
-                "altText": {
-                  "minChars": "Alternative text must be at least ({min}) characters long",
-                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                "altText_ar": {
+                  "minChars": "Alternative text (AR) must be at least ({min}) characters long",
+                  "maxChars": "Alternative text (AR) must be at most ({max}) characters long"
+                },
+                "altText_en": {
+                  "minChars": "Alternative text (EN) must be at least ({min}) characters long",
+                  "maxChars": "Alternative text (EN) must be at most ({max}) characters long"
+                },
+                "type": {
+                  "required": "Logo type should be provided"
                 }
               },
               "errors": {
@@ -1455,7 +1526,9 @@
             "failedLoadData": "Failed to Load banners"
           },
           "components": {
-            "SearchBar": { "placeholder": "Search for banners" },
+            "SearchBar": {
+              "placeholder": "Search for banners"
+            },
             "CreateBannerForm": {
               "fields": {
                 "bannerImage_ar": {
@@ -1621,7 +1694,9 @@
             "failedLoadData": "Failed to Load showcases"
           },
           "components": {
-            "SearchBar": { "placeholder": "Search for showcases" },
+            "SearchBar": {
+              "placeholder": "Search for showcases"
+            },
             "CreateShowcaseForm": {
               "fields": {
                 "title_ar": {
@@ -1702,7 +1777,9 @@
                   "maxChars": "English button link must be at most {max} characters long",
                   "invalidUrl": "Invalid Url"
                 },
-                "type": { "invalid": "Invalid showcase hint-type" },
+                "type": {
+                  "invalid": "Invalid showcase hint-type"
+                },
                 "startDate": {
                   "invalid": "Invalid start date"
                 },
@@ -1795,7 +1872,9 @@
                   "maxChars": "English button link must be at most {max} characters long",
                   "invalidUrl": "Invalid Url"
                 },
-                "type": { "invalid": "Invalid showcase hint-type" },
+                "type": {
+                  "invalid": "Invalid showcase hint-type"
+                },
                 "startDate": {
                   "invalid": "Invalid start date"
                 },
@@ -1818,7 +1897,9 @@
             "actionFailed": "Type-hint config creation failed"
           },
           "components": {
-            "SearchBar": { "placeholder": "Search for type-hint configs" },
+            "SearchBar": {
+              "placeholder": "Search for type-hint configs"
+            },
             "CreateTypeHintConfigForm": {
               "fields": {
                 "label_ar": {

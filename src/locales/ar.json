@@ -1333,7 +1333,8 @@
           "desc": "إدارة بيانات الشعارات",
           "createLogo": {
             "label": "إنشاء شعار",
-            "uploadImage": "تحميل صورة الشعار",
+            "uploadImage_ar": "تحميل صورة الشعار (بالعربية)",
+            "uploadImage_en": "تحميل صورة الشعار (بالإنجليزية)",
             "actionFailed": "فشل في إنشاء الشعار"
           },
           "editLogo": {
@@ -1348,32 +1349,68 @@
             "SearchBar": {
               "placeholder": "ابحث عن الشعارات"
             },
+            "LogoCard": {
+              "type": {
+                "main": "الرئيسي",
+                "creators": "المبدعين"
+              }
+            },
             "CreateLogoForm": {
               "fields": {
                 "logoImage": {
                   "label": "صورة الشعار",
                   "placeholder": "صورة الشعار"
                 },
-                "name": {
-                  "label": "الاسم",
-                  "placeholder": "الاسم"
+                "name_ar": {
+                  "label": "الاسم (العربية)",
+                  "placeholder": "الاسم (العربية)"
                 },
-                "altText": {
-                  "label": "النص البديل",
-                  "placeholder": "النص البديل"
+                "name_en": {
+                  "label": "الاسم (الإنجليزية)",
+                  "placeholder": "الاسم (الإنجليزية)"
+                },
+                "altText_ar": {
+                  "label": "النص البديل (العربية)",
+                  "placeholder": "النص البديل (العربية)"
+                },
+                "altText_en": {
+                  "label": "النص البديل (الإنجليزية)",
+                  "placeholder": "النص البديل (الإنجليزية)"
+                },
+                "type": {
+                  "label": "نوع الشعار",
+                  "placeholder": "اختر نوع الشعار",
+                  "options": {
+                    "main": "الرئيسي",
+                    "creators": "المبدعين"
+                  }
                 }
               },
               "validations": {
-                "logoImage": {
-                  "required": "يجب توفير صورة الشعار"
+                "logoImage_ar": {
+                  "required": "يجب توفير صورة الشعار (العربية)"
                 },
-                "name": {
-                  "minChars": "يجب أن لا يقل الاسم عن ({min}) أحرف",
-                  "maxChars": "يجب أن لا يزيد الاسم عن ({max}) أحرف"
+                "logoImage_en": {
+                  "required": "يجب توفير صورة الشعار (بالإنجليزية)"
                 },
-                "altText": {
-                  "minChars": "يجب أن لا يقل النص البديل عن ({min}) أحرف",
-                  "maxChars": "يجب أن لا يزيد النص البديل عن ({max}) أحرف"
+                "name_ar": {
+                  "minChars": "يجب أن لا يقل الاسم (العربية) عن ({min}) أحرف",
+                  "maxChars": "يجب أن لا يزيد الاسم (العربية) عن ({max}) أحرف"
+                },
+                "name_en": {
+                  "minChars": "يجب أن لا يقل الاسم (الإنجليزية) عن ({min}) أحرف",
+                  "maxChars": "يجب أن لا يزيد الاسم (الإنجليزية) عن ({max}) أحرف"
+                },
+                "altText_ar": {
+                  "minChars": "يجب أن لا يقل النص البديل (العربية) عن ({min}) أحرف",
+                  "maxChars": "يجب أن لا يزيد النص البديل (العربية) عن ({max}) أحرف"
+                },
+                "altText_en": {
+                  "minChars": "يجب أن لا يقل النص البديل (الإنجليزية) عن ({min}) أحرف",
+                  "maxChars": "يجب أن لا يزيد النص البديل (الإنجليزية) عن ({max}) أحرف"
+                },
+                "type": {
+                  "required": "يجب تحديد نوع الشعار"
                 }
               },
               "errors": {

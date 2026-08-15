@@ -1,11 +1,13 @@
 import { memo } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { BaseResponse } from "@/types/service-response.type";
 import { Logo } from "@/types/logo";
 import { Locale } from "@/types/locale";
 import ImageWithFallback from "@/components/shared/ImageWithFallback";
 import LogoCardActions from "./LogoCardActions";
 import EditLogoForm from "./EditLogoForm";
+import { isArabicLocale } from "@/config/locales.config";
+import { LogoType } from "@/enums/logoType.enum";
 
 type LogoCardProps = {
   item: Logo;
@@ -33,16 +35,26 @@ const LogoCard = ({
   queryKey,
 }: LogoCardProps) => {
   const t = useTranslations();
+  const locale = useLocale();
+  const isArabic = isArabicLocale(locale);
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col">
       <div className="w-auto flex items-end justify-end gap-1 mb-1">
         <span
-          className={`px-[5px] py-[0.8px] text-[10px] rounded-full ${
-            logo.isActive
+          className={`px-[5px] py-[0.8px] text-[10px] rounded-full ${logo.type === LogoType.MAIN
+              ? "bg-amber-100 text-amber-500"
+              : "bg-blue-100 text-blue-800"
+            }`}
+        >
+          {t(`routes.dashboard.routes.logos.components.LogoCard.type.${logo.type}`)}
+        </span>
+
+        <span
+          className={`px-[5px] py-[0.8px] text-[10px] rounded-full ${logo.isActive
               ? "bg-green-100 text-green-800"
               : "bg-red-100 text-red-800"
-          }`}
+            }`}
         >
           {logo.isActive
             ? t("general.items.states.active")
@@ -59,8 +71,8 @@ const LogoCard = ({
       <div className="flex items-center gap-2">
         <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 border border-gray-200">
           <ImageWithFallback
-            src={logo?.media?.url}
-            alt={logo.altText || logo.name}
+            src={isArabic ? logo?.media?.ar?.url : logo?.media?.en?.url}
+            alt={isArabic ? logo.altText?.ar : logo.altText?.en}
             width={40}
             height={40}
             useFill={false}
@@ -69,7 +81,7 @@ const LogoCard = ({
         </div>
 
         <h3 className="text-sm font-semibold text-gray-900 capitalize">
-          {logo.name}
+          {isArabic ? logo.name?.ar : logo.name?.en}
         </h3>
       </div>
 
