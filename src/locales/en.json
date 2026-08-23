@@ -101,7 +101,8 @@
       "notFound": "Not Found",
       "&": "&",
       "or": "or",
-      "clearDate": "Clear Date"
+      "clearDate": "Clear Date",
+      "comingSoon": "Coming soon"
     },
     "date": {
       "startDate": "Start Date",
@@ -397,6 +398,14 @@
     "UnauthorizedState": {
       "title": "Access Denied",
       "desc": "You do not have the necessary permissions to perform this action, check your permissions or contact yous system admin."
+    },
+    "VideoUploader": {
+      "placeholder": "Click to upload video",
+      "help": "Supports MP4, MOV, WEBM (Max {size}MB)",
+      "errors": {
+        "maxSize": "File size is too large. Max size is {size}MB",
+        "invalidType": "Invalid file type. Supported types are MP4, MOV, WEBM, OGG"
+      }
     }
   },
   "routes": {
@@ -1396,7 +1405,8 @@
           },
           "editLogo": {
             "label": "Edit Logo",
-            "uploadImage": "Upload logo image",
+            "uploadImage_ar": "Upload logo image (Arabic)",
+            "uploadImage_en": "Upload logo image (English)",
             "actionFailed": "Logo editing failed"
           },
           "errors": {
@@ -1406,8 +1416,8 @@
             "SearchBar": {
               "placeholder": "Search for logos"
             },
-            "LogoCard":{
-              "type":{
+            "LogoCard": {
+              "type": {
                 "main": "Main",
                 "creators": "Creators"
               }
@@ -1480,26 +1490,56 @@
                   "label": "Logo image",
                   "placeholder": "Logo image"
                 },
-                "name": {
-                  "label": "Name",
-                  "placeholder": "Name"
+                "name_ar": {
+                  "label": "Name (AR)",
+                  "placeholder": "Name (AR)"
                 },
-                "altText": {
-                  "label": "Alternative text",
-                  "placeholder": "Alternative text"
+                "name_en": {
+                  "label": "Name (EN)",
+                  "placeholder": "Name (EN)"
+                },
+                "altText_ar": {
+                  "label": "Alternative text (AR)",
+                  "placeholder": "Alternative text (AR)"
+                },
+                "altText_en": {
+                  "label": "Alternative text (EN)",
+                  "placeholder": "Alternative text (EN)"
+                },
+                "type": {
+                  "label": "Logo Type",
+                  "placeholder": "Select logo type",
+                  "options": {
+                    "main": "Main",
+                    "creators": "Creators"
+                  }
                 }
               },
               "validations": {
-                "logoImage": {
-                  "required": "Logo image should be provided"
+                "logoImage_ar": {
+                  "required": "Logo image (AR) should be provided"
                 },
-                "name": {
-                  "minChars": "Name must be at least ({min}) characters long",
+                "logoImage_en": {
+                  "required": "Logo image (EN) should be provided"
+                },
+                "name_ar": {
+                  "minChars": "Name (AR) must be at least ({min}) characters long",
+                  "maxChars": "Name (AR) must be at most ({max}) characters long"
+                },
+                "name_en": {
+                  "minChars": "Name (EN) must be at least ({min}) characters long",
                   "maxChars": "Name must be at most ({max}) characters long"
                 },
-                "altText": {
-                  "minChars": "Alternative text must be at least ({min}) characters long",
-                  "maxChars": "Alternative text must be at most ({max}) characters long"
+                "altText_ar": {
+                  "minChars": "Alternative text (AR) must be at least ({min}) characters long",
+                  "maxChars": "Alternative text (AR) must be at most ({max}) characters long"
+                },
+                "altText_en": {
+                  "minChars": "Alternative text (EN) must be at least ({min}) characters long",
+                  "maxChars": "Alternative text (EN) must be at most ({max}) characters long"
+                },
+                "type": {
+                  "required": "Logo type should be provided"
                 }
               },
               "errors": {
@@ -2186,6 +2226,116 @@
               "site": "cartjo.com"
             }
           }
+        },
+        "creators": {
+          "title": "Creators Dashboard",
+          "desc": "Manage everything shown on the public creators page — hero videos, creator accounts, and more.",
+          "sections": {
+            "heroVideos": {
+              "title": "Hero Videos",
+              "desc": "Manage the background video playlist shown on the creators landing page hero section."
+            }
+          },
+          "routes": {
+            "videos": {
+              "components": {
+                "CreatorsVideosPageContainer": {
+                  "title": "Creators Video Management",
+                  "desc": "Upload, update, and manage background videos for the creators page hero section.",
+                  "createVideo": {
+                    "label": "Add Video",
+                    "title": "Upload Creators Video",
+                    "actionFailed": "Video creation failed"
+                  },
+                  "editVideo": {
+                    "label": "Edit Creators Video",
+                    "title": "Edit Creators Video",
+                    "actionFailed": "Video editing failed"
+                  },
+                  "errors": {
+                    "failedLoadData": "Failed to load creators videos."
+                  },
+                  "components": {
+                    "SearchBar": {
+                      "placeholder": "Search by title..."
+                    },
+                    "empty": {
+                      "title": "No creators videos found.",
+                      "desc": "Upload a background promo video to get started."
+                    },
+                    "CreateVideoForm": {
+                      "fields": {
+                        "title_ar": {
+                          "label": "Arabic Title",
+                          "placeholder": "العنوان باللغة العربية"
+                        },
+                        "title_en": {
+                          "label": "English Title",
+                          "placeholder": "Title in English"
+                        },
+                        "type": {
+                          "label": "Video Type",
+                          "placeholder": "Select type",
+                          "options": {
+                            "hero": "Hero Section Background Video"
+                          }
+                        },
+                        "video": {
+                          "label": "Video File",
+                          "placeholder": "Click to upload video",
+                          "help": "Supports MP4, MOV, WEBM (Max {size}MB)"
+                        }
+                      },
+                      "validations": {
+                        "title_ar": {
+                          "required": "Arabic title is required",
+                          "minChars": "Arabic title must be at least ({min}) characters long",
+                          "maxChars": "Arabic title must be at most ({max}) characters long"
+                        },
+                        "title_en": {
+                          "required": "English title is required",
+                          "minChars": "English title must be at least ({min}) characters long",
+                          "maxChars": "English title must be at most ({max}) characters long"
+                        },
+                        "type": {
+                          "required": "Video type is required"
+                        },
+                        "video": {
+                          "required": "Video file is required",
+                          "maxSize": "File size is too large. Max size is {size}MB",
+                          "invalidType": "Invalid file type. Supported types are MP4, MOV, WEBM, OGG"
+                        }
+                      }
+                    },
+                    "EditVideoForm": {
+                      "fields": {
+                        "title_ar": {
+                          "label": "Arabic Title",
+                          "placeholder": "العنوان باللغة العربية"
+                        },
+                        "title_en": {
+                          "label": "English Title",
+                          "placeholder": "Title in English"
+                        },
+                        "type": {
+                          "label": "Video Type",
+                          "placeholder": "Select type",
+                          "options": {
+                            "hero": "Hero Section Background Video"
+                          }
+                        },
+                        "video": {
+                          "label": "Creators Video",
+                          "placeholder": "Click to upload video",
+                          "help": "Supports MP4, MOV, WEBM (Max {size}MB)"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "components": {
@@ -2214,7 +2364,8 @@
             "banner": "Banners",
             "typeHintConfigs": "Type-Hint Configs",
             "showcases": "Showcases",
-            "orders": "Orders"
+            "orders": "Orders",
+            "creators": "Creators"
           }
         },
         "DashboardLocationCard": {
@@ -3007,6 +3158,28 @@
       "help": {
         "text": "Need help?",
         "support": "customer support"
+      }
+    },
+    "creators": {
+      "header": {
+        "signIn": "Sign In",
+        "becomeCreator": "Become a Creator"
+      },
+      "hero": {
+        "title": {
+          "watchYour": "Watch your",
+          "passion": "passion",
+          "payOff": "pay off"
+        },
+        "description": "Tell your story on the world's #1 creative platform. Whether you're just getting started or looking to grow and earn more, take the next step on your creator journey.",
+        "actions": {
+          "explore": "Explore what's next",
+          "setupChannel": "Set up your channel"
+        },
+        "accessibility": {
+          "pauseVideo": "Pause background video",
+          "playVideo": "Play background video"
+        }
       }
     }
   }

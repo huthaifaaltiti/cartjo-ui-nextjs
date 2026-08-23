@@ -60,6 +60,15 @@ export const API_ENDPOINTS = {
       CREATE: `${API_URL}/api/v1/product/create`,
       EDIT: `${API_URL}/api/v1/product/update`,
     },
+    CREATORS_VIDEOS: {
+      ALL: `${API_URL}/api/v1/creators/video/all`,
+      DELETE: `${API_URL}/api/v1/creators/video/delete`,
+      UN_DELETE: `${API_URL}/api/v1/creators/video/un-delete`,
+      SWITCH_ACTIVE_STATUS: `${API_URL}/api/v1/creators/video/status`,
+      CREATE: `${API_URL}/api/v1/creators/video/create`,
+      EDIT: `${API_URL}/api/v1/creators/video/update`,
+      ACTIVE: `${API_URL}/api/v1/creators/video/active`,
+    },
     LOGOS: {
       ALL: `${API_URL}/api/v1/logo/all`,
       DELETE: `${API_URL}/api/v1/logo/delete`,

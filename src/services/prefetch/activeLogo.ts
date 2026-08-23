@@ -13,7 +13,7 @@ export async function prefetchActiveLogo({
   type,
 }: {
   locale: Locale | string;
-  type: LogoType;
+  type?: LogoType;
   queryClient: QueryClient;
 }): Promise<void> {
   const fallbackLocale = locale ?? Locale.EN;

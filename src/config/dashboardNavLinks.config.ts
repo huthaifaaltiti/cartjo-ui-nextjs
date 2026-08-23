@@ -10,6 +10,7 @@ import {
   LayoutPanelTop,
   Cog,
   ListOrdered,
+  Sparkles,
 } from "lucide-react";
 
 export const dashboardNavLinks = [
@@ -84,5 +85,13 @@ export const dashboardNavLinks = [
     href: "/dashboard/orders",
     icon: ListOrdered,
     permissions: ROUTE_PERMISSIONS[AppRoute.DASHBOARD_ORDERS],
+  },
+  {
+    name: AppRoute.DASHBOARD_CREATORS,
+    labelKey:
+      "routes.dashboard.components.DashboardControlNavLinks.navItems.creators",
+    href: "/dashboard/creators",
+    icon: Sparkles,
+    permissions: ROUTE_PERMISSIONS[AppRoute.DASHBOARD_CREATORS],
   },
 ];

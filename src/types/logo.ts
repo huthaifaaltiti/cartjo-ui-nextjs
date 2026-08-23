@@ -1,8 +1,7 @@
+import { LogoType } from "@/enums/logoType.enum";
 import { Actor, Name } from "./common";
 import { Media } from "./media.type";
 import { SubCategory } from "./subCategory";
-
-export type LogoType = "main" | "creators";
 export interface Logo {
   _id: string;
   name: Name;

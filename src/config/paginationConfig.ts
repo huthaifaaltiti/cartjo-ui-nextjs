@@ -12,6 +12,7 @@ export const PAGINATION_LIMITS = {
     ADMIN_USERS: 20,
     DELETED_USERS: 20,
     LOGOS: 10,
+    CREATORS_VIDEOS: 10,
   },
   USER_VIEW: {
     WISHLIST_ITEMS: 20,

@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
+import { useLocale } from "next-intl";
 import { useActiveLogoQuery } from "@/hooks/react-query/useLogosQuery";
 import { useHomeEffectsContext } from "@/contexts/HomeEffectsContext";
+import { isArabicLocale } from "@/config/locales.config";
 import StaticLogo from "./StaticLogo";
 import CustomImage from "../admin/shared/CustomImage";
 
@@ -18,8 +20,15 @@ export default function DynamicLogo() {
     });
   }, [changeLogo, refetch, setChangeLogo]);
 
-  const logoUrl = data?.data?.media?.url;
-  const altText = data?.data?.altText ?? "Web app logo";
+  const locale = useLocale();
+  const isArabic = isArabicLocale(locale);
+
+  const logoUrl = isArabic
+    ? data?.data?.media?.ar?.url
+    : data?.data?.media?.en?.url;
+  const altText =
+    (isArabic ? data?.data?.altText?.ar : data?.data?.altText?.en) ??
+    "Web app logo";
 
   if (isError || !logoUrl) return <StaticLogo />;
 
@@ -28,8 +37,8 @@ export default function DynamicLogo() {
       src={logoUrl}
       alt={altText}
       fill={false}
-      height={40}
-      width={120}
+      height={50}
+      width={150}
       loading="eager"
       priority
     />

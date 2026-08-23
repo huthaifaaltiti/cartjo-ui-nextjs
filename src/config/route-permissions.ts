@@ -5,7 +5,7 @@ export const ROUTE_PERMISSIONS: Partial<
   Record<AppRoute, Permission | Permission[]>
 > = {
   [AppRoute.DASHBOARD]: [Permission.DASHBOARD_ACCESS],
-  
+
   [AppRoute.DASHBOARD_USERS]: [
     Permission.USERS_READ,
     Permission.USERS_CREATE,
@@ -86,6 +86,15 @@ export const ROUTE_PERMISSIONS: Partial<
     Permission.ORDERS_UPDATE,
     Permission.ORDERS_CANCEL,
     Permission.ORDERS_REFUND,
+  ],
+
+  [AppRoute.DASHBOARD_CREATORS]: [
+    Permission.CREATORS_VIDEOS_READ,
+    Permission.CREATORS_VIDEOS_CREATE,
+    Permission.CREATORS_VIDEOS_UPDATE,
+    Permission.CREATORS_VIDEOS_DELETE,
+    Permission.CREATORS_VIDEOS_ACTIVATE,
+    Permission.CREATORS_VIDEOS_DEACTIVATE,
   ],
 
   [AppRoute.USER_PROFILE]: [Permission.PROFILE_READ, Permission.PROFILE_UPDATE],

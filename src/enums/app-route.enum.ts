@@ -10,6 +10,7 @@ export enum AppRoute {
   DASHBOARD_TYPE_HINT_CONFIGS = "TypeHintConfigsManagement",
   DASHBOARD_SHOWCASES = "ShowcasesManagement",
   DASHBOARD_ORDERS = "OrdersManagement",
+  DASHBOARD_CREATORS = "CreatorsManagement",
 
   // User private routes
   USER_PROFILE = "UserProfile",
