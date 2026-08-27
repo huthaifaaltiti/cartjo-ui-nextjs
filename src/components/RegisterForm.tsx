@@ -43,7 +43,9 @@ import { validationConfig } from "@/config/validationConfig";
 import { Locale } from "@/enums/locale.enum";
 import { CartJOSession } from "@/types/cartjoSession.type";
 import { useRouter } from "next/navigation";
+import { useQueryState } from "nuqs";
 import { setSession } from "@/redux/slices/authentication";
+import { UserRole } from "@/enums/user-role.enum";
 
 interface SuccessRegistrationResponse {
   accessToken: string;
@@ -63,6 +65,7 @@ const RegisterForm = () => {
   );
 
   const router = useRouter();
+  const [roleParam] = useQueryState("role");
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -221,6 +224,7 @@ const RegisterForm = () => {
               ...data,
               countryCode: "00962",
               lang: locale,
+              role: roleParam?.toLowerCase() === "creator" ? UserRole.CREATOR : UserRole.USER,
             }),
           },
         );
@@ -257,7 +261,11 @@ const RegisterForm = () => {
 
       if (data?.isSuccess) {
         dispatch(setSession(data?.user));
-        router.push("/");
+        if (data?.user?.role?.toLocaleLowerCase() === UserRole.CREATOR.toLocaleLowerCase()) {
+          router.push("/creators/dashboard");
+        } else {
+          router.push("/");
+        }
       }
     },
     onError: (error: Error) => {

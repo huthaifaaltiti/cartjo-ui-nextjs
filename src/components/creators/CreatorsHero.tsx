@@ -3,8 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { Button } from "../ui/button";
 import { useActiveCreatorsVideosQuery } from "@/hooks/react-query/useCreatorsVideoQuery";
+import { UserRole } from "@/enums/user-role.enum";
 
 const FALLBACK_VIDEOS = [
   "https://cdn.pixabay.com/video/2016/07/22/3952-175860892_large.mp4",
@@ -14,6 +16,7 @@ const FALLBACK_VIDEOS = [
 
 export default function CreatorsHero() {
   const t = useTranslations("routes.creators.hero");
+  const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -87,12 +90,20 @@ export default function CreatorsHero() {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button className="rounded-full bg-white-50 px-6 py-6 text-sm font-semibold text-neutral-900 hover:bg-neutral-200">
+            <Button
+              className="rounded-full bg-white-50 px-6 py-6 text-sm font-semibold text-neutral-900 hover:bg-neutral-200"
+              onClick={() =>
+                document.getElementById("explore-section")?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
               {t("actions.explore")}
             </Button>
             <Button
               variant="outline"
               className="rounded-full border-white-50/70 bg-transparent px-6 py-6 text-sm font-semibold text-white-50 hover:bg-white-50/10"
+              onClick={() =>
+                router.push(`/auth?role=${UserRole.CREATOR}&tab=register`)
+              }
             >
               {t("actions.setupChannel")}
             </Button>
@@ -104,7 +115,9 @@ export default function CreatorsHero() {
       <button
         onClick={togglePlay}
         aria-label={
-          isPlaying ? t("accessibility.pauseVideo") : t("accessibility.playVideo")
+          isPlaying
+            ? t("accessibility.pauseVideo")
+            : t("accessibility.playVideo")
         }
         className="absolute bottom-5 right-5 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white-50/40 bg-black-50/30 text-white-50 backdrop-blur-sm transition-colors hover:bg-black-50/50"
       >

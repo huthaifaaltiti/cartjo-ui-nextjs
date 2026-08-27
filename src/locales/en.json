@@ -409,6 +409,56 @@
     }
   },
   "routes": {
+    "creators": {
+      "header": {
+        "signIn": "Sign In",
+        "becomeCreator": "Become a Creator"
+      },
+      "hero": {
+        "title": {
+          "watchYour": "Watch your",
+          "passion": "passion",
+          "payOff": "pay off"
+        },
+        "description": "Tell your story on the world's #1 creative platform. Whether you're just getting started or looking to grow and earn more, take the next step on your creator journey.",
+        "actions": {
+          "explore": "Explore what's next",
+          "setupChannel": "Set up your channel"
+        },
+        "accessibility": {
+          "pauseVideo": "Pause background video",
+          "playVideo": "Play background video"
+        }
+      },
+      "info": {
+        "title": "The most <rewarding>rewarding</rewarding> place to sell your creations",
+        "create": {
+          "title": "Showcase",
+          "desc": "List your unique products and tell your story with videos and interactive formats.",
+          "btn": "Create your shop"
+        },
+        "grow": {
+          "title": "Grow",
+          "desc": "Reach thousands of buyers searching for unique creations and build your brand.",
+          "btn": "Grow your reach"
+        },
+        "earn": {
+          "title": "Sell & Earn",
+          "desc": "Turn your passion into a sustainable business with secure checkout and payouts.",
+          "btn": "Start selling now"
+        }
+      },
+      "dashboard": {
+        "layout": {
+          "portal": "Creator Portal",
+          "navigation": "Navigation",
+          "myVideos": "My Videos",
+          "analytics": "Analytics",
+          "profileSettings": "Profile Settings",
+          "soon": "Soon"
+        }
+      }
+    },
     "auth": {
       "components": {
         "AuthTabs": {
@@ -3158,28 +3208,6 @@
       "help": {
         "text": "Need help?",
         "support": "customer support"
-      }
-    },
-    "creators": {
-      "header": {
-        "signIn": "Sign In",
-        "becomeCreator": "Become a Creator"
-      },
-      "hero": {
-        "title": {
-          "watchYour": "Watch your",
-          "passion": "passion",
-          "payOff": "pay off"
-        },
-        "description": "Tell your story on the world's #1 creative platform. Whether you're just getting started or looking to grow and earn more, take the next step on your creator journey.",
-        "actions": {
-          "explore": "Explore what's next",
-          "setupChannel": "Set up your channel"
-        },
-        "accessibility": {
-          "pauseVideo": "Pause background video",
-          "playVideo": "Play background video"
-        }
       }
     }
   }

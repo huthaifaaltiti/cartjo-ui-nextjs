@@ -14,4 +14,7 @@ export enum AppRoute {
 
   // User private routes
   USER_PROFILE = "UserProfile",
+
+  // Creators private routes
+  CREATORS_DASHBOARD = "CreatorsDashboard",
 }

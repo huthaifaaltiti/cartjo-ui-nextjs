@@ -47,7 +47,7 @@ export function LogoutBtn({ withIcon = true }: { withIcon?: boolean }) {
   return (
     <button
       onClick={handleLogout}
-      className="w-full flex items-center gap-2 hover:opacity-80 text-sm"
+      className="w-full flex items-center gap-2 hover:opacity-80 text-sm text-black-200"
     >
       {withIcon && <LogOutIcon className="w-4 h-4" />}
       {t("routes.home.components.UserAccountLinkMenu.logout")}

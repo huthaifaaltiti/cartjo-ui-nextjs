@@ -20,8 +20,10 @@ import CounterDown from "@/components/shared/CounterDown";
 
 export default function VerifyEmailContent({
   locale,
+  relocationPath = "/auth",
 }: {
   locale: Locale | string;
+  relocationPath?: string;
 }) {
   const t = useTranslations("");
   const router = useRouter();
@@ -154,7 +156,7 @@ export default function VerifyEmailContent({
                   startCounting={isSuccess}
                   countDownAmount={10}
                   withRelocation={true}
-                  relocationPath="/auth"
+                  relocationPath={relocationPath}
                   size="lg"
                   color="purple"
                   align="center"
@@ -162,7 +164,7 @@ export default function VerifyEmailContent({
               </div>
 
               <button
-                onClick={() => router.push("/auth")}
+                onClick={() => router.push(relocationPath)}
                 className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white-50 py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
               >
                 {t(

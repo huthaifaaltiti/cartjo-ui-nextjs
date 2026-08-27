@@ -1,4 +1,7 @@
 export enum Permission {
+  // *** For Admin ***
+  DASHBOARD_ACCESS = "dashboard.access",
+
   // Users
   USERS_READ = "users.read",
   USERS_CREATE = "users.create",
@@ -82,8 +85,11 @@ export enum Permission {
   ORDERS_EXPORT = "orders.export",
   ORDERS_CHANGE_PAYMENT_STATUS = "orders.change_payment_status",
   ORDERS_CHANGE_DELIVERY_STATUS = "orders.change_delivery_status",
+  // ******************************************
 
-  // Customer Orders
+  // *** For User ***
+
+  // User Orders
   ORDERS_READ_OWN = "orders.read_own",
   ORDERS_CREATE_OWN = "orders.create_own",
 
@@ -109,16 +115,19 @@ export enum Permission {
   // Cart
   CART_READ = "cart.read",
   CART_UPDATE = "cart.update",
+  // ******************************************
 
-  // Dashboard
-  DASHBOARD_ACCESS = "dashboard.access",
+  // *** For Creator ***
+
+  // Private Dashboard
+  CREATORS_DASHBOARD_ACCESS = "creators_dashboard.access",
 
   // Creators Videos
-  CREATORS_VIDEOS_READ = 'creators_videos.read',
-  CREATORS_VIDEOS_CREATE = 'creators_videos.create',
-  CREATORS_VIDEOS_UPDATE = 'creators_videos.update',
-  CREATORS_VIDEOS_DELETE = 'creators_videos.delete',
-  CREATORS_VIDEOS_RESTORE = 'creators_videos.restore',
-  CREATORS_VIDEOS_ACTIVATE = 'creators_videos.activate',
-  CREATORS_VIDEOS_DEACTIVATE = 'creators_videos.deactivate',
+  CREATORS_VIDEOS_READ = "creators_videos.read",
+  CREATORS_VIDEOS_CREATE = "creators_videos.create",
+  CREATORS_VIDEOS_UPDATE = "creators_videos.update",
+  CREATORS_VIDEOS_DELETE = "creators_videos.delete",
+  CREATORS_VIDEOS_RESTORE = "creators_videos.restore",
+  CREATORS_VIDEOS_ACTIVATE = "creators_videos.activate",
+  CREATORS_VIDEOS_DEACTIVATE = "creators_videos.deactivate",
 }
