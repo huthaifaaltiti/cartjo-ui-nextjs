@@ -33,6 +33,7 @@ import {
 } from "@/utils/normalizePhoneNumber";
 import { validationConfig } from "@/config/validationConfig";
 import { setSession } from "@/redux/slices/authentication";
+import { UserRole } from "@/enums/user-role.enum";
 
 const createFormSchema = (t: ReturnType<typeof useTranslations>) =>
   z.object({
@@ -139,6 +140,8 @@ const LoginForm = () => {
       // Tokens are in HttpOnly cookies — just navigate
       if (redirectTo) {
         router.push(decodeURIComponent(redirectTo));
+      } else if (loggedInSession.role === UserRole.CREATOR) {
+        router.push("/creators/dashboard");
       } else {
         router.push("/");
       }

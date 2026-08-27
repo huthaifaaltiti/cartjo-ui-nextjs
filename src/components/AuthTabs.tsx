@@ -1,5 +1,8 @@
+"use client";
+
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { useQueryState } from "nuqs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Login from "./Login";
 import Register from "./Register";
@@ -9,6 +12,12 @@ const AuthTabs = () => {
   const t = useTranslations();
   const locale = useLocale();
   const isAr = isArabicLocale(locale);
+  const [tabParam] = useQueryState("tab", {
+    defaultValue: "login",
+    parse: (value) => String(value) as "register" | "login",
+  });
+
+  const defaultTab = tabParam === "register" ? "register" : "login";
 
   const triggerClasses =
     "w-1/2 min-h-10 bg-transparent border-none shadow-none font-bold text-lg text-text-primary-100 data-[state=active]:text-text-primary-400 sm:data-[state=active]:text-[30px] data-[state=active]:text-3xl data-[state=active]:shadow-none";
@@ -16,7 +25,7 @@ const AuthTabs = () => {
   return (
     <Tabs
       dir={`${isAr ? "rtl" : "ltr"}`}
-      defaultValue="login"
+      defaultValue={defaultTab}
       className="w-full bg-transparent"
     >
       <TabsList className="w-full min-h-14 px-3 bg-transparent">

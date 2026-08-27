@@ -94,6 +94,16 @@ export function checkIsAdmin(
   );
 }
 
+export function checkIsCreator(
+  session: CartJOSession | TokenSession | null,
+): boolean {
+  if (!session) return false;
+
+  const role = session.role.toLowerCase();
+
+  return role === UserRole.CREATOR.toLocaleLowerCase();
+}
+
 export function checkCanAccessDashboard(
   session: CartJOSession | TokenSession | null,
 ): boolean {
@@ -102,4 +112,16 @@ export function checkCanAccessDashboard(
   const userPermissions: string[] = session.permissions ?? [];
 
   return userPermissions.includes(Permission.DASHBOARD_ACCESS) ?? false;
+}
+
+export function checkCanAccessCreatorDashboard(
+  session: CartJOSession | TokenSession | null,
+): boolean {
+  if (!session) return false;
+
+  const userPermissions: string[] = session.permissions ?? [];
+
+  return (
+    userPermissions.includes(Permission.CREATORS_DASHBOARD_ACCESS) ?? false
+  );
 }

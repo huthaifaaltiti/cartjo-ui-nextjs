@@ -98,4 +98,6 @@ export const ROUTE_PERMISSIONS: Partial<
   ],
 
   [AppRoute.USER_PROFILE]: [Permission.PROFILE_READ, Permission.PROFILE_UPDATE],
+
+  [AppRoute.CREATORS_DASHBOARD]: [Permission.CREATORS_DASHBOARD_ACCESS],
 };
