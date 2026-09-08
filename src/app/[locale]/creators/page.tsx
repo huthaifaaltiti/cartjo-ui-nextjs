@@ -1,7 +1,6 @@
 import CreatorsPageContainer from "@/components/creators/CreatorsContainer";
 import { isArabicLocale } from "@/config/locales.config";
-import { LogoType } from "@/enums/logoType.enum";
-import { prefetchActiveLogo } from "@/services/prefetch/activeLogo";
+import { CreatorsVideoType } from "@/enums/creatorsVideoType.enum";
 import { prefetchActiveCreatorsVideos } from "@/services/prefetch/activeCreatorsVideos";
 import { Locale } from "@/types/locale";
 import { getQueryClient } from "@/utils/queryUtils";
@@ -16,10 +15,11 @@ export default async function CreatorsPage({
 
   const queryClient = getQueryClient();
 
-  await Promise.all([
-    prefetchActiveLogo({ queryClient, locale, type: LogoType.CREATORS }),
-    prefetchActiveCreatorsVideos({ queryClient, locale, type: "hero" }),
-  ]);
+  await prefetchActiveCreatorsVideos({
+    queryClient,
+    locale,
+    type: CreatorsVideoType.HERO,
+  });
 
   const dehydratedState = dehydrate(queryClient);
 
