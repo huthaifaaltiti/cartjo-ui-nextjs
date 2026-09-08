@@ -4,26 +4,48 @@ import { CartJOSession } from "@/types/cartjoSession.type";
 import { TokenSession } from "@/types/tokenSession.type";
 
 export function isAdminClientSide(
-  session: CartJOSession | TokenSession | null,
+  session?: CartJOSession | TokenSession | null,
 ): boolean {
   if (!session) return false;
 
-  const role = session.role.toLowerCase();
+  const role = session.role?.toLowerCase();
 
   return (
-    role === UserRole.ADMINISTRATOR.toLocaleLowerCase() ||
-    role === UserRole.OWNER.toLocaleLowerCase()
+    role === UserRole.ADMINISTRATOR.toLowerCase() ||
+    role === UserRole.OWNER.toLowerCase()
   );
 }
 
+export function isCreatorClientSide(
+  session?: CartJOSession | TokenSession | null,
+): boolean {
+  if (!session) return false;
+
+  const role = session.role?.toLowerCase();
+
+  return role === UserRole.CREATOR.toLowerCase();
+}
+
 export function checkCanAccessDashboardClientSide(
-  session: CartJOSession | TokenSession | null,
+  session?: CartJOSession | TokenSession | null,
 ): boolean {
   if (!session) return false;
 
   const userPermissions: string[] = session.permissions ?? [];
 
   return userPermissions.includes(Permission.DASHBOARD_ACCESS) ?? false;
+}
+
+export function checkCanAccessCreatorDashboardClientSide(
+  session?: CartJOSession | TokenSession | null,
+): boolean {
+  if (!session) return false;
+
+  const userPermissions: string[] = session.permissions ?? [];
+
+  return (
+    userPermissions.includes(Permission.CREATORS_DASHBOARD_ACCESS) ?? false
+  );
 }
 
 interface HasRequiredPermissionsParams {

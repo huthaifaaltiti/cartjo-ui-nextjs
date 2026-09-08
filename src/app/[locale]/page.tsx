@@ -19,6 +19,7 @@ import {
 } from "@/services/prefetch/home";
 import { prefetchActiveLogo } from "@/services/prefetch/activeLogo";
 import { LogoType } from "@/enums/logoType.enum";
+import { getSession } from "@/lib/session.server";
 
 export default async function Home({
   params,
@@ -26,6 +27,8 @@ export default async function Home({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
+
+  const session = await getSession();
 
   const queryClient = getQueryClient();
 
@@ -51,7 +54,7 @@ export default async function Home({
       <HomeContextProvider>
         <ReduxInitializer>
           <TopBar />
-          <MainHeader />
+          <MainHeader initialSession={session} />
           <HeroSection />
           <CategoriesCarousel />
           <HomeShowcase />
