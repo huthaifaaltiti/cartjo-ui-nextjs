@@ -6,6 +6,25 @@ const nextConfig: NextConfig = {
   images: {
     domains: imageDomains,
   },
+  async rewrites() {
+    return [
+      // 1. Primary Vanity Handle (e.g. cartjo.com/ar/@digital-library)
+      {
+        source: "/:locale/@:handle",
+        destination: "/:locale/creators/:handle",
+      },
+      // 2. Store with @handle (e.g. cartjo.com/ar/store/@digital-library)
+      {
+        source: "/:locale/store/@:handle",
+        destination: "/:locale/creators/:handle",
+      },
+      // 3. Store with clean handle or slug (e.g. cartjo.com/ar/store/digital-library)
+      {
+        source: "/:locale/store/:handle",
+        destination: "/:locale/creators/:handle",
+      },
+    ];
+  },
 };
 
 const withNextIntl = createNextIntlPlugin();
