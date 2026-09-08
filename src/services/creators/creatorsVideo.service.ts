@@ -3,7 +3,8 @@ import { DataListResponse, DataResponse } from "@/types/service-response.type";
 import { Locale } from "@/types/locale";
 import { Locale as LocaleEnum } from "@/enums/locale.enum";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { CreatorsVideo } from "@/types/creatorsVideo";
+import { CreatorsVideo } from "@/types/creators/creatorsVideo";
+import { CreatorsVideoType } from "@/enums/creatorsVideoType.enum";
 
 interface FetchActiveCreatorsVideosParams {
   lang?: Locale | string;
@@ -13,7 +14,7 @@ interface FetchActiveCreatorsVideosParams {
 
 export const fetchActiveCreatorsVideos = async ({
   lang = LocaleEnum.EN,
-  type = "HERO",
+  type = CreatorsVideoType.HERO,
   fetcher,
 }: FetchActiveCreatorsVideosParams): Promise<DataResponse<CreatorsVideo[]>> => {
   const url = new URL(`${API_ENDPOINTS.DASHBOARD.CREATORS_VIDEOS.ACTIVE}`);
@@ -34,8 +35,8 @@ interface FetchCreatorsVideosParams {
 }
 
 export const fetchCreatorsVideos = async ({
-  lang = "en",
-  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.BANNERS ?? 10,
+  lang = LocaleEnum.EN,
+  limit = PAGINATION_LIMITS.DASHBOARD_VIEW.CREATORS_VIDEOS ?? 10,
   lastId,
   search,
   type,
