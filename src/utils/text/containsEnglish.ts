@@ -27,3 +27,14 @@ export function isEnglishWithNumOnly(input: string): boolean {
   const englishAndNumOnlyRegex = /^[A-Za-z0-9\s]+$/;
   return englishAndNumOnlyRegex.test(input);
 }
+
+/**
+ * Checks if a string contains only English letters, numbers, and common punctuation
+ * (dots, commas, exclamation/question marks, colons, semicolons, hyphens, parentheses)
+ * @param input - The input string
+ * @returns boolean
+ */
+export function isEnglishWithNumAndPunctuationOnly(input: string): boolean {
+  const englishNumPunctRegex = /^[a-zA-Z0-9\s.,!?:;()\-]+$/;
+  return englishNumPunctRegex.test(input);
+}

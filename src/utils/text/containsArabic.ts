@@ -27,3 +27,15 @@ export function isArabicWithNumOnly(input: string): boolean {
   const arabicAndNumOnlyRegex = /^[\u0600-\u06FF0-9\s]+$/;
   return arabicAndNumOnlyRegex.test(input);
 }
+
+/**
+ * Checks if a string contains only Arabic letters, numbers, and common punctuation
+ * (dots, commas, exclamation/question marks, colons, semicolons, hyphens,
+ * parentheses, and both Arabic/Latin comma & question mark variants)
+ * @param input - The input string
+ * @returns boolean
+ */
+export function isArabicWithNumAndPunctuationOnly(input: string): boolean {
+  const arabicNumPunctRegex = /^[\u0600-\u06FF0-9\s.,!?:;()\-،؛؟]+$/;
+  return arabicNumPunctRegex.test(input);
+}
