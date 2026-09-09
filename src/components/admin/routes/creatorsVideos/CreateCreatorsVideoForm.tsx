@@ -3,7 +3,7 @@
 import { memo, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
@@ -22,31 +22,54 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { showSuccessToast } from "@/components/shared/CustomToast";
 import LoadingButton from "@/components/shared/LoadingButton";
 import { invalidateQuery } from "@/utils/queryUtils";
 import { isArabicLocale } from "@/config/locales.config";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
-import { useHandleApiError } from "@/hooks/useHandleApiError";
-import { authFetcher } from "@/utils/authFetcher";
-import { DataResponse } from "@/types/service-response.type";
-import { CreatorsVideo } from "@/types/creators/creatorsVideo";
 import { Permission } from "@/enums/permission.enum";
 import { usePermission } from "@/hooks/usePermission";
 import { showNoPermissionToast } from "@/utils/permissionToast";
 import VideoUploader from "@/components/shared/VideoUploader";
+import { CreatorsVideoType } from "@/enums/creatorsVideoType.enum";
+import { MEDIA_CONFIG } from "@/config/media.config";
+import { validationConfig } from "@/config/validationConfig";
+import { useCreateCreatorsVideoMutation } from "@/hooks/react-query/creators/useCreateCreatorsVideoMutation";
 
-const createFormSchema = (t: any) => {
+const createFormSchema = (
+  t: (key: string, options?: Record<string, string | number | Date>) => string,
+) => {
+  const { titleMinChars, titleMaxChars, videoMaxSizeMB } =
+    validationConfig.creatorsVideo;
+  const maxSizeBytes = videoMaxSizeMB * 1024 * 1024;
+
   return z.object({
     title_ar: z
       .string()
-      .min(3, { message: t("validations.title_ar.minChars", { min: 3 }) })
-      .max(100, { message: t("validations.title_ar.maxChars", { max: 100 }) }),
+      .min(titleMinChars, {
+        message: t("validations.title_ar.minChars", { min: titleMinChars }),
+      })
+      .max(titleMaxChars, {
+        message: t("validations.title_ar.maxChars", { max: titleMaxChars }),
+      }),
     title_en: z
       .string()
-      .min(3, { message: t("validations.title_en.minChars", { min: 3 }) })
-      .max(100, { message: t("validations.title_en.maxChars", { max: 100 }) }),
-    type: z.string().min(1, { message: t("validations.type.required") }),
+      .min(titleMinChars, {
+        message: t("validations.title_en.minChars", { min: titleMinChars }),
+      })
+      .max(titleMaxChars, {
+        message: t("validations.title_en.maxChars", { max: titleMaxChars }),
+      }),
+    type: z.nativeEnum(CreatorsVideoType, {
+      errorMap: () => ({
+        message: t("validations.type.required"),
+      }),
+    }),
+    video: z
+      .custom<File | null>((val) => val instanceof File, {
+        message: t("validations.video.required"),
+      })
+      .refine((file) => file instanceof File && file.size <= maxSizeBytes, {
+        message: t("validations.video.maxSize", { size: videoMaxSizeMB }),
+      }),
   });
 };
 
@@ -67,8 +90,10 @@ const CreateCreatorsVideoForm = ({
   const tg = useTranslations("general");
   const locale = useLocale();
   const isArabic = isArabicLocale(locale);
+
   const queryClient = useQueryClient();
-  const handleApiError = useHandleApiError();
+
+  const createCreatorsVideoMutation = useCreateCreatorsVideoMutation();
 
   const { canCreate } = usePermission({
     canCreate: Permission.CREATORS_VIDEOS_CREATE,
@@ -87,7 +112,8 @@ const CreateCreatorsVideoForm = ({
     defaultValues: {
       title_ar: "",
       title_en: "",
-      type: "HERO",
+      type: CreatorsVideoType.HERO,
+      video: null,
     },
   });
 
@@ -96,67 +122,48 @@ const CreateCreatorsVideoForm = ({
     url: string | null;
   }) => {
     setVideo(data);
+    form.setValue("video", data.file, { shouldValidate: true });
     if (data.file) {
+      form.clearErrors("video");
       setVideoError(null);
     }
   };
 
   const handleVideoError = (error: string) => {
     setVideoError(error);
+    form.setError("video", { message: error });
   };
-
-  const registerMutation = useMutation({
-    mutationFn: async (values: FormData) => {
-      if (!video.file) {
-        setVideoError(t("validations.video.required"));
-        throw new Error(t("validations.video.required"));
-      }
-
-      const formData = new FormData();
-      formData.append("title_ar", values.title_ar);
-      formData.append("title_en", values.title_en);
-      formData.append("type", values.type?.toLocaleLowerCase());
-      formData.append("video", video.file);
-
-      const response = await authFetcher<DataResponse<CreatorsVideo>>(
-        `${API_ENDPOINTS.DASHBOARD.CREATORS_VIDEOS.CREATE}?lang=${locale}`,
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
-
-      if (!response.isSuccess) {
-        throw new Error(response?.message || "Failed to create creators video");
-      }
-
-      return response;
-    },
-    onSuccess: async (data) => {
-      if (data?.isSuccess) {
-        showSuccessToast({
-          title: tg("toast.title.success"),
-          description: data.message,
-          dismissText: tg("toast.dismissText"),
-        });
-
-        form.reset();
-        setVideo({ file: null, url: null });
-        await invalidateQuery(queryClient, queryKey);
-        onSuccess?.();
-      }
-    },
-    onError: (error) => {
-      handleApiError(error);
-    },
-  });
 
   const onSubmit = (values: FormData) => {
     if (!canCreate) {
       showNoPermissionToast(tg);
       return;
     }
-    registerMutation.mutate(values);
+
+    if (!values.video) {
+      setVideoError(t("validations.video.required"));
+      form.setError("video", { message: t("validations.video.required") });
+      return;
+    }
+
+    createCreatorsVideoMutation.mutate(
+      {
+        title_ar: values.title_ar,
+        title_en: values.title_en,
+        type: values.type,
+        video: values.video,
+      },
+      {
+        onSuccess: async (data) => {
+          if (data?.isSuccess) {
+            form.reset();
+            setVideo({ file: null, url: null });
+            await invalidateQuery(queryClient, queryKey);
+            onSuccess?.();
+          }
+        },
+      },
+    );
   };
 
   const getInputClassName = () =>
@@ -185,7 +192,7 @@ const CreateCreatorsVideoForm = ({
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={registerMutation.isPending}
+                      disabled={createCreatorsVideoMutation.isPending}
                       placeholder={t("fields.title_ar.placeholder")}
                       className={getInputClassName()}
                     />
@@ -207,7 +214,7 @@ const CreateCreatorsVideoForm = ({
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={registerMutation.isPending}
+                      disabled={createCreatorsVideoMutation.isPending}
                       placeholder={t("fields.title_en.placeholder")}
                       className={getInputClassName()}
                     />
@@ -231,7 +238,7 @@ const CreateCreatorsVideoForm = ({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    disabled={registerMutation.isPending}
+                    disabled={createCreatorsVideoMutation.isPending}
                   >
                     <FormControl>
                       <SelectTrigger className="text-xs">
@@ -241,7 +248,10 @@ const CreateCreatorsVideoForm = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="HERO" className="text-xs">
+                      <SelectItem
+                        value={CreatorsVideoType.HERO}
+                        className="text-xs"
+                      >
                         {t("fields.type.options.hero")}
                       </SelectItem>
                     </SelectContent>
@@ -252,30 +262,47 @@ const CreateCreatorsVideoForm = ({
             />
 
             {/* Video File Uploader */}
-            <div className="flex flex-col gap-2">
-              <span className="text-sm font-semibold text-neutral-700">
-                {t("fields.video.label")}{" "}
-                <span className="text-red-500">*</span>
-              </span>
-              <VideoUploader
-                value={video.url || ""}
-                onChange={handleVideoChange}
-                onError={handleVideoError}
-                disabled={registerMutation.isPending}
-              />
-              {videoError && (
-                <p className="text-xs text-red-500 font-semibold mt-1">
-                  {videoError}
-                </p>
+            <FormField
+              control={form.control}
+              name="video"
+              render={({ field, fieldState }) => (
+                <FormItem className={getFormItemClassName()}>
+                  <FormLabel className="text-sm font-semibold text-neutral-700">
+                    {t("fields.video.label")}{" "}
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <VideoUploader
+                      value={video.url || ""}
+                      onChange={(data) => {
+                        handleVideoChange(data);
+                        field.onChange(data.file);
+                      }}
+                      onError={handleVideoError}
+                      maxSizeInMB={
+                        validationConfig.creatorsVideo.videoMaxSizeMB
+                      }
+                      accept={MEDIA_CONFIG.CREATORS_VIDEO.VIDEO.ALLOWED_TYPES}
+                      disabled={createCreatorsVideoMutation.isPending}
+                    />
+                  </FormControl>
+                  {(fieldState.error?.message || videoError) && (
+                    <FormMessage className="text-xs text-red-500 mt-1">
+                      {fieldState.error?.message || videoError}
+                    </FormMessage>
+                  )}
+                </FormItem>
               )}
-            </div>
+            />
           </div>
 
           <div className="flex items-center justify-end gap-2 border-t pt-4">
             <LoadingButton
               label={tg("actions.proceed")}
-              disabled={registerMutation.isPending}
-              loading={registerMutation.isPending}
+              disabled={
+                createCreatorsVideoMutation.isPending || !form.watch("video")
+              }
+              loading={createCreatorsVideoMutation.isPending}
               withAnimate={true}
               loadingLabel={tg("UploadingStates.uploadingData")}
             />

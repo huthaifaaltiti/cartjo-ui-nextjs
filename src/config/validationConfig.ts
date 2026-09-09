@@ -139,4 +139,9 @@ export const validationConfig = {
       ratingMax: 5,
     },
   },
+  creatorsVideo: {
+    titleMinChars: 3,
+    titleMaxChars: 100,
+    videoMaxSizeMB: 50,
+  },
 };
