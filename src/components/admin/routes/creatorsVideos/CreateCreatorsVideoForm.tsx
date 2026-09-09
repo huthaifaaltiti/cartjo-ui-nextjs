@@ -30,7 +30,7 @@ import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useHandleApiError } from "@/hooks/useHandleApiError";
 import { authFetcher } from "@/utils/authFetcher";
 import { DataResponse } from "@/types/service-response.type";
-import { CreatorsVideo } from "@/types/creatorsVideo";
+import { CreatorsVideo } from "@/types/creators/creatorsVideo";
 import { Permission } from "@/enums/permission.enum";
 import { usePermission } from "@/hooks/usePermission";
 import { showNoPermissionToast } from "@/utils/permissionToast";

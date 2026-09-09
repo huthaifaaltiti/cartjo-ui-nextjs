@@ -1,5 +1,5 @@
 import { Locale } from "@/types/locale";
-import { prefetchDashboardCreatorsVideosData } from "@/services/prefetch/dashboard/creatorsVideo";
+import { prefetchDashboardCreatorsVideosData } from "@/services/prefetch/creators/dashboard/creatorsVideo";
 import { getQueryClient } from "@/utils/queryUtils";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import CreatorsVideosPageContainer from "@/components/admin/routes/creatorsVideos/CreatorsVideosPageContainer";

@@ -13,7 +13,7 @@ import InfiniteScrollList, {
   LAYOUT_TYPE,
 } from "../../../shared/InfiniteScrollList";
 import { useCreatorsVideosQuery } from "@/hooks/react-query/useCreatorsVideoQuery";
-import { CREATORS_VIDEOS_KEY } from "@/hooks/react-query/query-options/creatorsVideo";
+import { CREATORS_VIDEOS_KEY } from "@/hooks/react-query/query-options/creators/dashboard/creatorsVideo";
 import PageLoader from "@/components/shared/PageLoader";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 import { useDebounce } from "@/hooks/useDebounce";
