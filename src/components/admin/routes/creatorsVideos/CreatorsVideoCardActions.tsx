@@ -20,8 +20,9 @@ import { Permission } from "@/enums/permission.enum";
 import { usePermission } from "@/hooks/usePermission";
 import { showNoPermissionToast } from "@/utils/permissionToast";
 import { invalidateQuery } from "@/utils/queryUtils";
-import { CreatorsVideo } from "@/types/creatorsVideo";
+import { CreatorsVideo } from "@/types/creators/creatorsVideo";
 import { Locale } from "@/types/locale";
+import { BaseResponse } from "@/types/service-response.type";
 
 type CreatorsVideoCardActionsProps = {
   video: CreatorsVideo;
@@ -58,7 +59,7 @@ const CreatorsVideoCardActions = ({
 
     setIsLoading(true);
     try {
-      const resp = await authFetcher<any>(
+      const resp = await authFetcher<BaseResponse>(
         `${API_ENDPOINTS.DASHBOARD.CREATORS_VIDEOS.DELETE}/${video._id}?lang=${locale}`,
         { method: "DELETE" },
       );
@@ -96,7 +97,7 @@ const CreatorsVideoCardActions = ({
 
     setIsLoading(true);
     try {
-      const resp = await authFetcher<any>(
+      const resp = await authFetcher<BaseResponse>(
         `${API_ENDPOINTS.DASHBOARD.CREATORS_VIDEOS.UN_DELETE}/${video._id}?lang=${locale}`,
         { method: "PUT" },
       );
@@ -136,7 +137,7 @@ const CreatorsVideoCardActions = ({
 
     setIsLoading(true);
     try {
-      const resp = await authFetcher<any>(
+      const resp = await authFetcher<BaseResponse>(
         `${API_ENDPOINTS.DASHBOARD.CREATORS_VIDEOS.SWITCH_ACTIVE_STATUS}/${video._id}?lang=${locale}`,
         {
           method: "PUT",

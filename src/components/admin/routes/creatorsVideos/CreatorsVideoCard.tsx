@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { CreatorsVideo } from "@/types/creatorsVideo";
+import { CreatorsVideo } from "@/types/creators/creatorsVideo";
 import { isArabicLocale } from "@/config/locales.config";
 import CreatorsVideoCardActions from "./CreatorsVideoCardActions";
 import { CreatorsVideoType } from "@/enums/creatorsVideoType.enum";
