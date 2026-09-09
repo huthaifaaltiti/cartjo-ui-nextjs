@@ -3,9 +3,9 @@ import { Locale } from "@/enums/locale.enum";
 import { DataListResponse } from "@/types/service-response.type";
 import { apiFetch } from "@/lib/api.server";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
-import { getCreatorsVideosQueryOptions } from "@/hooks/react-query/query-options/creatorsVideo";
-import { fetchCreatorsVideos } from "@/services/creatorsVideo.service";
-import { CreatorsVideo } from "@/types/creatorsVideo";
+import { getCreatorsVideosQueryOptions } from "@/hooks/react-query/query-options/creators/dashboard/creatorsVideo";
+import { fetchCreatorsVideos } from "@/services/creators/creatorsVideo.service";
+import { CreatorsVideo } from "@/types/creators/creatorsVideo";
 
 export async function prefetchDashboardCreatorsVideosData({
   queryClient,

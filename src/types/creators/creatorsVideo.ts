@@ -1,5 +1,5 @@
-import { Actor } from "./common";
-import { Media } from "./media.type";
+import { Actor } from "../common";
+import { Media } from "../media.type";
 
 export interface CreatorsVideo {
   _id: string;

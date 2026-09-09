@@ -2,14 +2,15 @@ import { QueryClient } from "@tanstack/react-query";
 import { Locale } from "@/enums/locale.enum";
 import { DataResponse } from "@/types/service-response.type";
 import { apiFetch } from "@/lib/api.server";
-import { fetchActiveCreatorsVideos } from "@/services/creatorsVideo.service";
-import { CreatorsVideo } from "@/types/creatorsVideo";
-import { getActiveCreatorsVideosQueryOptions } from "@/hooks/react-query/query-options/creatorsVideo";
+import { fetchActiveCreatorsVideos } from "@/services/creators/creatorsVideo.service";
+import { CreatorsVideo } from "@/types/creators/creatorsVideo";
+import { getActiveCreatorsVideosQueryOptions } from "@/hooks/react-query/query-options/creators/dashboard/creatorsVideo";
+import { CreatorsVideoType } from "@/enums/creatorsVideoType.enum";
 
 export async function prefetchActiveCreatorsVideos({
   queryClient,
   locale,
-  type = "hero",
+  type = CreatorsVideoType.HERO,
 }: {
   locale: string;
   type?: string;
