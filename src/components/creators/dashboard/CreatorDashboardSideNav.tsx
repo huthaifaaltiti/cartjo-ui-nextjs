@@ -25,7 +25,7 @@ const CreatorDashboardSideNav = () => {
 
           <span className="hidden md:inline-flex text-nowrap items-center gap-1.5 text-xs font-semibold text-primary-700">
             <Sparkles className="w-3.5 h-3.5 text-primary-600" />
-            {t("routes.creators.dashboard.layout.portal")}
+            {t("routes.creators.routes.dashboard.layout.portal")}
           </span>
         </li>
 

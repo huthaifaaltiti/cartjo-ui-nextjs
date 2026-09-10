@@ -5,7 +5,7 @@ import { ROUTE_PERMISSIONS } from "./route-permissions";
 export const creatorDashboardNavLinks = [
   {
     name: AppRoute.CREATORS_DASHBOARD_STORE,
-    labelKey: "routes.creators.dashboard.layout.myStore",
+    labelKey: "routes.creators.routes.dashboard.layout.myStore",
     href: "/creators/dashboard/store",
     icon: Store,
     permissions: ROUTE_PERMISSIONS[AppRoute.CREATORS_DASHBOARD_STORE],
@@ -13,7 +13,7 @@ export const creatorDashboardNavLinks = [
   },
   {
     name: AppRoute.CREATORS_DASHBOARD_STORE,
-    labelKey: "routes.creators.dashboard.layout.analytics",
+    labelKey: "routes.creators.routes.dashboard.layout.analytics",
     href: "/creators/dashboard/store",
     icon: Store,
     permissions: [],
@@ -21,7 +21,7 @@ export const creatorDashboardNavLinks = [
   },
   {
     name: AppRoute.CREATORS_DASHBOARD_STORE,
-    labelKey: "routes.creators.dashboard.layout.profileSettings",
+    labelKey: "routes.creators.routes.dashboard.layout.profileSettings",
     href: "/creators/dashboard/store",
     icon: Store,
     permissions: [],

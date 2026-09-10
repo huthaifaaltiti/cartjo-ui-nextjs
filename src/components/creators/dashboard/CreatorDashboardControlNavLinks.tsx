@@ -17,7 +17,7 @@ const CreatorDashboardControlNavLinks = () => {
   return (
     <div className="w-full">
       <p className="text-text-primary-100 text-sm mb-4 border-l-2 border-primary-500 px-2 rtl:border-l-0 rtl:border-r-2 rtl:border-primary-500 font-medium">
-        {t("routes.creators.dashboard.layout.navigation")}
+        {t("routes.creators.routes.dashboard.layout.navigation")}
       </p>
 
       <ul className="flex flex-col gap-1.5 px-1">
@@ -51,7 +51,7 @@ const CreatorDashboardControlNavLinks = () => {
                   <span>{label}</span>
                 </div>
                 <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-500 font-medium">
-                  {t("routes.creators.dashboard.layout.soon")}
+                  {t("routes.creators.routes.dashboard.layout.soon")}
                 </span>
               </div>
             </li>
