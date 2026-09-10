@@ -14,7 +14,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import CreatorsDashboardLayoutContainer from "@/components/creators/CreatorsDashboardLayoutContainer";
+import CreatorDashboardSideNav from "@/components/creators/dashboard/CreatorDashboardSideNav";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -45,9 +45,22 @@ export default async function CreatorsDashboardLayout({
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <CreatorsDashboardLayoutContainer locale={locale} session={session}>
-        {children}
-      </CreatorsDashboardLayoutContainer>
+      <div className="w-full h-screen overflow-hidden bg-[#f5f4fe]">
+        <div className="flex h-full flex-col md:flex-row">
+          {canManage && (
+            <div className="w-full flex-none md:w-64">
+              <CreatorDashboardSideNav />
+            </div>
+          )}
+          <div
+            className={`flex-1 min-h-0 overflow-y-auto p-3 md:p-4 ${
+              !canManage ? "w-full" : ""
+            }`}
+          >
+            {children}
+          </div>
+        </div>
+      </div>
     </HydrationBoundary>
   );
 }
