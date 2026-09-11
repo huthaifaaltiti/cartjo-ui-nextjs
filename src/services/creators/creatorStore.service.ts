@@ -117,6 +117,8 @@ export interface UpdateCreatorStoreProfilePayload {
   social_whatsapp?: string;
   social_telegram?: string;
   social_website?: string;
+  logo?: File | null;
+  banner?: File | null;
   policy_return_ar?: string;
   policy_return_en?: string;
   policy_shipping_ar?: string;
@@ -159,6 +161,7 @@ export interface UpdateCreatorStorePickupAddressPayload {
 }
 
 export interface UpdateCreatorStorePayload extends UpdateCreatorStoreProfilePayload {
+  handle: string;
   payout_method?: "BANK_TRANSFER" | "CLIQ" | "WALLET";
   payout_bankName?: string;
   payout_accountHolderName?: string;
@@ -195,6 +198,38 @@ export const updateCreatorStoreProfile = async (
     options?: RequestInit,
   ) => Promise<DataResponse<CreatorStore>> = authFetcher,
 ): Promise<DataResponse<CreatorStore>> => {
+  const url = new URL(API_ENDPOINTS.CREATORS.UPDATE_STORE);
+  if (payload.lang) {
+    url.searchParams.append("lang", payload.lang);
+  }
+
+  const hasFiles =
+    payload.logo instanceof File || payload.banner instanceof File;
+
+  if (hasFiles) {
+    const formData = new FormData();
+    const fileFields = ["logo", "banner"];
+
+    Object.entries(payload).forEach(([key, value]) => {
+      if (fileFields.includes(key)) return;
+      if (value !== undefined && value !== null && value !== "") {
+        formData.append(key, String(value));
+      }
+    });
+
+    if (payload.logo instanceof File) {
+      formData.append("logo", payload.logo);
+    }
+    if (payload.banner instanceof File) {
+      formData.append("banner", payload.banner);
+    }
+
+    return fetcher(url.toString(), {
+      method: "PUT",
+      body: formData,
+    });
+  }
+
   const allowedKeys: (keyof UpdateCreatorStoreProfilePayload)[] = [
     "name_ar",
     "name_en",
@@ -228,7 +263,6 @@ export const updateCreatorStoreProfile = async (
     "policy_exchange_en",
     "policy_returnWindowDays",
     "policy_processingTimeDays",
-    "lang",
   ];
 
   const jsonBody: Partial<
@@ -239,15 +273,14 @@ export const updateCreatorStoreProfile = async (
   > = {};
   allowedKeys.forEach((key) => {
     const val = payload[key];
-    if (val !== undefined) {
-      jsonBody[key] = val;
+    if (val !== undefined && val !== null) {
+      jsonBody[key] = val as
+        | string
+        | number
+        | Currency
+        | CreatorStoreBusinessType;
     }
   });
-
-  const url = new URL(API_ENDPOINTS.CREATORS.UPDATE_STORE);
-  if (payload.lang) {
-    url.searchParams.append("lang", payload.lang);
-  }
 
   return fetcher(url.toString(), {
     method: "PUT",
@@ -382,6 +415,8 @@ export const updateCreatorStore = async (
     social_whatsapp: payload.social_whatsapp,
     social_telegram: payload.social_telegram,
     social_website: payload.social_website,
+    logo: payload.logo,
+    banner: payload.banner,
     policy_return_ar: payload.policy_return_ar,
     policy_return_en: payload.policy_return_en,
     policy_shipping_ar: payload.policy_shipping_ar,
