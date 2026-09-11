@@ -202,7 +202,7 @@ const EditAdminUserForm = ({ user }: EditAdminUserFormProps) => {
           style={{
             backgroundImage:
               imgUrl || user?.profilePic
-                ? `url(${imgUrl || user?.profilePic})`
+                ? `url("${(imgUrl || user?.profilePic || "").replace(/"/g, '\\"')}")`
                 : "none",
           }}
           className="w-24 h-24 bg-white-50 rounded-full flex items-center justify-center shadow-md bg-cover bg-center overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"

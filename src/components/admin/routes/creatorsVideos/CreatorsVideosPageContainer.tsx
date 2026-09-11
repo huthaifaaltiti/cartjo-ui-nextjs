@@ -62,18 +62,6 @@ const CreatorsVideosPageContainer = () => {
   const showNoData = videos.length === 0 && !showLoader;
   const showData = videos.length > 0 && !showLoader;
 
-  // Protect section - if no read permission, render restricted access alert
-  if (!canRead) {
-    return (
-      <div className="w-full min-h-[50vh] flex flex-col items-center justify-center border border-dashed rounded-xl p-8 bg-red-50/10 border-red-200">
-        <p className="text-red-600 text-sm font-semibold">Access Denied</p>
-        <p className="text-neutral-500 text-xs mt-1">
-          You do not have permission to view creators videos.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full space-y-6">
       {/* Header section */}

@@ -217,7 +217,11 @@ const CreateAdminUserForm = () => {
         />
 
         <div
-          style={{ backgroundImage: imgUrl ? `url(${imgUrl})` : "none" }}
+          style={{
+            backgroundImage: imgUrl
+              ? `url("${imgUrl.replace(/"/g, '\\"')}")`
+              : "none",
+          }}
           className="w-24 h-24 bg-white-50 rounded-full flex items-center justify-center shadow-md bg-cover bg-center overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
           onClick={handleImageSelect}
         >

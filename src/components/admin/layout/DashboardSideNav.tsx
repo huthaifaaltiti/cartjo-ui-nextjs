@@ -34,7 +34,7 @@ const DashboardSideNav = () => {
               <div className="w-full flex items-center gap-1 flex-wrap">
                 <BackToHomePage />
                 <LanguageSelector />
-                <LogoutBtn />
+                <LogoutBtn variant="bordered" />
               </div>
             </li>
           </ul>
