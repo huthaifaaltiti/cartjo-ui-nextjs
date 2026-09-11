@@ -11,7 +11,19 @@
       "clear_filters_grey": "/assets/image/svg/clear_filters_grey.svg",
       "CartJO_logo_white_solo": "/assets/image/svg/CartJO_logo_white_solo.svg",
       "google_g": "/assets/image/svg/google_g.svg",
-      "underline": "/assets/image/svg/underline.svg"
+      "underline": "/assets/image/svg/underline.svg",
+      "globe": "/assets/image/svg/globe.svg",
+      "social": {
+        "instagram": "/assets/image/svg/social/instagram.svg",
+        "tiktok": "/assets/image/svg/social/tiktok.svg",
+        "youtube": "/assets/image/svg/social/youtube.svg",
+        "x": "/assets/image/svg/social/x.svg",
+        "facebook": "/assets/image/svg/social/facebook.svg",
+        "snapchat": "/assets/image/svg/social/snapchat.svg",
+        "whatsapp": "/assets/image/svg/social/whatsapp.svg",
+        "telegram": "/assets/image/svg/social/telegram.svg",
+        "website": "/assets/image/svg/social/website.svg"
+      }
     },
     "webp": {
       "computer_security_with_login_password_padlock": "/assets/image/webp/computer-security-with-login-password-padlock.webp",
