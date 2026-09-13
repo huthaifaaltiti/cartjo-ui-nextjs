@@ -12,7 +12,8 @@
     "processing": "Processing",
     "data": {
       "noData": "No data",
-      "tryAgain": "Please try again later"
+      "tryAgain": "Please try again later",
+      "failed": "Failed to retrieve your data. Please try to refresh your page."
     },
     "toast": {
       "title": {
@@ -130,7 +131,12 @@
       "deleted": "Deleted",
       "undeleted": "Restored",
       "active": "Active",
-      "un_active": "InActive"
+      "un_active": "InActive",
+      "draft": "Draft",
+      "pending_review": "Pending Review",
+      "rejected": "Rejected",
+      "suspended": "Suspended",
+      "closed": "Closed"
     },
     "paymentMethod": {
       "cash": "Cash",
@@ -175,6 +181,12 @@
         "set": "Set",
         "piece": "Piece"
       }
+    },
+    "creator": {
+      "label": "Creator"
+    },
+    "currencyUnits": {
+      "jod": "JOD - Jordanian Dinar"
     }
   },
   "errors": {
@@ -213,6 +225,9 @@
     "TopBarDeliveryMessage": {
       "deliver": "We deliver to you every day",
       "fromTo": "from {fromTime} to {toTime}"
+    },
+    "LogoutBtn": {
+      "logout": "Logout"
     },
     "LanguageSelector": {
       "english": "English",
@@ -412,7 +427,8 @@
     "creators": {
       "header": {
         "signIn": "Sign In",
-        "becomeCreator": "Become a Creator"
+        "becomeCreator": "Become a Creator",
+        "dashboard": "Your Dashboard"
       },
       "hero": {
         "title": {
@@ -448,14 +464,417 @@
           "btn": "Start selling now"
         }
       },
-      "dashboard": {
-        "layout": {
-          "portal": "Creator Portal",
-          "navigation": "Navigation",
-          "myVideos": "My Videos",
-          "analytics": "Analytics",
-          "profileSettings": "Profile Settings",
-          "soon": "Soon"
+      "storefront": {
+        "verifiedCreator": "Verified Creator",
+        "companyStore": "Registered Company",
+        "individualCreator": "Independent Creator",
+        "shareStore": "Share Store",
+        "copied": "Copied!",
+        "linkCopied": "Store link copied to clipboard",
+        "contact": "Contact",
+        "followMe": "Follow",
+        "tabs": {
+          "products": "Products",
+          "about": "About & Details"
+        },
+        "noProductsYetTitle": "No Products Yet",
+        "noProductsYetDesc": "{name} hasn't listed any products yet. Check back soon!",
+        "stayTuned": "Stay tuned for upcoming releases",
+        "notFoundTitle": "Creator Store Not Found",
+        "notFoundDesc": "The creator store {handle} could not be found or is currently unavailable.",
+        "backToHome": "Back to Home",
+        "aboutSection": {
+          "businessInfo": "Store Information",
+          "businessType": "Business Type",
+          "currency": "Store Currency",
+          "minOrder": "Minimum Order",
+          "email": "Email Address",
+          "phone": "Phone Number",
+          "buyerProtection": "CartJO Buyer Protection",
+          "verifiedCartjoStore": "Verified CartJO Creator Store",
+          "verifiedCartjoStoreDesc": "Shop with confidence. Secure payments and genuine creator products protected by CartJO guarantees.",
+          "shippingLocation": "Ships From"
+        }
+      },
+      "routes": {
+        "dashboard": {
+          "layout": {
+            "portal": "Creator Portal",
+            "navigation": "Navigation",
+            "myVideos": "My Videos",
+            "myStore": "My Store",
+            "exploreStores": "Explore Stores",
+            "analytics": "Analytics",
+            "profileSettings": "Profile Settings",
+            "soon": "Soon"
+          },
+          "dashboardNavLinkItems": {
+            "store": "My Store"
+          },
+          "components": {
+            "AnimatedCreatorDashboard": {
+              "goodMorning": "Good morning",
+              "goodAfternoon": "Good afternoon",
+              "goodEvening": "Good evening",
+              "welcome": "Welcome to CartJO Creator Studio",
+              "subtitle": "Your creative hub to showcase videos, manage your creator store, and grow your brand.",
+              "select": "Select a section from the sidebar or choose a quick action below to get started.",
+              "cards": {
+                "storeTitle": "My Creator Store",
+                "storeDesc": "Manage products, payouts, branding, policies & pickup address.",
+                "storeBtn": "Manage Store",
+                "videosTitle": "Creator Videos",
+                "videosDesc": "Showcase promotional video clips and product features.",
+                "videosBtn": "My Videos",
+                "exploreTitle": "Explore Marketplace",
+                "exploreDesc": "Discover and benchmark other creator stores across CartJO.",
+                "exploreBtn": "Browse Stores",
+                "analyticsTitle": "Creator Analytics",
+                "analyticsDesc": "Track views, orders, and customer engagement in real-time.",
+                "analyticsBtn": "View Analytics"
+              },
+              "badges": {
+                "store": "Store",
+                "videos": "Videos",
+                "earnings": "Earnings",
+                "analytics": "Analytics",
+                "payouts": "Payouts"
+              }
+            },
+            "CreatorsDashboardPageContainer": {
+              "onVacation": "On vacation",
+              "verified": "Verified",
+              "storeLogo": "Store logo",
+              "storeBanner": "Store banner",
+              "stats": {
+                "currency": "Currency",
+                "commission": "Commission",
+                "minOrder": "Min. Order",
+                "businessType": "Business Type"
+              },
+              "businessTypes": {
+                "INDIVIDUAL": "Individual",
+                "COMPANY": "Company"
+              },
+              "contact": {
+                "title": "Contact",
+                "phone": "Phone",
+                "email": "Email",
+                "instagram": "Instagram",
+                "socialLinks": "Social Media"
+              },
+              "payout": {
+                "title": "Payout & Banking",
+                "bankName": "Bank Name",
+                "accountHolder": "Account Holder",
+                "iban": "IBAN",
+                "accountNumber": "Account Number",
+                "cliqAlias": "CliQ Alias",
+                "notConfigured": "No payout account added yet"
+              },
+              "pickup": {
+                "title": "Pickup Address",
+                "city": "City",
+                "street": "Street",
+                "building": "Building",
+                "notes": "Notes",
+                "notConfigured": "No pickup address added yet"
+              },
+              "readiness": {
+                "incompleteTitle": "Store Setup Incomplete",
+                "incompleteDesc": "Please complete your payout bank account and physical pickup address before submitting your store for review.",
+                "completeBtn": "Complete in Edit Store",
+                "readyTitle": "Ready for Review!",
+                "readyDesc": "All required setup steps are completed. Submit your store to platform administrators for verification."
+              },
+              "reviewDialog": {
+                "titleReady": "Submit Store for Review",
+                "descReady": "Once submitted, the CartJO platform team will verify your store details and activate your public storefront.",
+                "titleIncomplete": "Complete Store Requirements",
+                "descIncomplete": "The following required information must be provided before your store can be submitted for review:",
+                "checklist": {
+                  "payout": "Bank & Payout Details",
+                  "payoutDesc": "Bank name, account holder, and valid IBAN",
+                  "pickup": "Shipping Pickup Address",
+                  "pickupDesc": "Warehouse or dispatch location for order collection",
+                  "branding": "Store Branding",
+                  "brandingDesc": "Store logo, banner, localized names, and handle",
+                  "company": "Commercial Registration",
+                  "companyDesc": "Commercial registration number and tax ID"
+                },
+                "status": {
+                  "complete": "Completed",
+                  "missing": "Required"
+                },
+                "recap": {
+                  "storeLabel": "Store",
+                  "payoutLabel": "Payout Bank",
+                  "pickupLabel": "Pickup Location"
+                },
+                "actions": {
+                  "goToEdit": "Complete in Edit Store",
+                  "submitConfirm": "Confirm & Submit for Review",
+                  "cancel": "Cancel",
+                  "submitting": "Submitting..."
+                }
+              },
+              "actions": {
+                "title": "Manage your store",
+                "editStore": "Edit Store Settings",
+                "viewPublicStore": "View Public Store",
+                "myProducts": "My Products",
+                "submitForReview": "Submit for review",
+                "turnOnVacation": "Turn on vacation mode",
+                "turnOffVacation": "Turn off vacation mode",
+                "closeStore": "Close store",
+                "reopenStore": "Reopen store"
+              }
+            }
+          },
+          "errors": {
+            "failed": "Failed to load creator's dashboard data. Refresh the page, or contact the CartJO creators admin"
+          },
+          "routes": {
+            "store": {
+              "noStore": {
+                "title": "Start Selling with Your Creator Store!",
+                "desc": "Set up your storefront to showcase products, set custom branding, and start earning.",
+                "actions": {
+                  "createStore": "Create My Creator Store"
+                }
+              },
+              "routes": {
+                "create": {
+                  "form": {
+                    "badge": "Creator Storefront",
+                    "title": "Create Your Creator Store",
+                    "subtitle": "Set up your storefront branding, identity, and business details to start selling on CartJO.",
+                    "sections": {
+                      "branding": "Branding & Media",
+                      "brandingDesc": "Upload your store's logo, cover banner, and choose an accent theme color.",
+                      "identity": "Store Identity & Information",
+                      "identityDesc": "Define your store names, unique handle, tagline, and bio story.",
+                      "business": "Business & Commercial Settings",
+                      "businessDesc": "Choose your registration type, currency, and checkout minimums.",
+                      "contact": "Contact Details",
+                      "contactDesc": "How customers and the CartJO team can reach your store directly.",
+                      "social": "Social Media Links",
+                      "socialDesc": "Connect your social profiles to boost discoverability.",
+                      "payout": "Payout & Banking Details",
+                      "payoutDesc": "Bank account information to receive your store sales earnings.",
+                      "pickup": "Shipping Pickup Address",
+                      "pickupDesc": "The physical address where the courier collects orders for delivery.",
+                      "profileSaveHint": "Save identity, branding, contact and social media details.",
+                      "payoutSaveHint": "Save banking and CliQ details for receiving sales payouts.",
+                      "pickupSaveHint": "Save physical warehouse pickup location and map coordinates."
+                    },
+                    "fields": {
+                      "logo": "Store Logo",
+                      "logoHint": "Square logo (PNG/JPG, up to 5MB)",
+                      "banner": "Cover Banner",
+                      "bannerHint": "Wide banner 1200x400 (PNG/JPG, up to 8MB)",
+                      "themeColor": "Theme Accent Color",
+                      "themeColorHint": "Accent color for your storefront badges and buttons",
+                      "nameAr": "Store Name (Arabic)",
+                      "nameArPlaceholder": "اسم متجرك بالعربية",
+                      "nameEn": "Store Name (English)",
+                      "nameEnPlaceholder": "Store Name in English",
+                      "handle": "Vanity Handle (@handle)",
+                      "handlePlaceholder": "store-handle",
+                      "handleHint": "Your unique storefront URL: cartjo.com/store/",
+                      "taglineAr": "Tagline (Arabic)",
+                      "taglineArPlaceholder": "عبارة جذابة تصف متجرك",
+                      "taglineEn": "Tagline (English)",
+                      "taglineEnPlaceholder": "Catchy headline for your shop",
+                      "bioAr": "Bio / About (Arabic)",
+                      "bioArPlaceholder": "قصة متجرك ورسالتك للمتسوقين...",
+                      "bioEn": "Bio / About (English)",
+                      "bioEnPlaceholder": "Your shop story and creations...",
+                      "businessType": "Business Registration Type",
+                      "individual": "Individual (Solo Creator)",
+                      "company": "Registered Company / Establishment",
+                      "registrationNumber": "Commercial Registration Number",
+                      "registrationNumberPlaceholder": "e.g. 102938475",
+                      "taxId": "Tax Identification Number (TIN)",
+                      "taxIdPlaceholder": "e.g. 987654321",
+                      "currency": "Store Currency",
+                      "minOrderAmount": "Minimum Order Amount",
+                      "minOrderAmountPlaceholder": "0",
+                      "email": "Store Contact Email",
+                      "emailPlaceholder": "store@example.com",
+                      "countryCode": "Country Code",
+                      "phone": "Phone Number",
+                      "phonePlaceholder": "079xxxxxxx",
+                      "social_instagram": "Instagram",
+                      "social_tiktok": "TikTok",
+                      "social_facebook": "Facebook",
+                      "social_youtube": "YouTube",
+                      "social_x": "X (Twitter)",
+                      "social_snapchat": "Snapchat",
+                      "social_whatsapp": "WhatsApp",
+                      "social_telegram": "Telegram",
+                      "social_website": "Website / Portfolio",
+                      "payout_bankName": "Bank Name",
+                      "payout_bankNamePlaceholder": "e.g. Arab Bank, Housing Bank...",
+                      "payout_accountHolderName": "Account Holder Name",
+                      "payout_accountHolderNamePlaceholder": "Full name matching official bank records",
+                      "payout_iban": "IBAN Number",
+                      "payout_ibanPlaceholder": "JO00AAAA0000000000000000000000",
+                      "payout_accountNumber": "Account Number",
+                      "payout_accountNumberPlaceholder": "Bank account number",
+                      "payout_cliqAlias": "CliQ Alias / Mobile (Optional)",
+                      "payout_cliqAliasPlaceholder": "e.g. name@bank or 079XXXXXXX",
+                      "payout_cliqAliasHint": "Optional: Receive instant payouts directly to your CliQ alias or registered mobile number.",
+                      "payout_currency": "Currency",
+                      "payout_currencyHint": "Currency for receiving payouts. Fixed to JOD (Jordanian Dinar).",
+                      "pickup_country": "Country",
+                      "pickup_city": "City / Province",
+                      "pickup_cityPlaceholder": "e.g. Amman, Zarqa, Irbid...",
+                      "pickup_street": "Street Address",
+                      "pickup_streetPlaceholder": "Street name & area",
+                      "pickup_building": "Building / Apartment",
+                      "pickup_buildingPlaceholder": "Building name or number",
+                      "pickup_notes": "Pickup Instructions / Notes",
+                      "pickup_notesPlaceholder": "e.g. Near landmark, call before arrival",
+                      "pickup_location": "Pickup Location on Map",
+                      "pickup_locationHint": "Pinpoint your store warehouse or pickup point on the map to help delivery couriers find you easily.",
+                      "selectedLocation": "Selected"
+                    },
+                    "actions": {
+                      "saveProfile": "Save Store Details",
+                      "savePayout": "Save Payout Details",
+                      "savePickup": "Save Pickup Address",
+                      "saveAll": "Save All Changes"
+                    },
+                    "submitBtn": "Launch My Creator Store",
+                    "cancelBtn": "Cancel",
+                    "validations": {
+                      "logoRequired": "Store logo is required",
+                      "bannerRequired": "Cover banner is required",
+                      "name_arRequired": "Arabic store name is required",
+                      "name_enRequired": "English store name is required",
+                      "name_arMaxChars": "Arabic store name is too long",
+                      "name_enMaxChars": "English store name is too long",
+                      "name_arLang": "Arabic store name must contain Arabic letters only",
+                      "name_enLang": "English store name must contain English letters only",
+                      "tagline_arLang": "Arabic tagline must contain Arabic letters only",
+                      "tagline_enLang": "English tagline must contain English letters only",
+                      "bio_arLang": "Arabic bio must contain Arabic letters only",
+                      "bio_enLang": "English bio must contain English letters only",
+                      "handleRequired": "Store handle is required",
+                      "handleInvalid": "Handle must be {min}-{max} lowercase letters, numbers, dashes or underscores",
+                      "handleTooShort": "Handle must be at least {min} characters.",
+                      "handleChecking": "Checking availability…",
+                      "handleAvailable": "{handle} is available.",
+                      "handleTaken": "{handle} is already taken.",
+                      "handleReserved": "This handle is reserved and can't be used.",
+                      "handleRecentlyReleased": "This handle was recently used by another store and isn't available yet.",
+                      "handleNetworkError": "Couldn't check availability.",
+                      "handleRetry": "Retry",
+                      "handleUnavailable": "This handle is not available.",
+                      "emailInvalid": "Please enter a valid email address",
+                      "themeColorInvalid": "Theme color must be a valid hex color (e.g. #6d28d9)",
+                      "minOrderAmountInvalid": "Minimum order amount must be a positive number",
+                      "registrationNumberRequired": "Commercial Registration Number is required for companies",
+                      "taxIdRequired": "Tax Identification Number (TIN) is required for companies",
+                      "payoutBankNameRequired": "Bank name is required",
+                      "payoutAccountHolderNameRequired": "Account holder name is required",
+                      "payoutIbanRequired": "IBAN number is required",
+                      "payoutIbanInvalid": "Please enter a valid IBAN (e.g. JO...)",
+                      "payoutAccountNumberRequired": "Bank account number is required",
+                      "pickupCountryRequired": "Country is required",
+                      "pickupCityRequired": "City is required",
+                      "pickupStreetRequired": "Street address is required",
+                      "pickupBuildingRequired": "Building / Floor details are required"
+                    }
+                  },
+                  "errors": {
+                    "failed": "Failed to load store creation data"
+                  }
+                },
+                "edit": {
+                  "form": {
+                    "badge": "Manage Store",
+                    "title": "Edit Creator Store",
+                    "subtitle": "Update your storefront branding, identity, business, and contact details.",
+                    "saveBtn": "Save Changes",
+                    "allUpdatedSuccess": "Store data updated successfully!"
+                  },
+                  "errors": {
+                    "failed": "Failed to load store editing data"
+                  }
+                }
+              },
+              "components": {
+                "StoreHandleCard": {
+                  "cardTitle": "Store Handle & Vanity URL",
+                  "cardSubtitle": "Your public address and profile URL across CartJO.",
+                  "badges": {
+                    "draft": "Draft Store",
+                    "cooldownActive": "Cooldown Active",
+                    "changeAvailable": "Change Available"
+                  },
+                  "actions": {
+                    "copyUrl": "Copy Link",
+                    "copied": "Copied!",
+                    "editHandle": "Change Handle"
+                  },
+                  "hints": {
+                    "draftHint": "You can change your handle anytime until your store goes live.",
+                    "cooldownActiveHint": "Your handle can be changed again on {date} ({relative}).",
+                    "cooldownAllowedHint": "You can change your store handle once every {cooldownDays} days.",
+                    "cooldownDisabledTooltip": "Your handle can be changed again on {date} ({relative})."
+                  },
+                  "form": {
+                    "label": "Store Handle",
+                    "cancelBtn": "Cancel",
+                    "saveBtn": "Save Handle",
+                    "savingBtn": "Saving...",
+                    "previewLabel": "New URL preview:"
+                  },
+                  "validation": {
+                    "tooShort": "Handle must be at least {min} characters.",
+                    "invalidFormat": "Only lowercase letters, numbers, - and _. Must start and end with a letter or number.",
+                    "sameAsCurrent": "This is your current handle.",
+                    "checking": "Checking availability…",
+                    "available": "{handle} is available.",
+                    "taken": "{handle} is already taken.",
+                    "reserved": "This handle is reserved and can't be used.",
+                    "recentlyReleased": "This handle was recently used by another store and isn't available yet.",
+                    "networkError": "Couldn't check availability.",
+                    "retry": "Retry"
+                  },
+                  "messages": {
+                    "copiedTitle": "Copied to clipboard",
+                    "success": "Store handle updated successfully!"
+                  },
+                  "errors": {
+                    "cooldownTitle": "Cooldown Active",
+                    "cooldownRaceMessage": "You can change your handle again on {date}.",
+                    "generic": "Failed to change handle."
+                  }
+                },
+                "ConfirmHandleChangeDialog": {
+                  "title": "Change your handle to {newHandle}?",
+                  "description": "Your old link /{oldHandle} will stop working, and you won't be able to change your handle again for {cooldownDays} days (next change on {projectedDate}).",
+                  "warningHeading": "Important Note",
+                  "warningNote": "Existing links and QR codes pointing to {oldLink} will immediately break. Share {newLink} instead.",
+                  "close": "Close",
+                  "cancelBtn": "Cancel",
+                  "confirmBtn": "Change handle",
+                  "changingBtn": "Changing..."
+                }
+              },
+              "errors": {
+                "failed": "Failed to load creator's store data"
+              }
+            }
+          }
+        },
+        "verifyEmail": {
+          "errors": {
+            "failed": "Failed to load creator's email credentials"
+          }
         }
       }
     },
@@ -705,10 +1124,14 @@
         "UserAccountLinkMenu": {
           "account": "Account",
           "myAccount": "My Account",
+          "creatorDashboard": "Creator Studio",
           "logout": "Logout"
         },
         "UserDashboardLink": {
           "dashboard": "Dashboard"
+        },
+        "UserCreatorDashboardLink": {
+          "dashboard": "Creator Studio"
         },
         "MainSearchBar": {
           "placeholder": "Search for products, categories, or anything"
