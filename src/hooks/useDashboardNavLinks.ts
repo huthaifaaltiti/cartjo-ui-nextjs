@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
-import { dashboardNavLinks } from "@/config/dashboardNavLinks.config";
 import { useAuthContext } from "./useAuthContext";
 import { Permission } from "@/enums/permission.enum";
+import { dashboardNavLinks } from "@/config/dashboardNavLinks.config";
 
 export function useDashboardNavLinks() {
   const t = useTranslations();

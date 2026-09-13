@@ -130,4 +130,20 @@ export enum Permission {
   CREATORS_VIDEOS_RESTORE = "creators_videos.restore",
   CREATORS_VIDEOS_ACTIVATE = "creators_videos.activate",
   CREATORS_VIDEOS_DEACTIVATE = "creators_videos.deactivate",
+
+
+  CREATOR_STORE_READ_OWN = 'creator_store.read_own',
+  CREATOR_STORE_CREATE_OWN = 'creator_store.create_own',
+  CREATOR_STORE_UPDATE_OWN = 'creator_store.update_own',
+
+  // Creator Stores — administration (for Owner / Administrator)
+  CREATOR_STORES_READ = 'creator_stores.read',
+  CREATOR_STORES_UPDATE = 'creator_stores.update',
+  CREATOR_STORES_VERIFY = 'creator_stores.verify',
+  CREATOR_STORES_REVIEW = 'creator_stores.review',
+  CREATOR_STORES_SUSPEND = 'creator_stores.suspend',
+  CREATOR_STORES_ACTIVATE = 'creator_stores.activate',
+  CREATOR_STORES_SET_COMMISSION = 'creator_stores.set_commission',
+  CREATOR_STORES_DELETE = 'creator_stores.delete',
+  CREATOR_STORES_RESTORE = 'creator_stores.restore',
 }

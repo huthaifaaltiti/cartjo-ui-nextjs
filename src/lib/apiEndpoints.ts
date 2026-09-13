@@ -114,6 +114,17 @@ export const API_ENDPOINTS = {
       REMOVE_ALL: `${API_URL}/api/v1/wish-list/remove-all`,
     },
   },
+  CREATORS: {
+    CREATOR_STORE: `${API_URL}/api/v1/creator-store/me`,
+    CREATE_STORE: `${API_URL}/api/v1/creator-store/create`,
+    UPDATE_STORE: `${API_URL}/api/v1/creator-store/update`,
+    UPDATE_PAYOUT_INFO: `${API_URL}/api/v1/creator-store/payout-info`,
+    UPDATE_PICKUP_ADDRESS: `${API_URL}/api/v1/creator-store/pickup-address`,
+    CHECK_HANDLE: `${API_URL}/api/v1/creator-store/handle-available`,
+    CHANGE_HANDLE: `${API_URL}/api/v1/creator-store/change-handle`,
+    PUBLIC_STORE: `${API_URL}/api/v1/creator-store/public/handle`,
+    SUBMIT_FOR_REVIEW: `${API_URL}/api/v1/creator-store/submit-for-review`,
+  },
   HOME: {
     PRODUCTS: {
       CATEGORIES_PICKS: `${API_URL}/api/v1/product/categories-picks`,

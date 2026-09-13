@@ -17,4 +17,5 @@ export enum AppRoute {
 
   // Creators private routes
   CREATORS_DASHBOARD = "CreatorsDashboard",
+  CREATORS_DASHBOARD_STORE = "CreatorsDashboardStore",
 }

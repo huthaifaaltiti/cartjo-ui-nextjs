@@ -3,18 +3,18 @@ import {
   useInfiniteQuery,
   useQuery,
 } from "@tanstack/react-query";
-import { CreatorsVideo } from "@/types/creatorsVideo";
+import { CreatorsVideo } from "@/types/creators/creatorsVideo";
 import { DataListResponse, DataResponse } from "@/types/service-response.type";
 import { PAGINATION_LIMITS } from "@/config/paginationConfig";
 import { useAuthContext } from "../useAuthContext";
 import {
   getActiveCreatorsVideosQueryOptions,
   getCreatorsVideosQueryOptions,
-} from "./query-options/creatorsVideo";
+} from "./query-options/creators/dashboard/creatorsVideo";
 import {
   fetchActiveCreatorsVideos,
   fetchCreatorsVideos,
-} from "@/services/creatorsVideo.service";
+} from "@/services/creators/creatorsVideo.service";
 import { Locale } from "@/types/locale";
 import { authFetcher } from "@/utils/authFetcher";
 

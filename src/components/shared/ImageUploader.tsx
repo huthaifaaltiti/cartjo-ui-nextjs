@@ -130,7 +130,7 @@ const ImageUploader = ({
     if (disabled) return;
     if (isMultipleMode && images.length >= maxImages) {
       onError?.(
-        t("components.ImageUploader.errors.maxImagesReached", { maxImages })
+        t("components.ImageUploader.errors.maxImagesReached", { maxImages }),
       );
       return;
     }
@@ -148,7 +148,7 @@ const ImageUploader = ({
       // Check if adding these files would exceed the limit
       if (images.length + files.length > maxImages) {
         onError?.(
-          t("components.ImageUploader.errors.maxImagesReached", { maxImages })
+          t("components.ImageUploader.errors.maxImagesReached", { maxImages }),
         );
         return;
       }
@@ -213,7 +213,7 @@ const ImageUploader = ({
     <div className="relative" key={index}>
       <div
         style={{
-          backgroundImage: `url(${encodeURI(imageUrl)})`,
+          backgroundImage: `url("${imageUrl.replace(/"/g, '\\"')}")`,
         }}
         className={cn(
           sizeClasses[size],
@@ -222,7 +222,7 @@ const ImageUploader = ({
           disabled
             ? "cursor-not-allowed opacity-60"
             : "cursor-pointer hover:shadow-lg",
-          className
+          className,
         )}
         onClick={!isMultipleMode ? handleImageSelect : undefined}
         role="button"
@@ -253,7 +253,7 @@ const ImageUploader = ({
           disabled
             ? "cursor-not-allowed opacity-60"
             : "cursor-pointer hover:shadow-lg",
-          className
+          className,
         )}
         onClick={handleImageSelect}
         role="button"
@@ -300,7 +300,7 @@ const ImageUploader = ({
         <div
           className={cn(
             "flex gap-3",
-            isMultipleMode ? "flex-wrap" : "flex-row"
+            isMultipleMode ? "flex-wrap" : "flex-row",
           )}
         >
           {/* Render existing images */}

@@ -44,6 +44,22 @@ export const MEDIA_CONFIG = {
       MAX_SIZE: 1,
     },
   },
+  CREATOR_STORE: {
+    LOGO: {
+      ALLOWED_TYPES: "image/png, image/jpeg, image/jpg, image/webp",
+      MAX_SIZE: 5,
+    },
+    BANNER: {
+      ALLOWED_TYPES: "image/png, image/jpeg, image/jpg, image/webp",
+      MAX_SIZE: 8,
+    },
+  },
+  CREATORS_VIDEO: {
+    VIDEO: {
+      ALLOWED_TYPES: "video/mp4, video/quicktime, video/webm, video/ogg",
+      MAX_SIZE: 50,
+    },
+  },
   OTHERS: {
     ANY: {
       ALLOWED_TYPES: "*",

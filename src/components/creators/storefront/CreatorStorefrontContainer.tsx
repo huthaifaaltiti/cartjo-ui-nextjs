@@ -50,8 +50,6 @@ export const CreatorStorefrontContainer: React.FC<
 
   const store = initialStore || storeResponse?.data;
 
-  console.log({ store });
-
   if (isLoading && !store) {
     return <CreatorStoreSkeleton />;
   }

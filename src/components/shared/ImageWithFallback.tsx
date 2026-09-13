@@ -16,7 +16,7 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   useFill = true,
   ...rest
 }) => {
-  const [imgSrc, setImgSrc] = useState(src);
+  const [imgSrc, setImgSrc] = useState(src || fallbackSrc);
 
   const handleError = useCallback(() => {
     if (imgSrc !== fallbackSrc) {
@@ -25,10 +25,8 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   }, [imgSrc, fallbackSrc]);
 
   useEffect(() => {
-    if (src !== imgSrc) {
-      setImgSrc(src);
-    }
-  }, [src, imgSrc]);
+    setImgSrc(src || fallbackSrc);
+  }, [src, fallbackSrc]);
 
   return (
     <div className="relative w-full h-full">
@@ -37,7 +35,7 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
         src={imgSrc}
         alt={alt}
         onError={handleError}
-        fill={useFill} 
+        fill={useFill}
       />
     </div>
   );

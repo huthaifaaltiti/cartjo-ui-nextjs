@@ -89,12 +89,19 @@ export const ROUTE_PERMISSIONS: Partial<
   ],
 
   [AppRoute.DASHBOARD_CREATORS]: [
+    Permission.CREATORS_DASHBOARD_ACCESS,
     Permission.CREATORS_VIDEOS_READ,
     Permission.CREATORS_VIDEOS_CREATE,
     Permission.CREATORS_VIDEOS_UPDATE,
     Permission.CREATORS_VIDEOS_DELETE,
     Permission.CREATORS_VIDEOS_ACTIVATE,
     Permission.CREATORS_VIDEOS_DEACTIVATE,
+  ],
+
+  [AppRoute.CREATORS_DASHBOARD_STORE]: [
+    Permission.CREATOR_STORE_READ_OWN,
+    Permission.CREATOR_STORE_CREATE_OWN,
+    Permission.CREATOR_STORE_UPDATE_OWN,
   ],
 
   [AppRoute.USER_PROFILE]: [Permission.PROFILE_READ, Permission.PROFILE_UPDATE],

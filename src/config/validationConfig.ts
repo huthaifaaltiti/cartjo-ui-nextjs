@@ -139,6 +139,20 @@ export const validationConfig = {
       ratingMax: 5,
     },
   },
+  creatorStore: {
+    nameMinChars: 5,
+    nameMaxChars: 60,
+    /** Slug-safe handle: letters, numbers, single dashes/underscores. */
+    handlePattern: /^[a-z0-9](?:[a-z0-9_-]{1,28}[a-z0-9])$/,
+    handleMinChars: 3,
+    handleMaxChars: 30,
+    bioMinChars: 15,
+    bioMaxChars: 500,
+    taglineMaxChars: 120,
+    themeColorPattern: /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/,
+    phoneMaxChars: 20,
+    minOrderAmountMax: 10000,
+  },
   creatorsVideo: {
     titleMinChars: 3,
     titleMaxChars: 100,

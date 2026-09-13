@@ -204,6 +204,7 @@ const CreateCreatorStoreForm: React.FC<CreateCreatorStoreFormProps> = ({
   const t = useTranslations(
     "routes.creators.routes.dashboard.routes.store.routes.create.form",
   );
+  const tg = useTranslations("general");
   const locale = useLocale();
   const router = useRouter();
   const isAr = isArabicLocale(locale);
@@ -678,7 +679,7 @@ const CreateCreatorStoreForm: React.FC<CreateCreatorStoreFormProps> = ({
                           className="flex h-10 w-full appearance-none rounded-xl border border-gray-200 bg-white-50 px-3.5 py-2 text-sm text-gray-800 shadow-2xs transition-all focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <option value={Currency.JOD}>
-                            JOD - Jordanian Dinar (دينار أردني)
+                            {tg("currencyUnits.jod")}{" "}
                           </option>
                         </select>
                         <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 rtl:right-auto rtl:left-3.5" />

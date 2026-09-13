@@ -12,9 +12,19 @@ export default function StatusBadge({ status, className }: StatusBadgeProps) {
 
   const getStatusColor = (status: string) => {
     switch (status?.toUpperCase()) {
-      // 🟡 Pending
+      // 🟡 Pending / Pending Review
       case Statuses.PENDING:
         return "bg-yellow-100 text-yellow-800 border-yellow-200";
+
+      case Statuses.PENDING_REVIEW:
+        return "bg-amber-100 text-amber-800 border-amber-200";
+
+      // ⚪ Draft / Closed
+      case Statuses.DRAFT:
+        return "bg-neutral-100/50 text-neutral-600 border-neutral-200";
+
+      case Statuses.CLOSED:
+        return "bg-gray-100 text-gray-500 border-gray-300";
 
       // 🔵 In progress
       case Statuses.CONFIRMED:
@@ -34,7 +44,11 @@ export default function StatusBadge({ status, className }: StatusBadgeProps) {
       case Statuses.UNDELETED:
         return "bg-emerald-100 text-emerald-800 border-emerald-200";
 
-      // 🔴 Error / Inactive / Deleted
+      // 🔴 Error / Inactive / Deleted / Rejected / Suspended
+      case Statuses.REJECTED:
+        return "bg-rose-100 text-rose-800 border-rose-200";
+
+      case Statuses.SUSPENDED:
       case Statuses.FAILED:
       case Statuses.CANCELED:
       case Statuses.RETURNED:
