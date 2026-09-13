@@ -520,10 +520,10 @@ const EditCreatorStoreForm: React.FC<EditCreatorStoreFormProps> = ({
   onCancel,
 }) => {
   const t = useTranslations(
-    "routes.creators.dashboard.routes.store.routes.edit.form",
+    "routes.creators.routes.dashboard.routes.store.routes.edit.form",
   );
   const tc = useTranslations(
-    "routes.creators.dashboard.routes.store.routes.create.form",
+    "routes.creators.routes.dashboard.routes.store.routes.create.form",
   );
   const tg = useTranslations("general");
   const locale = useLocale();

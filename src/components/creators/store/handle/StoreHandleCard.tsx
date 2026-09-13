@@ -36,7 +36,7 @@ const StoreHandleCard: React.FC<StoreHandleCardProps> = ({
   className = "",
 }) => {
   const t = useTranslations(
-    "routes.creators.dashboard.routes.store.components.StoreHandleCard",
+    "routes.creators.routes.dashboard.routes.store.components.StoreHandleCard",
   );
   const tg = useTranslations("general");
   const locale = useLocale();

@@ -28,7 +28,7 @@ const ConfirmHandleChangeDialog: React.FC<ConfirmHandleChangeDialogProps> = ({
   isLoading,
 }) => {
   const t = useTranslations(
-    "routes.creators.dashboard.routes.store.components.ConfirmHandleChangeDialog",
+    "routes.creators.routes.dashboard.routes.store.components.ConfirmHandleChangeDialog",
   );
   const locale = useLocale();
   const isAr = isArabicLocale(locale);

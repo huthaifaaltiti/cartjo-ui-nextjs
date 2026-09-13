@@ -37,10 +37,10 @@ const HandleAvailabilityStatus: React.FC<HandleAvailabilityStatusProps> = ({
   className = "",
 }) => {
   const t = useTranslations(
-    "routes.creators.dashboard.routes.store.components.StoreHandleCard",
+    "routes.creators.routes.dashboard.routes.store.components.StoreHandleCard",
   );
   const tc = useTranslations(
-    "routes.creators.dashboard.routes.store.routes.create.form",
+    "routes.creators.routes.dashboard.routes.store.routes.create.form",
   );
 
   const cleanHandle = handle ? handle.trim() : "";

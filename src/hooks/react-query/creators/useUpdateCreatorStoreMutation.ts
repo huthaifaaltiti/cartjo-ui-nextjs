@@ -112,7 +112,7 @@ export const useUpdateCreatorStoreMutation = () => {
           description:
             res.message ||
             t(
-              "routes.creators.dashboard.routes.store.routes.edit.form.allUpdatedSuccess",
+              "routes.creators.routes.dashboard.routes.store.routes.edit.form.allUpdatedSuccess",
             ) ||
             (isAr
               ? "تم حفظ وتحديث جميع بيانات المتجر بنجاح!"

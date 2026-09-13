@@ -11,7 +11,9 @@ export default function Error({ error, reset }: ErrorPageProps) {
     <ErrorPage
       error={error}
       reset={reset}
-      title={error?.message || t("routes.creators.dashboard.errors.failed")}
+      title={
+        error?.message || t("routes.creators.routes.dashboard.errors.failed")
+      }
       showReLogin={true}
     />
   );

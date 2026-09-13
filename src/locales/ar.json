@@ -500,251 +500,6 @@
           "shippingLocation": "يتم الشحن من"
         }
       },
-      "dashboard": {
-        "error": {
-          "failed": "فشل في جلب بيانات لوحة التحكم الخاصة بك"
-        },
-        "layout": {
-          "portal": "بوابة المنشئ",
-          "navigation": "التنقل",
-          "myVideos": "فيديوهاتي",
-          "myStore": "متجري",
-          "exploreStores": "استكشاف المتاجر",
-          "analytics": "التحليلات",
-          "profileSettings": "إعدادات الملف الشخصي",
-          "soon": "قريبًا"
-        },
-        "dashboardNavLinkItems": {
-          "store": "متجري"
-        },
-        "routes": {
-          "store": {
-            "noStore": {
-              "title": "ابدأ البيع مع متجرك كمنشئ محتوى!",
-              "desc": "أنشئ واجهة متجرك لعرض المنتجات، وتخصيص علامتك التجارية، وابدأ بتحقيق الأرباح.",
-              "actions": {
-                "createStore": "إنشاء متجري كمنشئ محتوى"
-              }
-            },
-            "routes": {
-              "create": {
-                "form": {
-                  "badge": "واجهة متجر المنشئ",
-                  "title": "أنشئ متجرك كمنشئ محتوى",
-                  "subtitle": "جهّز هوية متجرك وعلامته التجارية وتفاصيل نشاطك التجاري لبدء البيع على CartJO.",
-                  "sections": {
-                    "branding": "الهوية البصرية والوسائط",
-                    "brandingDesc": "ارفع شعار متجرك وصورة الغلاف واختر لونًا مميزًا للواجهة.",
-                    "identity": "هوية المتجر ومعلوماته",
-                    "identityDesc": "حدّد أسماء متجرك، والمعرّف الفريد، والعبارة التعريفية، ونبذة عن قصتك.",
-                    "business": "إعدادات النشاط التجاري",
-                    "businessDesc": "اختر نوع التسجيل التجاري، والعملة، والحد الأدنى للطلب.",
-                    "contact": "بيانات التواصل",
-                    "contactDesc": "طرق التواصل المباشر مع متجرك من قِبل العملاء وفريق CartJO.",
-                    "social": "روابط التواصل الاجتماعي",
-                    "socialDesc": "اربط حساباتك على منصات التواصل الاجتماعي لزيادة سهولة اكتشاف متجرك.",
-                    "payout": "بيانات الحساب البنكي والأرباح",
-                    "payoutDesc": "معلومات الحساب البنكي لتحويل أرباح ومستحقات مبيعات متجرك.",
-                    "pickup": "عنوان استلام الشحنات",
-                    "pickupDesc": "العنوان الفعلي الذي يستلم منه مندوب التوصيل طلبات متجرك.",
-                    "profileSaveHint": "حفظ بيانات الهوية البصرية ومعلومات التواصل وحسابات التواصل الاجتماعي.",
-                    "payoutSaveHint": "حفظ الحساب البنكي ورقم الآيبان وكليك لاستلام أرباح المبيعات.",
-                    "pickupSaveHint": "حفظ عنوان مستودع المتجر ونقطة الاستلام والإحداثيات على الخريطة."
-                  },
-                  "fields": {
-                    "logo": "شعار المتجر",
-                    "logoHint": "شعار مربع (PNG/JPG، بحد أقصى 5 ميجابايت)",
-                    "banner": "صورة الغلاف",
-                    "bannerHint": "صورة غلاف عريضة 1200×400 (PNG/JPG، بحد أقصى 8 ميجابايت)",
-                    "themeColor": "اللون المميز للواجهة",
-                    "themeColorHint": "اللون المميز لشارات وأزرار واجهة متجرك",
-                    "nameAr": "اسم المتجر (العربية)",
-                    "nameArPlaceholder": "اسم متجرك بالعربية",
-                    "nameEn": "اسم المتجر (الإنجليزية)",
-                    "nameEnPlaceholder": "اسم متجرك بالإنجليزية",
-                    "handle": "معرّف المتجر (@handle)",
-                    "handlePlaceholder": "store-handle",
-                    "handleHint": "رابط متجرك الفريد: cartjo.com/store/",
-                    "taglineAr": "العبارة التعريفية (العربية)",
-                    "taglineArPlaceholder": "عبارة جذابة تصف متجرك",
-                    "taglineEn": "العبارة التعريفية (الإنجليزية)",
-                    "taglineEnPlaceholder": "عبارة جذابة لمتجرك",
-                    "bioAr": "نبذة / عن المتجر (العربية)",
-                    "bioArPlaceholder": "قصة متجرك ورسالتك للمتسوقين...",
-                    "bioEn": "نبذة / عن المتجر (الإنجليزية)",
-                    "bioEnPlaceholder": "قصة متجرك ومنتجاتك...",
-                    "businessType": "نوع التسجيل التجاري",
-                    "individual": "فرد (منشئ محتوى مستقل)",
-                    "company": "شركة / مؤسسة مسجلة",
-                    "registrationNumber": "رقم السجل التجاري",
-                    "registrationNumberPlaceholder": "مثال: 102938475",
-                    "taxId": "الرقم الضريبي (TIN)",
-                    "taxIdPlaceholder": "مثال: 987654321",
-                    "currency": "عملة المتجر",
-                    "minOrderAmount": "الحد الأدنى لقيمة الطلب",
-                    "minOrderAmountPlaceholder": "0",
-                    "email": "البريد الإلكتروني للتواصل مع المتجر",
-                    "emailPlaceholder": "store@example.com",
-                    "countryCode": "رمز الدولة",
-                    "phone": "رقم الهاتف",
-                    "phonePlaceholder": "079xxxxxxx",
-                    "social_instagram": "Instagram",
-                    "social_tiktok": "TikTok",
-                    "social_facebook": "Facebook",
-                    "social_youtube": "YouTube",
-                    "social_x": "X (Twitter)",
-                    "social_snapchat": "Snapchat",
-                    "social_whatsapp": "WhatsApp",
-                    "social_telegram": "Telegram",
-                    "social_website": "الموقع الإلكتروني / معرض الأعمال",
-                    "payout_bankName": "اسم البنك",
-                    "payout_bankNamePlaceholder": "مثال: البنك العربي، بنك الإسكان...",
-                    "payout_accountHolderName": "اسم صاحب الحساب",
-                    "payout_accountHolderNamePlaceholder": "الاسم الرباعي المطابق لسجلات البنك",
-                    "payout_iban": "رقم الآيبان (IBAN)",
-                    "payout_ibanPlaceholder": "JO00AAAA0000000000000000000000",
-                    "payout_accountNumber": "رقم الحساب",
-                    "payout_accountNumberPlaceholder": "رقم الحساب البنكي",
-                    "payout_cliqAlias": "اسم مستعار كليك / رقم الهاتف (اختياري)",
-                    "payout_cliqAliasPlaceholder": "مثال: name@bank أو 079XXXXXXX",
-                    "payout_cliqAliasHint": "اختياري: استلام الأرباح والتحويلات بشكل فوري ومباشر إلى حساب كليك (CliQ) أو رقم الهاتف المعتمد.",
-                    "payout_currency": "عملة التحويل",
-                    "payout_currencyHint": "عملة استلام الأرباح والتحويلات البنكية. محددة حالياً بالدينار الأردني (JOD).",
-                    "pickup_country": "الدولة",
-                    "pickup_city": "المدينة / المحافظة",
-                    "pickup_cityPlaceholder": "مثال: عمّان، الزرقاء، إربد...",
-                    "pickup_street": "اسم الشارع والمنطقة",
-                    "pickup_streetPlaceholder": "اسم الشارع والحي",
-                    "pickup_building": "رقم / اسم البناية",
-                    "pickup_buildingPlaceholder": "رقم أو اسم العمارة",
-                    "pickup_notes": "ملاحظات إضافية لمندوب الاستلام",
-                    "pickup_notesPlaceholder": "مثال: بجانب معلم معين، الاتصال قبل القدوم",
-                    "pickup_location": "موقع الاستلام على الخريطة",
-                    "pickup_locationHint": "حدد موقع مستودع أو نقطة استلام الشحنات على الخريطة لمساعدة مندوبي التوصيل في الوصول إليك بسهولة.",
-                    "selectedLocation": "الموقع المحدد"
-                  },
-                  "actions": {
-                    "saveProfile": "حفظ بيانات المتجر",
-                    "savePayout": "حفظ بيانات الحساب البنكي",
-                    "savePickup": "حفظ عنوان الاستلام",
-                    "saveAll": "حفظ كافة التغييرات"
-                  },
-                  "submitBtn": "إطلاق متجري كمنشئ محتوى",
-                  "cancelBtn": "إلغاء",
-                  "validations": {
-                    "logoRequired": "شعار المتجر مطلوب",
-                    "bannerRequired": "صورة الغلاف مطلوبة",
-                    "name_arRequired": "اسم المتجر بالعربية مطلوب",
-                    "name_enRequired": "اسم المتجر بالإنجليزية مطلوب",
-                    "name_arMaxChars": "اسم المتجر بالعربية طويل جدًا",
-                    "name_enMaxChars": "اسم المتجر بالإنجليزية طويل جدًا",
-                    "name_arLang": "يجب أن يحتوي اسم المتجر بالعربية على أحرف عربية وأرقام فقط",
-                    "name_enLang": "يجب أن يحتوي اسم المتجر بالإنجليزية على أحرف إنجليزية وأرقام فقط",
-                    "tagline_arLang": "يجب أن تحتوي العبارة التعريفية بالعربية على أحرف عربية وأرقام فقط",
-                    "tagline_enLang": "يجب أن تحتوي العبارة التعريفية بالإنجليزية على أحرف إنجليزية وأرقام فقط",
-                    "bio_arLang": "يجب أن تحتوي النبذة بالعربية على أحرف عربية وأرقام فقط",
-                    "bio_enLang": "يجب أن تحتوي النبذة بالإنجليزية على أحرف إنجليزية وأرقام فقط",
-                    "handleRequired": "معرّف المتجر مطلوب",
-                    "handleInvalid": "يجب أن يتكون المعرّف من {min} إلى {max} حرفًا صغيرًا أو رقمًا أو شرطة أو شرطة سفلية",
-                    "handleTooShort": "يجب أن يتكون المعرّف من {min} أحرف على الأقل.",
-                    "handleChecking": "جارٍ التحقق من التوفر…",
-                    "handleAvailable": "{handle} متاح.",
-                    "handleTaken": "{handle} مستخدم بالفعل.",
-                    "handleReserved": "هذا المعرّف محجوز ولا يمكن استخدامه.",
-                    "handleRecentlyReleased": "تم استخدام هذا المعرّف مؤخرًا من قبل متجر آخر، ولا يزال غير متاح.",
-                    "handleNetworkError": "تعذر التحقق من توفر المعرّف.",
-                    "handleRetry": "إعادة المحاولة",
-                    "handleUnavailable": "هذا المعرّف غير متاح.",
-                    "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
-                    "themeColorInvalid": "يجب أن يكون لون الواجهة بتنسيق HEX صالح (مثال: #6d28d9)",
-                    "minOrderAmountInvalid": "يجب أن يكون الحد الأدنى لقيمة الطلب رقمًا موجبًا",
-                    "registrationNumberRequired": "رقم السجل التجاري مطلوب للشركات",
-                    "taxIdRequired": "الرقم الضريبي (TIN) مطلوب للشركات",
-                    "payoutBankNameRequired": "اسم البنك مطلوب",
-                    "payoutAccountHolderNameRequired": "اسم صاحب الحساب مطلوب",
-                    "payoutIbanRequired": "رقم الآيبان (IBAN) مطلوب",
-                    "payoutIbanInvalid": "يرجى إدخال رقم آيبان (IBAN) صالح (مثال: JO...)",
-                    "payoutAccountNumberRequired": "رقم الحساب البنكي مطلوب",
-                    "pickupCountryRequired": "الدولة مطلوبة",
-                    "pickupCityRequired": "المدينة / المحافظة مطلوبة",
-                    "pickupStreetRequired": "اسم الشارع والمنطقة مطلوب",
-                    "pickupBuildingRequired": "تفاصيل المبنى / الشقة مطلوبة"
-                  }
-                }
-              },
-              "edit": {
-                "form": {
-                  "badge": "إدارة المتجر",
-                  "title": "تعديل متجر المنشئ",
-                  "subtitle": "حدّث الهوية البصرية لمتجرك، ومعلوماته، وبيانات نشاطك التجاري، وبيانات التواصل.",
-                  "saveBtn": "حفظ التغييرات",
-                  "allUpdatedSuccess": "تم حفظ وتحديث جميع بيانات المتجر بنجاح!"
-                }
-              }
-            },
-            "components": {
-              "StoreHandleCard": {
-                "cardTitle": "معرّف المتجر والرابط المخصص",
-                "cardSubtitle": "عنوانك العام ورابط ملفك الشخصي على CartJO.",
-                "badges": {
-                  "draft": "متجر مسودة",
-                  "cooldownActive": "فترة الانتظار مفعّلة",
-                  "changeAvailable": "يمكن التغيير"
-                },
-                "actions": {
-                  "copyUrl": "نسخ الرابط",
-                  "copied": "تم النسخ!",
-                  "editHandle": "تغيير المعرّف"
-                },
-                "hints": {
-                  "draftHint": "يمكنك تغيير المعرّف في أي وقت حتى يتم إطلاق متجرك.",
-                  "cooldownActiveHint": "يمكنك تغيير المعرّف مرة أخرى في {date} ({relative}).",
-                  "cooldownAllowedHint": "يمكنك تغيير معرّف متجرك مرة واحدة كل {cooldownDays} يومًا.",
-                  "cooldownDisabledTooltip": "يمكنك تغيير معرّف متجرك مرة أخرى في {date} ({relative})."
-                },
-                "form": {
-                  "label": "معرّف المتجر",
-                  "cancelBtn": "إلغاء",
-                  "saveBtn": "حفظ المعرّف",
-                  "savingBtn": "جارٍ الحفظ...",
-                  "previewLabel": "معاينة الرابط الجديد:"
-                },
-                "validation": {
-                  "tooShort": "يجب أن يتكون المعرّف من {min} أحرف على الأقل.",
-                  "invalidFormat": "يُسمح فقط بالأحرف الإنجليزية الصغيرة والأرقام و- و_. ويجب أن يبدأ المعرّف وينتهي بحرف أو رقم.",
-                  "sameAsCurrent": "هذا هو المعرّف الحالي لمتجرك.",
-                  "checking": "جارٍ التحقق من التوفر…",
-                  "available": "{handle} متاح.",
-                  "taken": "{handle} مستخدم بالفعل.",
-                  "reserved": "هذا المعرّف محجوز ولا يمكن استخدامه.",
-                  "recentlyReleased": "تم استخدام هذا المعرّف مؤخرًا من قبل متجر آخر، ولا يزال غير متاح.",
-                  "networkError": "تعذر التحقق من توفر المعرّف.",
-                  "retry": "إعادة المحاولة"
-                },
-                "messages": {
-                  "copiedTitle": "تم النسخ إلى الحافظة",
-                  "success": "تم تحديث معرّف المتجر بنجاح!"
-                },
-                "errors": {
-                  "cooldownTitle": "فترة الانتظار مفعّلة",
-                  "cooldownRaceMessage": "يمكنك تغيير معرّف متجرك مرة أخرى في {date}.",
-                  "generic": "فشل تغيير المعرّف."
-                }
-              },
-              "ConfirmHandleChangeDialog": {
-                "title": "هل تريد تغيير المعرّف إلى {newHandle}؟",
-                "description": "سيتوقف رابطك القديم /{oldHandle} عن العمل، ولن تتمكن من تغيير المعرّف مرة أخرى لمدة {cooldownDays} يومًا (التغيير التالي في {projectedDate}).",
-                "warningHeading": "ملاحظة مهمة",
-                "warningNote": "الروابط الحالية ورموز QR التي تشير إلى {oldLink} ستتوقف عن العمل فورًا. استخدم {newLink} بدلًا منها.",
-                "close": "إغلاق",
-                "cancelBtn": "إلغاء",
-                "confirmBtn": "تغيير المعرّف",
-                "changingBtn": "جارٍ التغيير..."
-              }
-            }
-          }
-        }
-      },
       "routes": {
         "dashboard": {
           "components": {
@@ -1118,12 +873,12 @@
               },
               "components": {
                 "StoreHandleCard": {
-                  "cardTitle": "معرف المتجر ورابط الوصول الفريد",
+                  "cardTitle": "معرف المتجر والرابط المخصص",
                   "cardSubtitle": "عنوان متجرك ورابط ملفك التعريفي العام على كارت جو.",
                   "badges": {
                     "draft": "متجر مسودة",
                     "cooldownActive": "فترة الانتظار نشطة",
-                    "changeAvailable": "متاح للتعديل"
+                    "changeAvailable": "التغيير متاح"
                   },
                   "actions": {
                     "copyUrl": "نسخ الرابط",
@@ -1131,9 +886,9 @@
                     "editHandle": "تعديل المعرف"
                   },
                   "hints": {
-                    "draftHint": "يمكنك تغيير معرف متجرك في أي وقت قبل إطلاق المتجر رسمياً.",
+                    "draftHint": "يمكنك تغيير معرف متجرك بحرية في أي وقت طالما أن المتجر بحالة مسودة بدون فترة انتظار.",
                     "cooldownActiveHint": "يمكنك تعديل معرف متجرك مجدداً بتاريخ {date} ({relative}).",
-                    "cooldownAllowedHint": "يمكنك تغيير معرف متجرك مرة واحدة كل {cooldownDays} يوماً.",
+                    "cooldownAllowedHint": "تغيير معرف متجرك سيبدأ فترة انتظار مدتها {cooldownDays} يوم.",
                     "cooldownDisabledTooltip": "يمكنك تعديل معرف متجرك مجدداً بتاريخ {date} ({relative})."
                   },
                   "form": {
@@ -1144,7 +899,7 @@
                     "previewLabel": "معاينة الرابط الجديد:"
                   },
                   "validation": {
-                    "tooShort": "يجب أن يتكون المعرف من 3 أحرف على الأقل.",
+                    "tooShort": "يجب أن يتكون المعرف من {min} أحرف على الأقل.",
                     "invalidFormat": "يجب استخدام حروف إنجليزية صغيرة، وأرقام، و- و _ فقط. ويجب أن يبدأ وينتهي بحرف أو رقم.",
                     "sameAsCurrent": "هذا هو معرف متجرك الحالي.",
                     "checking": "جاري التحقق من التوفر…",

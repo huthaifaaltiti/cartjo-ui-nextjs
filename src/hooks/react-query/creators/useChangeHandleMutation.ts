@@ -27,7 +27,7 @@ export const useChangeHandleMutation = () => {
   const queryClient = useQueryClient();
   const { locale } = useAuthContext();
   const t = useTranslations(
-    "routes.creators.dashboard.routes.store.components.StoreHandleCard",
+    "routes.creators.routes.dashboard.routes.store.components.StoreHandleCard",
   );
   const tg = useTranslations("general");
 
@@ -43,8 +43,6 @@ export const useChangeHandleMutation = () => {
       }),
     onSuccess: (res: DataResponse<ChangeHandleData>) => {
       if (res?.isSuccess && res.data) {
-        const data = res.data;
-
         showSuccessToast({
           title: tg("toast.title.success") || "Success",
           description:
@@ -54,20 +52,23 @@ export const useChangeHandleMutation = () => {
           dismissText: tg("toast.dismissText"),
         });
 
-        queryClient.setQueriesData<DataResponse<CreatorStore>>(
-          { queryKey: [CREATOR_STORE_KEY] },
+        queryClient.setQueryData<DataResponse<CreatorStore>>(
+          [CREATOR_STORE_KEY],
           (old) => {
             if (!old?.data) return old;
             return {
               ...old,
               data: {
                 ...old.data,
-                handle: data.handle,
-                handleChangedAt: data.handleChangedAt,
-                nextChangeAllowedAt: data.nextChangeAllowedAt,
-                handleChangeCount: data.changeCount,
-                previousHandles: data.previousHandle
-                  ? [...(old.data.previousHandles || []), data.previousHandle]
+                handle: res?.data.handle,
+                handleChangedAt: res.data.handleChangedAt,
+                nextChangeAllowedAt: res.data.nextChangeAllowedAt,
+                handleChangeCount: res.data.changeCount,
+                previousHandles: res.data.previousHandle
+                  ? [
+                      ...(old.data.previousHandles || []),
+                      res.data.previousHandle,
+                    ]
                   : old.data.previousHandles,
               },
             };

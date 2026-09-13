@@ -817,12 +817,12 @@
                   "actions": {
                     "copyUrl": "Copy Link",
                     "copied": "Copied!",
-                    "editHandle": "Change Handle"
+                    "editHandle": "Edit handle"
                   },
                   "hints": {
-                    "draftHint": "You can change your handle anytime until your store goes live.",
+                    "draftHint": "You can change your handle anytime while your store is in draft status without cooldown.",
                     "cooldownActiveHint": "Your handle can be changed again on {date} ({relative}).",
-                    "cooldownAllowedHint": "You can change your store handle once every {cooldownDays} days.",
+                    "cooldownAllowedHint": "Changing your handle initiates a {cooldownDays}-day cooldown period.",
                     "cooldownDisabledTooltip": "Your handle can be changed again on {date} ({relative})."
                   },
                   "form": {
